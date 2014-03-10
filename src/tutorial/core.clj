@@ -29,16 +29,14 @@
 ;; nice 
 (map baz [660 770 880 990 1100])
 
-
 (map baz '(700 800 900 1000 1100 1200 1300 1400 1500))
-
 
 (definst quux [freq 440] (* 0.1 (sin-osc freq)))
 
 (quux)
 (map quux [660 770 880 990 1100 1210])
 
-;; CTL seems to work best if argument is already active
+;; CTL needs an argument that is already active
 (ctl quux :freq 660)
 
 (definst trem [freq 440 depth 10 rate 6 length 3]
@@ -157,3 +155,24 @@
 (player (metro))
 
 (metro-bpm metro 100)
+
+
+;;; pc-set stuff
+
+(def *pentachords-tn* '((0 1 2 3 4) (0 1 2 3 5) (0 2 3 4 5) (0 1 2 4 5) (0 1 3 4 5) (0 1 2 3 6) (0 3 4 5 6) (0 1 2 3 7) (0 4 5 6 7) (0 1 2 5 6) (0 1 4 5 6) (0 1 2 6 7) (0 1 5 6 7) (0 2 3 4 6) (0 1 2 4 6) (0 2 4 5 6) (0 1 3 4 6) (0 2 3 5 6) (0 2 3 4 7) (0 3 4 5 7) (0 1 3 5 6) (0 1 2 4 8) (0 2 3 4 8) (0 1 2 5 7) (0 2 5 6 7) (0 1 2 6 8) (0 1 3 4 7) (0 3 4 6 7) (0 1 3 4 8) (0 1 4 5 7) (0 2 3 6 7) (0 1 3 6 7) (0 1 4 6 7) (0 1 3 7 8) (0 1 5 7 8) (0 1 4 5 8) (0 3 4 7 8) (0 1 4 7 8) (0 2 3 5 7) (0 2 4 5 7) (0 1 3 5 7) (0 2 4 6 7) (0 2 3 5 8) (0 3 5 6 8) (0 2 4 5 8) (0 3 4 6 8) (0 1 3 5 8) (0 3 5 7 8) (0 2 3 6 8) (0 2 5 6 8) (0 1 3 6 8) (0 2 5 7 8) (0 1 4 6 8) (0 2 4 7 8) (0 1 3 6 9) (0 2 3 6 9) (0 1 4 6 9) (0 1 4 7 9) (0 2 4 6 8) (0 2 4 6 9) (0 2 4 7 9) (0 1 2 4 7) (0 3 5 6 7) (0 3 4 5 8) (0 1 2 5 8) (0 3 6 7 8)))
+
+(map #(+ 60 %) [0 1 3 4])
+
+(map #(+ (rand-nth [24 36 48 60 72]) %) [0 1 3 4])
+
+(defn voice-rand-set [set-type]
+  (let [set (rand-nth set-type)
+        voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
+        set-voicing-pair (list set voiced-set)]
+    (do
+      (println set-voicing-pair)
+      set-voicing-pair)))
+
+(voice-rand-set *pentachords-tn*)
+
+(map baz (map #(midi->hz %) (last (voice-rand-set *pentachords-tn*))))

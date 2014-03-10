@@ -26,14 +26,17 @@
 (bar)
 (baz) 
 
+;; nice 
 (map baz [660 770 880 990 1100])
 
-(map baz '(700 800 900 1000 1100 1200))
+
+(map baz '(700 800 900 1000 1100 1200 1300 1400 1500))
 
 
-(definst quux [freq 440] (* 0.1 (saw freq)))
+(definst quux [freq 440] (* 0.1 (sin-osc freq)))
 
 (quux)
+(map quux [660 770 880 990 1100 1210])
 
 ;; CTL seems to work best if argument is already active
 (ctl quux :freq 660)
