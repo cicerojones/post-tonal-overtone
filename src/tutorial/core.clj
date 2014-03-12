@@ -11,17 +11,21 @@
 
 (odoc saw)
 
-(definst bar [freq 220] (saw freq))
 
+;; give the instrument a frequency argument with a default value 
+
+(definst bar [freq 220] (saw freq))
 
 (bar)
 (kill bar)
 
+;; scale the signal
 (definst baz [freq 440] (* 0.1 (saw freq)))
 
 (baz 220)
 (kill baz)
 
+;; these all runs concurrently
 (foo) 
 (bar)
 (baz) 
@@ -90,7 +94,7 @@
 
 (triangle-wave)
 
-;; interesting undocumented exercise = IUE
+;; interesting undocumented exercise = I.U.E.
 (defn make-tri [hz amp]
   (definst triangle-wave [freq hz attack 0.01 sustain 0.1 release 0.4 vol amp] 
     (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
@@ -146,11 +150,11 @@
 (metro 100)
 
 ;; created a messed-up version of PLAYER
-(defn player [beat]
+(defn tutorial-player [beat]
   (at (metro beat) (kick))
   (at (metro (+ 0.5 beat)) (c-hat))
   (at (metro (+ 0.15 beat)) (triangle-wave))
-  (apply-at (metro (inc beat)) #'player (inc beat) []))
+  (apply-at (metro (inc beat)) #'tutorial-player (inc beat) []))
 
 (player (metro))
 
@@ -189,7 +193,74 @@
       (last set-voicing-group))))
 
 
+;;; current-state
+;; built-ins: rand-nth, rand-int
+;; overtone: midi-hz, saw, definst
+;; anonymous: (rand-nth [36 48 60 72]), (+ tn-level)
+;; user-defined:: baz:saw
 
+;;; TODO
+;; be able to pass any 'instrument' as function that
+;; will be mapped over a vector of args in Hz.
+;;
+;; those args in Hz are the result of being given (or choosing
+;; according to some logic) a particular set/set-type, a transposition level, and a voicing
+;;; ADDITIONALLY
+;; make it possible to sequence these using timing/metronome objects
+
+
+
+;;; ULTIMATELY
+;; stringing together sequences of such set|tn|voicing triples should
+;; be a part of a larger 'compose' function that works with some guidelines
+
+
+
+;;; SO
+;; begin by defining a new FN that
+;; (defn play-something [player set-of-frequencies])
+;; (defn create-set(s)-of-frequencies [set-chooser voicing-chooser]
+;; (defn set-chooser [set-type-guidelines]
+;; (defn voicing-chooser [voicing-guidelines]
+
+;;; the prototypes
+;; 'the instrument'
+(definst baz [freq 440] (* 0.1 (saw freq)))
+
+;; the 'player'
+(defn player2 [inst set-types tn-level-ceiling]
+  (map inst ; instrument
+       (map #(midi->hz %) ; frequency-conversion
+            (voice-and-transpose-rand-set ; voicing
+             (rand-nth set-types) ; set-type
+             (rand-int tn-level-ceiling))))) ; tn-level
+
+(defn triangle-player []
+  (player2 triangle-wave [*trichords* *tetrachords* *pentachords*] 12))
+
+(player2 baz [*trichords* *tetrachords* *pentachords*] 12)
+;; the 'timing' mechanism
+
+
+(def metro (metronome 128))
+
+(metro)
+;; => current beat number
+
+(metro 100)
+
+;; created a messed-up version of PLAYER
+(defn player [beat]
+  (at (metro beat) (triangle-player))
+  (apply-at (metro (inc beat)) #'player (inc beat) []))
+
+(player (metro))
+
+
+
+
+
+;;; data should be stored separately and LOAD-FILEd
 (def *dyads-tn* '((0 1) (0 2) (0 3) (0 4) (0 5) (0 6)))
 
 (def *trichords-tn* '((0 1 2) (0 1 3) (0 2 3) (0 1 4) (0 3 4) (0 1 5) (0 4 5) (0 1 6) (0 5 6) (0 2 4) (0 2 5) (0 3 5) (0 2 6) (0 4 6) (0 2 7) (0 3 6) (0 3 7) (0 4 7) (0 4 8)))
