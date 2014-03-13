@@ -20,7 +20,7 @@
 (kill bar)
 
 ;; scale the signal
-(definst baz [freq 440] (* 0.1 (saw freq)))
+(definst baz [freq 440] (* 0.05 (saw freq)))
 
 (baz 220)
 (kill baz)
@@ -85,7 +85,15 @@
   (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
      (pink-noise) ; also have (white-noise) and others...
      vol))
+
+;; for background-noise masking
+(definst noisey-long [vol 0.1] 
+  (* (pink-noise) ; also have (white-noise) and others...
+     vol))
+
+
 (noisey)
+(noisey-long)
 
 (definst triangle-wave [freq 440 attack 0.01 sustain 0.1 release 0.4 vol 0.4] 
   (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
@@ -133,7 +141,7 @@
         drum (+ sqr (* env src))]
     (compander drum drum 0.2 1 0.1 0.01 0.01)))
 
-;(kick)
+(kick)
 
 (definst c-hat [amp 0.8 t 0.04]
   (let [env (env-gen (perc 0.001 t) 1 1 0 1 FREE)
@@ -156,7 +164,7 @@
   (at (metro (+ 0.15 beat)) (triangle-wave))
   (apply-at (metro (inc beat)) #'tutorial-player (inc beat) []))
 
-(player (metro))
+(tutorial-player (metro))
 
 (metro-bpm metro 100)
 
@@ -225,20 +233,27 @@
 
 ;;; the prototypes
 ;; 'the instrument'
+
 (definst baz [freq 440] (* 0.1 (saw freq)))
 
+(baz)
 ;; the 'player'
+
 (defn player2 [inst set-types tn-level-ceiling]
   (map inst ; instrument
        (map #(midi->hz %) ; frequency-conversion
             (voice-and-transpose-rand-set ; voicing
              (rand-nth set-types) ; set-type
-             (rand-int tn-level-ceiling))))) ; tn-level
+             (rand-int tn-level-ceiling)))))
+
+                                        ; tn-level
 
 (defn triangle-player []
   (player2 triangle-wave [*trichords* *tetrachords* *pentachords*] 12))
 
 (player2 baz [*trichords* *tetrachords* *pentachords*] 12)
+
+(triangle-player)
 ;; the 'timing' mechanism
 
 
@@ -249,12 +264,13 @@
 
 (metro 100)
 
-;; created a messed-up version of PLAYER
-(defn player [beat]
-  (at (metro beat) (triangle-player))
-  (apply-at (metro (inc beat)) #'player (inc beat) []))
 
-(player (metro))
+;; created a messed-up version of PLAYER
+(defn player1 [beat]
+  (at (metro beat) (triangle-player))
+  (apply-at (metro (inc beat)) #'player1 (inc beat) []))
+
+(player1 (metro))
 
 
 
