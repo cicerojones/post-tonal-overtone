@@ -2,6 +2,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; very basics
+;;
+;;
+;; recommended to write the functions (or bind kmacros) to play
+;; and stop any function, after evaluating the 'live' package
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (ns tutorial.core)
@@ -11,70 +15,87 @@
 (definst foo [] (saw 200))
 
 (foo)
+;; you can stop a particular instrument
 (kill foo)
 
+;; to view documentation
 (odoc saw)
 
+;; to view documentation in the REPL you must first
+;; evaluate (use 'overtone.live) in the REPL, as well, for some reason
 
-;; give the instrument a frequency argument with a default value 
+;; you can create an instrument that takes a frequency argument with a
+;; default value
 
 (definst bar [freq 220] (saw freq))
 
 (bar)
-(kill bar)
+(bar 110)
 
-;; scale the signal
-(definst baz [freq 440] (* 0.05 (saw freq)))
+;; you can also change the amplitude by scaling the signal
+(definst baz [freq 435 amp 0.75] (* amp (saw freq)))
 
 (baz 220)
-(kill baz)
+(baz 110 0.7)
+
 
 ;; these all runs concurrently
-(foo) 
+(foo)
 (bar)
-(baz) 
+(baz)
 
-;; nice 
+;; map this saw instrument over a vector of frequencies
 (map baz [660 770 880 990 1100])
 
+;; higher and higher, now passed in as a list
 (map baz '(700 800 900 1000 1100 1200 1300 1400 1500))
 
-(definst quux [freq 440] (* 0.1 (sin-osc freq)))
+;; you can use other kinds of wave-types, such as a sine wave
+(definst quux [freq 440] (* 0.3 (sin-osc freq)))
 
 (quux)
+
 (map quux [660 770 880 990 1100 1210])
 
 ;; CTL needs an argument that is already active
-(ctl quux :freq 660)
+(ctl quux :freq 460)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; start varying time/amplitude domain etc.
-
+;;
+;;
+;; here you need to learn about LINE and ASDR
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; start modifying the signal with ugens
 ;; passing arguments for rate and depth, as well as LENGTH,
 ;; which is used by the LINE
-(definst trem [freq 440 depth 10 rate 6 length 3]
-    (* 0.3
+;;
+;; additionally tremolo is produced by doing some
+;;
+;; MODULATION! (what kind, and how/where?)
+
+(definst trem [freq 440 depth 10 rate 6 length 3 amp 0.5]
+    (* amp
        (line:kr 0 1 length FREE)
        (saw (+ freq (* depth (sin-osc:kr rate))))))
 
-;; (defn foo
-;;   "I don't do a whole lot."
-;;   [x]
-;;   (println x "Hello, World!"))
-
-(trem 60 30 0.7)
-
 (trem)
-(trem 200 60 0.3)
+(trem 60 30 0.7 6 0.9)
+(trem 200 60 0.3 10 1)
 
-(trem :freq 100 :depth 1 :rate 3 :length 5)                   ;
+;; can be called with explicit keywords to change arguments
+(trem :freq 100 :depth 1 :rate 3 :length 5)
 
+;; umm, feedback-filter?
+;; add distortion to a sine wave with this special
+;; SIN-OSC-FB, which takes a feedback argument
 (defn dem-sin
   [hz fb-flt]
   (demo (sin-osc-fb hz fb-flt)))
+
+(dem-sin 200 3)
 
 (definst sin-wave [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
   (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
@@ -85,10 +106,13 @@
   (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
      (sin-osc freq)
      vol))
+;; one-second of sine, with an ADSR built-in
 (sin-wave)
 
+;; 3 seconds of sine, now with an argument for length
 (sin-wave2)
 
+;; now 5 seconds, with more ADSR modification
 (sin-wave2 :attack 0.1 :sustain 0.15 :release 0.25 :length 5)
 
 (definst saw-wave [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
@@ -110,29 +134,56 @@
 
 (noisey)
 
-;; ten-second rise and fall
+;; frequencies don't affect a pink-noise object, do they? but you can
+;; still change the ADSR/envelope
+
 (definst noisey2 [attack 0.01 sustain 0.4 release 0.1 vol 0.4 length 3] 
   (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
      (pink-noise) ; also have (white-noise) and others...
      vol))
 
+(noisey2)
 (noisey2 :attack 0.15 :sustain 0.2 :release 0.3 :vol 0.3 :length 10)
 
 ;; for background-noise masking
-(definst noisey-long [vol 0.1] 
+(definst noisey-long [vol 0.5] 
   (* (pink-noise) ; also have (white-noise) and others...
      vol))
 
 
 (noisey)
-(noisey-long)
 
+;; play pink-noise indefinitely
+(noisey-long 1)
+
+
+;; now a new "ugen", an LF-TRI
 (definst triangle-wave [freq 440 attack 0.01 sustain 0.1 release 0.4 vol 0.4] 
   (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
      (lf-tri freq)
      vol))
 
 (triangle-wave)
+
+;; iphase - Initial phase offset. For efficiency 
+;;            reasons this is a value ranging from 0 
+;;            to 2. 
+
+;;   The triangle wave shape features two linear slopes and is 
+;;   not as harmonically rich as a sawtooth wave since it only 
+;;   contains odd harmonics (partials). Ideally, this type of 
+;;   wave form is mixed with a sine, square or pulse wave to 
+;;   add a sparkling or bright effect to a sound and is often 
+;;   employed on pads to give them a glittery feel. 
+
+(definst triangle-wave2 [freq 440 iphase 1 attack 0.01 sustain 0.1 release 0.4 vol 0.4] 
+  (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
+     (lf-tri freq iphase)
+     vol))
+
+;; ??
+(triangle-wave2 :iphase 0.1)
+
 
 ;; interesting undocumented exercise = I.U.E.
 (defn make-tri [hz amp]
@@ -141,29 +192,37 @@
        (lf-tri freq)
        vol)))
 
-(definst rand-tri [rand-ceiling 750 attack 0.01 sustain 0.1 release 0.4 vol 0.4]
-  (let [rand-hz (+ 30 (* 10 (rand rand-ceiling)))]
-    (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
-       (lf-tri rand-hz)
-       vol)))
-
-(definst rand-tri2 [rand-ceiling 750 attack 0.01 sustain 0.1 release 0.4 vol 0.4]
-  (lf-tri )))
-
-(rand-tri2 :rand-ceiling 500)
-
-    
 
 (make-tri 200 0.4)
 
-(triangle-wave)  
 
+;; now with some more MODULATION, with an lf-pulse
 (definst spooky-house [freq 440 width 0.2 
                          attack 0.3 sustain 4 release 0.3 
                          vol 0.4] 
   (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
      (sin-osc (+ freq (* 20 (lf-pulse:kr 0.5 0 width))))
      vol))
+
+(spooky-house)
+
+[freq 440.0, iphase 0.0, width 0.5]
+
+  ;; freq   - Frequency in Hertz 
+  ;; iphase - Initial phase offset in cycles ( 0..1 ) 
+  ;; width  - Pulse width duty cycle from zero to one 
+
+  ;; A non-band-limited pulse oscillator. Outputs a high value 
+  ;; of one and a low value of zero. 
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; begin thinking about sequencing and timing
+;;
+;;                                        
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (definst kick [freq 120 dur 0.3 width 0.5]
   (let [freq-env (* freq (env-gen (perc 0 (* 0.99 dur))))
