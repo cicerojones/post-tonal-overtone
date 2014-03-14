@@ -1,5 +1,9 @@
 (stop)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; very basics
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (ns tutorial.core)
 
 (use 'overtone.live)
@@ -42,6 +46,11 @@
 
 ;; CTL needs an argument that is already active
 (ctl quux :freq 660)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; start varying time/amplitude domain etc.
+
 
 ;;; start modifying the signal with ugens
 ;; passing arguments for rate and depth, as well as LENGTH,
@@ -276,6 +285,28 @@
 
 (player2 baz [*trichords* *tetrachords* *pentachords*] 12)
 
+(defn chord-progression-time4 []
+  (let [time (now)]
+    (at time (player2 baz [*trichords* *tetrachords* *pentachords*] 12))))
+
+(chord-progression-time4)
+
+(definst saw100 [] (saw 100))
+(definst saw100v1 [] (* 0.1 (saw 100)))
+(definst saw100v2l3 [length 3] ; note: DEFINST (or a "synth") fails with oddp args
+  (* 0.2
+     (saw 100)
+     (line:kr 0 1 length FREE)))
+(definst saw100v2l4noline [length 3] ; note: DEFINST (or a "synth") fails with oddp args
+  (* 0.2
+     (saw 100)
+     (line:kr 0.5 1 length FREE)))
+(saw100)
+(saw100v1)
+(saw100v2l3)
+(saw100v2l4noline)
+
+
 (triangle-player)
 ;; the 'timing' mechanism
 
@@ -325,13 +356,19 @@
 (chord-progression-time2)
 
 
-(defn chord-progression-time3 [r1 r2]
+(defn chord-progression-time3 [r1 r2 v1 v2]
   (let [time (now)]
-    (at time (noisey2 :attack 0.15 :sustain 0.2 :release r1 :vol 0.3 :length 10))
-    (at (+ 10000 time) (noisey2 :attack 0.15 :sustain 0.2 :release r2 :vol 0.3 :length 10))))
+    (at time (noisey2 :attack 0.15 :sustain 0.2 :release r1 :vol v1 :length 10))
+    (at (+ 10000 time) (noisey2 :attack 0.15 :sustain 0.2 :release r2 :vol v2 :length 10))))
 
-(chord-progression-time3 1 1)
-(chord-progression-time3 0.5 0.3)
+(chord-progression-time3 1 1 0.5 0.3)
+(chord-progression-time3 0.5 0.3 0.7 1)
+
+(defn chord-progression-time4 [inst]
+  (let [time (now)]
+    (at time (inst :attack 0.15 :sustain 0.2 :release 0.7 :vol 0.5 :length 10))))
+
+
 
 ;;; modified version
 
@@ -358,6 +395,7 @@
 ((0 1 4 7 8) (60 61 64 79 44) 8 (68 69 72 87 52))
 ((0 1 2 6 8) (60 73 38 42 80) 8 (68 81 46 50 88))
 ((0 3 4 7) (48 63 40 55) 0 (48 63 40 55))
+((0 1 4) (72 37 52) 1 (73 38 53))
 
 
 
