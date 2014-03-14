@@ -43,6 +43,9 @@
 ;; CTL needs an argument that is already active
 (ctl quux :freq 660)
 
+;;; start modifying the signal with ugens
+;; passing arguments for rate and depth, as well as LENGTH,
+;; which is used by the LINE
 (definst trem [freq 440 depth 10 rate 6 length 3]
     (* 0.3
        (line:kr 0 1 length FREE)
@@ -58,6 +61,7 @@
 (trem)
 (trem 200 60 0.3)
 
+(trem :freq 100 :depth 1 :rate 3 :length 5)                   ;
 
 (defn dem-sin
   [hz fb-flt]
@@ -67,7 +71,16 @@
   (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
      (sin-osc freq)
      vol))
+
+(definst sin-wave2 [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4 length 3] 
+  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
+     (sin-osc freq)
+     vol))
 (sin-wave)
+
+(sin-wave2)
+
+(sin-wave2 :attack 0.1 :sustain 0.15 :release 0.25 :length 5)
 
 (definst saw-wave [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
   (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
@@ -85,6 +98,16 @@
   (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
      (pink-noise) ; also have (white-noise) and others...
      vol))
+
+(noisey)
+
+;; ten-second rise and fall
+(definst noisey2 [attack 0.01 sustain 0.4 release 0.1 vol 0.4 length 3] 
+  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
+     (pink-noise) ; also have (white-noise) and others...
+     vol))
+
+(noisey2 :attack 0.15 :sustain 0.2 :release 0.3 :vol 0.3 :length 10)
 
 ;; for background-noise masking
 (definst noisey-long [vol 0.1] 
@@ -260,9 +283,63 @@
 (def metro (metronome 128))
 
 (metro)
+
+
+;;; these belong together
+(now)
+
+(definst saw-wave [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
+  (* (env-gen (env-lin attack sustain release) 1 1 0 1 FREE)
+     (saw freq)
+     vol))
+
+(defn saw2 [music-note]
+  (saw-wave (midi->hz (note music-note))))
+
+(defn saw1 [m]
+  (saw-wave (midi->hz m)))
+
+(saw1 60)
+  
+(defn play-chord [a-chord]
+  (doseq [note a-chord] (saw2 note)))
+
+(defn chord-progression-time []
+  (let [time (now)]
+    (at time (noisey2))
+    (at (+ 2000 time) (play-chord (chord :G3 :major)))
+    (at (+ 3000 time) (play-chord (chord :F3 :sus4)))
+    (at (+ 4300 time) (play-chord (chord :F3 :major)))
+    (at (+ 5000 time) (play-chord (chord :G3 :major)))))
+
+(chord-progression-time)
+
+(defn chord-progression-time2 []
+  (let [time (now)]
+    (at time (noisey2))
+    (at (+ 3000 time) (noisey2 :attack 0.15 :sustain 0.2 :release 0.3 :vol 0.3 :length 10))
+    (at (+ 13000 time) (noisey2 :length 1))
+    (at (+ 14000 time) (noisey2 :attack 0.14 :sustain 0.2 :release 0.15 :length 3))
+    (at (+ 17000 time) (noisey2 :attack 0.15 :sustain 0.2 :release 0.3 :vol 0.3 :length 10))))
+
+(chord-progression-time2)
+
+
+(defn chord-progression-time3 [r1 r2]
+  (let [time (now)]
+    (at time (noisey2 :attack 0.15 :sustain 0.2 :release r1 :vol 0.3 :length 10))
+    (at (+ 10000 time) (noisey2 :attack 0.15 :sustain 0.2 :release r2 :vol 0.3 :length 10))))
+
+(chord-progression-time3 1 1)
+(chord-progression-time3 0.5 0.3)
+
+;;; modified version
+
+
 ;; => current beat number
 
-(metro 100)
+(def metro100 (metronome 100))
+(metro100)
 
 
 ;; created a messed-up version of PLAYER
@@ -270,9 +347,17 @@
   (at (metro beat) (triangle-player))
   (apply-at (metro (inc beat)) #'player1 (inc beat) []))
 
+(at (metro 
+
 (player1 (metro))
 
 
+;; ((0 1 2 5 6) (72 61 38 65 78) 8 (80 69 46 73 86))
+;; ((0 3 4 5 8) (60 51 40 77 56) 8 (68 59 48 85 64))
+((0 2 4 7 9) (72 62 52 67 57) 1 (73 63 53 68 58))
+((0 1 4 7 8) (60 61 64 79 44) 8 (68 69 72 87 52))
+((0 1 2 6 8) (60 73 38 42 80) 8 (68 81 46 50 88))
+((0 3 4 7) (48 63 40 55) 0 (48 63 40 55))
 
 
 
