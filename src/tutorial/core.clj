@@ -104,6 +104,13 @@
   (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
      (sin-osc freq)
      vol))
+
+(definst sin-wave2 [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4 length 3] 
+  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
+     (sin-osc freq)
+     vol))
+
+
 ;; one-second of sine, with an ADSR built-in
 (sin-wave)
 
@@ -540,20 +547,50 @@
 
 (chord-progression-time8 sixty-bpm saw-diss)
 
-(definst 1-sec-saw-wave [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4 length 1] 
-  (* (env-gen (env-lin attack sustain release) 1 1 0 length FREE)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; models
+(definst saw-wave [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
+  (* (env-gen (env-lin attack sustain release) 1 1 0 1 FREE)
      (saw freq)
      vol))
 
 (defn saw2 [music-note]
   (saw-wave (midi->hz (note music-note))))
 
+
+;; actually used definition
+(definst sin-wave3 [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4 length 3] 
+  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
+     (sin-osc freq)
+     vol))
+
+
+;; an envelopped sine-wav player built on the sin-wave3 inst
+(defn sin3 [m]
+  (sin-wave3 (midi->hz m) :attack 0.1 :sustain 0.15 :release 0.25 :length 5))
+
+(sin3 60)
+
+;; play random chords using the sin3 function, 
+(defn sine-diss []
+  (doseq [notes (voice-and-transpose-rand-set ; voicing
+                       *tetrachords* ; set-type
+                       (rand-int 12))]
+    (sin3 notes)))
+
+
+(sine-diss)
+
+
+(def sine-metro (metronome 60))
+
 (defn chord-progression-time9 [nome]
   (let [beat (nome)]
-    (at (nome beat) (saw-diss))
+    (at (nome beat) (sine-diss))
     (apply-at (nome (inc beat)) #'chord-progression-time9 nome [])))
 
-(chord-progression-time9 sixty-bpm)
+(chord-progression-time9 sine-metro)
 
 
 
