@@ -1,5 +1,3 @@
-(stop)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; very basics
 ;;
@@ -32,9 +30,9 @@
 (bar 110)
 
 ;; you can also change the amplitude by scaling the signal
-(definst baz [freq 435 amp 0.75] (* amp (saw freq)))
+(definst baz [freq 435 amp 0.7] (* amp (saw freq)))
 (baz 220)
-(baz 110 0.7)
+(baz 110 0.2)
 
 
 ;; these all runs concurrently
@@ -51,7 +49,8 @@
 ;; you can use other kinds of wave-types, such as a sine wave
 (definst quux [freq 440] (* 0.3 (sin-osc freq)))
 (quux)
-(ctl quux :freq 460) ; CTL needs an argument that is already active
+;; CTL needs an argument that is already active
+(ctl quux :freq 460) 
 (map quux [660 770 880 990 1100 1210])
 
 
@@ -80,15 +79,17 @@
        (saw (+ freq (* depth (sin-osc:kr rate))))))
 
 (trem)
-(trem 60 30 0.7 6 0.9)
+(trem :freq 60 :depth 30 :rate 0.7 :length 6 :amp 0.2)
 (trem 200 60 0.3 10 1)
 
-;; can be called with explicit keywords to change arguments
+;; can be called with any number of explicit keywords to change arguments
 (trem :freq 100 :depth 1 :rate 3 :length 5)
 
 ;; umm, feedback-filter?
 ;; add distortion to a sine wave with this special
 ;; SIN-OSC-FB, which takes a feedback argument
+;;
+;; demo's only use one channel of audio?
 (defn dem-sin
   [hz fb-flt]
   (demo (sin-osc-fb hz fb-flt)))
@@ -105,16 +106,11 @@
      (sin-osc freq)
      vol))
 
-(definst sin-wave2 [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4 length 3] 
-  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
-     (sin-osc freq)
-     vol))
-
-
 ;; one-second of sine, with an ADSR built-in
 (sin-wave)
 
-;; 3 seconds of sine, now with an argument for length
+;; 3 seconds of sine, now with an argument for length, as well as frequency
+
 (sin-wave2)
 (sin-wave2 220)
 ;; now 5 seconds, with more ADSR modification
@@ -263,8 +259,11 @@
 ;; what does METRONOME do?
 ;; what does setting it equal to a VAR do?
 (now)
-(metro 1) 
 (def metro (metronome 128))
+
+;; what does calling the METRO var with an argument do?
+(metro 60)
+;; as opposed to simply calling it without an arg
 (metro)
 
 
@@ -300,15 +299,13 @@
       (println set-voicing-pair)
       set-voicing-pair)))
 
-(voice-rand-set *pentachords-tn*)
-(voice-rand-set (rand-nth [*trichords* *tetrachords*]))
-(map baz (map #(midi->hz %) (last (voice-rand-set *pentachords-tn*))))
 
-(map baz
-     (map #(midi->hz %)
-          (voice-and-transpose-rand-set
-           (rand-nth [*trichords* *tetrachords* *pentachords*])
-           (rand-int 12))))
+;; make it possible to load a file which defines these
+;; VARS separately
+
+(voice-rand-set *pentachords*)
+(voice-rand-set (rand-nth [*trichords* *tetrachords*]))
+(map baz (map #(midi->hz %) (last (voice-rand-set *pentachords*))))
 
 (defn voice-and-transpose-rand-set [set-type tn-level]
   (let [set (rand-nth set-type)
@@ -318,6 +315,12 @@
     (do
       (println set-voicing-group)
       (last set-voicing-group))))
+
+(map baz
+     (map #(midi->hz %)
+          (voice-and-transpose-rand-set
+           (rand-nth [*trichords* *tetrachords* *pentachords*])
+           (rand-int 12))))
 
 
 ;;; current-state
@@ -648,6 +651,7 @@ triangle-wave
 ; the beat number will steadily increase, even if you aren't using the
 ; object for anything.
 
+;; CHORD_LIST
 ;; ((0 1 2 5 6) (72 61 38 65 78) 8 (80 69 46 73 86))
 ;; ((0 3 4 5 8) (60 51 40 77 56) 8 (68 59 48 85 64))
 ;; ((0 2 4 7 9) (72 62 52 67 57) 1 (73 63 53 68 58))
@@ -655,7 +659,9 @@ triangle-wave
 ;; ((0 1 2 6 8) (60 73 38 42 80) 8 (68 81 46 50 88))
 ;; ((0 3 4 7) (48 63 40 55) 0 (48 63 40 55))
 ;; ((0 1 4) (72 37 52) 1 (73 38 53))
-
+;; ((0 1 3 7 8) (60 73 75 79 44))
+;; ((0 1 3 5 8) (72 37 75 53 56))
+;; ((0 2 4) (72 62 64) 10 (82 72 74))
 
 ;; -------------------------
 ;; overtone.live/apply-at
@@ -696,6 +702,7 @@ triangle-wave
     (apply-at next-t #'foo [next-t (inc val)])))
 
 
+(connected-midi-devices)
 
 
 
@@ -720,3 +727,6 @@ triangle-wave
 (def *pentachords* '((0 1 2 3 4) (0 1 2 3 5) (0 1 2 4 5) (0 1 2 3 6) (0 1 2 3 7) (0 1 2 5 6) (0 1 2 6 7) (0 2 3 4 6) (0 1 2 4 6) (0 1 3 4 6) (0 2 3 4 7) (0 1 3 5 6) (0 1 2 4 8) (0 1 2 5 7) (0 1 2 6 8) (0 1 3 4 7) (0 1 3 4 8) (0 1 4 5 7) (0 1 3 6 7) (0 1 3 7 8) (0 1 4 5 8) (0 1 4 7 8) (0 2 3 5 7) (0 1 3 5 7) (0 2 3 5 8) (0 2 4 5 8) (0 1 3 5 8) (0 2 3 6 8) (0 1 3 6 8) (0 1 4 6 8) (0 1 3 6 9) (0 1 4 6 9) (0 2 4 6 8) (0 2 4 6 9) (0 2 4 7 9) (0 1 2 4 7) (0 3 4 5 8) (0 1 2 5 8)))
 
 (def *hexachords* '((0 1 2 3 4 5) (0 1 2 3 4 6) (0 1 2 3 5 6) (0 1 2 4 5 6) (0 1 2 3 6 7) (0 1 2 5 6 7) (0 1 2 6 7 8) (0 2 3 4 5 7) (0 1 2 3 5 7) (0 1 3 4 5 7) (0 1 2 4 5 7) (0 1 2 4 6 7) (0 1 3 4 6 7) (0 1 3 4 5 8) (0 1 2 4 5 8) (0 1 4 5 6 8) (0 1 2 4 7 8) (0 1 2 5 7 8) (0 1 3 4 7 8) (0 1 4 5 8 9) (0 2 3 4 6 8) (0 1 2 4 6 8) (0 2 3 5 6 8) (0 1 3 4 6 8) (0 1 3 5 6 8) (0 1 3 5 7 8) (0 1 3 4 6 9) (0 1 3 5 6 9) (0 1 3 6 8 9) (0 1 3 6 7 9) (0 1 3 5 8 9) (0 2 4 5 7 9) (0 2 3 5 7 9) (0 1 3 5 7 9) (0 2 4 6 8 10) (0 1 2 3 4 7) (0 1 2 3 4 8) (0 1 2 3 7 8) (0 2 3 4 5 8) (0 1 2 3 5 8) (0 1 2 3 6 8) (0 1 2 3 6 9) (0 1 2 5 6 8) (0 1 2 5 6 9) (0 2 3 4 6 9) (0 1 2 4 6 9) (0 1 2 4 7 9) (0 1 2 5 7 9) (0 1 3 4 7 9) (0 1 4 6 7 9)))
+
+
+(stop)
