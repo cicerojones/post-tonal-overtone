@@ -307,18 +307,34 @@
 
 (voice-rand-set *pentachords*)
 (voice-rand-set (rand-nth [*trichords* *tetrachords*]))
-(map baz (map #(midi->hz %) (last (voice-rand-set *pentachords*))))
+
 
 (definst sin-wave2 [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4 length 3] 
   (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
      (sin-osc freq)
      vol))
+
 (definst baz [freq 435 amp 0.7] (* amp (saw freq)))
 
-(map #(sin-wave2 :attack 0.1 :sustain 0.15 :release 0.25 :length 5))
+(sin-wave2 :attack 0.1 :sustain 0.15 :release 0.25 :length 5)
+(sin-wave2 :freq 880 :attack 0.1 :sustain 0.15 :release 0.25 :length 5)
+
+(definst sin3 [freq 880 attack 0.1 sustain 0.15 release 0.25 vol 0.4 length 5]
+  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
+     (sin-osc freq)
+     vol))
+
+(definst saw1 [freq 880 attack 0.1 sustain 0.15 release 0.25 vol 0.4 length 5]
+  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
+     (saw freq)
+     vol))
+
+(map baz (map #(midi->hz %) (last (voice-rand-set *pentachords*))))
+(map sin3 (map #(midi->hz %) (last (voice-rand-set *pentachords*))))
+(map saw1 (map #(midi->hz %) (last (voice-rand-set *pentachords*))))
 
 
-
+;; now include new transposition levels
 (defn voice-and-transpose-rand-set [set-type tn-level]
   (let [set (rand-nth set-type)
         voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
@@ -329,6 +345,12 @@
       (last set-voicing-group))))
 
 (map baz
+     (map #(midi->hz %)
+          (voice-and-transpose-rand-set
+           (rand-nth [*trichords* *tetrachords* *pentachords*])
+           (rand-int 12))))
+
+(map saw1
      (map #(midi->hz %)
           (voice-and-transpose-rand-set
            (rand-nth [*trichords* *tetrachords* *pentachords*])
@@ -384,9 +406,11 @@
 ;; must evaluate *variables*
 
 (player2 baz [*trichords* *tetrachords* *pentachords*] 12)
+(player2 saw1 [*trichords* *tetrachords* *pentachords*] 12)
 (triangle-player)
 
 
+;; just running through simple definst examples
 (definst saw100 [] (saw 100))
 (definst saw100v1 [] (* 0.1 (saw 100)))
 (definst saw100v2l3 [length 3] ; note: DEFINST (or a "synth") fails with oddp args
@@ -405,8 +429,6 @@
 
 
 
-
-
 ;;; these belong together
 (now)
 
@@ -415,18 +437,23 @@
      (saw freq)
      vol))
 
+;; create functions that take midi note arguments
 (defn saw2 [music-note]
   (saw-wave (midi->hz (note music-note))))
 
-(defn saw1 [m]
+(defn saw3 [m]
   (saw-wave (midi->hz m)))
 
-(saw1 60)
+(saw3 60)
+(saw2 69)
 
 
-
+;; another way to get a chord?
 (doseq [note [60 61 62]]
   (saw2 note))
+
+(defn play-chord [a-chord]
+  (doseq [note a-chord] (saw2 note)))
 
 (defn play-chord-saw [a-chord]
   (doseq [note a-chord] (saw2 note)))
@@ -439,22 +466,24 @@
 
 (defn chord-progression-time []
   (let [time (now)]
-    (at time (play-chord (chord :C4 :major)))
-    (at (+ 2000 time) (play-chord (chord :G3 :major)))
-    (at (+ 3000 time) (play-chord (chord :F3 :sus4)))
-    (at (+ 4300 time) (play-chord (chord :F3 :major)))
-    (at (+ 5000 time) (play-chord (chord :G3 :major)))))
+    (at time (play-chord [68 81 46 50 88]))
+    (at (+ 2000 time) (play-chord [80 69 46 73 86]))
+    (at (+ 3000 time) (play-chord [68 59 48 85 64]))
+    (at (+ 4300 time) (play-chord [73 63 53 68 58]))
+    (at (+ 5000 time) (play-chord [68 69 72 87 52]))))
 
 (chord-progression-time)
 
 
+(play-chord-saw [68 81 46 50 88])
+
 (defn chord-progression-time3 []
   (let [time (now)]
-    (at time (play-chord-saw '(68 81 46 50 88)))
-    (at (+ 2000 time) (play-chord '(80 69 46 73 86)))
-    (at (+ 3000 time) (play-chord '(68 59 48 85 64)))
-    (at (+ 4300 time) (play-chord '(73 63 53 68 58)))
-    (at (+ 5000 time) (play-chord '(68 69 72 87 52)))))
+    (at time (play-chord-saw [68 81 46 50 88]))
+    (at (+ 2000 time) (play-chord [80 69 46 73 86]))
+    (at (+ 3000 time) (play-chord [68 59 48 85 64]))
+    (at (+ 4300 time) (play-chord [73 63 53 68 58]))
+    (at (+ 5000 time) (play-chord [68 69 72 87 52]))))
                                   
 (chord-progression-time3)
 
@@ -469,19 +498,19 @@
 (chord-progression-time2)
 
 
-(defn chord-progression-time3 [r1 r2 v1 v2]
+(defn chord-progression-time4 [r1 r2 v1 v2]
   (let [time (now)]
     (at time (noisey2 :attack 0.15 :sustain 0.2 :release r1 :vol v1 :length 10))
     (at (+ 10000 time) (noisey2 :attack 0.15 :sustain 0.2 :release r2 :vol v2 :length 10))))
 
-(chord-progression-time3 1 1 0.5 0.3)
-(chord-progression-time3 0.5 0.3 0.7 1)
+(chord-progression-time4 1 1 0.5 0.3)
+(chord-progression-time4 0.5 0.3 0.7 1)
 
-(defn chord-progression-time4 [inst]
+(defn chord-progression-time5 [inst]
   (let [time (now)]
     (at time (inst :attack 0.15 :sustain 0.2 :release 0.7 :vol 0.5 :length 10))))
 
-(defn chord-progression-time5 [nome]
+(defn chord-progression-time6 [nome]
   (let [beat (nome)]
     (at (nome beat) (doseq [note [60 61 62]]
                       (saw2 note)))
@@ -491,22 +520,6 @@
 
 (doseq [note (rand-nth [[60 61 62] [64 66 68]])]
   (saw2 note))
-
-(defn player2 [inst set-types tn-level-ceiling]
-  (map inst ; instrument
-       (map #(midi->hz %) ; frequency-conversion
-            (voice-and-transpose-rand-set ; voicing
-             (rand-nth set-types) ; set-type
-             (rand-int tn-level-ceiling)))))
-
-(defn voice-and-transpose-rand-set [set-type tn-level]
-  (let [set (rand-nth set-type)
-        voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
-        transposed-set (map #(+ tn-level %) voiced-set)
-        set-voicing-group (list set voiced-set tn-level transposed-set)]
-    (do
-      (println set-voicing-group)
-      (last set-voicing-group))))
 
 (doseq [notes (voice-and-transpose-rand-set ; voicing
                *tetrachords* ; set-type
@@ -646,10 +659,15 @@
 
 triangle-wave
 (triangle-wave)
+
+;; doesn't work?
 (definst ply-diss [ms 80]
   (play-chord (list ms)))
 
-; to get a feel for how the metronome works, try defining one at the REPL
+(ply-diss)
+
+;; to get a feel for how the metronome works, try defining one at the REPL
+
 (def nome (metronome 200))
 (nome)
 ; 8 
@@ -674,7 +692,9 @@ triangle-wave
 ;; ((0 1 3 7 8) (60 73 75 79 44))
 ;; ((0 1 3 5 8) (72 37 75 53 56))
 ;; ((0 2 4) (72 62 64) 10 (82 72 74))
-;; (0 1 3 7 8) (60 49 51 55 44))
+;; ((0 1 3 7 8) (60 49 51 55 44))
+;; ((0 1 3 4 8) (60 49 75 64 80))
+;; ((0 1 3 5 8) (72 73 75 53 80))
 
 ;; -------------------------
 ;; overtone.live/apply-at
