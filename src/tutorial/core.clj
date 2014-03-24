@@ -207,7 +207,7 @@
 
 (spooky-house)
 
-[freq 440.0, iphase 0.0, width 0.5]
+;; [freq 440.0, iphase 0.0, width 0.5]
 
   ;; freq   - Frequency in Hertz 
   ;; iphase - Initial phase offset in cycles ( 0..1 ) 
@@ -259,7 +259,7 @@
 ;; what does METRONOME do?
 ;; what does setting it equal to a VAR do?
 (now)
-(def metro (metronome 128))
+(def metro (metronome 60))
 
 ;; what does calling the METRO var with an argument do?
 (metro 60)
@@ -277,7 +277,9 @@
 
 (tutorial-player (metro))
 
+;; set the bpm of a given metro, apparently
 (metro-bpm metro 100)
+(metro-bpm metro 60)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -306,6 +308,16 @@
 (voice-rand-set *pentachords*)
 (voice-rand-set (rand-nth [*trichords* *tetrachords*]))
 (map baz (map #(midi->hz %) (last (voice-rand-set *pentachords*))))
+
+(definst sin-wave2 [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4 length 3] 
+  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
+     (sin-osc freq)
+     vol))
+(definst baz [freq 435 amp 0.7] (* amp (saw freq)))
+
+(map #(sin-wave2 :attack 0.1 :sustain 0.15 :release 0.25 :length 5))
+
+
 
 (defn voice-and-transpose-rand-set [set-type tn-level]
   (let [set (rand-nth set-type)
@@ -662,6 +674,7 @@ triangle-wave
 ;; ((0 1 3 7 8) (60 73 75 79 44))
 ;; ((0 1 3 5 8) (72 37 75 53 56))
 ;; ((0 2 4) (72 62 64) 10 (82 72 74))
+;; (0 1 3 7 8) (60 49 51 55 44))
 
 ;; -------------------------
 ;; overtone.live/apply-at
@@ -702,31 +715,70 @@ triangle-wave
     (apply-at next-t #'foo [next-t (inc val)])))
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; using midi connected devices
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (connected-midi-devices)
 
+(definst steel-drum [note 60 amp 0.8]
+  (let [freq (midicps note)]
+    (* amp
+       (env-gen (perc 0.01 0.2) 1 1 0 1 :action FREE)
+       (+ (sin-osc (/ freq 2))
+          (rlpf (saw freq) (* 1.1 freq) 0.4)))))
+
+;; Define a player that connects midi input to that instrument.
+
+(def player (midi-poly-player steel-drum))
+
+;; When you want to stop or change sounds, use midi-player-stop.
+
+(midi-player-stop)
+
+(definst ding
+      [note 60 velocity 100 gate 1]
+      (let [freq (midicps note)
+            amp  (/ velocity 127.0)
+            snd  (sin-osc freq)
+            env  (env-gen (adsr 0.001 0.1 0.6 0.3) gate :action FREE)]
+        (* amp env snd)))
+
+(def dinger (midi-poly-player ding))
+
+(event-debug-on)
+;; To stop:
+
+(event-debug-off)
+;; You should see that for each key press, there are two events. A
+;; general midi control change event:
+
+[:midi :note-on]
+;; and a device-specific event i.e.:
+
+[:midi-device Evolution Electronics Ltd. Keystation 61e Keystation 61e :note-on]
+
+;; For simplicity use the general event type:
+
+(on-event [:midi :note-on]
+          (fn [e]
+            (let [note (:note e)
+                  vel  (:velocity e)]
+              (your-instr note vel)))
+          ::keyboard-handler)
+
+
+:control-change 17
+;; The last argument is a keyword which can be used to refer to this
+;; handler, so you can later do:
+
+(remove-handler ::keyboard-handler)
 
 
 ;;; data should be stored separately and LOAD-FILEd
-(def *dyads-tn* '((0 1) (0 2) (0 3) (0 4) (0 5) (0 6)))
-
-(def *trichords-tn* '((0 1 2) (0 1 3) (0 2 3) (0 1 4) (0 3 4) (0 1 5) (0 4 5) (0 1 6) (0 5 6) (0 2 4) (0 2 5) (0 3 5) (0 2 6) (0 4 6) (0 2 7) (0 3 6) (0 3 7) (0 4 7) (0 4 8)))
-
-(def *tetrachords-tn* '((0 1 2 3) (0 1 2 4) (0 2 3 4) (0 1 3 4) (0 1 2 5) (0 3 4 5) (0 1 2 6) (0 4 5 6) (0 1 2 7) (0 1 4 5) (0 1 5 6) (0 1 6 7) (0 2 3 5) (0 1 3 5) (0 2 4 5) (0 2 3 6) (0 3 4 6) (0 1 3 6) (0 3 5 6) (0 2 3 7) (0 4 5 7) (0 1 4 6) (0 2 5 6) (0 1 5 7) (0 2 6 7) (0 3 4 7) (0 1 4 7) (0 3 6 7) (0 1 4 8) (0 3 4 8) (0 1 5 8) (0 2 4 6) (0 2 4 7) (0 3 5 7) (0 2 5 7) (0 2 4 8) (0 2 6 8) (0 3 5 8) (0 2 5 8) (0 3 6 8) (0 3 6 9) (0 1 3 7) (0 4 6 7)))
-
-(def *pentachords-tn* '((0 1 2 3 4) (0 1 2 3 5) (0 2 3 4 5) (0 1 2 4 5) (0 1 3 4 5) (0 1 2 3 6) (0 3 4 5 6) (0 1 2 3 7) (0 4 5 6 7) (0 1 2 5 6) (0 1 4 5 6) (0 1 2 6 7) (0 1 5 6 7) (0 2 3 4 6) (0 1 2 4 6) (0 2 4 5 6) (0 1 3 4 6) (0 2 3 5 6) (0 2 3 4 7) (0 3 4 5 7) (0 1 3 5 6) (0 1 2 4 8) (0 2 3 4 8) (0 1 2 5 7) (0 2 5 6 7) (0 1 2 6 8) (0 1 3 4 7) (0 3 4 6 7) (0 1 3 4 8) (0 1 4 5 7) (0 2 3 6 7) (0 1 3 6 7) (0 1 4 6 7) (0 1 3 7 8) (0 1 5 7 8) (0 1 4 5 8) (0 3 4 7 8) (0 1 4 7 8) (0 2 3 5 7) (0 2 4 5 7) (0 1 3 5 7) (0 2 4 6 7) (0 2 3 5 8) (0 3 5 6 8) (0 2 4 5 8) (0 3 4 6 8) (0 1 3 5 8) (0 3 5 7 8) (0 2 3 6 8) (0 2 5 6 8) (0 1 3 6 8) (0 2 5 7 8) (0 1 4 6 8) (0 2 4 7 8) (0 1 3 6 9) (0 2 3 6 9) (0 1 4 6 9) (0 1 4 7 9) (0 2 4 6 8) (0 2 4 6 9) (0 2 4 7 9) (0 1 2 4 7) (0 3 5 6 7) (0 3 4 5 8) (0 1 2 5 8) (0 3 6 7 8)))
-
-(defvar *hexachords-tn* '((0 1 2 3 4 5) (0 1 2 3 4 6) (0 2 3 4 5 6) (0 1 2 3 5 6) (0 1 3 4 5 6) (0 1 2 4 5 6) (0 1 2 3 6 7) (0 1 4 5 6 7) (0 1 2 5 6 7) (0 1 2 6 7 8) (0 2 3 4 5 7) (0 1 2 3 5 7) (0 2 4 5 6 7) (0 1 3 4 5 7) (0 2 3 4 6 7) (0 1 2 4 5 7) (0 2 3 5 6 7) (0 1 2 4 6 7) (0 1 3 5 6 7) (0 1 3 4 6 7) (0 1 3 4 5 8) (0 3 4 5 7 8) (0 1 2 4 5 8) (0 3 4 6 7 8) (0 1 4 5 6 8) (0 2 3 4 7 8) (0 1 2 4 7 8) (0 1 4 6 7 8) (0 1 2 5 7 8) (0 1 3 6 7 8) (0 1 3 4 7 8) (0 1 4 5 7 8) (0 1 4 5 8 9) (0 2 3 4 6 8) (0 2 4 5 6 8) (0 1 2 4 6 8) (0 2 4 6 7 8) (0 2 3 5 6 8) (0 1 3 4 6 8) (0 2 4 5 7 8) (0 1 3 5 6 8) (0 2 3 5 7 8) (0 1 3 5 7 8) (0 1 3 4 6 9) (0 2 3 5 6 9) (0 1 3 5 6 9) (0 1 3 6 8 9) (0 1 3 6 7 9) (0 2 3 6 8 9) (0 1 3 5 8 9) (0 1 4 6 8 9) (0 2 4 5 7 9) (0 2 3 5 7 9) (0 2 4 6 7 9) (0 1 3 5 7 9) (0 2 4 6 8 9) (0 2 4 6 8 10) (0 1 2 3 4 7) (0 3 4 5 6 7) (0 1 2 3 4 8) (0 1 2 3 7 8) (0 2 3 4 5 8) (0 3 4 5 6 8) (0 1 2 3 5 8) (0 3 5 6 7 8) (0 1 2 3 6 8) (0 2 5 6 7 8) (0 1 2 3 6 9) (0 1 2 5 6 8) (0 2 3 6 7 8) (0 1 2 5 6 9) (0 1 2 5 8 9) (0 2 3 4 6 9) (0 1 2 4 6 9) (0 2 4 5 6 9) (0 1 2 4 7 9) (0 2 3 4 7 9) (0 1 2 5 7 9) (0 1 3 4 7 9) (0 1 4 6 7 9)))
-
-;TnI-types
-(def *dyads* '((0 1) (0 2) (0 3) (0 4) (0 5) (0 6)))
-
-(def *trichords* '((0 1 2) (0 1 3) (0 1 4) (0 1 5) (0 1 6) (0 2 4) (0 2 5) (0 2 6) (0 2 7) (0 3 6) (0 3 7) (0 4 8)))
-
-(def *tetrachords* '((0 1 2 3) (0 1 2 4) (0 1 3 4) (0 1 2 5) (0 1 2 6) (0 1 2 7) (0 1 4 5) (0 1 5 6) (0 1 6 7) (0 2 3 5) (0 1 3 5) (0 2 3 6) (0 1 3 6) (0 2 3 7) (0 1 3 7) (0 1 4 6) (0 1 5 7) (0 3 4 7) (0 1 4 7) (0 1 4 8) (0 1 5 8) (0 2 4 6) (0 2 4 7) (0 2 5 7) (0 2 4 8) (0 2 6 8) (0 3 5 8) (0 2 5 8) (0 3 6 9)))
-
-(def *pentachords* '((0 1 2 3 4) (0 1 2 3 5) (0 1 2 4 5) (0 1 2 3 6) (0 1 2 3 7) (0 1 2 5 6) (0 1 2 6 7) (0 2 3 4 6) (0 1 2 4 6) (0 1 3 4 6) (0 2 3 4 7) (0 1 3 5 6) (0 1 2 4 8) (0 1 2 5 7) (0 1 2 6 8) (0 1 3 4 7) (0 1 3 4 8) (0 1 4 5 7) (0 1 3 6 7) (0 1 3 7 8) (0 1 4 5 8) (0 1 4 7 8) (0 2 3 5 7) (0 1 3 5 7) (0 2 3 5 8) (0 2 4 5 8) (0 1 3 5 8) (0 2 3 6 8) (0 1 3 6 8) (0 1 4 6 8) (0 1 3 6 9) (0 1 4 6 9) (0 2 4 6 8) (0 2 4 6 9) (0 2 4 7 9) (0 1 2 4 7) (0 3 4 5 8) (0 1 2 5 8)))
-
-(def *hexachords* '((0 1 2 3 4 5) (0 1 2 3 4 6) (0 1 2 3 5 6) (0 1 2 4 5 6) (0 1 2 3 6 7) (0 1 2 5 6 7) (0 1 2 6 7 8) (0 2 3 4 5 7) (0 1 2 3 5 7) (0 1 3 4 5 7) (0 1 2 4 5 7) (0 1 2 4 6 7) (0 1 3 4 6 7) (0 1 3 4 5 8) (0 1 2 4 5 8) (0 1 4 5 6 8) (0 1 2 4 7 8) (0 1 2 5 7 8) (0 1 3 4 7 8) (0 1 4 5 8 9) (0 2 3 4 6 8) (0 1 2 4 6 8) (0 2 3 5 6 8) (0 1 3 4 6 8) (0 1 3 5 6 8) (0 1 3 5 7 8) (0 1 3 4 6 9) (0 1 3 5 6 9) (0 1 3 6 8 9) (0 1 3 6 7 9) (0 1 3 5 8 9) (0 2 4 5 7 9) (0 2 3 5 7 9) (0 1 3 5 7 9) (0 2 4 6 8 10) (0 1 2 3 4 7) (0 1 2 3 4 8) (0 1 2 3 7 8) (0 2 3 4 5 8) (0 1 2 3 5 8) (0 1 2 3 6 8) (0 1 2 3 6 9) (0 1 2 5 6 8) (0 1 2 5 6 9) (0 2 3 4 6 9) (0 1 2 4 6 9) (0 1 2 4 7 9) (0 1 2 5 7 9) (0 1 3 4 7 9) (0 1 4 6 7 9)))
-
+(load "set-class-data")
+(first *dyads-tn*)
 
 (stop)
