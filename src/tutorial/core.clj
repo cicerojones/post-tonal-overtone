@@ -152,8 +152,6 @@
      vol))
 
 
-(noisey)
-
 ;; play pink-noise indefinitely
 (noisey-long 1)
 
@@ -165,7 +163,6 @@
      vol))
 
 (triangle-wave)
-
 ;; iphase - Initial phase offset. For efficiency 
 ;;            reasons this is a value ranging from 0 
 ;;            to 2. 
@@ -277,6 +274,16 @@
 
 (tutorial-player (metro))
 
+(def metro-off (metronome 59))
+
+(defn tutorial-player2 [beat]
+  (at (metro-off beat) (kick))
+  (at (metro-off (+ 0.5 beat)) (c-hat))
+  (at (metro-off (+ 0.15 beat)) (triangle-wave))
+  (apply-at (metro-off (inc beat)) #'tutorial-player2 (inc beat) []))
+
+(tutorial-player2 (metro-off))
+
 ;; set the bpm of a given metro, apparently
 (metro-bpm metro 100)
 (metro-bpm metro 60)
@@ -308,7 +315,9 @@
 (voice-rand-set *pentachords*)
 (voice-rand-set (rand-nth [*trichords* *tetrachords*]))
 
+;;; instruments and sounds
 
+;; compare this to
 (definst sin-wave2 [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4 length 3] 
   (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
      (sin-osc freq)
@@ -330,6 +339,8 @@
      vol))
 
 (map baz (map #(midi->hz %) (last (voice-rand-set *pentachords*))))
+
+;; now with envelopes that decay
 (map sin3 (map #(midi->hz %) (last (voice-rand-set *pentachords*))))
 (map saw1 (map #(midi->hz %) (last (voice-rand-set *pentachords*))))
 
@@ -344,21 +355,8 @@
       (println set-voicing-group)
       (last set-voicing-group))))
 
-(map baz
-     (map #(midi->hz %)
-          (voice-and-transpose-rand-set
-           (rand-nth [*trichords* *tetrachords* *pentachords*])
-           (rand-int 12))))
 
-(map saw1
-     (map #(midi->hz %)
-          (voice-and-transpose-rand-set
-           (rand-nth [*trichords* *tetrachords* *pentachords*])
-           (rand-int 12))))
-
-
-;;; current-state
-;; built-ins: rand-nth, rand-int
+;;; current-state;; built-ins: rand-nth, rand-int
 ;; overtone: midi-hz, saw, definst
 ;; anonymous: (rand-nth [36 48 60 72]), (+ tn-level)
 ;; user-defined:: baz:saw
@@ -406,7 +404,10 @@
 ;; must evaluate *variables*
 
 (player2 baz [*trichords* *tetrachords* *pentachords*] 12)
+
+;; uses an enveloped function
 (player2 saw1 [*trichords* *tetrachords* *pentachords*] 12)
+(player2 sin3 [*trichords* *tetrachords* *pentachords*] 12)
 (triangle-player)
 
 
@@ -426,9 +427,6 @@
 (saw100v2l3)
 (saw100v2l4noline)
 
-
-
-
 ;;; these belong together
 (now)
 
@@ -438,9 +436,17 @@
      vol))
 
 ;; create functions that take midi note arguments
+
+;;; compare these to DEFINST version of saw
+;; these do not use enveloping
+
+;; saw2 uses overtone "note name" notation
+;; also explicitly calls midi-hz
 (defn saw2 [music-note]
   (saw-wave (midi->hz (note music-note))))
 
+
+;; saw3 uses a PWGL style "m = midi number"
 (defn saw3 [m]
   (saw-wave (midi->hz m)))
 
@@ -452,14 +458,28 @@
 (doseq [note [60 61 62]]
   (saw2 note))
 
+(doseq [note [60 61 62]]
+  (saw1 (midi->hz note)))
+
+vs. 
+(map saw1 (map #(midi->hz %) (last (voice-rand-set *pentachords*))))
+
+;; not so happy with some aspects of this
 (defn play-chord [a-chord]
-  (doseq [note a-chord] (saw2 note)))
+  (doseq [note a-chord] (saw1 note)))
 
 (defn play-chord-saw [a-chord]
   (doseq [note a-chord] (saw2 note)))
 
-(play-chord-saw [60 61 62])
+(defn play-chord-sin [a-chord]
+  (doseq [note a-chord] (sin3 note)))
 
+(defn play-chord-sin2 [a-chord]
+  (doseq [note a-chord] (sin3 (midi->hz note))))
+
+(play-chord-saw [60 61 62])
+(play-chord-sin [1000 1500])
+(play-chord-sin2 [60 64])
 
 (rand-nth
  '((80 69 46 73 86) (68 59 48 85 64) (73 63 53 68 58) (68 69 72 87 52) (68 81 46 50 88)))
@@ -477,15 +497,21 @@
 
 (play-chord-saw [68 81 46 50 88])
 
+;; now uses a nicer enveloped version as sound generator
 (defn chord-progression-time3 []
   (let [time (now)]
-    (at time (play-chord-saw [68 81 46 50 88]))
-    (at (+ 2000 time) (play-chord [80 69 46 73 86]))
-    (at (+ 3000 time) (play-chord [68 59 48 85 64]))
-    (at (+ 4300 time) (play-chord [73 63 53 68 58]))
-    (at (+ 5000 time) (play-chord [68 69 72 87 52]))))
+    (at time (play-chord-sin2 [68 81 46 50 88]))
+    (at (+ 2000 time) (play-chord-sin2 [80 69 46 73 86]))
+    (at (+ 4000 time) (play-chord-sin2 [68 59 48 85 64]))
+    (at (+ 6000 time) (play-chord-sin2 [73 63 53 68 58]))
+    (at (+ 8000 time) (play-chord-sin2 [68 69 72 87 52]))))
                                   
 (chord-progression-time3)
+
+(now)
+
+(at (+ 8000 (now)) (play-chord-sin2 [68 69 72 87 52]))
+(at (+ (now) 2000) (chord-progression-time3))
 
 (defn chord-progression-time2 []
   (let [time (now)]
@@ -512,11 +538,21 @@
 
 (defn chord-progression-time6 [nome]
   (let [beat (nome)]
-    (at (nome beat) (doseq [note [60 61 62]]
+    (at (nome beat) (doseq [note [60 49 51 55 44]]
                       (saw2 note)))
-    (apply-at (nome (inc beat)) chord-progression-time5 nome [])))
+    (apply-at (nome (inc beat)) chord-progression-time6 nome [])))
 
-(chord-progression-time5 sixty-bpm)
+(chord-progression-time5 sin3)
+
+(chord-progression-time6 metro)
+
+(defn chord-progression-time7 [nome]
+  (let [beat (nome)]
+    (at (nome beat) (doseq [note (rand-nth [[60 61 62] [60 49 51 55 44]])]
+                      (saw1 note)))
+    (apply-at (nome (inc beat)) chord-progression-time7 nome [])))
+
+(chord-progression-time7 metro)
 
 (doseq [note (rand-nth [[60 61 62] [64 66 68]])]
   (saw2 note))
@@ -583,7 +619,7 @@
      (saw freq)
      vol))
 
-(defn saw2 [music-note]
+(defn saw4 [music-note]
   (saw-wave (midi->hz (note music-note))))
 
 
@@ -697,6 +733,39 @@ triangle-wave
 ;; ((0 1 3 5 8) (72 73 75 53 80))
 
 ;; -------------------------
+;; overtone.live/at
+;; ([time-ms & body])
+;; Macro
+;;   Schedule server communication - specify that communication messages
+;;    execute on the server at a specific time in the future:
+
+;;    ;; control synth foo to change :freq to 150
+;;    ;; one second from now:
+;;    (at (+ (now) 1000) (ctl foo :freq 150))
+
+;;    Only affects code that communicates with the server using OSC
+;;    messaging i.e. synth triggering and control. All code in the body of
+;;    the at macro is executed immediately. Any OSC messages which are
+;;    triggered as a result of executing the body are not immediately sent
+;;    but are instead captured and then sent in a single OSC bundle with
+;;    the specified timestamp once the body has completed. The server then
+;;    stores these bundles and executes them at the specified time. This
+;;    allows you to schedule the triggering and control of synths for
+;;    specific times.
+
+;;    The bundling is thread-local, so you don't have to worry about
+;;    accidentally scheduling packets into a bundle started on another
+;;    thread.
+
+;;    Be careful not to confuse at with apply-at and apply-by which
+;;    directly affect Clojure code.
+
+;;    Warning, all liveness and 'node blocking when not ready' checks are
+;;    disabled within the context of this macro. This means that it will
+;;    fail silently if a server node you wish to control either has been
+;;    since terminated or not had time to be initialised.
+
+;; -------------------------
 ;; overtone.live/apply-at
 ;; ([ms-time f args* argseq])
 ;;   Scheduled function appliction. Works identically to apply, except
@@ -710,11 +779,11 @@ triangle-wave
 ;;    Can be used to implement the 'temporal recursion' pattern. This is
 ;;    where a function has a call to apply-at at its tail:
 
-;;    (defn foo
-;;      [t val]
-;;      (println val)
-;;      (let [next-t (+ t 200)]
-;;        (apply-at next-t #'foo [next-t (inc val)])))
+   ;; (defn foo
+   ;;   [t val]
+   ;;   (println val)
+   ;;   (let [next-t (+ t 200)]
+   ;;     (apply-at next-t #'foo [next-t (inc val)])))
 
 ;;    (foo (now) 0) ;=> 0, 1, 2, 3...
 
@@ -732,8 +801,9 @@ triangle-wave
   [t val]
   (println val)
   (let [next-t (+ t 200)]
-    (apply-at next-t #'foo [next-t (inc val)])))
+    (apply-at next-t #'temporal-recursion [next-t (inc val)])))
 
+;; (stop)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
