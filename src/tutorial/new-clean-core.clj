@@ -27,6 +27,7 @@
       (println set-voicing-pair)
       set-voicing-pair)))
 
+(voice-rand-set *tetrachords*)
 (defn voice-and-transpose-rand-set [set-type tn-level]
   (let [set (rand-nth set-type)
         voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
@@ -41,14 +42,20 @@
      (sin-osc freq)
      vol))
 
+(definst saw1 [freq 880 attack 0.1 sustain 0.15 release 0.25 vol 0.4 length 5]
+  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
+     (saw freq)
+     vol))
+
+(defn play-chord-sin2 [a-chord]
+  (doseq [note a-chord] (sin3 (midi->hz note))))
+
 (sin3 330)
 (sin3 (midi->hz 96))
 (play-chord-sin2 [64 76 81 86 91 96 101])
 
-(definst med96 [] (* 0.5 (sin-osc (midi->hz 96))))
-
-(defn play-chord-sin2 [a-chord]
-  (doseq [note a-chord] (sin3 (midi->hz note))))
+(definst med96 [] (* 0.01 (sin-osc (midi->hz 96))))
+(med96)
 
 (defn chord-progression-time1 []
   (let [time (now)]
@@ -63,11 +70,10 @@
 ;; 10-second sine wave
 (defn chord-progression-time2 [inst]
   (let [time (now)]
-    (at time (inst :attack 0.15 :sustain 0.2 :release 0.7 :vol 0.5 :length 10))))
+    (at time (inst :attack 0.15 :sustain 0.2 :release 0.4 :vol 0.5 :length 10))))
 
 (chord-progression-time2 sin3)
-
-
+(chord-progression-time2 saw1)
 
 (defn sine-tetra-diss []
   (doseq [notes (voice-and-transpose-rand-set ; voicing
@@ -86,12 +92,6 @@
     (apply-at (nome (inc beat)) chord-progression-time8 nome [])))
 
 (chord-progression-time8 metro)
-
-
-(definst saw1 [freq 880 attack 0.1 sustain 0.15 release 0.25 vol 0.4 length 5]
-  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
-     (saw freq)
-     vol))
 
 (map saw1 (map #(midi->hz %) (last (voice-rand-set *pentachords*))))
 
