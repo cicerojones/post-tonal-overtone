@@ -1,10 +1,12 @@
 # tutorial
 
-A Clojure library designed to ... well, that part is up to you.
+My edits to the tutorial involve creating a new document for learning
+how to use overtone to explore generative composition with a variety
+of dissonant chords.
 
 ## Usage
 
-FIXME
+
 
 ## License
 
