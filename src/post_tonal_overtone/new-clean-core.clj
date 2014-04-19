@@ -1,4 +1,4 @@
-(ns tutorial.core)
+(ns post-tonal-overtone.core)
 
 (use 'overtone.live)
 
@@ -28,6 +28,7 @@
       set-voicing-pair)))
 
 (voice-rand-set *tetrachords*)
+
 (defn voice-and-transpose-rand-set [set-type tn-level]
   (let [set (rand-nth set-type)
         voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)

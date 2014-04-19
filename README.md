@@ -1,16 +1,15 @@
 # tutorial
 
-My edits to the tutorial involve creating a new document for learning
-how to use overtone to explore generative composition with a variety
-of dissonant chords.
+Exploration of how to use some aspects of the overtone library in Clojure.
 
 ## Usage
 
+This file is intended to be worked through in a "literate programming"
+manner, evaluating one expression at a time.
+
+## Purpose
+
+The ultimate goal is to convert some of the basic utilities here to
+work as a generative composition program, along the lines of [an earlier project of mine in Pure Data](https://github.com/cicerojones/ICMC-generative-music)
 
 
-## License
-
-Copyright © 2014 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
