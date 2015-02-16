@@ -1,5 +1,7 @@
 (ns post-tonal-overtone.core)
 
+*ns*
+
 (use 'overtone.live)
 
 (definst noisey2 [attack 0.01 sustain 0.4 release 0.1 vol 0.4 length 3] 
@@ -11,13 +13,14 @@
 
 (noisey2 :attack 0.15 :sustain 0.2 :release 0.3 :vol 0.3 :length 10)
 
-(definst noisey-long [vol 0.5] 
+(definst noisey-sustained [vol 0.5] 
   (* (pink-noise) ; also have (white-noise) and others...
      vol))
 
-(noisey-long 1)
+(noisey-sustained 1)
 
 (load "set-class-data")
+(first *tetrachords*) ;(0 1 2 3)
 
 (defn voice-rand-set [set-type]
   (let [set (rand-nth set-type)
@@ -68,7 +71,9 @@
                                   
 (chord-progression-time1)
 
+
 ;; 10-second sine wave
+;; uh, rename?
 (defn chord-progression-time2 [inst]
   (let [time (now)]
     (at time (inst :attack 0.15 :sustain 0.2 :release 0.4 :vol 0.5 :length 10))))
@@ -92,10 +97,10 @@
     (at (nome beat) (sine-tetra-diss))
     (apply-at (nome (inc beat)) chord-progression-time8 nome [])))
 
+;; to paraphrase "A Foggy Day", how long can this thing last?
 (chord-progression-time8 metro)
 
 (map saw1 (map #(midi->hz %) (last (voice-rand-set *pentachords*))))
-
 
 
 ;; apply-at appears to cause problems when attempting to
