@@ -22,6 +22,9 @@
 (load "set-class-data")
 (first *tetrachords*) ;(0 1 2 3)
 
+
+;; note that these functions will print out,
+;; to both the cider-repl and the lein terminal repl, apparently
 (defn voice-rand-set [set-type]
   (let [set (rand-nth set-type)
         voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
