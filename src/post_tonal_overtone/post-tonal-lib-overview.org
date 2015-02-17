@@ -1,0 +1,360 @@
+
+#+BEGIN_SRC clojure 
+(ns post-tonal-overtone.core)
+#+END_SRC
+
+
+#+BEGIN_SRC clojure 
+*ns*
+#+END_SRC
+
+
+#+BEGIN_SRC clojure 
+(use 'overtone.live)
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(definst noisey2 [attack 0.01 sustain 0.4 release 0.1 vol 0.4 length 3] 
+  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
+     (pink-noise) ; also have (white-noise) and others...
+     vol))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(noisey2)
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(noisey2 :attack 0.15 :sustain 0.2 :release 0.3 :vol 0.3 :length 10)
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(definst noisey-sustained [vol 0.5] 
+  (* (pink-noise) ; also have (white-noise) and others...
+     vol))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(noisey-sustained 1)
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(load "set-class-data")
+#+END_SRC
+
+
+#+BEGIN_SRC clojure 
+(first *tetrachords*)
+#+END_SRC ;(0 1 2 3)
+
+
+# note that these functions will print out,
+# to both the cider-repl and the lein terminal repl, apparently
+
+#+BEGIN_SRC clojure 
+(defn voice-rand-set [set-type]
+  (let [set (rand-nth set-type)
+        voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
+        set-voicing-pair (list set voiced-set)]
+    (do
+      (println set-voicing-pair)
+      set-voicing-pair)))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(voice-rand-set *tetrachords*)
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(defn voice-and-transpose-rand-set [set-type tn-level]
+  (let [set (rand-nth set-type)
+        voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
+        transposed-set (map #(+ tn-level %) voiced-set)
+        set-voicing-group (list set voiced-set tn-level transposed-set)]
+    (do
+      (println set-voicing-group)
+      (last set-voicing-group))))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(definst sin3 [freq 880 attack 0.1 sustain 0.15 release 0.25 vol 0.4 length 5]
+  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
+     (sin-osc freq)
+     vol))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(definst saw1 [freq 880 attack 0.1 sustain 0.15 release 0.25 vol 0.4 length 5]
+  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
+     (saw freq)
+     vol))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(defn play-chord-sin2 [a-chord]
+  (doseq [note a-chord] (sin3 (midi->hz note))))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(sin3 330)
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(sin3 (midi->hz 96))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(play-chord-sin2 [64 76 81 86 91 96 101])
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(definst med96 [] (* 0.01 (sin-osc (midi->hz 96))))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(med96)
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(defn chord-progression-time1 []
+  (let [time (now)]
+    (at time          (play-chord-sin2 [68 81 46 50 88]))
+    (at (+ 2000 time) (play-chord-sin2 [80 69 46 73 86]))
+    (at (+ 4000 time) (play-chord-sin2 [68 59 48 85 64]))
+    (at (+ 6000 time) (play-chord-sin2 [68 69 72 87 52]))
+    (at (+ 8000 time) (play-chord-sin2 [89 55 45 60 62]))))
+#+END_SRC
+
+                      #+BEGIN_SRC clojure             
+(chord-progression-time1)
+#+END_SRC
+
+
+		      # 10-second sine wave
+# uh, rename?
+
+
+#+BEGIN_SRC clojure 
+(defn chord-progression-time2 [inst]
+  (let [time (now)]
+    (at time (inst :attack 0.15 :sustain 0.2 :release 0.4 :vol
+0.5 :length 10))))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(chord-progression-time2 sin3)
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(chord-progression-time2 saw1)
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(defn sine-tetra-diss []
+  (doseq [notes (voice-and-transpose-rand-set ; voicing
+                       *tetrachords* ; set-type
+                       (rand-int 12))]
+    (sin3 (midi->hz notes))))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(sine-tetra-diss)
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(def metro (metronome 60))
+#+END_SRC
+
+
+# the best one yet
+
+#+BEGIN_SRC clojure 
+(defn chord-progression-time8 [nome]
+  (let [beat (nome)]
+    (at (nome beat) (sine-tetra-diss))
+    (apply-at (nome (inc beat)) chord-progression-time8 nome [])))
+#+END_SRC
+
+# to paraphrase "A Foggy Day", how long can this thing last?
+
+#+BEGIN_SRC clojure 
+(chord-progression-time8 metro)
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(map saw1 (map #(midi->hz %) (last (voice-rand-set *pentachords*))))
+#+END_SRC
+
+
+# apply-at appears to cause problems when attempting to
+# call a functions that takes more than one argument
+
+#+BEGIN_SRC clojure 
+(defn chord-progression-time3 [nome]
+  (let [beat (nome)]
+    (at (nome beat)
+        (doseq [note (rand-nth [[60 61 62] [60 49 51 55 44]])]
+          (saw1 (midi->hz note))))
+    (apply-at (nome (inc beat)) chord-progression-time3 nome [])))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(chord-progression-time3 metro)
+#+END_SRC
+
+
+# loops through random tetrachords without printing
+
+#+BEGIN_SRC clojure 
+(defn chord-progression-time4 [nome]
+  (let [beat (nome)]
+    (at (nome beat)
+        (doseq [notes (voice-and-transpose-rand-set ; voicing
+                       *tetrachords* ; set-type
+                       (rand-int 12))]
+          (saw1 (midi->hz notes))))
+    (apply-at (nome (inc beat)) chord-progression-time4 nome [])))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(chord-progression-time4 metro)
+#+END_SRC
+
+# hack to get around the apply-at problem
+
+
+#+BEGIN_SRC clojure 
+(defn chord-progression-time5 [nome]
+  (let [beat (nome)]
+    (at (nome beat)
+        (doseq [note (rand-nth some-midis)]
+          (saw1 (midi->hz note))))
+    (apply-at (nome (inc beat)) chord-progression-time5 nome [])))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(def some-midis [[72 61 50 46] [60 49 51 55 44] [74 63 52 68] [42 79
+70 61]])
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(chord-progression-time5 metro)
+#+END_SRC
+
+
+#+BEGIN_SRC clojure 
+(defn saw-diss []
+  (doseq [notes (voice-and-transpose-rand-set ; voicing
+                       *tetrachords* ; set-type
+                       (rand-int 12))]
+    (saw1 (midi->hz notes))))
+#+END_SRC
+
+
+#+BEGIN_SRC clojure 
+(saw-diss)
+#+END_SRC
+
+
+
+# also good, only prints first chord
+
+
+#+BEGIN_SRC clojure 
+(defn chord-progression-time6 [nome]
+  (let [beat (nome)]
+    (at (nome beat) (saw-diss))
+    (apply-at (nome (inc beat)) chord-progression-time6 nome [])))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(chord-progression-time6 metro)
+#+END_SRC
+
+# broken? because of apply-at problem?
+
+
+#+BEGIN_SRC clojure 
+(defn chord-progression-time7 [nome sound]
+  (let [beat (nome)]
+    (at (nome beat) sound)
+    (apply-at (nome (inc beat)) chord-progression-time7 nome sound
+[])))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(chord-progression-time7 metro saw-diss)
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(defn looper [sound]    
+    (let [beat (metro)]
+        (at (metro beat) (sound))
+        (apply-at (metro (inc beat)) looper sound [])))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(looper (play-chord-sin2 '(80 69 46 73 86)))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(defn play-chord-saw1 [a-chord]
+  (doseq [note a-chord] (saw1 (midi->hz note))))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(defn chord-progression-time9 []
+  (let [time (now)]
+    (at time          (play-chord-saw1 [68 81 46 50 88]))
+    (at (+ 2000 time) (play-chord-saw1 [80 69 46 73 86]))
+    (at (+ 4000 time) (play-chord-saw1 [68 59 48 85 64]))
+    (at (+ 6000 time) (play-chord-saw1 [68 69 72 87 52]))
+    (at (+ 8000 time) (play-chord-saw1 [89 55 45 60 62]))))
+#+END_SRC
+
+
+#+BEGIN_SRC clojure             
+(chord-progression-time9)
+#+END_SRC
+
+
+#+BEGIN_SRC clojure 
+(defn chord-progression-time10 [player-fn]
+  (let [time (now)]
+    (at (+ 0.00 time) (player-fn [68 81 46 50 88]))
+    (at (+ 2000 time) (player-fn [80 69 46 73 86]))
+    (at (+ 4000 time) (player-fn [68 59 48 85 64]))
+    (at (+ 6000 time) (player-fn [68 69 72 87 52]))
+    (at (+ 8000 time) (player-fn [89 55 45 60 62]))))
+#+END_SRC
+
+
+#+BEGIN_SRC clojure             
+(chord-progression-time10 play-chord-saw1)
+#+END_SRC
+
+
+#+BEGIN_SRC clojure 
+(LET [TIME (NOW) ]
+     (
+      (AT (+ 0 TIME) (PLAYER-FN '(1 2 3)))
+      (AT (+ 1000 TIME) (PLAYER-FN '(4 5 6)))))
+#+END_SRC
+
+
+# downcase
+
+
+#+BEGIN_SRC clojure 
+(defn chord-prog-time11 [player-fn]
+  (let [TIME (NOW) ] 
+       (AT (+ 0 TIME) (PLAYER-FN '(68 81 46 50 88)))
+       (AT (+ 1000 TIME) (PLAYER-FN '(80 69 46 73 86)))
+       (AT (+ 2000 TIME) (PLAYER-FN '(68 59 48 85 64)))
+       (AT (+ 3000 TIME) (PLAYER-FN '(68 69 72 87 52)))
+       (AT (+ 4000 TIME) (PLAYER-FN '(89 55 45 60 62)))))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(stop)
+#+END_SRC

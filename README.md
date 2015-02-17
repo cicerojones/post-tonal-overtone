@@ -1,6 +1,7 @@
 # tutorial
 
-Exploration of how to use some aspects of the overtone library in Clojure.
+Exploration of the Overtone library in Clojure using post-tonal music
+
 
 ## Usage
 
