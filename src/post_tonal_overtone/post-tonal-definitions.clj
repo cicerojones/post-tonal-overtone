@@ -1,5 +1,7 @@
 (ns post-tonal-overtone.core)
 
+;; must (use 'overtone.interface) somewhere?
+
 (definst noisey2 [attack 0.01 sustain 0.4 release 0.1 vol 0.4 length 3] 
   (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
      (pink-noise) ; also have (white-noise) and others...

@@ -32,9 +32,15 @@ beginning of a file of related code.
 (noisey2)
 #+END_SRC
 
+#+RESULTS:
+: #<synth-node[loading]: post-tonal-overtone.915/noisey2 36>
+
 #+BEGIN_SRC clojure :session pt 
 (noisey2 :attack 0.15 :sustain 0.2 :release 0.3 :vol 0.3 :length 10)
 #+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: post-tonal-overtone.915/noisey2 37>
 
 #+BEGIN_SRC clojure :session pt 
 (definst noisey-sustained [vol 0.5] 
@@ -42,9 +48,15 @@ beginning of a file of related code.
      vol))
 #+END_SRC
 
+#+RESULTS:
+: #<instrument: noisey-sustained>
+
 #+BEGIN_SRC clojure :session pt 
 (noisey-sustained 1)
 #+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: post-tonal-915/noisey-sustained 42>
 
 #+BEGIN_SRC clojure :session pt 
 (load "set-class-data")

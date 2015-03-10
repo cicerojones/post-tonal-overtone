@@ -34,6 +34,12 @@ returns to the code you were editing.
 Why does ```lein repl``` fail with a message about namespace problems
 in project.clj?
 
+Additionally, be mindful of what your audio output device is, when it
+comes time to use overtone. For example, I have a list of several
+'Devices' found when loading the SC_Audiodriver. For some reason,
+however, I had problems trying to use the Soundflower interface.
+Figure out why.
+
 ## Emacs-users
 (Nice superfluous Lisp-y hyphenation there), check out the org file in
 the /src/post_tonal_overtone, for more detailed explanation of what's
