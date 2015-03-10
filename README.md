@@ -29,3 +29,8 @@ Activity Monitor.
 
 You may want to have a keyboard-macro defined that calls (stop) and
 returns to the code you were editing.
+
+## Emacs-users
+(Nice superfluous Lisp-y hyphenation there), check out the org file in
+the /src/post_tonal_overtone, for more detailed explanation of what's
+going on?
