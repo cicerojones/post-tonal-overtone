@@ -11,8 +11,6 @@
 
 (load "set-class-data")
 
-(load "set-class-data")
-
 (defn voice-rand-set [set-type]
   (let [set (rand-nth set-type)
         voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
