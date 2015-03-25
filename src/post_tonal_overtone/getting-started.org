@@ -107,15 +107,222 @@ value, which is nil
 (trem 200 60 0.8)
 #+END_SRC
 
-#+RESULTS:
-: #<synth-node[loading]: post-tonal-overtone.core/trem 114>
 #+BEGIN_SRC clojure :session getting-started
 (trem 60 30 0.2)
 #+END_SRC
 
 #+RESULTS:
 : #<synth-node[loading]: post-tonal-overtone.core/trem 121>
-* 
+* oscillators wiki
+** sin wave
+#+BEGIN_SRC clojure :session getting-started
+(definst sin-wave [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
+  (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
+     (sin-osc freq)
+     vol))
+
+(sin-wave)
+#+END_SRC
+
+#+BEGIN_SRC clojure :session getting-started
+
+(definst saw-wave [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
+  (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
+     (saw freq)
+     vol))
+
+(saw-wave)
+#+END_SRC
+
+#+RESULTS:
+: #<instrument: saw-wave>#<synth-node[loading]: post-tonal-overtone915/saw-wave 144>
+** square-wave
+#+BEGIN_SRC clojure :session getting-started
+(definst square-wave [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
+  (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
+     (lf-pulse:ar freq)
+     vol))
+
+(square-wave)
+#+END_SRC
+
+#+RESULTS:
+: #<instrument: square-wave>#<synth-node[loading]: post-tonal-overt915/square-wave 145>
+** pink noise
+#+BEGIN_SRC clojure :session getting-started
+(definst noisey [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
+  (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
+     (pink-noise) ; also have (white-noise) and others...
+     vol))
+
+(noisey)
+
+#+END_SRC
+
+#+RESULTS:
+: #<instrument: noisey>#<synth-node[loading]: post-tonal-overtone.c915/noisey 146>
+** triangle-wave
+#+BEGIN_SRC clojure :session getting-started
+(definst triangle-wave [freq 440 attack 0.01 sustain 0.1 release 0.4 vol 0.4] 
+  (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
+     (lf-tri freq)
+     vol))
+
+(triangle-wave)
+#+END_SRC
+
+
+#+RESULTS:
+: #<instrument: triangle-wave>#<synth-node[loading]: post-tonal-ove915/triangle-wave 147>
+** ugens as control signals
+Here is an adjustable width pulse wave shifting the frequency of the
+main oscillator
+
+#+BEGIN_SRC clojure :session getting-started
+(definst spooky-house [freq 440 width 0.2
+                       attack 0.3 sustain 4
+                       release 0.3 vol 0.4]
+  (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
+     (sin-osc (+ freq (* 20 (lf-pulse:kr 0.5 0 width))))
+     vol))
+
+(spooky-house)
+#+END_SRC
+
+#+BEGIN_SRC clojure :session getting-started
+(spooky-house :width 0.1)
+#+END_SRC
+
+#+BEGIN_SRC clojure :session getting-started
+
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: post-tonal-over915/spooky-house 155>
+** wavetable synthesis
+No examples of this:
+
+"In wavetable synthesis, a single period waveform is stored in a
+buffer and used as a lookup table for the osc osciallator."
+
+Great, thanks.
+* filtering
+** linear filters
+Overtone comes with a number of standard linear filters: lpf, hpf, and
+bpf are low-pass, high-pass and band-pass filters respectively.
+
+
+#+BEGIN_SRC clojure :session getting-started
+(demo 10 (lpf (saw 100) (mouse-x 40 5000 EXP)))
+;; low-pass; move the mouse left and right to change the threshold frequency
+
+#+END_SRC
+
+#+BEGIN_SRC clojure :session getting-started
+(demo 10 (hpf (saw 100) (mouse-x 40 5000 EXP)))
+;; high-pass; move the mouse left and right to change the threshold frequency
+
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: post-tonal-ov915/audition-synth 157>
+
+#+BEGIN_SRC clojure :session getting-started
+(demo 30 (bpf (saw 100) (mouse-x 40 5000 EXP) (mouse-y 0.01 1 LIN)))
+;; band-pass; move mouse left/right to change threshold frequency; up/down to change bandwidth (top is narrowest)
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: post-tonal-ov915/audition-synth 158>
+** non-linear filters
+You can do Karplus-Strong string synthesis with the pluck filter.
+Karplus-Strong works by taking a signal, filtering it and feeding it
+back into itself after a delay, so that the output eventually becomes
+periodic.
+
+#+BEGIN_SRC clojure :session getting-started
+;; here we generate a pulse of white noise, and pass it through a pluck filter
+;; with a delay based on the given frequency
+(let [freq (rand-nth '(440 550 660 770 880 990 1100 1210 1320))]
+   (demo (pluck (* (white-noise) (env-gen (perc 0.001 2) :action FREE)) 1 3 (/ 1 freq))))
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: post-tonal-ov915/audition-synth 330>
+* multi-channel, stereo, panning
+** mono defsynth
+#+BEGIN_SRC clojure :session getting-started
+(defsynth sin1 [freq 660]
+  (out 0 (sin-osc freq)))
+
+(sin1)
+#+END_SRC
+** stereo defsynth
+#+BEGIN_SRC clojure :session getting-started
+(defsynth sin2 [freq1 440 freq2 441]
+  (out 0 (sin-osc freq1))
+  (out 1 (sin-osc freq2)))
+
+(sin2)
+#+END_SRC
+
+#+RESULTS:
+: #<synth: sin2>#<synth-node[loading]: post-tonal-overtone.core/sin2 332>
+** "adding" waveforms requires scaling
+#+BEGIN_SRC clojure :session getting-started
+(defsynth sin-square [freq 440] 
+  (out 0 (* 0.5 (+ (square (* 0.5 freq)) (sin-osc freq))))
+  (out 1 (* 0.5 (+ (square (* 0.5 freq)) (sin-osc freq)))))
+
+(sin-square)
+#+END_SRC
+
+#+RESULTS:
+: #<synth: sin-square>#<synth-node[loading]: post-tonal-overto915/sin-square 333>
+** multichannel expansion
+
+Passing a collection to a ugen where a single argument is expected.
+The following returns a "seq of two osciallators." It's as if the single
+channel of input has been "automatically expanded" to process multiple channels.
+#+BEGIN_SRC clojure :session getting-started
+(sin-osc [440 443])
+#+END_SRC
+
+
+#+RESULTS:
+: '(#<sc-ugen: sin-osc:ar (0)> #<sc-ugen: sin-osc:ar (0)>)
+
+Passing this seq to another ugen, it will also be expanded (in this case
+#+BEGIN_SRC clojure :session getting-started
+(lpf (sin-osc [440 443]) 600)
+#+END_SRC
+
+#+RESULTS:
+: '(#<sc-ugen: lpf:ar (1)> #<sc-ugen: lpf:ar (1)>)
+
+Now, compare with the above synth; the output is same, but there's
+less repeated code.
+#+BEGIN_SRC clojure :session getting-started
+(defsynth sin-square2 [freq 440] 
+  (out 0 (* [0.5 0.5] (+ (square (* 0.5 freq)) (sin-osc freq)))))
+
+(sin-square2)
+#+END_SRC
+
+#+RESULTS:
+: #<synth: sin-square2>#<synth-node[loading]: post-tonal-overt915/sin-square2 334>
+
+Now, the two waveforms are distribued across the channels
+#+BEGIN_SRC clojure :session getting-started
+(defsynth sin-square3 [freq 440] 
+  (out 0 (* 0.5 [(square (* 0.5 freq)) (sin-osc freq)])))
+
+(sin-square3)
+#+END_SRC
+
+#+RESULTS:
+: #<synth: sin-square3>#<synth-node[loading]: post-tonal-overt915/sin-square3 335>
+
 * interupt output
 #+BEGIN_SRC clojure :session getting-started
 (stop)
