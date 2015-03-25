@@ -14,10 +14,13 @@ beginning of a file of related code.
 
 #+RESULTS:
 : #<Namespace post-tonal-overtone.core>
+
+
 * load your library
 #+BEGIN_SRC clojure :session pt 
 (use 'overtone.live)
 #+END_SRC
+
 
 * start defining overtone instruments
 #+BEGIN_SRC clojure :session pt 
@@ -27,13 +30,16 @@ beginning of a file of related code.
      vol))
 #+END_SRC
 
+#+RESULTS:
+: #<instrument: noisey2>
+
 * play white noise
 #+BEGIN_SRC clojure :session pt 
 (noisey2)
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: post-tonal-overtone.915/noisey2 36>
+: #<synth-node[loading]: post-tonal-overtone.915/noisey2 37>
 
 * play long white noise
 #+BEGIN_SRC clojure :session pt 
