@@ -1,8 +1,126 @@
-
+* copying from overtone getting-started github wiki
+** define, start and kill a synth
 #+BEGIN_SRC clojure :session getting-started
 (definst foo [] (saw 220))
 #+END_SRC
 
 #+RESULTS:
 : #<instrument: foo>
+
+#+BEGIN_SRC clojure :session getting-started
+(foo)
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: post-tonal-overtone.core/foo 74>
+
+Kill by ID number, as returned above
+#+BEGIN_SRC clojure :session getting-started
+(kill 74)
+#+END_SRC
+
+#+BEGIN_SRC clojure :session getting-started
+(kill foo)
+#+END_SRC
+
+#+RESULTS:
+: nil
+** overtone documenation
+must be called from the REPL; in babel it simply prints its return
+value, which is nil
+#+BEGIN_SRC clojure :session getting-started
+(odoc saw)
+#+END_SRC
+
+#+RESULTS:
+: nil
+** giving argument when defining synths with definst
+#+BEGIN_SRC clojure :session getting-started
+(definst bar [freq 220] (saw freq))
+#+END_SRC
+
+#+RESULTS:
+: #<instrument: bar>
+
+#+BEGIN_SRC clojure :session getting-started
+(bar 110)
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: post-tonal-overtone.core/bar 80>
+#+BEGIN_SRC clojure :session getting-started
+(kill bar)
+#+END_SRC
+
+#+RESULTS:
+: nil
+** triggering multiple synths
+#+BEGIN_SRC clojure :session getting-started
+(definst baz [freq 440] (* 0.3 (saw freq)))
+(baz 220)
+(baz 825)
+#+END_SRC
+
+#+RESULTS:
+: #<instrument: baz>#<synth-node[loading]: post-tonal-overtone.core/baz 101>#<synth-node[loading]: post-tonal-overtone.core/baz 102>
+** changing audio output levels on the fly
+#+BEGIN_SRC clojure :session getting-started
+(definst quux [freq 440] (* 0.3 (saw freq)))
+(quux)
+#+END_SRC
+
+#+RESULTS:
+: #<instrument: quux>#<synth-node[loading]: post-tonal-overtone.core/quux 108>
+
+#+BEGIN_SRC clojure :session getting-started
+(ctl quux :freq 660)
+#+END_SRC
+
+#+RESULTS:
+: #overtone.studio.inst.Inst{:name "quux", :params ({:value #<Atom@70e4cc5f: 440.0>, :name "freq", :default 440.0, :rate :kr}), :args ("freq"), :sdef {:name "post-tonal-overtone.core/quux", :constants [57.0 0.3], :params (440.0), :pnames ({:name "freq", :index 0}), :ugens ({:args nil, :special 0, :name "Control", :rate 1, :inputs (), :rate-name :kr, :n-outputs 1, :id 344, :outputs ({:rate 1}), :n-inputs 0} #<sc-ugen: saw:ar [1]> #<sc-ugen: binary-op-u-gen:ar [2]> #<sc-ugen: out:ar [3]>)}, :group #<synth-group[live]: Inst quux Container 103>, :instance-group #<synth-group[live]: Inst quux 104>, :fx-group #<synth-group[live]: Inst quux FX 105>, :mixer #<synth-node[live]: overtone.stu547/mono-inst-mixer 106>, :bus #<audio-bus: No Name, mono, id 57>, :fx-chain [], :volume #<Atom@78105674: 1.0>, :pan #<Atom@789c1740: 0.0>, :n-chans 1}
+
+#+BEGIN_SRC clojure :session getting-started
+(ctl quux :freq (rand-nth '(330 550 660 825 910)))
+#+END_SRC
+
+#+RESULTS:
+: #overtone.studio.inst.Inst{:name "quux", :params ({:value #<Atom@16efb063: 440.0>, :name "freq", :default 440.0, :rate :kr}), :args ("freq"), :sdef {:name "post-tonal-overtone.core/quux", :constants [57.0 0.3], :params (440.0), :pnames ({:name "freq", :index 0}), :ugens ({:args nil, :special 0, :name "Control", :rate 1, :inputs (), :rate-name :kr, :n-outputs 1, :id 348, :outputs ({:rate 1}), :n-inputs 0} #<sc-ugen: saw:ar [1]> #<sc-ugen: binary-op-u-gen:ar [2]> #<sc-ugen: out:ar [3]>)}, :group #<synth-group[live]: Inst quux Container 103>, :instance-group #<synth-group[live]: Inst quux 104>, :fx-group #<synth-group[live]: Inst quux FX 105>, :mixer #<synth-node[live]: overtone.stu547/mono-inst-mixer 106>, :bus #<audio-bus: No Name, mono, id 57>, :fx-chain [], :volume #<Atom@52253f58: 1.0>, :pan #<Atom@b61d48a: 0.0>, :n-chans 1}
+** using multiple ugens
+#+BEGIN_SRC clojure :session getting-started
+(definst trem [freq 440 depth 10 rate 6 length 5]
+  (* 0.3
+     (line:kr 0 1 length FREE)
+     (saw (+ freq (* depth (sin-osc:kr rate))))))
+#+END_SRC
+
+#+RESULTS:
+: #<instrument: trem>
+
+#+BEGIN_SRC clojure :session getting-started
+(trem)
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: post-tonal-overtone.core/trem 113>
+
+#+BEGIN_SRC clojure :session getting-started
+(trem 200 60 0.8)
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: post-tonal-overtone.core/trem 114>
+#+BEGIN_SRC clojure :session getting-started
+(trem 60 30 0.2)
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: post-tonal-overtone.core/trem 121>
+* 
+* interupt output
+#+BEGIN_SRC clojure :session getting-started
+(stop)
+#+END_SRC
+
+#+RESULTS:
+: nil
 
