@@ -322,6 +322,107 @@ Now, the two waveforms are distribued across the channels
 
 #+RESULTS:
 : #<synth: sin-square3>#<synth-node[loading]: post-tonal-overt915/sin-square3 335>
+* buffers and audio files
+** playing samples from local files
+
+
+#+RESULTS:
+: /Applications/SuperCollider/SuperCollider.app/Contents/Resources/sounds/amp-mono.wav
+
+
+#+BEGIN_SRC clojure :session getting-started
+(def CERN-noise (sample "/Applications/SuperCollider/SuperCollider.app/Contents/Resources/sounds/CERN-noisepad8.aiff"))
+
+(CERN-noise)
+#+END_SRC
+
+
+#+RESULTS:
+: #'post-tonal-overtone.core/CERN-noise#<synth-node[loading]: overtone.sc.sample/mono-player 339>
+** random samples from my machine
+#+BEGIN_SRC clojure :session getting-started
+(def sampled-sounds (sample
+                     (str "/Applications/SuperCollider/SuperCollider.app/Contents/Resources/sounds/"
+                          (rand-nth '("strings-and-clicks.wav" "CERN-noisepad8.aiff" "amp-mono.wav" "susp-mono.wav")))))
+(sampled-sounds)
+#+END_SRC
+
+#+RESULTS:
+: #'post-tonal-overtone.core/sampled-sounds#<synth-node[loading]: overtone.sc.sample/mono-player 340>
+** loading a sample into a buffer
+
+#+BEGIN_SRC clojure :session getting-started
+(def buff-random (load-sample
+                  (str "/Applications/SuperCollider/SuperCollider.app/Contents/Resources/sounds/"
+                       (rand-nth '("strings-and-clicks.wav"
+                                   "CERN-noisepad8.aiff"
+                                   "amp-mono.wav"
+                                   "susp-mono.wav")))))
+#+END_SRC
+
+#+RESULTS:
+: #'post-tonal-overtone.core/buff-random
+** scope not available?
+#+BEGIN_SRC clojure :session getting-started
+(scope :buf buff-random)
+#+END_SRC
+
+#+RESULTS:
+** play a sample from a buffer
+
+#+BEGIN_SRC clojure :session getting-started
+(def sample-buf (load-sample
+(str "/Applications/SuperCollider/SuperCollider.app/Contents/Resources/sounds/" 
+"strings-and-clicks.wav"
+;;"amp-mono.wav"
+)))
+#+END_SRC
+
+#+RESULTS:
+: #'post-tonal-overtone.core/sample-buf
+** play a sample with reverb
+#+BEGIN_SRC clojure :session getting-started
+(defsynth reverb-on-left []
+  (let [dry (play-buf 1 sample-buf)
+    wet (free-verb dry 1)]
+    (out 0 [wet dry])))
+
+(reverb-on-left)
+#+END_SRC
+
+#+RESULTS:
+: #<synth: reverb-on-left>#<synth-node[loading]: post-tonal-ov915/reverb-on-left 345>
+
+#+BEGIN_SRC clojure :session getting-started
+(defsynth all-big-reverb []
+  (let [dry (play-buf 1 sample-buf)
+    wet (free-verb dry 1 :room 0.9 :damp 0.1)]
+    (out 0 [wet wet])))
+
+(big-reverb-on-left)
+#+END_SRC
+
+#+RESULTS:
+: #<synth: all-big-reverb>#<synth-node[loading]: post-tona915/big-reverb-on-left 354>
+** loading sample from freesound
+#+BEGIN_SRC clojure :session getting-started
+(def snare (freesound 26903))
+(snare)
+#+END_SRC
+
+#+BEGIN_SRC clojure :session getting-started
+(snare)
+#+END_SRC
+#+RESULTS:
+: #<synth-node[loading]: overtone.sc.saddd/stereo-player 356>
+** other freesound samples
+|   406 | click      |   436 | ride           |   777 | kick         |   802 | close-hat    |
+|  2086 | kick2      |  8323 | powerwords     |  9088 | jetbike      | 13254 | cymbal       |
+| 16309 | open-snare | 16568 | two-cows       | 25649 | subby        | 26657 | open-hat     |
+| 26903 | snare      | 30628 | steam-whistles | 33637 | boom         | 44293 | sleigh-bells |
+| 48310 | clap       | 50623 | water-drops    | 80187 | witch-cackle | 80401 | explosion    |
+| 87731 | snap       |       |                |       |              |       |              |
+|       |            |       |                |       |              |       |              |
 
 * interupt output
 #+BEGIN_SRC clojure :session getting-started
