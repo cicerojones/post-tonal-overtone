@@ -44,3 +44,7 @@ Figure out why.
 (Nice superfluous Lisp-y hyphenation there), check out the org file in
 the /src/post_tonal_overtone, for more detailed explanation of what's
 going on?
+
+Begin to create .org files that combine overtone babel samples, with a
+kind of little schemer approach, that is, with nodes that hide answers
+to questions about making overtone things work.
