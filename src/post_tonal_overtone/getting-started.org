@@ -323,22 +323,123 @@ Now, the two waveforms are distribued across the channels
 #+RESULTS:
 : #<synth: sin-square3>#<synth-node[loading]: post-tonal-overt915/sin-square3 335>
 * buffers and audio files
-** playing samples from local files
+** playing sample
+*** playing samples from local files
 
-
-#+RESULTS:
-: /Applications/SuperCollider/SuperCollider.app/Contents/Resources/sounds/amp-mono.wav
-
-
-#+BEGIN_SRC clojure :session getting-started
+ #+BEGIN_SRC clojure :session getting-started
 (def CERN-noise (sample "/Applications/SuperCollider/SuperCollider.app/Contents/Resources/sounds/CERN-noisepad8.aiff"))
 
 (CERN-noise)
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post-tonal-overtone.core/CERN-noise#<synth-node[loading]: overtone.sc.sample/mono-player 643>
+*** playing arbitrary files as a playlist
+ #+BEGIN_SRC clojure :session getting-started
+(def spirit (sample (str "/Users/a/Music/audio/" "Spiritualized/" "06 Spiritualized - Step Into The Breeze.aiff")))
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post-tonal-overtone.core/spirit
+
+ #+BEGIN_SRC clojure :session getting-started
+(spirit)
+ #+END_SRC
+*** building files
+**** does not play mp3s
+
+  template for string concatentation
+  #+BEGIN_SRC clojure :session getting-started
+(str "/Users/a/Music/audio/" "QC listening list/pre-1600/")
+  #+END_SRC
+
+
+  #+TITLE pre1600-list
+  #+BEGIN_SRC clojure :session getting-started
+(def pre1600-list '("008_Barbara_Strozzi_L'Eraclito.mp3"                 
+"008_Belle_Doette.mp3"                               
+"008_Bernard_de_Ventadorn_Quan_veh_la_lauzeta_mover.mp3"
+"008_Byrd_John_Come_Kiss_me_Now.mp3"
+"008_Byrd_Mass_for_4_voices_Agnus_Dei.mp3"           
+"008_Byrd_Mass_for_4_voices_Credo.mp3"               
+"008_Byrd_Mass_for_4_voices_Kyrie.mp3"               
+"008_Ciconia_O_Padua_sidus_preclarum.mp3"            
+"008_Dufay_Ave_regina_caelorum.mp3"                  
+"008_Frescobaldi_Capriccio_sopra_ut_re_me_fa_sol_la.mp3"
+"008_Gabrieli_Canzon_in_echo_duodecimi_toni.mp3"
+"008_Giaches_de_Wert_Giunto_alla_Tomba.mp3"          
+"008_Hildegard_von_Bingen_O_virga_ac_diadema.mp3"    
+"008_Hodie_Christus_natus_est.mp3"                   
+"008_Josquin_Inviolata_integra_et_casta_est_Maria.mp"
+"008_Josquin_Milles_Regretz.mp3"                     
+"008_Josquin_Missa_Pange_lingua_Agnus_Dei.mp3"       
+"008_Josquin_Missa_Pange_lingua_Kyrie.mp3"           
+"008_Josquin_sexti_toni_1.mp3"                       
+"008_Josquin_sexti_toni_5.mp3"                       
+"008_Landini_Ochi_dolente_mie.mp3"                   
+"008_Machaut_De_Fortune.mp3"                         
+"008_Pange_lingua.mp3"                               
+"008_Perotin_Viderunt_omnes.mp3"                     
+"008_Purcell_Dido_and_Aeneas_Act_III_1_Scene_1_1.mp3"
+"008_Purcell_Dido_and_Aeneas_Act_III_2_Scene_1_2.mp3"
+"008_Purcell_Dido_and_Aeneas_Act_III_3_Scene_2_1.mp3"
+"008_Purcell_Dido_and_Aeneas_Act_III_4_Scene_2_2.mp3"
+"008_Purcell_Dido_and_Aeneas_Act_III_5_Scene_2_3.mp3"))
+  #+END_SRC
+
+  #+RESULTS:
+  : #'post-tonal-overtone.core/pre1600-list
+
+  #+BEGIN_SRC clojure :session getting-started
+(rand-nth pre1600-list)
+  #+END_SRC
+
+  #+RESULTS:
+  : 008_Landini_Ochi_dolente_mie.mp3
+
+  #+BEGIN_SRC clojure :session getting-started
+(str "/Users/a/Music/audio/" "QC listening list/pre-1600/" (rand-nth pre1600-list))
+  #+END_SRC
+
+  #+RESULTS:
+  : /Users/a/Music/audio/QC listening list/pre-1600/008_Josquin_sexti_toni_1.mp3
+
+  #+BEGIN_SRC clojure :session getting-started
+(def play-1600s-tune (sample (str "/Users/a/Music/audio/" "QC listening list/pre-1600/" (rand-nth pre1600-list))))
+  #+END_SRC
+
+  #+BEGIN_SRC clojure :session getting-started
+(def play-1600s-tune (sample "/Users/a/Music/audio/QC listening list/pre-1600/008_Pange_Lingua.wav"))
+  #+END_SRC
+
+  #+BEGIN_SRC clojure :session getting-started
+(play-1600s-tune)
+  #+END_SRC
+
+  #+RESULTS:
+  : #<synth-node[loading]: overtone.sc.saddd/stereo-player 645>
+**** spiritualized aiff
+#+BEGIN_SRC clojure
+(def spirit-list '("06 Spiritualized - Step Into The Breeze.aiff"
+"07 Spiritualized - Symphony Space.aiff"
+"08 Spiritualized - Take Your Time.aiff"
+"09 Spiritualized - Shine A Light.aiff"
+"10 Spiritualized - Angel Sigh.aiff"
+"11 Spiritualized - Sway.aiff"
+"12 Spiritualized - 200 Bars.aiff"))
 #+END_SRC
 
+ #+BEGIN_SRC clojure :session getting-started
+(def spirit (sample (str "/Users/a/Music/audio/" "Spiritualized/" (rand-nth spirit-list))))
+ #+END_SRC
 
-#+RESULTS:
-: #'post-tonal-overtone.core/CERN-noise#<synth-node[loading]: overtone.sc.sample/mono-player 339>
+ #+RESULTS:
+ : #'post-tonal-overtone.core/spirit
+
+ #+BEGIN_SRC clojure :session getting-started
+(spirit)
+ #+END_SRC
+
 ** random samples from my machine
 #+BEGIN_SRC clojure :session getting-started
 (def sampled-sounds (sample
@@ -423,6 +524,104 @@ Now, the two waveforms are distribued across the channels
 | 48310 | clap       | 50623 | water-drops    | 80187 | witch-cackle | 80401 | explosion    |
 | 87731 | snap       |       |                |       |              |       |              |
 |       |            |       |                |       |              |       |              |
+* recording
+** create a file
+
+#+BEGIN_SRC clojure :session getting-started
+(recording-start "~/Desktop/foo.wav")
+;; make some noise. i.e.
+(demo (pan2 (sin-osc)))
+#+END_SRC
+
+#+RESULTS:
+: :recording-started#<synth-node[loading]: post-tonal-ov915/audition-synth 641>
+
+#+BEGIN_SRC clojure :session getting-started
+;; stop recording
+(recording-stop)
+#+END_SRC
+
+#+RESULTS:
+: /Users/a/Desktop/foo.wav
+** play back file
+#+BEGIN_SRC clojure :session getting-started
+(def desktop-foo (sample "~/Desktop/foo.wav"))
+
+(desktop-foo)
+#+END_SRC
+
+#+RESULTS:
+: #'post-tonal-overtone.core/desktop-foo#<synth-node[loading]: overtone.sc.saddd/stereo-player 642>
+** save audio from a buffer to disk
+#+BEGIN_SRC clojure :session getting-started
+(buffer-save b "~/Desktop/bong.wav") 
+#+END_SRC
+* metronome and sequencing
+** get a sample of a kick drum 
+#+BEGIN_SRC clojure :session getting-started
+(def kick (sample (freesound-path 2086)))
+#+END_SRC
+
+#+RESULTS:
+: #'post-tonal-overtone.core/kick
+** create a metronome (set to a given bpm)
+#+BEGIN_SRC clojure :session getting-started
+(def march-tempo (metronome 120))
+#+END_SRC
+
+#+RESULTS:
+: #'post-tonal-overtone.core/march-tempo
+** create a function that will, for a given a metro, play a sound
+*** looping template
+#+BEGIN_SRC clojure :session getting-started
+(defn looper [nome sound]
+  (let [beat (nome)]
+    (at (nome beat) (sound))
+    (apply-at (nome (inc beat)) looper nome sound [])))
+#+END_SRC
+
+#+RESULTS:
+: #'post-tonal-overtone.core/looper
+*** note: uses "temporal recursion" pattern
+
+#+BEGIN_SRC clojure :session getting-started
+(defn foo
+     [t val]
+     (println val)
+     (let [next-t (+ t 10000)]
+       (apply-at next-t #'foo [next-t (inc val)])))
+#+END_SRC
+
+#+RESULTS:
+: #'post-tonal-overtone.core/foo
+
+#+BEGIN_SRC clojure :session getting-started
+(foo (now) 0)
+#+END_SRC
+
+#+RESULTS:
+: #<ScheduledJob id: 25, created-at: Thu 11:04:35s, initial-delay: 199, desc: "Overtone delayed fn", scheduled? true>
+*** call the looper to play kick drum
+#+BEGIN_SRC clojure :session getting-started
+(looper march-tempo kick)
+#+END_SRC
+
+#+RESULTS:
+: #<ScheduledJob id: 8, created-at: Thu 11:06:41s, initial-delay: 741, desc: "Overtone delayed fn", scheduled? true>
+
+#+BEGIN_SRC clojure :session getting-started
+(def some-nome (metronome 60))
+#+END_SRC
+
+#+RESULTS:
+: #'post-tonal-overtone.core/some-nome
+
+#+BEGIN_SRC clojure :session getting-started
+(some-nome)
+#+END_SRC
+
+#+RESULTS:
+: 6
 
 * interupt output
 #+BEGIN_SRC clojure :session getting-started
@@ -432,3 +631,82 @@ Now, the two waveforms are distribued across the channels
 #+RESULTS:
 : nil
 
+* local audio files
+500 Country songs
+Beth Orton
+Compilations
+
+Don Cherry - mu first part-mu second part                          
+Don Cherry Complete Communion(jazz) (mp3@320kbps)[rogercc][h33t]
+King Sunny Ade Best of Island Years                                
+King Sunny Ade – Best of the Classic Years (1969-74)               
+Miles Davis                                                        
+Mouse On Mars - Autoditacker (FLAC)                                
+Mouse On Mars - Parastrophics (2012) [FLAC] politux                
+Pussy galore.m4a                                                   
+
+"QC listening list"                                                  
+
+1600-1750         
+1830-1900         
+20th              
+Haydn-to-Beethoven
+"pre-1600"
+
+
+
+
+
+("008_Barbara_Strozzi_L'Eraclito.mp3"                 
+"008_Belle_Doette.mp3"                               
+"008_Bernard_de_Ventadorn_Quan_veh_la_lauzeta_mover.mp3"
+"008_Byrd_John_Come_Kiss_me_Now.mp3"
+"008_Byrd_Mass_for_4_voices_Agnus_Dei.mp3"           
+"008_Byrd_Mass_for_4_voices_Credo.mp3"               
+"008_Byrd_Mass_for_4_voices_Kyrie.mp3"               
+"008_Ciconia_O_Padua_sidus_preclarum.mp3"            
+"008_Dufay_Ave_regina_caelorum.mp3"                  
+"008_Frescobaldi_Capriccio_sopra_ut_re_me_fa_sol_la.mp3"
+"008_Gabrieli_Canzon_in_echo_duodecimi_toni.mp3"
+"008_Giaches_de_Wert_Giunto_alla_Tomba.mp3"          
+"008_Hildegard_von_Bingen_O_virga_ac_diadema.mp3"    
+"008_Hodie_Christus_natus_est.mp3"                   
+"008_Josquin_Inviolata_integra_et_casta_est_Maria.mp"
+"008_Josquin_Milles_Regretz.mp3"                     
+"008_Josquin_Missa_Pange_lingua_Agnus_Dei.mp3"       
+"008_Josquin_Missa_Pange_lingua_Kyrie.mp3"           
+"008_Josquin_sexti_toni_1.mp3"                       
+"008_Josquin_sexti_toni_5.mp3"                       
+"008_Landini_Ochi_dolente_mie.mp3"                   
+"008_Machaut_De_Fortune.mp3"                         
+"008_Pange_lingua.mp3"                               
+"008_Perotin_Viderunt_omnes.mp3"                     
+"008_Purcell_Dido_and_Aeneas_Act_III_1_Scene_1_1.mp3"
+"008_Purcell_Dido_and_Aeneas_Act_III_2_Scene_1_2.mp3"
+"008_Purcell_Dido_and_Aeneas_Act_III_3_Scene_2_1.mp3"
+"008_Purcell_Dido_and_Aeneas_Act_III_4_Scene_2_2.mp3"
+"008_Purcell_Dido_and_Aeneas_Act_III_5_Scene_2_3.mp3")
+
+
+Robert Wyatt                                                       
+Robin Aigner's Con Tender                                          
+
+Rollerskate Skinny                                                 
+Saint Etienne-12 albums                                            
+SaintEtienne-WordsMusiDeluxeEdition2012                            
+Sarah Singles                                                      
+Spiritualized                                                      
+The Clean                                                          
+The Fall - Early Fall [lossless]                                   
+The Wedding Present - Seamonsters                                  
+Treepeople                                                         
+
+Ultramarine - This Time Last Year 2013 320kbps CBR MP3 [VX] [P2PDL]
+
+06 Spiritualized - Step Into The Breeze.aiff
+07 Spiritualized - Symphony Space.aiff
+08 Spiritualized - Take Your Time.aiff
+09 Spiritualized - Shine A Light.aiff
+10 Spiritualized - Angel Sigh.aiff
+11 Spiritualized - Sway.aiff            
+12 Spiritualized - 200 Bars.aiff
