@@ -9,6 +9,8 @@
  #+RESULTS:
  : nil
 
+
+
  #+BEGIN_SRC clojure :session pt 
 *ns*
  #+END_SRC
@@ -17,12 +19,12 @@
  : #<Namespace post-tonal-overtone.core>
 
 ** load your library
+Does this code time out for some reason?
  #+BEGIN_SRC clojure :session pt 
 (use 'overtone.live)
  #+END_SRC
 
 ** start defining overtone instruments
-
 *** a definst template (noise, non-pitched)
  #+BEGIN_SRC clojure :session pt 
 (definst noisey2 [attack 0.01 sustain 0.4 release 0.1 vol 0.4 length 3] 
@@ -40,7 +42,7 @@
  #+END_SRC
 
  #+RESULTS:
- : #<synth-node[loading]: post-tonal-overtone.915/noisey2 357>
+ : #<synth-node[loading]: post-tonal-overtone.915/noisey2 35>
 
 * developing sounds
 ** play long white noise
