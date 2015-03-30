@@ -19,7 +19,7 @@
  : #<Namespace post-tonal-overtone.core>
 
 ** load your library
-Does this code time out for some reason?
+Does this code cause nREPL to time out for some reason?
  #+BEGIN_SRC clojure :session pt 
 (use 'overtone.live)
  #+END_SRC

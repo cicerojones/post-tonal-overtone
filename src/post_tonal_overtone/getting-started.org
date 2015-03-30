@@ -5,14 +5,13 @@
 #+END_SRC
 
 #+RESULTS:
-: #<instrument: foo>
 
 #+BEGIN_SRC clojure :session getting-started
 (foo)
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: post-tonal-overtone.core/foo 74>
+: #<synth-node[loading]: overtone.examples.gettin2c1/foo 130>
 
 Kill by ID number, as returned above
 #+BEGIN_SRC clojure :session getting-started
@@ -135,7 +134,7 @@ We'll look at this in a dedicated 'envelopes' section.
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: sin-wave>#<synth-node[loading]: post-tonal-overtone915/sin-wave 40>
+ : #<instrument: sin-wave>
 *** saw wave
  #+BEGIN_SRC clojure :session getting-started
 (definst saw-wave [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
@@ -209,7 +208,7 @@ to some pattern or system.
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: spooky-house>#<synth-node[loading]: post-tonal-over915/spooky-house 65>
+ : #<instrument: spooky-house>#<synth-node[loading]: post-tonal-over915/spooky-house 40>
 
  #+BEGIN_SRC clojure :session getting-started
 (spooky-house :width 0.1)
@@ -220,7 +219,7 @@ to some pattern or system.
  #+END_SRC
 
  #+RESULTS:
- : #<synth-node[loading]: post-tonal-over915/spooky-house 66>
+ : #<synth-node[loading]: post-tonal-over915/spooky-house 41>
 *** wavetable synthesis
 **** No examples of this
 
@@ -242,7 +241,14 @@ to some pattern or system.
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: my-dynamic>#<synth-node[loading]: post-tonal-overto915/my-dynamic 75>
+ : #<instrument: my-dynamic>#<synth-node[loading]: post-tonal-overto915/my-dynamic 46>
+
+#+BEGIN_SRC  clojure :session getting-started
+(my-dynamic)
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: post-tonal-overto915/my-dynamic 77>
 
 * filtering
 ** linear filters
@@ -861,3 +867,11 @@ Ultramarine - This Time Last Year 2013 320kbps CBR MP3 [VX] [P2PDL]
 10 Spiritualized - Angel Sigh.aiff
 11 Spiritualized - Sway.aiff            
 12 Spiritualized - 200 Bars.aiff
+
+* misc, non-wiki tutorials
+ #+BEGIN_SRC clojure :session getting-started
+(doc overtone.core/)
+ #+END_SRC
+
+ #+RESULTS:
+
