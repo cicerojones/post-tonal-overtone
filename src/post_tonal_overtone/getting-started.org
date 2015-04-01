@@ -438,6 +438,88 @@ value, which is nil
   : #<synth: sin-square3>#<synth-node[loading]: post-tonal-overt915/sin-square3 335>
 ** instruments and io
 *** midi
+# Overtone 0.9.1
+
+See [the end of the midi/keyboard example](https://github.com/overtone/overtone/blob/master/src/overtone/examples/midi/keyboard.clj#L49-L64).
+
+
+# Overtone 0.7.1
+
+## Using the event stream
+
+Overtone 0.7.1 automatically detects all connected MIDI devices on boot and registers the appropriate handlers for you. To see a list of MIDI devices detected by Overtone, use:
+
+```clj
+(midi-connected-devices)
+```
+
+The MIDI device should be connected and powered on before starting Overtone. When you bash the keys on the keyboard, Overtone receives internal events in its event stream. To see them use:
+
+```clj
+(event-debug-on)
+```
+
+To stop:
+
+```clj
+(event-debug-off)
+```
+
+You should see that for each key press, there are two events. A general midi control change event:
+
+```clj
+[:midi :note-on]
+```
+
+and a device-specific event i.e.:
+
+```clj
+[:midi-device Evolution Electronics Ltd. Keystation 61e Keystation 61e :note-on]
+```
+
+For simplicity use the general event type:
+
+```clj
+(on-event [:midi :note-on]
+          (fn [e]
+            (let [note (:note e)
+                  vel  (:velocity e)]
+              (your-instr note vel)))
+          ::keyboard-handler)
+```
+
+The last argument is a keyword which can be used to refer to this handler, so you can later do:
+
+```clj
+(remove-event-handler ::keyboard-handler)
+```
+
+## Simple Midi Keyboard Control
+
+Use `midi-poly-player` for simple control of Overtone instruments.
+
+Define an inst to play with the midi keyboard
+
+```clj
+(definst steel-drum [note 60 amp 0.8]
+  (let [freq (midicps note)]
+    (* amp
+       (env-gen (perc 0.01 0.2) 1 1 0 1 :action FREE)
+       (+ (sin-osc (/ freq 2))
+          (rlpf (saw freq) (* 1.1 freq) 0.4)))))
+```
+
+Define a player that connects midi input to that instrument.
+
+```clj
+(def player (midi-poly-player steel-drum))
+```
+
+When you want to stop or change sounds, use `midi-player-stop`.
+
+```clj
+(midi-player-stop)
+```
 *** buffers and audio files
 **** playing samples and songs
 ***** playing samples from local files
@@ -785,7 +867,173 @@ conv-files
   ;make-noise
   (recording-stop)
 ** making music
+*** pitches and chords
+Here's an example on how you can play notes and chords in Overtone.
+
+Much of this can be seen in [the code](https://github.com/overtone/overtone/blob/master/src/overtone/examples/getting_started/video.clj) that corresponds with the [Overtone Live Coding video overview](http://vimeo.com/22798433).
+
+```clj
+;; We use a saw-wave that we defined in the oscillators tutorial
+(definst saw-wave [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
+  (* (env-gen (env-lin attack sustain release) 1 1 0 1 FREE)
+     (saw freq)
+     vol))
+
+;; We can play notes using frequency in Hz
+(saw-wave 440)
+(saw-wave 523.25)
+(saw-wave 261.62) ; This is C4
+
+;; We can also play notes using MIDI note values
+(saw-wave (midi->hz 69))
+(saw-wave (midi->hz 72))
+(saw-wave (midi->hz 60)) ; This is C4
+
+;; We can play notes using standard music notes as well
+(saw-wave (midi->hz (note :A4)))
+(saw-wave (midi->hz (note :C5)))
+(saw-wave (midi->hz (note :C4))) ; This is C4! Surprised?
+
+;; Define a function for convenience
+(defn note->hz [music-note]
+	(midi->hz (note music-note)))
+
+; Slightly less to type	
+(saw-wave (note->hz :C5))
+
+;; Let's make it even easier
+(defn saw2 [music-note]
+	(saw-wave (midi->hz (note music-note))))
+	
+;; Great!
+(saw2 :A4)
+(saw2 :C5)
+(saw2 :C4)
+
+;; Let's play some chords
+
+
+;; this is one possible implementation of play-chord
+(defn play-chord [a-chord]
+  (doseq [note a-chord] (saw2 note)))
+
+;; We can play many types of chords.
+;; For the complete list, visit https://github.com/overtone/overtone/blob/master/src/overtone/music/pitch.clj and search for "def CHORD"
+(play-chord (chord :C4 :major))
+
+;; We can play a chord progression on the synth
+;; using times:
+(defn chord-progression-time []
+  (let [time (now)]
+    (at time (play-chord (chord :C4 :major)))
+    (at (+ 2000 time) (play-chord (chord :G3 :major)))
+    (at (+ 3000 time) (play-chord (chord :F3 :sus4)))
+    (at (+ 4300 time) (play-chord (chord :F3 :major)))
+    (at (+ 5000 time) (play-chord (chord :G3 :major)))))
+
+(chord-progression-time)
+
+;; or beats:
+(defonce metro (metronome 120))
+(metro)
+(defn chord-progression-beat [m beat-num]
+  (at (m (+ 0 beat-num)) (play-chord (chord :C4 :major)))
+  (at (m (+ 4 beat-num)) (play-chord (chord :G3 :major)))
+  (at (m (+ 8 beat-num)) (play-chord (chord :A3 :minor)))
+  (at (m (+ 14 beat-num)) (play-chord (chord :F3 :major)))  
+)
+
+(chord-progression-beat metro (metro))
+
+;; We can use recursion to keep playing the chord progression
+(defn chord-progression-beat [m beat-num]
+  (at (m (+ 0 beat-num)) (play-chord (chord :C4 :major)))
+  (at (m (+ 4 beat-num)) (play-chord (chord :G3 :major)))
+  (at (m (+ 8 beat-num)) (play-chord (chord :A3 :minor)))
+  (at (m (+ 12 beat-num)) (play-chord (chord :F3 :major)))
+  (apply-at (m (+ 16 beat-num)) chord-progression-beat m (+ 16 beat-num) [])
+)
+(chord-progression-beat metro (metro))
+```
+*** scales and scale degrees
+[Scales](https://en.wikipedia.org/wiki/Scale_%28music%29) can be quickly generated using the `scale` function, which takes a root note and the type of scale as arguments.
+
+```clojure
+(scale :C3 :major)
+; => (48 50 52 53 55 57 59 60)
+```
+
+The available scales are quite large, which includes the common major/minor, modes (dorian, mixolydian, etc.), and more exotic scales. You can see the full list by running the following command in your REPL:
+
+```clojure
+(source SCALE)
+```
+
+Overtone is also capable further abstraction of pitches through [scale degrees](https://en.wikipedia.org/wiki/Degree_%28music%29), which is a way of referring to pitches within a scale. Scale degrees are commonly notated using roman numerals (I, IV, vii, etc.), so in Clojure scale degrees are referenced with keywords as shown below:
+
+```clojure
+(def scale-degrees [:i :ii :iii :iv :v :vi :vii])
+```
+
+Notice that each of the scale degrees is lowercase; Overtone does not change the quality of the scale degree based on capitalization. Capitalized degrees will throw an `IllegalArgumentException`.
+
+You can resolve scale degrees into absolute pitches using `degrees->pitches`:
+
+```clojure
+(degrees->pitches scale-degrees :dorian :E3)
+; => (52 54 55 57 59 61 62)
+```
+
+Scale degrees can be augmented by either `+` or `-` to denote the octave above or below the root of the scale, and can be sharped or flatted using `#` or `b`. For example in a major scale starting from C3 (MIDI pitch number 48), the scale degree `:ib+` would be resolved to a Cb4 (MIDI pitch number 59).
+
+Another useful feature of scale degrees in Overtone is the `:_` keyword, which you can use to denote rests. Below is an example that uses both note ornament and the `:_` nil value:
+
+```clojure
+(def scale-degrees [:vi :vii :i+ :_ :vii :_ :i+ :vii :vi :_ :vii :_])
+(def pitches (degrees->pitches scale-degrees :dorian :C4))
+
+(defn play [time notes sep]
+  (let [note (first notes)]
+    (when note
+      (at time (saw (midi->hz note))))
+    (let [next-time (+ time sep)]
+      (apply-at next-time play [next-time (rest notes) sep]))))
+```
 *** metronome and sequencing
+**** md of wiki
+Here's an example of how to set up a simple metronome sound, for musical practice. Note that once you define a metronome (one-twenty-bpm in the example below), it will start counting beats.
+
+```clj
+; setup a sound for our metronome to use
+(def kick (sample (freesound-path 2086)))
+
+; setup a tempo for our metronome to use
+(def one-twenty-bpm (metronome 120))
+
+; this function will play our sound at whatever tempo we've set our metronome to 
+(defn looper [nome sound]    
+    (let [beat (nome)]
+        (at (nome beat) (sound))
+        (apply-by (nome (inc beat)) looper nome sound [])))
+
+; turn on the metronome
+(looper one-twenty-bpm kick)
+(stop)
+
+; to get a feel for how the metronome works, try defining one at the REPL
+(def nome (metronome 200))
+(nome)
+; 8 
+; why is this 8? shouldn't it be 1? let's try it again
+(nome)
+;140
+; whoah, it's almost like it's ticking in the background. 
+; it is, in fact, ticking in the background. a "beat" is just convenient way to represent a timestamp.
+; leave your metronome defined at the REPL, and the beat number will steadily increase, even if you aren't
+; using the object for anything.
+```
+
+
 **** get a sample of a kick drum 
   #+BEGIN_SRC clojure :session getting-started
 (def kick (sample (freesound-path 2086)))
@@ -851,7 +1099,90 @@ conv-files
 
   #+RESULTS:
   : 6
-*** pitches and chords
+*** live coding
+**** md
+First define some instruments:
+
+```clj
+(definst kick [freq 120 dur 0.3 width 0.5]
+  (let [freq-env (* freq (env-gen (perc 0 (* 0.99 dur))))
+        env (env-gen (perc 0.01 dur) 1 1 0 1 FREE)
+        sqr (* (env-gen (perc 0 0.01)) (pulse (* 2 freq) width))
+        src (sin-osc freq-env)
+        drum (+ sqr (* env src))]
+    (compander drum drum 0.2 1 0.1 0.01 0.01)))
+
+;(kick)
+
+(definst c-hat [amp 0.8 t 0.04]
+  (let [env (env-gen (perc 0.001 t) 1 1 0 1 FREE)
+        noise (white-noise)
+        sqr (* (env-gen (perc 0.01 0.04)) (pulse 880 0.2))
+        filt (bpf (+ sqr noise) 9000 0.5)]
+    (* amp env filt)))
+
+;(c-hat)
+```
+
+Then you can create a metronome with a specific BPM (beats per minute).  The ```(metronome <bpm>)``` returns a function that can be used to synchronize multiple instruments to the same rhythm.  The metronome remembers the time at which it was started and then when called with no arguments it will return the current beat count.  (i.e. # of beats since the start)  If called with one argument, a beat number, then a metronome function will return the absolute timestamp in milliseconds that that beat will occur.  This timestamp can be used to schedule events at a specific beat.
+
+```clj
+(def metro (metronome 128))
+
+(metro) ; => current beat number
+(metro 100) ; => timestamp of 100th beat
+```
+
+Now that we have everything ready, we can define a function that will recurse through time, each iteration triggering the next beat.  By passing the function to itself using the ```#'player``` type notation we are passing the var `player` rather than the current value of that var.  In this way the new value will be looked up every iteration, which allows us to continually redefine the function as it's playing.  Try commenting out the hi-hat line, or adjusting when it gets triggered, and then re-evaluate the function while it is still playing.
+
+```clj
+(defn player [beat]
+  (at (metro beat) (kick))
+  (at (metro (+ 0.5 beat)) (c-hat))
+  (apply-by (metro (inc beat)) #'player (inc beat) []))
+
+(player (metro))
+```
+
+Change the playback speed by sending a message to metro like this:
+
+```clj
+(metro-bpm metro 120)
+```
+*** swing
+(The rhythm, not the Java GUI toolkit. Sheesh.)
+
+Someone asked at the Clojure West Unjam whether it was possible to have a swing beat instead of the relentless techno OONTZ OONTZ OONTZ.
+
+Why yes, yes it is:
+
+```clj
+(definst c-hat [amp 0.8 t 0.04]
+  (let [env (env-gen (perc 0.001 t) 1 1 0 1 FREE)
+        noise (white-noise)
+        sqr (* (env-gen (perc 0.01 0.04)) (pulse 880 0.2))
+        filt (bpf (+ sqr noise) 9000 0.5)]
+    (* amp env filt)))
+
+
+(definst o-hat [amp 0.8 t 0.5]
+  (let [env (env-gen (perc 0.001 t) 1 1 0 1 FREE)
+        noise (white-noise)
+        sqr (* (env-gen (perc 0.01 0.04)) (pulse 880 0.2))
+        filt (bpf (+ sqr noise) 9000 0.5)]
+    (* amp env filt)))
+
+(defn swinger [beat]
+  (at (metro beat) (o-hat))
+  (at (metro (inc beat)) (c-hat))
+  (at (metro (+ 1.65 beat)) (c-hat))
+  (apply-at (metro (+ 2 beat)) #'swinger (+ 2 beat) []))
+
+; define a metronome at a given tempo, expressed in beats per minute.
+(def metro (metronome 120))
+
+(swinger (metro))
+```
 * interupt output
 #+BEGIN_SRC clojure :session getting-started
 (stop)
@@ -1022,7 +1353,7 @@ conv-files
 
  #+BEGIN_SRC clojure :session getting-started
 (defn piano-dissonances1 [set-type]
-  (doseq [notes (vec (voice-and-transpose-rand-set ; voicing
+  (let [notes (vec (voice-and-transpose-rand-set ; voicing
                  set-type ;*tetrachords* set-type, for instance
                        (rand-int 12)))]
     (play-piano-chord notes)))
@@ -1030,6 +1361,20 @@ conv-files
 
  #+RESULTS:
  : #'post-tonal-overtone.core/piano-dissonances1
+
+#+BEGIN_SRC clojure :session getting-started
+(piano-dissonances1 *pentachords*)
+#+END_SRC
+
+#+RESULTS:
+: nil
+
+#+BEGIN_SRC clojure :session getting-started
+(piano-dissonances1 *hexachords*)
+#+END_SRC
+
+#+RESULTS:
+: nil
 
  #+BEGIN_SRC clojure :session getting-started
 (defn piano-dissonances2 []
