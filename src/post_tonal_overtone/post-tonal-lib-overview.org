@@ -23,7 +23,8 @@ note, that this is for the Babel session for the "getting-started" program
 #+BEGIN_SRC clojure :session getting-started
 (ns post-tonal-overtone.core
   (:use overtone.live
-        overtone.inst.sampled-piano))
+        overtone.inst.sampled-piano
+	clojure.repl)))
 #+END_SRC
 
 #+RESULTS:
@@ -343,6 +344,9 @@ chosen with the above machinery.
  : #'post-tonal-overtone.core/metro
 
 ** define and use a chord progression player
+
+Note that this uses the sine-tetra-diss as a hard-coded 'instrument',
+or rather an instrumentalist.
  # the best one yet
 
  #+BEGIN_SRC clojure :session pt 
