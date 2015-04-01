@@ -1,0 +1,115 @@
+** develop post-tonal contributions to getting started.org
+  #+BEGIN_SRC clojure :session getting-started
+(defn play-piano-chord [a-chord]
+        (doseq [note a-chord] (sampled-piano note)))
+
+(play-piano-chord [60 64 67])
+ #+END_SRC
+
+  #+RESULTS:
+  : #'user/play-piano-chordnil
+
+ #+BEGIN_SRC clojure :session getting-started
+(ns post-tonal-overtone.core)
+ #+END_SRC
+
+ #+BEGIN_SRC clojure :session getting-started
+(load "set-class-data")
+ #+END_SRC
+
+  #+BEGIN_SRC clojure :session getting-started
+(rand-nth *tetrachords*)
+  #+END_SRC 
+
+  #+RESULTS:
+  | 0 | 1 | 2 | 6 |
+
+  #+BEGIN_SRC clojure :session getting-started
+(defn voice-rand-set [set-type]
+  (let [set (rand-nth set-type)
+        voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
+        set-voicing-pair (list set voiced-set)]
+    (do
+      (println set-voicing-pair)
+      set-voicing-pair)))
+  #+END_SRC
+
+  #+RESULTS:
+  : #'post-tonal-overtone.core/voice-rand-set
+
+
+ #+BEGIN_SRC clojure :session getting-started
+(voice-rand-set *tetrachords*)
+ #+END_SRC
+
+ #+RESULTS:
+ |  0 |  2 |  4 |  8 |
+ | 60 | 74 | 52 | 80 |
+
+ #+BEGIN_SRC clojure :session getting-started
+(defn voice-and-transpose-rand-set [set-type tn-level]
+  (let [set (rand-nth set-type)
+        voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
+        transposed-set (map #(+ tn-level %) voiced-set)
+        set-voicing-group (list set voiced-set tn-level transposed-set)]
+    (do
+      (println set-voicing-group)
+      (last set-voicing-group))))
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post-tonal-overtone.core/voice-and-transpose-rand-set
+
+ play-piano-chord will appear to want a vector!
+ #+BEGIN_SRC clojure :session getting-started
+(defn play-piano-chord [a-chord]
+  (doseq [note a-chord] (sampled-piano note)))
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post-tonal-overtone.core/play-piano-chord
+
+
+
+ #+BEGIN_SRC clojure :session getting-started
+(defn piano-dissonances1 [set-type]
+  (let [notes (vec (voice-and-transpose-rand-set ; voicing
+                 set-type ;*tetrachords* set-type, for instance
+                       (rand-int 12)))]
+    (play-piano-chord notes)))
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post-tonal-overtone.core/piano-dissonances1
+
+#+BEGIN_SRC clojure :session getting-started
+(piano-dissonances1 *pentachords*)
+#+END_SRC
+
+#+RESULTS:
+: nil
+
+#+BEGIN_SRC clojure :session getting-started
+(piano-dissonances1 *hexachords*)
+#+END_SRC
+
+#+RESULTS:
+: nil
+
+ #+BEGIN_SRC clojure :session getting-started
+(defn piano-dissonances2 []
+   (let [notes (voice-and-transpose-rand-set ; voicing
+                 *tetrachords* ;set-type, for instance
+                       (rand-int 12))]
+    (play-piano-chord notes)))
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post-tonal-overtone.core/piano-dissonances2
+
+ #+BEGIN_SRC clojure :session getting-started
+(piano-dissonances2 )
+ #+END_SRC
+
+ #+RESULTS:
+ : nil
