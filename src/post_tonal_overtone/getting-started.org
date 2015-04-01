@@ -24,7 +24,7 @@ Kill by ID number, as returned above
 
 #+RESULTS:
 : nil
-** overtone documenation
+** overtone documenation (odoc)
 must be called from the REPL; in babel it simply prints its return
 value, which is nil
 #+BEGIN_SRC clojure :session getting-started
@@ -63,55 +63,62 @@ value, which is nil
 #+RESULTS:
 : #<instrument: baz>#<synth-node[loading]: post-tonal-overtone.core/baz 101>#<synth-node[loading]: post-tonal-overtone.core/baz 102>
 ** changing audio output levels on the fly
+*** (doc ctl)
 #+BEGIN_SRC clojure :session getting-started
 (definst quux [freq 440] (* 0.3 (saw freq)))
 (quux)
 #+END_SRC
 
 #+RESULTS:
-: #<instrument: quux>#<synth-node[loading]: post-tonal-overtone.core/quux 108>
+: #<instrument: quux>#<synth-node[loading]: post-tonal-overtone.core/quux 69>
 
 #+BEGIN_SRC clojure :session getting-started
 (ctl quux :freq 660)
 #+END_SRC
 
 #+RESULTS:
-: #overtone.studio.inst.Inst{:name "quux", :params ({:value #<Atom@70e4cc5f: 440.0>, :name "freq", :default 440.0, :rate :kr}), :args ("freq"), :sdef {:name "post-tonal-overtone.core/quux", :constants [57.0 0.3], :params (440.0), :pnames ({:name "freq", :index 0}), :ugens ({:args nil, :special 0, :name "Control", :rate 1, :inputs (), :rate-name :kr, :n-outputs 1, :id 344, :outputs ({:rate 1}), :n-inputs 0} #<sc-ugen: saw:ar [1]> #<sc-ugen: binary-op-u-gen:ar [2]> #<sc-ugen: out:ar [3]>)}, :group #<synth-group[live]: Inst quux Container 103>, :instance-group #<synth-group[live]: Inst quux 104>, :fx-group #<synth-group[live]: Inst quux FX 105>, :mixer #<synth-node[live]: overtone.stu547/mono-inst-mixer 106>, :bus #<audio-bus: No Name, mono, id 57>, :fx-chain [], :volume #<Atom@78105674: 1.0>, :pan #<Atom@789c1740: 0.0>, :n-chans 1}
-
-#+BEGIN_SRC clojure :session getting-started
+: #overtone.studio.inst.Inst{:name "quux", :params ({:value #<Atom@4fcbc4de: 440.0>, :name "freq", :default 440.0, :rate :kr}), :args ("freq"), :sdef {:name "post-tonal-overtone.core/quux", :constants [53.0 0.3], :params (440.0), :pnames ({:name "freq", :index 0}), :ugens ({:args nil, :special 0, :name "Control", :rate 1, :inputs (), :rate-name :kr, :n-outputs 1, :id 289, :outputs ({:rate 1}), :n-inputs 0} #<sc-ugen: saw:ar [1]> #<sc-ugen: binary-op-u-gen:ar [2]> #<sc-ugen: out:ar [3]>)}, :group #<synth-group[live]: Inst quux Container 64>, :instance-group #<synth-group[live]: Inst quux 65>, :fx-group #<synth-group[live]: Inst quux FX 66>, :mixer #<synth-node[live]: overtone.stu547/mono-inst-mixer 67>, :bus #<audio-bus: No Name, mono, id 53>, :fx-chain [], :volume #<Atom@4637e75a: 1.0>, :pan #<Atom@35e9ba: 0.0>, :n-chans 1}
+*** my mod--use ~rand-nth~ to change pitches using babel
+ #+BEGIN_SRC clojure :session getting-started
 (ctl quux :freq (rand-nth '(330 550 660 825 910)))
-#+END_SRC
+ #+END_SRC
 
-#+RESULTS:
-: #overtone.studio.inst.Inst{:name "quux", :params ({:value #<Atom@16efb063: 440.0>, :name "freq", :default 440.0, :rate :kr}), :args ("freq"), :sdef {:name "post-tonal-overtone.core/quux", :constants [57.0 0.3], :params (440.0), :pnames ({:name "freq", :index 0}), :ugens ({:args nil, :special 0, :name "Control", :rate 1, :inputs (), :rate-name :kr, :n-outputs 1, :id 348, :outputs ({:rate 1}), :n-inputs 0} #<sc-ugen: saw:ar [1]> #<sc-ugen: binary-op-u-gen:ar [2]> #<sc-ugen: out:ar [3]>)}, :group #<synth-group[live]: Inst quux Container 103>, :instance-group #<synth-group[live]: Inst quux 104>, :fx-group #<synth-group[live]: Inst quux FX 105>, :mixer #<synth-node[live]: overtone.stu547/mono-inst-mixer 106>, :bus #<audio-bus: No Name, mono, id 57>, :fx-chain [], :volume #<Atom@52253f58: 1.0>, :pan #<Atom@b61d48a: 0.0>, :n-chans 1}
-** using multiple ugens
+ #+RESULTS:
+ : #overtone.studio.inst.Inst{:name "quux", :params ({:value #<Atom@4fcbc4de: 440.0>, :name "freq", :default 440.0, :rate :kr}), :args ("freq"), :sdef {:name "post-tonal-overtone.core/quux", :constants [53.0 0.3], :params (440.0), :pnames ({:name "freq", :index 0}), :ugens ({:args nil, :special 0, :name "Control", :rate 1, :inputs (), :rate-name :kr, :n-outputs 1, :id 289, :outputs ({:rate 1}), :n-inputs 0} #<sc-ugen: saw:ar [1]> #<sc-ugen: binary-op-u-gen:ar [2]> #<sc-ugen: out:ar [3]>)}, :group #<synth-group[live]: Inst quux Container 64>, :instance-group #<synth-group[live]: Inst quux 65>, :fx-group #<synth-group[live]: Inst quux FX 66>, :mixer #<synth-node[live]: overtone.stu547/mono-inst-mixer 67>, :bus #<audio-bus: No Name, mono, id 53>, :fx-chain [], :volume #<Atom@4637e75a: 1.0>, :pan #<Atom@35e9ba: 0.0>, :n-chans 1}
+** ugens as input values to other ugens
+*** line:kr for crescendo sin-osc:kr for hz modulation
 #+BEGIN_SRC clojure :session getting-started
 (definst trem [freq 440 depth 10 rate 6 length 5]
   (* 0.3
      (line:kr 0 1 length FREE)
      (saw (+ freq (* depth (sin-osc:kr rate))))))
-#+END_SRC
 
-#+RESULTS:
-: #<instrument: trem>
-
-#+BEGIN_SRC clojure :session getting-started
 (trem)
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: post-tonal-overtone.core/trem 113>
+: #<instrument: trem>#<synth-node[loading]: post-tonal-overtone.core/trem 75>
+
 
 #+BEGIN_SRC clojure :session getting-started
 (trem 200 60 0.8)
 #+END_SRC
 
+#+RESULTS:
+: #<synth-node[loading]: post-tonal-overtone.core/trem 76>
+
 #+BEGIN_SRC clojure :session getting-started
 (trem 60 30 0.2)
 #+END_SRC
+*** using ~linen~ for envelope generation
+#+BEGIN_SRC clojure :session getting-started
+(linen 1.0 0.01 1.0 1.0 0)
+#+END_SRC
+
+
 
 #+RESULTS:
-: #<synth-node[loading]: post-tonal-overtone.core/trem 121>
+: #<synth-node[loading]: post-tonal-overtone.core/trem 77>
 * oscillators wiki
 ** half-second examples of various wave types
 These are all very short examples of these sounds. Why so short? Or
@@ -122,8 +129,6 @@ the output of ~sin-osc~ and ~vol~
 
 We'll look at this in a dedicated 'envelopes' section.
 *** sin wave
-
-
  #+BEGIN_SRC clojure :session getting-started
 (definst sin-wave [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
   (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
@@ -134,7 +139,7 @@ We'll look at this in a dedicated 'envelopes' section.
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: sin-wave>
+ : #<instrument: sin-wave>#<synth-node[loading]: post-tonal-overtone915/sin-wave 82>
 *** saw wave
  #+BEGIN_SRC clojure :session getting-started
 (definst saw-wave [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
@@ -146,7 +151,7 @@ We'll look at this in a dedicated 'envelopes' section.
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: saw-wave>#<synth-node[loading]: post-tonal-overtone915/saw-wave 45>
+ : #<instrument: saw-wave>#<synth-node[loading]: post-tonal-overtone915/saw-wave 87>
 *** square-wave
  #+BEGIN_SRC clojure :session getting-started
 (definst square-wave [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
@@ -158,7 +163,7 @@ We'll look at this in a dedicated 'envelopes' section.
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: square-wave>#<synth-node[loading]: post-tonal-overt915/square-wave 50>
+ : #<instrument: square-wave>#<synth-node[loading]: post-tonal-overt915/square-wave 92>
 *** pink noise
  #+BEGIN_SRC clojure :session getting-started
 (definst noisey [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
@@ -171,7 +176,7 @@ We'll look at this in a dedicated 'envelopes' section.
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: noisey>#<synth-node[loading]: post-tonal-overtone.c915/noisey 55>
+ : #<instrument: noisey>#<synth-node[loading]: post-tonal-overtone.c915/noisey 97>
 *** triangle-wave
  #+BEGIN_SRC clojure :session getting-started
 (definst triangle-wave [freq 440 attack 0.01 sustain 0.1 release 0.4 vol 0.4] 
@@ -184,7 +189,7 @@ We'll look at this in a dedicated 'envelopes' section.
 
 
  #+RESULTS:
- : #<instrument: triangle-wave>#<synth-node[loading]: post-tonal-ove915/triangle-wave 60>
+ : #<instrument: triangle-wave>#<synth-node[loading]: post-tonal-ove915/triangle-wave 102>
 ** using the output of ugens as the arguments
 Aside from giving static numeric values as arguments for frequency,
 amplitude and the other parameters you typically control, you might
@@ -208,7 +213,7 @@ to some pattern or system.
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: spooky-house>#<synth-node[loading]: post-tonal-over915/spooky-house 40>
+ : #<instrument: spooky-house>#<synth-node[loading]: post-tonal-over915/spooky-house 109>
 
  #+BEGIN_SRC clojure :session getting-started
 (spooky-house :width 0.1)
@@ -219,7 +224,7 @@ to some pattern or system.
  #+END_SRC
 
  #+RESULTS:
- : #<synth-node[loading]: post-tonal-over915/spooky-house 41>
+ : #<synth-node[loading]: post-tonal-over915/spooky-house 110>
 *** wavetable synthesis
 **** No examples of this
 
@@ -228,7 +233,7 @@ to some pattern or system.
 
   Great, thanks.
 **** experiments
-***** lf-noise
+***** [#A] lf-noise
  #+BEGIN_SRC clojure :session getting-started
 (definst my-dynamic [freq 440 width 0.2
                        attack 0.3 sustain 4
@@ -241,7 +246,7 @@ to some pattern or system.
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: my-dynamic>#<synth-node[loading]: post-tonal-overto915/my-dynamic 46>
+ : #<instrument: my-dynamic>#<synth-node[loading]: post-tonal-overto915/my-dynamic 115>
 
 #+BEGIN_SRC  clojure :session getting-started
 (my-dynamic)
@@ -254,13 +259,15 @@ to some pattern or system.
 ** linear filters
 Overtone comes with a number of standard linear filters: lpf, hpf, and
 bpf are low-pass, high-pass and band-pass filters respectively.
-
-
+*** use mouse-x interactively
 #+BEGIN_SRC clojure :session getting-started
 (demo 10 (lpf (saw 100) (mouse-x 40 5000 EXP)))
 ;; low-pass; move the mouse left and right to change the threshold frequency
 
 #+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: post-tonal-ov915/audition-synth 127>
 
 #+BEGIN_SRC clojure :session getting-started
 (demo 10 (hpf (saw 100) (mouse-x 40 5000 EXP)))
@@ -269,7 +276,7 @@ bpf are low-pass, high-pass and band-pass filters respectively.
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: post-tonal-ov915/audition-synth 157>
+: #<synth-node[loading]: post-tonal-ov915/audition-synth 128>
 
 #+BEGIN_SRC clojure :session getting-started
 (demo 30 (bpf (saw 100) (mouse-x 40 5000 EXP) (mouse-y 0.01 1 LIN)))
@@ -322,7 +329,7 @@ periodic.
 #+END_SRC
 
 #+RESULTS:
-: #<synth: sin-square>#<synth-node[loading]: post-tonal-overto915/sin-square 333>
+: #<synth: sin-square>#<synth-node[loading]: post-tonal-overto915/sin-square 125>
 ** multichannel expansion
 
 Passing a collection to a ugen where a single argument is expected.
@@ -874,4 +881,106 @@ Ultramarine - This Time Last Year 2013 320kbps CBR MP3 [VX] [P2PDL]
  #+END_SRC
 
  #+RESULTS:
+
+* 
+ #+BEGIN_SRC clojure :session getting-started
+(defn play-piano-chord [a-chord]
+        (doseq [note a-chord] (sampled-piano note)))
+
+(play-piano-chord [60 64 67])
+#+END_SRC
+
+ #+RESULTS:
+ : #'user/play-piano-chordnil
+
+#+BEGIN_SRC clojure :session getting-started
+(ns post-tonal-overtone.core)
+#+END_SRC
+
+#+BEGIN_SRC clojure :session getting-started
+(load "set-class-data")
+#+END_SRC
+
+ #+BEGIN_SRC clojure :session getting-started
+(rand-nth *tetrachords*)
+ #+END_SRC 
+
+ #+RESULTS:
+ | 0 | 1 | 2 | 6 |
+
+ #+BEGIN_SRC clojure :session getting-started
+(defn voice-rand-set [set-type]
+  (let [set (rand-nth set-type)
+        voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
+        set-voicing-pair (list set voiced-set)]
+    (do
+      (println set-voicing-pair)
+      set-voicing-pair)))
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post-tonal-overtone.core/voice-rand-set
+
+
+#+BEGIN_SRC clojure :session getting-started
+(voice-rand-set *tetrachords*)
+#+END_SRC
+
+#+RESULTS:
+|  0 |  2 |  4 |  8 |
+| 60 | 74 | 52 | 80 |
+
+#+BEGIN_SRC clojure :session getting-started
+(defn voice-and-transpose-rand-set [set-type tn-level]
+  (let [set (rand-nth set-type)
+        voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
+        transposed-set (map #(+ tn-level %) voiced-set)
+        set-voicing-group (list set voiced-set tn-level transposed-set)]
+    (do
+      (println set-voicing-group)
+      (last set-voicing-group))))
+#+END_SRC
+
+#+RESULTS:
+: #'post-tonal-overtone.core/voice-and-transpose-rand-set
+
+play-piano-chord will appear to want a vector!
+#+BEGIN_SRC clojure :session getting-started
+(defn play-piano-chord [a-chord]
+  (doseq [note a-chord] (sampled-piano note)))
+#+END_SRC
+
+#+RESULTS:
+: #'post-tonal-overtone.core/play-piano-chord
+
+
+
+#+BEGIN_SRC clojure :session getting-started
+(defn piano-dissonances1 [set-type]
+  (doseq [notes (vec (voice-and-transpose-rand-set ; voicing
+                 set-type ;*tetrachords* set-type, for instance
+                       (rand-int 12)))]
+    (play-piano-chord notes)))
+#+END_SRC
+
+#+RESULTS:
+: #'post-tonal-overtone.core/piano-dissonances1
+
+#+BEGIN_SRC clojure :session getting-started
+(defn piano-dissonances2 []
+   (let [notes (voice-and-transpose-rand-set ; voicing
+                 *tetrachords* ;set-type, for instance
+                       (rand-int 12))]
+    (play-piano-chord notes)))
+#+END_SRC
+
+#+RESULTS:
+: #'post-tonal-overtone.core/piano-dissonances2
+
+#+BEGIN_SRC clojure :session getting-started
+(piano-dissonances2 )
+#+END_SRC
+
+#+RESULTS:
+: nil
 
