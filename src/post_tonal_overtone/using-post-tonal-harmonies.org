@@ -1,4 +1,5 @@
-** develop post-tonal contributions to getting started.org
+* develop post-tonal contributions to getting started.org
+** building the dissonant piano player
   #+BEGIN_SRC clojure :session getting-started
 (defn play-piano-chord [a-chord]
         (doseq [note a-chord] (sampled-piano note)))
@@ -113,3 +114,7 @@
 
  #+RESULTS:
  : nil
+** making him play in time
+#+BEGIN_SRC clojure :session getting-started
+(def metro (metronome 60))
+#+END_SRC
