@@ -116,5 +116,16 @@
  : nil
 ** making him play in time
 #+BEGIN_SRC clojure :session getting-started
-(def metro (metronome 60))
+(def metro (metronome 40))
+
+(defn play-piano-dissonances2 [nome]
+  (let [beat (nome)]
+    (at (nome beat) (piano-dissonances2))
+    (apply-at (nome (inc beat)) play-piano-dissonances2 nome [])))
+
+(chord-progression-time8 metro)
 #+END_SRC
+
+#+RESULTS:
+: #'post-tonal-overtone.core/metro#'post-tonal-overtone.core/chord-progression-time8#<ScheduledJob id: 1, created-at: Wed 07:12:03s, initial-delay: 2992, desc: "Overtone delayed fn", scheduled? true>
+
