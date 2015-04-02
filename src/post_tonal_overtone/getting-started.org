@@ -61,14 +61,26 @@ If you see any errors/issues/omissions, please feel free to fix/add things - we'
 
 * copying from overtone getting-started github wiki
 ** define, start and kill a synth
+first, maybe set a name-space
+ #+BEGIN_SRC clojure :session getting-started
+(ns post-tonal-overtone.core)
+(use 'overtone.live)
+ #+END_SRC
+
+ #+RESULTS:
+ : nilnil
+
 #+BEGIN_SRC clojure :session getting-started
 (definst foo [] (saw 220))
+
+(foo)
 #+END_SRC
 
 #+RESULTS:
+: #<instrument: foo>#<synth-node[loading]: post-tonal-overtone.core/foo 51>
 
 #+BEGIN_SRC clojure :session getting-started
-(foo)
+(stop)
 #+END_SRC
 
 #+RESULTS:
@@ -122,7 +134,7 @@ value, which is nil
 #+END_SRC
 
 #+RESULTS:
-: #<instrument: baz>#<synth-node[loading]: post-tonal-overtone.core/baz 101>#<synth-node[loading]: post-tonal-overtone.core/baz 102>
+: #<instrument: baz>#<synth-node[loading]: post-tonal-overtone.core/baz 60>#<synth-node[loading]: post-tonal-overtone.core/baz 61>
 ** changing audio output levels on the fly
 *** (doc ctl)
 #+BEGIN_SRC clojure :session getting-started
@@ -131,23 +143,31 @@ value, which is nil
 #+END_SRC
 
 #+RESULTS:
-: #<instrument: quux>#<synth-node[loading]: post-tonal-overtone.core/quux 69>
+: #<instrument: quux>#<synth-node[loading]: post-tonal-overtone.core/quux 67>
 
 #+BEGIN_SRC clojure :session getting-started
 (ctl quux :freq 660)
 #+END_SRC
 
 #+RESULTS:
-: #overtone.studio.inst.Inst{:name "quux", :params ({:value #<Atom@4fcbc4de: 440.0>, :name "freq", :default 440.0, :rate :kr}), :args ("freq"), :sdef {:name "post-tonal-overtone.core/quux", :constants [53.0 0.3], :params (440.0), :pnames ({:name "freq", :index 0}), :ugens ({:args nil, :special 0, :name "Control", :rate 1, :inputs (), :rate-name :kr, :n-outputs 1, :id 289, :outputs ({:rate 1}), :n-inputs 0} #<sc-ugen: saw:ar [1]> #<sc-ugen: binary-op-u-gen:ar [2]> #<sc-ugen: out:ar [3]>)}, :group #<synth-group[live]: Inst quux Container 64>, :instance-group #<synth-group[live]: Inst quux 65>, :fx-group #<synth-group[live]: Inst quux FX 66>, :mixer #<synth-node[live]: overtone.stu547/mono-inst-mixer 67>, :bus #<audio-bus: No Name, mono, id 53>, :fx-chain [], :volume #<Atom@4637e75a: 1.0>, :pan #<Atom@35e9ba: 0.0>, :n-chans 1}
+: #overtone.studio.inst.Inst{:name "quux", :params ({:value #<Atom@e6e57d1: 440.0>, :name "freq", :default 440.0, :rate :kr}), :args ("freq"), :sdef {:name "post-tonal-overtone.core/quux", :constants [54.0 0.3], :params (440.0), :pnames ({:name "freq", :index 0}), :ugens ({:args nil, :special 0, :name "Control", :rate 1, :inputs (), :rate-name :kr, :n-outputs 1, :id 316, :outputs ({:rate 1}), :n-inputs 0} #<sc-ugen: saw:ar [1]> #<sc-ugen: binary-op-u-gen:ar [2]> #<sc-ugen: out:ar [3]>)}, :group #<synth-group[live]: Inst quux Container 62>, :instance-group #<synth-group[live]: Inst quux 63>, :fx-group #<synth-group[live]: Inst quux FX 64>, :mixer #<synth-node[live]: overtone.stu547/mono-inst-mixer 65>, :bus #<audio-bus: No Name, mono, id 54>, :fx-chain [], :volume #<Atom@19b9d7c: 1.0>, :pan #<Atom@f8038b7: 0.0>, :n-chans 1}
 *** my mod--use ~rand-nth~ to change pitches using babel
+#+BEGIN_SRC clojure :session getting-started
+(definst quux [freq 440] (* 0.3 (saw freq)))
+(quux)
+#+END_SRC
+
+#+RESULTS:
+: #<instrument: quux>#<synth-node[loading]: post-tonal-overtone.core/quux 68>
+
  #+BEGIN_SRC clojure :session getting-started
 (ctl quux :freq (rand-nth '(330 550 660 825 910)))
  #+END_SRC
 
  #+RESULTS:
- : #overtone.studio.inst.Inst{:name "quux", :params ({:value #<Atom@4fcbc4de: 440.0>, :name "freq", :default 440.0, :rate :kr}), :args ("freq"), :sdef {:name "post-tonal-overtone.core/quux", :constants [53.0 0.3], :params (440.0), :pnames ({:name "freq", :index 0}), :ugens ({:args nil, :special 0, :name "Control", :rate 1, :inputs (), :rate-name :kr, :n-outputs 1, :id 289, :outputs ({:rate 1}), :n-inputs 0} #<sc-ugen: saw:ar [1]> #<sc-ugen: binary-op-u-gen:ar [2]> #<sc-ugen: out:ar [3]>)}, :group #<synth-group[live]: Inst quux Container 64>, :instance-group #<synth-group[live]: Inst quux 65>, :fx-group #<synth-group[live]: Inst quux FX 66>, :mixer #<synth-node[live]: overtone.stu547/mono-inst-mixer 67>, :bus #<audio-bus: No Name, mono, id 53>, :fx-chain [], :volume #<Atom@4637e75a: 1.0>, :pan #<Atom@35e9ba: 0.0>, :n-chans 1}
+ : #overtone.studio.inst.Inst{:name "quux", :params ({:value #<Atom@28d94910: 440.0>, :name "freq", :default 440.0, :rate :kr}), :args ("freq"), :sdef {:name "post-tonal-overtone.core/quux", :constants [54.0 0.3], :params (440.0), :pnames ({:name "freq", :index 0}), :ugens ({:args nil, :special 0, :name "Control", :rate 1, :inputs (), :rate-name :kr, :n-outputs 1, :id 320, :outputs ({:rate 1}), :n-inputs 0} #<sc-ugen: saw:ar [1]> #<sc-ugen: binary-op-u-gen:ar [2]> #<sc-ugen: out:ar [3]>)}, :group #<synth-group[live]: Inst quux Container 62>, :instance-group #<synth-group[live]: Inst quux 63>, :fx-group #<synth-group[live]: Inst quux FX 64>, :mixer #<synth-node[live]: overtone.stu547/mono-inst-mixer 65>, :bus #<audio-bus: No Name, mono, id 54>, :fx-chain [], :volume #<Atom@514bce63: 1.0>, :pan #<Atom@47daef47: 0.0>, :n-chans 1}
 ** ugens as input values to other ugens
-*** line:kr for crescendo sin-osc:kr for hz modulation
+*** line:kr for crescendo; sin-osc:kr for hz modulation
 #+BEGIN_SRC clojure :session getting-started
 (definst trem [freq 440 depth 10 rate 6 length 5]
   (* 0.3
@@ -158,7 +178,7 @@ value, which is nil
 #+END_SRC
 
 #+RESULTS:
-: #<instrument: trem>#<synth-node[loading]: post-tonal-overtone.core/trem 75>
+: #<instrument: trem>#<synth-node[loading]: post-tonal-overtone.core/trem 73>
 
 
 #+BEGIN_SRC clojure :session getting-started
@@ -166,11 +186,25 @@ value, which is nil
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: post-tonal-overtone.core/trem 76>
+: #<synth-node[loading]: post-tonal-overtone.core/trem 74>
 
 #+BEGIN_SRC clojure :session getting-started
 (trem 60 30 0.2)
 #+END_SRC
+*** white-noise:kr as hz modulator
+#+BEGIN_SRC clojure :session getting-started
+(definst sin-noise [freq 440 depth 50 length 10]
+  (* 0.3
+     (line:kr 0 1 length FREE)
+     (sin-osc (+ freq (* depth (white-noise:kr))))))
+
+;;(doseq [note [200 300 400 500 600 700 800]] (sin-noise note))
+(doseq [note [440 810]] (sin-noise note))
+#+END_SRC
+
+#+RESULTS:
+: #<instrument: sin-noise>nil
+
 *** using ~linen~ for envelope generation
 #+BEGIN_SRC clojure :session getting-started
 (linen 1.0 0.01 1.0 1.0 0)
@@ -868,11 +902,15 @@ conv-files
   (recording-stop)
 ** making music
 *** pitches and chords
+
 Here's an example on how you can play notes and chords in Overtone.
 
 Much of this can be seen in [the code](https://github.com/overtone/overtone/blob/master/src/overtone/examples/getting_started/video.clj) that corresponds with the [Overtone Live Coding video overview](http://vimeo.com/22798433).
 
 ```clj
+#+BEGIN_SRC clojure
+
+
 ;; We use a saw-wave that we defined in the oscillators tutorial
 (definst saw-wave [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
   (* (env-gen (env-lin attack sustain release) 1 1 0 1 FREE)
@@ -954,6 +992,7 @@ Much of this can be seen in [the code](https://github.com/overtone/overtone/blob
   (apply-at (m (+ 16 beat-num)) chord-progression-beat m (+ 16 beat-num) [])
 )
 (chord-progression-beat metro (metro))
+#+END_SRC
 ```
 *** scales and scale degrees
 [Scales](https://en.wikipedia.org/wiki/Scale_%28music%29) can be quickly generated using the `scale` function, which takes a root note and the type of scale as arguments.
@@ -1004,6 +1043,9 @@ Another useful feature of scale degrees in Overtone is the `:_` keyword, which y
 Here's an example of how to set up a simple metronome sound, for musical practice. Note that once you define a metronome (one-twenty-bpm in the example below), it will start counting beats.
 
 ```clj
+#+BEGIN_SRC clojure
+
+
 ; setup a sound for our metronome to use
 (def kick (sample (freesound-path 2086)))
 
@@ -1031,6 +1073,7 @@ Here's an example of how to set up a simple metronome sound, for musical practic
 ; it is, in fact, ticking in the background. a "beat" is just convenient way to represent a timestamp.
 ; leave your metronome defined at the REPL, and the beat number will steadily increase, even if you aren't
 ; using the object for anything.
+#+END_SRC
 ```
 
 
@@ -1099,6 +1142,72 @@ Here's an example of how to set up a simple metronome sound, for musical practic
 
   #+RESULTS:
   : 6
+**** understanding 'at' and 'apply-at'
+from ~overtone/sc/server.clj~ and
+~overtone/music/time~, respectively
+***** at
+overtone.live/at
+([time-ms & body])
+Macro
+  Schedule server communication - specify that communication messages
+   execute on the server at a specific time in the future:
+
+   ;; control synth foo to change :freq to 150
+   ;; one second from now:
+   (at (+ (now) 1000) (ctl foo :freq 150))
+
+   Only affects code that communicates with the server using OSC
+   messaging i.e. synth triggering and control. All code in the body of
+   the at macro is executed immediately. Any OSC messages which are
+   triggered as a result of executing the body are not immediately sent
+   but are instead captured and then sent in a single OSC bundle with
+   the specified timestamp once the body has completed. The server then
+   stores these bundles and executes them at the specified time. This
+   allows you to schedule the triggering and control of synths for
+   specific times.
+
+   The bundling is thread-local, so you don't have to worry about
+   accidentally scheduling packets into a bundle started on another
+   thread.
+
+   Be careful not to confuse at with apply-at and apply-by which
+   directly affect Clojure code.
+
+   Warning, all liveness and 'node blocking when not ready' checks are
+   disabled within the context of this macro. This means that it will
+   fail silently if a server node you wish to control either has been
+   since terminated or not had time to be initialised.
+***** apply-at
+overtone.live/apply-at
+([ms-time f args* argseq])
+  Scheduled function appliction. Works identically to apply, except
+   that it takes an additional initial argument: ms-time. If ms-time is
+   in the future, function application is delayed until that time, if
+   ms-time is in the past function application is immediate.
+
+   If you wish to apply slightly before specific time rather than
+   exactly at it, see apply-by.
+
+   Can be used to implement the 'temporal recursion' pattern. This is
+   where a function has a call to apply-at at its tail:
+
+   (defn foo
+     [t val]
+     (println val)
+     (let [next-t (+ t 200)]
+       (apply-at next-t #'foo [next-t (inc val)])))
+
+   (foo (now) 0) ;=> 0, 1, 2, 3...
+
+   The fn foo is written in a recursive style, yet the recursion is
+   scheduled for application 200ms in the future. By passing a function
+   using #'foo syntax instead of the symbole foo, when later called by
+   the scheduler it will lookup based on the symbol rather than using
+   the instance of the function defined earlier. This allows us to
+   redefine foo whilst the temporal recursion is continuing to execute.
+
+   To stop an executing temporal recursion pattern, either redefine the
+   function to not call itself, or use (stop).
 *** live coding
 **** md
 First define some instruments:
@@ -1278,7 +1387,6 @@ Why yes, yes it is:
 
   #+RESULTS:
 
-
 * hacking overtone--where do functions come from?
 
 ** md
@@ -1303,4 +1411,98 @@ user=> (meta #'overtone.core/metronome)
 ```
 
 or you could just grep for it.
+
+* chris ford--clojure cookbook example
+** Solution
+Use Overtone to bring the song to life.
+
+Before starting, add [overtone "0.8.1"] to your project’s dependencies
+or start a REPL using lein-try:[10]
+
+
+$ lein try overtone
+
+To start, define the melody for an old children’s song:
+
+#+BEGIN_SRC clojure
+(require '[overtone.live :as overtone])
+(defn note [timing pitch] {:time timing :pitch pitch})
+(def melody (let [pitches
+                  [0 0 0 1 2 ; Row, row, row your boat,
+                   2 1 2 3 4 ; Gently down the stream,
+                   7 7 7 4 4 4 2 2 2 0 0 0 ; (take 4 (repeat "merrily"))
+                   4 3 2 1 0] ; Life is but a dream!
+                  durations [1 1 2/3 1/3 1
+                             2/3 1/3 2/3 1/3 2
+                             1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3
+                             2/3 1/3 2/3 1/3 2]
+                  times (reductions + 0 durations)]
+              (map note times pitches)))
+melody
+;; -> ({:time 0, :pitch 0} ; Row, ;; {:time 1, :pitch 0} ; row, ;; {:time 2, :pitch 0} ; row ;; {:time 8/3, :pitch 1} ; your ;; {:time 3N, :pitch 2} ; boat ;; ...)
+#+END_SRC
+
+Convert the piece into a specific key by transforming each note’s
+pitch using a function that represents the key:
+
+
+#+BEGIN_SRC clojure
+(defn where [k f notes]
+  (map #(update-in % [k] f) notes))
+
+(defn scale [intervals] (fn [degree] (apply + (take degree intervals))))
+
+(def major (scale [2 2 1 2 2 2 1]))
+
+(defn from [n] (partial + n))
+
+(def A (from 69))
+
+(->> melody (where :pitch (comp A major)))
+;; -> ({:time 0, :pitch 69} ; Row, ;; {:time 1, :pitch 69} ; row, ;; ...)
+#+END_SRC
+
+Convert the piece into a specific tempo by transforming each note’s
+time using a function that represents the tempo:
+
+
+#+BEGIN_SRC clojure
+(defn bpm [beats] (fn [beat] (/ (* beat 60 1000) beats)))
+
+(->> melody
+     (where :time (comp (from (overtone/now)) (bpm 90))))
+;; -> ({:time 1383316072169, :pitch 0} ;; {:time 4149948218507/3, :pitch 0} ;; ...)
+#+END_SRC
+
+Now, define an instrument and use it to play the melody. The
+following example synthesized instrument is a simple sine wave, whose
+amplitude and duration are controlled by an envelope:
+
+
+#+BEGIN_SRC clojure
+(require '[overtone.live :refer [definst line sin-osc FREE midi->hz at]])
+
+(definst beep [freq 440] (let [envelope (line 1 0 0.5 :action FREE)] (* envelope (sin-osc freq))))
+
+(defn play [notes] (doseq [{ms :time midi :pitch} notes] (at ms (beep (midi->hz midi)))))
+
+;; Make sure your speakers are on...
+(->> melody (where :pitch (comp A major)) (where :time (comp (from (overtone/now)) (bpm 90))) play)
+;; -> <music playing on your speakers>
+#+END_SRC
+
+If your nursery rhyme is a round, like “Row, Row, Row Your Boat,” you
+can use it to accompany itself:
+
+
+#+BEGIN_SRC clojure
+(defn round [beats notes]
+  (concat notes (->> notes (where :time (from beats)))))
+
+(->> melody
+     (round 4)
+     (where :pitch (comp A major))
+     (where :time (comp (from (overtone/now)) (bpm 90)))
+     play)
+#+END_SRC
 
