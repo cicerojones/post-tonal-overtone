@@ -1,4 +1,4 @@
-* starting-up
+* starting-up--basics
 ** namespaces
 *** simple
  You'll discover that it is good practice to define a namespace at the
@@ -30,8 +30,6 @@ note, that this is for the Babel session for the "getting-started" program
 #+RESULTS:
 : nil
 
-
-
 ** load your library (at least overtone.live)
 Does this code cause nREPL to time out for some reason?
  #+BEGIN_SRC clojure :session pt 
@@ -53,17 +51,9 @@ Does this code cause nREPL to time out for some reason?
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: noisey2>
+ : #<instrument: noisey2>#<synth-node[loading]: post-tonal-overtone.915/noisey2 110>
 
-** play white noise
- #+BEGIN_SRC clojure :session pt 
-(noisey2)
- #+END_SRC
-
- #+RESULTS:
- : #<synth-node[loading]: overtone.examples.co490/noisey2 1143>
-
-* developing sounds
+* producing basic sounds
 ** play long white noise
 *** example
   #+BEGIN_SRC clojure :session pt 
@@ -71,7 +61,7 @@ Does this code cause nREPL to time out for some reason?
   #+END_SRC
 
   #+RESULTS:
-  : #<synth-node[loading]: post-tonal-overtone.915/noisey2 358>
+  : #<synth-node[loading]: post-tonal-overtone.915/noisey2 111>
 *** development
 The template and keywords that go with definst:
 
@@ -82,25 +72,6 @@ The template and keywords that go with definst:
      vol))
  #+END_SRC
 
-  #+BEGIN_SRC clojure :session pt 
-(noisey2 :attack 0.15 
-         :sustain 0.2
-         :release 0.3
-         :vol 0.3
-         :length 10)
-  #+END_SRC
-*** arguments for an env-gen
- #+BEGIN_SRC clojure :session pt 
-(definst noisey2 [attack 0.01 sustain 0.4 release 0.1 vol 0.4 length 3] 
-  (* (env-gen (lin attack sustain release)
-              1
-              1
-              0
-              length
-              FREE)
-     (pink-noise) ; also have (white-noise) and others...
-     vol))
- #+END_SRC
 
 ** define constant pink noise
  #+BEGIN_SRC clojure :session pt 
@@ -117,7 +88,7 @@ The template and keywords that go with definst:
  #+END_SRC
 
  #+RESULTS:
- : #<synth-node[loading]: post-tonal-915/noisey-sustained 363>
+ : #<synth-node[loading]: post-tonal-915/noisey-sustained 116>
 
  #+BEGIN_SRC clojure :session pt 
 (stop)
@@ -131,61 +102,17 @@ The template and keywords that go with definst:
 
 note, this will only work if...you are in the proper namespace. What
 that really means is...
-
-
+*** pt babel session
  #+BEGIN_SRC clojure :session pt 
 (load "set-class-data")
  #+END_SRC
 
  #+RESULTS:
  : nil
-
-
-
-#+BEGIN_SRC clojure :session getting-started
-(load "set-class-data")
+vs.
+#+BEGIN_SRC clojure :session 
+"/Users/a/git-projects/post_tonal_overtone/src/post_tonal_overtone/set-class-data.clj"
 #+END_SRC
-
-#+RESULTS:
-: nil
-
- #+BEGIN_SRC clojure :session pt 
-(rand-nth *tetrachords*)
- #+END_SRC 
-
- #+RESULTS:
- | 0 | 2 | 4 | 7 |
-
- note that the following functions will print out, to both the
- cider-repl and the lein terminal repl, apparently
-
- For some reason, I had to define voice-rand-set right in the REPL,
- rather than with the .org babel version
-
-
- #+BEGIN_SRC clojure :session pt 
-(defn voice-rand-set [set-type]
-  (let [set (rand-nth set-type)
-        voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
-        set-voicing-pair (list set voiced-set)]
-    (do
-      (println set-voicing-pair)
-      set-voicing-pair)))
- #+END_SRC
-
- #+RESULTS:
- : #'post-tonal-overtone.core/voice-rand-set
-
- #+BEGIN_SRC clojure :session pt 
-(voice-rand-set *tetrachords*)
- #+END_SRC
-
- #+RESULTS:
- |  0 |  1 |  3 |  7 |
- | 48 | 37 | 51 | 55 |
-
- What the fuck is going on here? It is quite nice actually, with the
- org-babel results, becuase of the way lists are aligned into the table!
 
 ** make a function to work with sets
  #+BEGIN_SRC clojure :session pt 

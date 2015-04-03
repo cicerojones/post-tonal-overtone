@@ -77,14 +77,14 @@ first, maybe set a name-space
 #+END_SRC
 
 #+RESULTS:
-: #<instrument: foo>#<synth-node[loading]: post-tonal-overtone.core/foo 51>
+: #<instrument: foo>#<synth-node[loading]: post-tonal-overtone.core/foo 35>
 
 #+BEGIN_SRC clojure :session getting-started
 (stop)
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: overtone.examples.gettin2c1/foo 130>
+: nil
 
 Kill by ID number, as returned above
 #+BEGIN_SRC clojure :session getting-started
@@ -106,7 +106,7 @@ value, which is nil
 
 #+RESULTS:
 : nil
-** giving argument when defining synths with definst
+** providing arguments when defining synths with definst
 #+BEGIN_SRC clojure :session getting-started
 (definst bar [freq 220] (saw freq))
 #+END_SRC
@@ -192,6 +192,7 @@ value, which is nil
 (trem 60 30 0.2)
 #+END_SRC
 *** white-noise:kr as hz modulator
+**** simple version
 #+BEGIN_SRC clojure :session getting-started
 (definst sin-noise [freq 440 depth 50 length 10]
   (* 0.3
@@ -204,17 +205,63 @@ value, which is nil
 
 #+RESULTS:
 : #<instrument: sin-noise>nil
+**** 60 second version, depth of 100
+#+BEGIN_SRC clojure :session getting-started
+(definst sin-noise [freq 440 depth 100 length 60]
+  (* 0.3
+     (line:kr 0 1 length FREE)
+     (sin-osc (+ freq (* depth (white-noise:kr))))))
+
+;;(doseq [note [200 300 400 500 600 700 800]] (sin-noise note))
+(doseq [note (map #(+ % 400 ) (repeatedly 10 (partial rand-int 100)))] (sin-noise note))
+#+END_SRC
+
+#+RESULTS:
+: #<instrument: sin-noise>nil
+**** call sin-noise in a noise-cloud
+#+BEGIN_SRC clojure :session getting-started
+(definst sin-noise [freq 440 depth 100 length 60]
+  (* 0.3
+     (line:kr 0 1 length FREE)
+     (sin-osc (+ freq (* depth (white-noise:kr))))))
+
+
+(defn sin-noise-cloud1 [hz-level hz-span pitches]
+  (doseq [note (map #(+ % hz-level) (repeatedly pitches (partial rand-int hz-span)))]
+    (sin-noise note)))
+
+(sin-noise-cloud1 400 1000 5)
+#+END_SRC
+
+#+RESULTS:
+: #<instrument: sin-noise>
+
+**** give noise-cloud a proper envelope
+#+BEGIN_SRC clojure :session getting-started
+(definst sin-noise-env [freq 440 depth 10 length 60]
+  (* 0.3
+     (env-gen (lin 0 0.8 0.2) 1 1 0 10 FREE)
+     (sin-osc (+ freq (* depth (white-noise:kr))))))
+
+
+(defn sin-noise-cloud2 [hz-level hz-span pitches]
+  (doseq [note (map #(+ % hz-level) (repeatedly pitches (partial rand-int hz-span)))]
+    (sin-noise-env note)))
+
+(sin-noise-cloud2 400 1000 5)
+#+END_SRC
+
+#+RESULTS:
+: #<instrument: sin-noise-env>#'post-tonal-overtone.core/sin-noise-cloud2nil
 
 *** using ~linen~ for envelope generation
 #+BEGIN_SRC clojure :session getting-started
 (linen 1.0 0.01 1.0 1.0 0)
 #+END_SRC
 
-
-
 #+RESULTS:
-: #<synth-node[loading]: post-tonal-overtone.core/trem 77>
-* contents sections
+: #<sc-ugen: linen:kr [0]>
+* actual code contents: sections
 ** synthesis
 *** oscillators
 **** half-second examples of various wave types
@@ -236,7 +283,7 @@ value, which is nil
    #+END_SRC
 
    #+RESULTS:
-   : #<instrument: sin-wave>#<synth-node[loading]: post-tonal-overtone915/sin-wave 82>
+   : #<instrument: sin-wave>#<synth-node[loading]: post-tonal-overtone915/sin-wave 803>
 ***** saw wave
    #+BEGIN_SRC clojure :session getting-started
 (definst saw-wave [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
@@ -902,63 +949,90 @@ conv-files
   (recording-stop)
 ** making music
 *** pitches and chords
+**** Here's an example on how you can play notes and chords in Overtone.
 
-Here's an example on how you can play notes and chords in Overtone.
+ Much of this can be seen in 
+ [the code]
+ (https://github.com/overtone/overtone/blob/master/src/overtone/examples/getting_started/video.clj)
+ that corresponds with the 
+ [Overtone Live Coding video overview](http://vimeo.com/22798433).
 
-Much of this can be seen in [the code](https://github.com/overtone/overtone/blob/master/src/overtone/examples/getting_started/video.clj) that corresponds with the [Overtone Live Coding video overview](http://vimeo.com/22798433).
 
-```clj
-#+BEGIN_SRC clojure
-
-
+ ```clj
+**** ;; We use a saw-wave that we defined in the oscillators tutorial
+ #+BEGIN_SRC clojure
 ;; We use a saw-wave that we defined in the oscillators tutorial
 (definst saw-wave [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
   (* (env-gen (env-lin attack sustain release) 1 1 0 1 FREE)
      (saw freq)
      vol))
+ #+END_SRC
+**** ;; We can play notes using frequency in Hz
+ #+BEGIN_SRC clojure
 
 ;; We can play notes using frequency in Hz
 (saw-wave 440)
 (saw-wave 523.25)
 (saw-wave 261.62) ; This is C4
-
+ #+END_SRC
+**** ;; We can also play notes using MIDI note values
+ #+BEGIN_SRC clojure
 ;; We can also play notes using MIDI note values
 (saw-wave (midi->hz 69))
 (saw-wave (midi->hz 72))
 (saw-wave (midi->hz 60)) ; This is C4
-
+ #+END_SRC
+**** ;; We can play notes using standard music notes as well
+ #+BEGIN_SRC clojure
 ;; We can play notes using standard music notes as well
 (saw-wave (midi->hz (note :A4)))
 (saw-wave (midi->hz (note :C5)))
 (saw-wave (midi->hz (note :C4))) ; This is C4! Surprised?
-
+ #+END_SRC
+**** ;; Define a function for convenience
+ #+BEGIN_SRC clojure
 ;; Define a function for convenience
 (defn note->hz [music-note]
 	(midi->hz (note music-note)))
+ #+END_SRC
 
+ #+BEGIN_SRC clojure
 ; Slightly less to type	
 (saw-wave (note->hz :C5))
-
+ #+END_SRC
+**** ;; Let's make it even easier
+ #+BEGIN_SRC clojure
 ;; Let's make it even easier
 (defn saw2 [music-note]
 	(saw-wave (midi->hz (note music-note))))
-	
+	 #+END_SRC
+
+
+ #+BEGIN_SRC clojure
 ;; Great!
 (saw2 :A4)
 (saw2 :C5)
 (saw2 :C4)
 
-;; Let's play some chords
 
+ #+END_SRC
+**** ;; Let's play some chords
+
+ #+BEGIN_SRC clojure
 
 ;; this is one possible implementation of play-chord
 (defn play-chord [a-chord]
   (doseq [note a-chord] (saw2 note)))
 
 ;; We can play many types of chords.
-;; For the complete list, visit https://github.com/overtone/overtone/blob/master/src/overtone/music/pitch.clj and search for "def CHORD"
+;; For the complete list, visit 
+https://github.com/overtone/overtone/blob/master/src/overtone/music/pitch.clj 
+and search for "def CHORD"
 (play-chord (chord :C4 :major))
 
+ #+END_SRC
+**** ;; We can play a chord progression on the synth using times:
+ #+BEGIN_SRC clojure
 ;; We can play a chord progression on the synth
 ;; using times:
 (defn chord-progression-time []
@@ -971,6 +1045,9 @@ Much of this can be seen in [the code](https://github.com/overtone/overtone/blob
 
 (chord-progression-time)
 
+ #+END_SRC
+**** ;; or beats:
+ #+BEGIN_SRC clojure
 ;; or beats:
 (defonce metro (metronome 120))
 (metro)
@@ -982,7 +1059,9 @@ Much of this can be seen in [the code](https://github.com/overtone/overtone/blob
 )
 
 (chord-progression-beat metro (metro))
-
+ #+END_SRC
+**** ;; We can use recursion to keep playing the chord progression
+ #+BEGIN_SRC clojure
 ;; We can use recursion to keep playing the chord progression
 (defn chord-progression-beat [m beat-num]
   (at (m (+ 0 beat-num)) (play-chord (chord :C4 :major)))
@@ -992,8 +1071,8 @@ Much of this can be seen in [the code](https://github.com/overtone/overtone/blob
   (apply-at (m (+ 16 beat-num)) chord-progression-beat m (+ 16 beat-num) [])
 )
 (chord-progression-beat metro (metro))
-#+END_SRC
-```
+ #+END_SRC
+ ```
 *** scales and scale degrees
 [Scales](https://en.wikipedia.org/wiki/Scale_%28music%29) can be quickly generated using the `scale` function, which takes a root note and the type of scale as arguments.
 
@@ -1387,8 +1466,36 @@ Why yes, yes it is:
 
   #+RESULTS:
 
-* hacking overtone--where do functions come from?
+** loading
 
+*** loading 'external' resources
+absolute path doesn't work. Must be a file in the current project
+directory?
+
+#+BEGIN_SRC clojure :session getting-started
+(load "/Users/a/git-projects/post_tonal_overtone/src/post_tonal_overtone/set-class-data.clj")
+#+END_SRC
+
+#+RESULTS:
+
+
+#+BEGIN_SRC clojure :session getting-started
+(load "set-class-data")
+#+END_SRC
+
+#+RESULTS:
+: nil
+
+*** loading files in CIDER
+if you choose to work through an example and evaluate a buffer, the
+code in that buffer (if it is from, say, one of the overtone repo
+source files in the examples folder) will be loaded with respect to
+the namespace. Trying to use any of that code without switching to
+that namespace won't work.
+
+Or not. Mysterious.
+** 
+* hacking overtone--where do functions come from?
 ** md
 ## Hacking Overtone
 
@@ -1426,20 +1533,28 @@ To start, define the melody for an old children’s song:
 
 #+BEGIN_SRC clojure
 (require '[overtone.live :as overtone])
+
 (defn note [timing pitch] {:time timing :pitch pitch})
+
 (def melody (let [pitches
                   [0 0 0 1 2 ; Row, row, row your boat,
                    2 1 2 3 4 ; Gently down the stream,
                    7 7 7 4 4 4 2 2 2 0 0 0 ; (take 4 (repeat "merrily"))
                    4 3 2 1 0] ; Life is but a dream!
-                  durations [1 1 2/3 1/3 1
-                             2/3 1/3 2/3 1/3 2
-                             1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3
-                             2/3 1/3 2/3 1/3 2]
+                  durations
+                  [1 1 2/3 1/3 1
+                   2/3 1/3 2/3 1/3 2
+                   1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3
+                   2/3 1/3 2/3 1/3 2]
                   times (reductions + 0 durations)]
               (map note times pitches)))
+
 melody
-;; -> ({:time 0, :pitch 0} ; Row, ;; {:time 1, :pitch 0} ; row, ;; {:time 2, :pitch 0} ; row ;; {:time 8/3, :pitch 1} ; your ;; {:time 3N, :pitch 2} ; boat ;; ...)
+;; -> ({:time 0, :pitch 0} ; Row,
+;; {:time 1, :pitch 0} ; row,
+;; {:time 2, :pitch 0} ; row
+;; {:time 8/3, :pitch 1} ; your
+;; {:time 3N, :pitch 2} ; boat ;; ...)
 #+END_SRC
 
 Convert the piece into a specific key by transforming each note’s
