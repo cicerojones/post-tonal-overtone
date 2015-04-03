@@ -16,7 +16,8 @@ namespace
 
   #+RESULTS:
   : #'post-tonal-overtone.core/play-piano-chordnil
-*** load chord data and chord selection functions
+*** load chord data and chord selection+transposition functions
+**** find set data in the ./src/ directory
  #+BEGIN_SRC clojure :session getting-started
 (load "set-class-data")
  #+END_SRC
@@ -30,7 +31,7 @@ namespace
 
   #+RESULTS:
   | 0 | 1 | 4 | 5 |
-
+**** begin voicing chords and printingout
   #+BEGIN_SRC clojure :session getting-started
 (defn voice-rand-set [set-type]
   (let [set (rand-nth set-type)
@@ -52,7 +53,7 @@ namespace
  #+RESULTS:
  |  0 |  2 |  4 |  6 |
  | 72 | 38 | 64 | 78 |
-
+**** add fully functional transpositions and printout info
  #+BEGIN_SRC clojure :session getting-started
 (defn voice-and-transpose-rand-set [set-type tn-level]
   (let [set (rand-nth set-type)
