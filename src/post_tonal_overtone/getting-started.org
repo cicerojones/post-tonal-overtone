@@ -59,7 +59,7 @@ If you see any errors/issues/omissions, please feel free to fix/add things - we'
 -  [[Hacking Overtone]]
 -  [[Comparing sclang and Overtone synthdefs]]
 
-* copying from overtone getting-started github wiki
+* start with getting-started github wiki
 ** define, start and kill a synth
 first, maybe set a name-space
  #+BEGIN_SRC clojure :session getting-started

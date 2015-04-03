@@ -1,5 +1,12 @@
 * develop post-tonal contributions to getting started.org
 ** building the dissonant piano player
+*** testing out the piano
+namespace
+
+ #+BEGIN_SRC clojure :session getting-started
+(ns post-tonal-overtone.core)
+ #+END_SRC
+
   #+BEGIN_SRC clojure :session getting-started
 (defn play-piano-chord [a-chord]
         (doseq [note a-chord] (sampled-piano note)))
@@ -8,22 +15,21 @@
  #+END_SRC
 
   #+RESULTS:
-  : #'user/play-piano-chordnil
-
- #+BEGIN_SRC clojure :session getting-started
-(ns post-tonal-overtone.core)
- #+END_SRC
-
+  : #'post-tonal-overtone.core/play-piano-chordnil
+*** load chord data and chord selection functions
  #+BEGIN_SRC clojure :session getting-started
 (load "set-class-data")
  #+END_SRC
+
+ #+RESULTS:
+ : nil
 
   #+BEGIN_SRC clojure :session getting-started
 (rand-nth *tetrachords*)
   #+END_SRC 
 
   #+RESULTS:
-  | 0 | 1 | 2 | 6 |
+  | 0 | 1 | 4 | 5 |
 
   #+BEGIN_SRC clojure :session getting-started
 (defn voice-rand-set [set-type]
@@ -44,8 +50,8 @@
  #+END_SRC
 
  #+RESULTS:
- |  0 |  2 |  3 |  5 |
- | 48 | 74 | 75 | 41 |
+ |  0 |  2 |  4 |  6 |
+ | 72 | 38 | 64 | 78 |
 
  #+BEGIN_SRC clojure :session getting-started
 (defn voice-and-transpose-rand-set [set-type tn-level]
@@ -60,7 +66,7 @@
 
  #+RESULTS:
  : #'post-tonal-overtone.core/voice-and-transpose-rand-set
-
+*** use play piano as above to play dissonances
  play-piano-chord will appear to want a vector!
  #+BEGIN_SRC clojure :session getting-started
 (defn play-piano-chord [a-chord]
@@ -69,9 +75,7 @@
 
  #+RESULTS:
  : #'post-tonal-overtone.core/play-piano-chord
-
-
-
+*** choose the set type for dissonances
  #+BEGIN_SRC clojure :session getting-started
 (defn piano-dissonances1 [set-type]
   (let [notes (vec (voice-and-transpose-rand-set ; voicing
@@ -96,9 +100,9 @@
 
 #+RESULTS:
 : nil
-
+*** tetrachord piano dissonances
  #+BEGIN_SRC clojure :session getting-started
-(defn piano-dissonances2 []
+(defn tetrachord-piano-dissonances2 []
    (let [notes (voice-and-transpose-rand-set ; voicing
                  *tetrachords* ;set-type, for instance
                        (rand-int 12))]
@@ -106,29 +110,32 @@
  #+END_SRC
 
  #+RESULTS:
- : #'post-tonal-overtone.core/piano-dissonances2
+ : #'post-tonal-overtone.core/tetrachord-piano-dissonances2
 
  #+BEGIN_SRC clojure :session getting-started
-(piano-dissonances2 )
+(tetrachord-piano-dissonances2 )
  #+END_SRC
 
  #+RESULTS:
  : nil
 ** making the dissonant piano player play in time
 note, this will be writing out to the repl!!! Why and where?
+Because that is how chord-progression-time8 works? Which is defined where?
+
 #+BEGIN_SRC clojure :session getting-started
 (def metro (metronome 10))
 
 (defn play-piano-dissonances2 [nome]
   (let [beat (nome)]
-    (at (nome beat) (piano-dissonances2))
+    (at (nome beat) (tetrachord-piano-dissonances2))
     (apply-at (nome (inc beat)) play-piano-dissonances2 nome [])))
 
-(chord-progression-time8 metro)
+
+(play-piano-dissonances2 metro)
 #+END_SRC
 
 #+RESULTS:
-: #'post-tonal-overtone.core/metro#'post-tonal-overtone.core/play-piano-dissonances2#<ScheduledJob id: 1, created-at: Wed 08:08:26s, initial-delay: 11992, desc: "Overtone delayed fn", scheduled? true>
+: #'post-tonal-overtone.core/metro#'post-tonal-overtone.core/play-piano-dissonances2#<ScheduledJob id: 1, created-at: Fri 02:52:07s, initial-delay: 11989, desc: "Overtone delayed fn", scheduled? true>
 
 #+BEGIN_SRC clojure :session getting-started
 (do (println '(0 1 2)))
