@@ -51,22 +51,36 @@ namespace
  #+END_SRC
 
  #+RESULTS:
- |  0 |  2 |  4 |  6 |
- | 72 | 38 | 64 | 78 |
+ |  0 |  1 |  2 |  3 |
+ | 48 | 73 | 62 | 39 |
 **** add fully functional transpositions and printout info
  #+BEGIN_SRC clojure :session getting-started
 (defn voice-and-transpose-rand-set [set-type tn-level]
   (let [set (rand-nth set-type)
         voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
+	visible-pairings (map #(list % (mod % 12)) voiced-set)
         transposed-set (map #(+ tn-level %) voiced-set)
-        set-voicing-group (list set voiced-set tn-level transposed-set)]
+	paired-transposed-set (map #(list (mod % 12) (+ tn-level %)) (sort voiced-set))
+        set-voicing-group (list :set set
+                                :tn-level tn-level
+				:reg visible-pairings
+                                :sorted-trans paired-transposed-set)]
     (do
       (println set-voicing-group)
-      (last set-voicing-group))))
+      #_set-voicing-group transposed-set)))
  #+END_SRC
 
  #+RESULTS:
  : #'post-tonal-overtone.core/voice-and-transpose-rand-set
+ #+BEGIN_SRC clojure :session getting-started
+(voice-and-transpose-rand-set *tetrachords* 0 #_(rand-int 12))
+ #+END_SRC
+
+ #+RESULTS:
+ | (0 1 3 6) | 0 | ((72 0) (37 1) (75 3) (66 6)) | ((1 37) (6 66) (0 72) (3 75)) |
+
+
+
 *** use play piano as above to play dissonances
  play-piano-chord will appear to want a vector!
  #+BEGIN_SRC clojure :session getting-started
@@ -136,7 +150,7 @@ Because that is how chord-progression-time8 works? Which is defined where?
 #+END_SRC
 
 #+RESULTS:
-: #'post-tonal-overtone.core/metro#'post-tonal-overtone.core/play-piano-dissonances2#<ScheduledJob id: 1, created-at: Fri 02:52:07s, initial-delay: 11989, desc: "Overtone delayed fn", scheduled? true>
+: #'post-tonal-overtone.core/metro#'post-tonal-overtone.core/play-piano-dissonances2#<ScheduledJob id: 1, created-at: Fri 03:31:13s, initial-delay: 11990, desc: "Overtone delayed fn", scheduled? true>
 
 #+BEGIN_SRC clojure :session getting-started
 (do (println '(0 1 2)))
