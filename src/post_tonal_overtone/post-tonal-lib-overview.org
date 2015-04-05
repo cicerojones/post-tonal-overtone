@@ -399,7 +399,6 @@ or rather an instrumentalist.
 (chord-progression-time6 metro)
  #+END_SRC
 
-
 ** chord progression 7
  # broken? because of apply-at problem?
 

@@ -1155,7 +1155,6 @@ Here's an example of how to set up a simple metronome sound, for musical practic
 #+END_SRC
 ```
 
-
 **** get a sample of a kick drum 
   #+BEGIN_SRC clojure :session getting-started
 (def kick (sample (freesound-path 2086)))
@@ -1620,4 +1619,3 @@ can use it to accompany itself:
      (where :time (comp (from (overtone/now)) (bpm 90)))
      play)
 #+END_SRC
-
