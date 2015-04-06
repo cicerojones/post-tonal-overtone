@@ -370,6 +370,7 @@ longer quieter version
    #+RESULTS:
    : #<instrument: triangle-wave>#<synth-node[loading]: post-tonal-ove915/triangle-wave 102>
 **** using the output of ugens as the arguments
+***** understanding uses for ugens
   Aside from giving static numeric values as arguments for frequency,
   amplitude and the other parameters you typically control, you might
   also choose to use dynamic values, i.e. values that change according
@@ -412,7 +413,7 @@ longer quieter version
 
     Great, thanks.
 ****** experiments
-******* [#A] lf-noise
+******* [#A] my lf-noise
    #+BEGIN_SRC clojure :session getting-started
 (definst my-dynamic [freq 440 width 0.2
                        attack 0.3 sustain 4
@@ -425,14 +426,14 @@ longer quieter version
    #+END_SRC
 
    #+RESULTS:
-   : #<instrument: my-dynamic>#<synth-node[loading]: post-tonal-overto915/my-dynamic 115>
+   : #<instrument: my-dynamic>#<synth-node[loading]: post-tonal-overto915/my-dynamic 133>
 
   #+BEGIN_SRC  clojure :session getting-started
-(my-dynamic)
+(my-dynamic :attack 2 :sustain 10 :release 4)
   #+END_SRC
 
   #+RESULTS:
-  : #<synth-node[loading]: post-tonal-overto915/my-dynamic 77>
+  : #<synth-node[loading]: post-tonal-overto915/my-dynamic 136>
 
 *** filtering
 **** linear filters
