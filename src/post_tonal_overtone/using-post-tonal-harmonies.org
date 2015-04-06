@@ -98,7 +98,7 @@ destructuring not working correctly
       (>= n x) (rand-nth tri-heavy)
       (>= n y) (rand-nth dia1)
       (>= n w) (rand-nth zero12s)
-      :else (rand-nth *hexachords* ))))
+      :else (rand-nth hexachords ))))
 #+END_SRC
 
 #+RESULTS:
@@ -119,7 +119,7 @@ how to construct the argument list?
       (>= n x) (rand-nth tri-heavy)
       (>= n y) (rand-nth dia1)
       (>= n w) (rand-nth zero12s)
-      :else (rand-nth *hexachords* ))))
+      :else (rand-nth hexachords ))))
 #+END_SRC
 
 #+RESULTS:
@@ -219,13 +219,13 @@ how to construct the argument list?
 : nil
 
 #+BEGIN_SRC clojure :session getting-started :tangle yes
-(piano-dissonances1 *pentachords*)
+(piano-dissonances1 pentachords)
 #+END_SRC
 
 #+RESULTS:
 
 #+BEGIN_SRC clojure :session getting-started :tangle yes
-(piano-dissonances1 *hexachords*)
+(piano-dissonances1 hexachords)
 #+END_SRC
 
 #+RESULTS:
