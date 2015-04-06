@@ -47,7 +47,7 @@ or rather:
  : nil
 
   #+BEGIN_SRC clojure :session getting-started :tangle yes
-(rand-nth *tetrachords*)
+(rand-nth tetrachords)
   #+END_SRC 
 
   #+RESULTS:
@@ -68,7 +68,7 @@ or rather:
 
 
  #+BEGIN_SRC clojure :session getting-started :tangle yes
-(voice-rand-set *tetrachords*)
+(voice-rand-set tetrachords)
  #+END_SRC
 
  #+RESULTS:
@@ -76,13 +76,13 @@ or rather:
  | 72 | 73 | 51 | 78 |
 **** begin selecting chords according to probability distr
 #+BEGIN_SRC clojure :session getting-started :tangle yes
-(def zero12s (subvec (vec *tetrachords*) 0 6))
+(def zero12s (subvec (vec tetrachords) 0 6))
 
-(def dia1 (subvec (vec *tetrachords*) 7 11))
+(def dia1 (subvec (vec tetrachords) 7 11))
 
-(def tri-heavy (subvec (vec *tetrachords*) 11 17))
+(def tri-heavy (subvec (vec tetrachords) 11 17))
 
-(def whole-tones (subvec (vec *tetrachords*) 17  25))
+(def whole-tones (subvec (vec tetrachords) 17  25))
 #+END_SRC
 
 #+RESULTS:
@@ -153,7 +153,7 @@ how to construct the argument list?
  #+RESULTS:
  : #'post-tonal-overtone.core/voice-and-transpose-rand-set
  #+BEGIN_SRC clojure :session getting-started :tangle yes
-(voice-and-transpose-rand-set *tetrachords* 0 #_(rand-int 12))
+(voice-and-transpose-rand-set tetrachords 0 #_(rand-int 12))
  #+END_SRC
 
  #+RESULTS:
@@ -192,7 +192,7 @@ how to construct the argument list?
  #+BEGIN_SRC clojure :session getting-started :tangle yes
 (defn piano-dissonances1 [set-type]
   (let [notes (vec (voice-and-transpose-rand-set ; voicing
-                 set-type ;*tetrachords* set-type, for instance
+                 set-type ;tetrachords set-type, for instance
                        (rand-int 12)))]
     (play-piano-chord notes)))
  #+END_SRC
@@ -234,7 +234,7 @@ how to construct the argument list?
  #+BEGIN_SRC clojure :session getting-started :tangle yes
 (defn tetrachord-piano-dissonances2 []
    (let [notes (voice-and-transpose-rand-set ; voicing
-                 *tetrachords* ;set-type, for instance
+                 tetrachords ;set-type, for instance
                        (rand-int 12))]
     (play-piano-chord notes)))
  #+END_SRC
