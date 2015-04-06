@@ -433,7 +433,7 @@ longer quieter version
   #+END_SRC
 
   #+RESULTS:
-  : #<synth-node[loading]: post-tonal-overto915/my-dynamic 136>
+  : #<synth-node[loading]: post-tonal-overto915/my-dynamic 140>
 
 *** filtering
 **** linear filters

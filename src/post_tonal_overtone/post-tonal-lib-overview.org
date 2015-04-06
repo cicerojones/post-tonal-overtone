@@ -3,7 +3,7 @@
 *** simple
  You'll discover that it is good practice to define a namespace at the
  beginning of a file of related code.
- #+BEGIN_SRC clojure :session pt
+ #+BEGIN_SRC clojure :session pt :tangle yes
 (ns post-tonal-overtone.core)
  #+END_SRC
 
@@ -12,7 +12,7 @@
 
 
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 *ns*
  #+END_SRC
 
@@ -32,16 +32,16 @@ note, that this is for the Babel session for the "getting-started" program
 
 ** load your library (at least overtone.live)
 Does this code cause nREPL to time out for some reason?
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (use 'overtone.live)
  #+END_SRC
 
  #+RESULTS:
  : nil
 
-** start defining overtone instruments
+** test sound with definst noise 
 *** a definst template (noise, non-pitched)
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (definst noisey2 [attack 0.01 sustain 0.4 release 0.1 vol 0.4 length 3] 
   (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
      (pink-noise) ; also have (white-noise) and others...
@@ -52,58 +52,70 @@ Does this code cause nREPL to time out for some reason?
 
  #+RESULTS:
  : #<instrument: noisey2>#<synth-node[loading]: post-tonal-overtone.915/noisey2 40>
-
-* producing basic sounds
-** play long white noise
-*** example
-  #+BEGIN_SRC clojure :session pt 
-(noisey2 :attack 0.15 :sustain 0.2 :release 0.3 :vol 0.3 :length 10)
-  #+END_SRC
-
-  #+RESULTS:
-  : #<synth-node[loading]: post-tonal-overtone.915/noisey2 111>
-*** development
-The template and keywords that go with definst:
-
- #+BEGIN_SRC clojure :session pt 
-(definst noisey2 [attack 0.01 sustain 0.4 release 0.1 vol 0.4 length 3] 
-  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
-     (pink-noise) ; also have (white-noise) and others...
-     vol))
- #+END_SRC
-
-
-** define constant pink noise
- #+BEGIN_SRC clojure :session pt 
+*** define constant pink noise
+  #+BEGIN_SRC clojure :session pt :tangle yes 
 (definst noisey-sustained [vol 0.5] 
   (* (pink-noise) ; also have (white-noise) and others...
      vol))
- #+END_SRC
+  #+END_SRC
 
- #+RESULTS:
- : #<instrument: noisey-sustained>
+  #+RESULTS:
+  : #<instrument: noisey-sustained>
 
- #+BEGIN_SRC clojure :session pt 
+  #+BEGIN_SRC clojure :session pt :tangle yes 
 (noisey-sustained 1)
- #+END_SRC
+  #+END_SRC
 
- #+RESULTS:
- : #<synth-node[loading]: post-tonal-915/noisey-sustained 116>
+  #+RESULTS:
+  : #<synth-node[loading]: post-tonal-915/noisey-sustained 52>
 
- #+BEGIN_SRC clojure :session pt 
+  #+BEGIN_SRC clojure :session pt :tangle yes 
 (stop)
+  #+END_SRC
+
+  #+RESULTS:
+  : nil
+
+* producing basic sounds
+** play long white noise from above function (now called with parameters)
+*** example--10 second version, long release?
+
+experimenting with different parameter values reveals that the
+mechanics of ~env-gen~ function are not entirely clear. An attack of
+'1' and sustain of '0' would seem weirder than what sounds.
+  #+BEGIN_SRC clojure :session pt :tangle yes 
+(noisey2 :attack 1 :sustain 0 :release 0.5 :vol 0.3 :length 10)
+  #+END_SRC
+
+  #+RESULTS:
+  : #<synth-node[loading]: post-tonal-overtone.915/noisey2 47>
+** build some synth instruments for playing chords
+ #+BEGIN_SRC clojure :session pt :tangle yes 
+(definst sin3 [freq 880 attack 0.1 sustain 0.15 release 0.25 vol 0.4 length 5]
+  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
+     (sin-osc freq)
+     vol))
  #+END_SRC
 
  #+RESULTS:
- : nil
+ : #<instrument: sin3>
+
+ #+BEGIN_SRC clojure :session pt :tangle yes 
+(definst saw1 [freq 880 attack 0.1 sustain 0.15 release 0.25 vol 0.4 length 5]
+  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
+     (saw freq)
+     vol))
+ #+END_SRC
+
+ #+RESULTS:
+ : #<instrument: saw1>
 
 * developing post-tonal chords progressions
 ** start working with post tonal set classes
-
 note, this will only work if...you are in the proper namespace. What
 that really means is...
 *** pt babel session
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (load "set-class-data")
  #+END_SRC
 
@@ -115,7 +127,7 @@ vs.
 #+END_SRC
 
 ** make a function to work with sets
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (defn voice-and-transpose-rand-set [set-type tn-level]
   (let [set (rand-nth set-type)
         voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
@@ -129,29 +141,8 @@ vs.
  #+RESULTS:
  : #'post-tonal-overtone.core/voice-and-transpose-rand-set
 
-** build some synth instruments for playing chords
- #+BEGIN_SRC clojure :session pt 
-(definst sin3 [freq 880 attack 0.1 sustain 0.15 release 0.25 vol 0.4 length 5]
-  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
-     (sin-osc freq)
-     vol))
- #+END_SRC
-
- #+RESULTS:
- : #<instrument: sin3>
-
- #+BEGIN_SRC clojure :session pt 
-(definst saw1 [freq 880 attack 0.1 sustain 0.15 release 0.25 vol 0.4 length 5]
-  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
-     (saw freq)
-     vol))
- #+END_SRC
-
- #+RESULTS:
- : #<instrument: saw1>
-
-** play chords using sin wave instrument
- #+BEGIN_SRC clojure :session pt 
+** play chords using above sin wave instrument
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (defn play-chord-sin2 [a-chord]
   (doseq [note a-chord] (sin3 (midi->hz note))))
  #+END_SRC
@@ -159,35 +150,35 @@ vs.
  #+RESULTS:
  : #'post-tonal-overtone.core/play-chord-sin2
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (sin3 330)
  #+END_SRC
 
  #+RESULTS:
  : #<synth-node[loading]: post-tonal-overtone.core/sin3 48>
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (sin3 (midi->hz 96))
  #+END_SRC
 
  #+RESULTS:
  : #<synth-node[loading]: post-tonal-overtone.core/sin3 49>
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (play-chord-sin2 [64 76 81 86 91 96 101])
  #+END_SRC
 
  #+RESULTS:
  : nil
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (definst med96 [] (* 0.01 (sin-osc (midi->hz 96))))
  #+END_SRC
 
  #+RESULTS:
  : #<instrument: med96>
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (med96)
  #+END_SRC
 
@@ -195,7 +186,7 @@ vs.
  : #<synth-node[loading]: post-tonal-overtone.core/med96 68>
 
 ** define a set of chord progressions to be played in time
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (defn chord-progression-time1 []
   (let [time (now)]
     (at time          (play-chord-sin2 [68 81 46 50 88]))
@@ -208,14 +199,14 @@ vs.
  #+RESULTS:
  : #'post-tonal-overtone.core/chord-progression-time1
 
- #+BEGIN_SRC clojure :session pt             
+ #+BEGIN_SRC clojure :session pt :tangle yes             
 (chord-progression-time1)
  #+END_SRC
 
  #+RESULTS:
  : nil
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (defn chord-progression-time2 [inst]
   (let [time (now)]
     (at time (inst :attack 0.15 :sustain 0.2 :release 0.4 :vol
@@ -225,14 +216,14 @@ vs.
  #+RESULTS:
  : #'post-tonal-overtone.core/chord-progression-time2
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (chord-progression-time2 sin3)
  #+END_SRC
 
  #+RESULTS:
  : #<synth-node[loading]: post-tonal-overtone.core/sin3 92>
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (chord-progression-time2 saw1)
  #+END_SRC
 
@@ -243,7 +234,7 @@ vs.
 
 This provides sets of pitches to a sine instrument. The pitches are
 chosen with the above machinery.
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (defn sine-tetra-diss []
   (doseq [notes (voice-and-transpose-rand-set ; voicing
                        *tetrachords* ; set-type
@@ -254,7 +245,7 @@ chosen with the above machinery.
  #+RESULTS:
  : #'post-tonal-overtone.core/sine-tetra-diss
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (sine-tetra-diss)
  #+END_SRC
 
@@ -263,7 +254,7 @@ chosen with the above machinery.
 
 * begin creating scheduled events
 ** establish a beat for scheduling events
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (def metro (metronome 60))
  #+END_SRC
 
@@ -276,7 +267,7 @@ Note that this uses the sine-tetra-diss as a hard-coded 'instrument',
 or rather an instrumentalist.
  # the best one yet
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (defn chord-progression-time8 [nome]
   (let [beat (nome)]
     (at (nome beat) (sine-tetra-diss))
@@ -288,7 +279,7 @@ or rather an instrumentalist.
 
  # to paraphrase "A Foggy Day", how long can this thing last?
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (chord-progression-time8 metro)
  #+END_SRC
 
@@ -296,7 +287,7 @@ or rather an instrumentalist.
  : #<ScheduledJob id: 1, created-at: Tue 05:51:04s, initial-delay: 1069, desc: "Overtone delayed fn", scheduled? true>
 
 ** use sawtooth synth to play various chords
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (map saw1 (map #(midi->hz %) (last (voice-rand-set *pentachords*))))
  #+END_SRC
 
@@ -309,7 +300,7 @@ or rather an instrumentalist.
  # apply-at appears to cause problems when attempting to
  # call a functions that takes more than one argument
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (defn chord-progression-time3 [nome]
   (let [beat (nome)]
     (at (nome beat)
@@ -321,7 +312,7 @@ or rather an instrumentalist.
  #+RESULTS:
  : #'post-tonal-overtone.core/chord-progression-time3
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (chord-progression-time3 metro)
  #+END_SRC
 
@@ -331,7 +322,7 @@ or rather an instrumentalist.
 ** chord progression 4
  # loops through random tetrachords without printing
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (defn chord-progression-time4 [nome]
   (let [beat (nome)]
     (at (nome beat)
@@ -342,7 +333,7 @@ or rather an instrumentalist.
     (apply-at (nome (inc beat)) chord-progression-time4 nome [])))
  #+END_SRC
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (chord-progression-time4 metro)
  #+END_SRC
 
@@ -350,7 +341,7 @@ or rather an instrumentalist.
  # hack to get around the apply-at problem
 
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (defn chord-progression-time5 [nome]
   (let [beat (nome)]
     (at (nome beat)
@@ -360,17 +351,17 @@ or rather an instrumentalist.
  #+END_SRC
 
 ** use a set of pitched chords
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (def some-midis [[72 61 50 46] [60 49 51 55 44] [74 63 52 68] [42 79
 70 61]])
  #+END_SRC
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (chord-progression-time5 metro)
  #+END_SRC
 
 ** define a sawtooth random chord player
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (defn saw-diss []
   (doseq [notes (voice-and-transpose-rand-set ; voicing
                        *tetrachords* ; set-type
@@ -379,7 +370,7 @@ or rather an instrumentalist.
  #+END_SRC
 
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (saw-diss)
  #+END_SRC
 
@@ -388,14 +379,14 @@ or rather an instrumentalist.
  # also good, only prints first chord
 
 ** chord progression 6
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (defn chord-progression-time6 [nome]
   (let [beat (nome)]
     (at (nome beat) (saw-diss))
     (apply-at (nome (inc beat)) chord-progression-time6 nome [])))
  #+END_SRC
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (chord-progression-time6 metro)
  #+END_SRC
 
@@ -403,7 +394,7 @@ or rather an instrumentalist.
  # broken? because of apply-at problem?
 
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (defn chord-progression-time7 [nome sound]
   (let [beat (nome)]
     (at (nome beat) sound)
@@ -411,24 +402,24 @@ or rather an instrumentalist.
 [])))
  #+END_SRC
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (chord-progression-time7 metro saw-diss)
  #+END_SRC
 
 ** develop a looping function
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (defn looper [sound]    
     (let [beat (metro)]
         (at (metro beat) (sound))
         (apply-at (metro (inc beat)) looper sound [])))
  #+END_SRC
 
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (looper (play-chord-sin2 '(80 69 46 73 86)))
  #+END_SRC
 
 ** make a sawtooth chord player
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (defn play-chord-saw1 [a-chord]
   (doseq [note a-chord] (saw1 (midi->hz note))))
  #+END_SRC
@@ -437,7 +428,7 @@ or rather an instrumentalist.
  : #'post-tonal-overtone.core/play-chord-saw1
 
 ** define a preselected set of chords for progression 9
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (defn chord-progression-time9 []
   (let [time (now)]
     (at time          (play-chord-saw1 [68 81 46 50 88]))
@@ -451,7 +442,7 @@ or rather an instrumentalist.
  : #'post-tonal-overtone.core/chord-progression-time9
 
 
- #+BEGIN_SRC clojure :session pt             
+ #+BEGIN_SRC clojure :session pt :tangle yes             
 (chord-progression-time9)
  #+END_SRC
 
@@ -459,7 +450,7 @@ or rather an instrumentalist.
  : nil
 
 ** refactor chord progressions to use a player-fn
- #+BEGIN_SRC clojure :session pt 
+ #+BEGIN_SRC clojure :session pt :tangle yes 
 (defn chord-progression-time10 [player-fn]
   (let [time (now)]
     (at (+ 0.00 time) (player-fn [68 81 46 50 88]))
@@ -470,12 +461,12 @@ or rather an instrumentalist.
  #+END_SRC
 
 
- #+BEGIN_SRC clojure :session pt             
+ #+BEGIN_SRC clojure :session pt :tangle yes             
 (chord-progression-time10 play-chord-saw1)
  #+END_SRC
 
 * miscellaneous utilities
-#+BEGIN_SRC clojure :session pt 
+#+BEGIN_SRC clojure :session pt :tangle yes 
 (LET [TIME (NOW) ]
      (
       (AT (+ 0 TIME) (PLAYER-FN '(1 2 3)))
@@ -486,7 +477,7 @@ or rather an instrumentalist.
 # downcase
 
 
-#+BEGIN_SRC clojure :session pt 
+#+BEGIN_SRC clojure :session pt :tangle yes 
 (defn chord-prog-time11 [player-fn]
   (let [TIME (NOW) ] 
        (AT (+ 0 TIME) (PLAYER-FN '(68 81 46 50 88)))
@@ -497,7 +488,7 @@ or rather an instrumentalist.
 #+END_SRC
 
 
-#+BEGIN_SRC clojure :session pt 
+#+BEGIN_SRC clojure :session pt :tangle yes 
 (stop)
 #+END_SRC
 
