@@ -36,14 +36,14 @@
 
 (def whole-tones (subvec (vec tetrachords) 17  25))
 
-(defn tetra-probs1 [[z x y w] dist]
-  (let [n (rand)]
-    (cond
-      (>= n z) (rand-nth whole-tones)
-      (>= n x) (rand-nth tri-heavy)
-      (>= n y) (rand-nth dia1)
-      (>= n w) (rand-nth zero12s)
-      :else (rand-nth hexachords ))))
+;; (defn tetra-probs1 [[z x y w] dist]
+;;   (let [n (rand)]
+;;     (cond
+;;       (>= n z) (rand-nth whole-tones)
+;;       (>= n x) (rand-nth tri-heavy)
+;;       (>= n y) (rand-nth dia1)
+;;       (>= n w) (rand-nth zero12s)
+;;       :else (rand-nth hexachords ))))
 
 (tetra-probs1 0.8 0.5 0.2 0.1)
 
