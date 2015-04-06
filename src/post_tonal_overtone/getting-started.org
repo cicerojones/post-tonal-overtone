@@ -108,14 +108,17 @@ value, which is nil
 : nil
 ** providing arguments when defining synths with definst
 #+BEGIN_SRC clojure :session getting-started
+;; rather loud!
 (definst bar [freq 220] (saw freq))
+
+(bar 110)
 #+END_SRC
 
 #+RESULTS:
-: #<instrument: bar>
+: #<instrument: bar>#<synth-node[loading]: post-tonal-overtone.core/bar 192>
 
 #+BEGIN_SRC clojure :session getting-started
-(bar 110)
+
 #+END_SRC
 
 #+RESULTS:
@@ -208,7 +211,7 @@ value, which is nil
 **** 60 second version, depth of 100
 #+BEGIN_SRC clojure :session getting-started
 (definst sin-noise [freq 440 depth 100 length 60]
-  (* 0.3
+  (* 0.1
      (line:kr 0 1 length FREE)
      (sin-osc (+ freq (* depth (white-noise:kr))))))
 
@@ -218,7 +221,21 @@ value, which is nil
 
 #+RESULTS:
 : #<instrument: sin-noise>nil
-**** call sin-noise in a noise-cloud
+
+#+BEGIN_SRC clojure :session getting-started
+(definst sin-noise [freq 440 depth 100 length 60]
+  (* 0.05
+     (line:kr 0 1 length FREE)
+     (sin-osc (+ freq (* depth (white-noise:kr))))))
+
+;;(doseq [note [200 300 400 500 600 700 800]] (sin-noise note))
+(doseq [note (map #(+ % 400 ) (repeatedly 10 (partial rand-int 100)))] (sin-noise note))
+#+END_SRC
+
+#+RESULTS:
+: #<instrument: sin-noise>nil
+
+**** call sin-noise in a noise-cloud, takes a central pitch
 #+BEGIN_SRC clojure :session getting-started
 (definst sin-noise [freq 440 depth 100 length 60]
   (* 0.3
@@ -235,6 +252,24 @@ value, which is nil
 
 #+RESULTS:
 : #<instrument: sin-noise>
+
+longer quieter version
+#+BEGIN_SRC clojure :session getting-started
+(definst sin-noise [freq 440 depth 100 length 
+  (* 0.1
+     (line:kr 0 1 length FREE)
+     (sin-osc (+ freq (* depth (white-noise:kr))))))
+
+
+(defn sin-noise-cloud1 [hz-level hz-span pitches]
+  (doseq [note (map #(+ % hz-level) (repeatedly pitches (partial rand-int hz-span)))]
+    (sin-noise note)))
+
+(sin-noise-cloud1 400 1000 5)
+#+END_SRC
+
+#+RESULTS:
+: #'post-tonal-overtone.core/sin-noise-cloud1nil
 
 **** give noise-cloud a proper envelope
 #+BEGIN_SRC clojure :session getting-started
@@ -1466,7 +1501,6 @@ Why yes, yes it is:
   #+RESULTS:
 
 ** loading
-
 *** loading 'external' resources
 absolute path doesn't work. Must be a file in the current project
 directory?
@@ -1493,7 +1527,6 @@ the namespace. Trying to use any of that code without switching to
 that namespace won't work.
 
 Or not. Mysterious.
-** 
 * hacking overtone--where do functions come from?
 ** md
 ## Hacking Overtone
@@ -1519,7 +1552,6 @@ user=> (meta #'overtone.core/metronome)
 or you could just grep for it.
 
 * chris ford--clojure cookbook example
-** Solution
 Use Overtone to bring the song to life.
 
 Before starting, add [overtone "0.8.1"] to your project’s dependencies
