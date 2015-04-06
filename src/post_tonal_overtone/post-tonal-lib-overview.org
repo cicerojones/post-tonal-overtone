@@ -51,7 +51,7 @@ Does this code cause nREPL to time out for some reason?
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: noisey2>#<synth-node[loading]: post-tonal-overtone.915/noisey2 110>
+ : #<instrument: noisey2>#<synth-node[loading]: post-tonal-overtone.915/noisey2 40>
 
 * producing basic sounds
 ** play long white noise
@@ -458,7 +458,7 @@ or rather an instrumentalist.
  #+RESULTS:
  : nil
 
-** refactor chord progressions to use any type of instrument player
+** refactor chord progressions to use a player-fn
  #+BEGIN_SRC clojure :session pt 
 (defn chord-progression-time10 [player-fn]
   (let [time (now)]

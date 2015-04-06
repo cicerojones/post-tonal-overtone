@@ -42,7 +42,7 @@ namespace
   #+END_SRC 
 
   #+RESULTS:
-  | 0 | 1 | 4 | 5 |
+  | 0 | 2 | 4 | 6 |
 **** begin voicing chords and printingout
   #+BEGIN_SRC clojure :session getting-started
 (defn voice-rand-set [set-type]
@@ -63,11 +63,24 @@ namespace
  #+END_SRC
 
  #+RESULTS:
- |  0 |  1 |  2 |  3 |
- | 48 | 73 | 62 | 39 |
+ |  0 |  2 |  4 |  6 |
+ | 48 | 50 | 52 | 54 |
 **** begin selecting chords according to probability distr
 #+BEGIN_SRC clojure :session getting-started
-(defn tetra-probs [[z x y w] dist]
+(def zero12s (subvec (vec *tetrachords*) 0 6))
+
+(def dia1 (subvec (vec *tetrachords*) 7 11))
+
+(def tri-heavy (subvec (vec *tetrachords*) 11 17))
+
+(def whole-tones (subvec (vec *tetrachords*) 17  25))
+#+END_SRC
+
+#+RESULTS:
+: #'post-tonal-overtone.core/zero12s#'post-tonal-overtone.core/dia1#'post-tonal-overtone.core/tri-heavy#'post-tonal-overtone.core/whole-tones
+
+#+BEGIN_SRC clojure :session getting-started
+(defn tetra-probs1 [[z x y w] dist]
   (let [n (rand)]
     (cond
       (>= n z) (rand-nth whole-tones)
@@ -82,21 +95,34 @@ namespace
 
 
 #+BEGIN_SRC clojure :session getting-started
-(tetra-probs [0.8 0.5 0.2 0.1])
+(tetra-probs 0.8 0.5 0.2 0.1)
 #+END_SRC
 
 #+RESULTS:
 
 #+BEGIN_SRC clojure :session getting-started
-(def zero12s (subvec (vec *tetrachords*) 0 6))
-
-(def dia1 (subvec (vec *tetrachords*) 7 11))
-
-(def tri-heavy (subvec (vec *tetrachords*) 11 17))
-
-(def whole-tones (subvec (vec *tetrachords*) 17  25))
+(defn tetra-probs2 [z x y w]
+  (let [n (rand)]
+    (cond
+      (>= n z) (rand-nth whole-tones)
+      (>= n x) (rand-nth tri-heavy)
+      (>= n y) (rand-nth dia1)
+      (>= n w) (rand-nth zero12s)
+      :else (rand-nth *hexachords* ))))
 #+END_SRC
+
+#+RESULTS:
+: #'post-tonal-overtone.core/tetra-probs2
+
+#+BEGIN_SRC clojure :session getting-started
+(tetra-probs2 0.8 0.5 0.2 0.1)
+#+END_SRC
+
+#+RESULTS:
+| 0 | 3 | 4 | 7 |
+
 **** add fully functional transpositions and printout info
+
  #+BEGIN_SRC clojure :session getting-started
 (defn voice-and-transpose-rand-set [set-type tn-level]
   (let [set (rand-nth set-type)
@@ -123,6 +149,25 @@ namespace
  | (0 1 3 6) | 0 | ((72 0) (37 1) (75 3) (66 6)) | ((1 37) (6 66) (0 72) (3 75)) |
 
 
+ #+BEGIN_SRC clojure :session getting-started
+(defn voice-and-transpose-tetra-probs [tn-level]
+  (let [set (tetra-probs2 0.8 0.5 0.2 0.1)
+        voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
+	visible-pairings (map #(list % (mod % 12)) voiced-set)
+        transposed-set (map #(+ tn-level %) voiced-set)
+	paired-transposed-set (map #(list (mod % 12) (+ tn-level %)) (sort voiced-set))
+        set-voicing-group (list :set set
+                                :tn-level tn-level
+				:reg visible-pairings
+                                :sorted-trans paired-transposed-set)]
+    (do
+      (println set-voicing-group)
+      #_set-voicing-group transposed-set)))
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post-tonal-overtone.core/voice-and-transpose-tetra-probs
+
 *** use play piano as above to play dissonances
  play-piano-chord will appear to want a vector!
  #+BEGIN_SRC clojure :session getting-started
@@ -142,14 +187,30 @@ namespace
  #+END_SRC
 
  #+RESULTS:
- : #'post-tonal-overtone.core/piano-dissonances1
+
+
+ #+BEGIN_SRC clojure :session getting-started
+(defn piano-dissonances3 []
+  (let [notes (vec (voice-and-transpose-tetra-probs  ; voicing
+                    (rand-int 12)))]
+    (play-piano-chord notes)))
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post-tonal-overtone.core/piano-dissonances3
+
+#+BEGIN_SRC clojure :session getting-started
+(piano-dissonances3)
+#+END_SRC
+
+#+RESULTS:
+: nil
 
 #+BEGIN_SRC clojure :session getting-started
 (piano-dissonances1 *pentachords*)
 #+END_SRC
 
 #+RESULTS:
-: nil
 
 #+BEGIN_SRC clojure :session getting-started
 (piano-dissonances1 *hexachords*)
@@ -175,11 +236,12 @@ namespace
 
  #+RESULTS:
  : nil
-** making the dissonant piano player play in time
-note, this will be writing out to the repl!!! Why and where?
-Because that is how chord-progression-time8 works? Which is defined where?
+** dealing with timing
+*** making the dissonant piano player play in time
+ note, this will be writing out to the repl!!! Why and where?
+ Because that is how chord-progression-time8 works? Which is defined where?
 
-#+BEGIN_SRC clojure :session getting-started
+ #+BEGIN_SRC clojure :session getting-started
 (def metro (metronome 10))
 
 (defn play-piano-dissonances2 [nome]
@@ -189,15 +251,14 @@ Because that is how chord-progression-time8 works? Which is defined where?
 
 
 (play-piano-dissonances2 metro)
-#+END_SRC
+ #+END_SRC
 
-#+RESULTS:
-: #'post-tonal-overtone.core/metro#'post-tonal-overtone.core/play-piano-dissonances2#<ScheduledJob id: 1, created-at: Fri 03:31:13s, initial-delay: 11990, desc: "Overtone delayed fn", scheduled? true>
+ #+RESULTS:
+ : #'post-tonal-overtone.core/metro#'post-tonal-overtone.core/play-piano-dissonances2#<ScheduledJob id: 1, created-at: Fri 03:31:13s, initial-delay: 11990, desc: "Overtone delayed fn", scheduled? true>
 
-#+BEGIN_SRC clojure :session getting-started
+ #+BEGIN_SRC clojure :session getting-started
 (do (println '(0 1 2)))
-#+END_SRC
+ #+END_SRC
 
-#+RESULTS:
-: nil
-** vary up the time in which things happen
+ #+RESULTS:
+ : nil
