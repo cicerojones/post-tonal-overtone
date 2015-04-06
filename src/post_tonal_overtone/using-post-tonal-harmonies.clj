@@ -16,7 +16,7 @@
 
 (load "set-class-data")
 
-(rand-nth *tetrachords*)
+(rand-nth tetrachords)
 
 (defn voice-rand-set [set-type]
   (let [set (rand-nth set-type)
@@ -26,15 +26,15 @@
       (println set-voicing-pair)
       set-voicing-pair)))
 
-(voice-rand-set *tetrachords*)
+(voice-rand-set tetrachords)
 
-(def zero12s (subvec (vec *tetrachords*) 0 6))
+(def zero12s (subvec (vec tetrachords) 0 6))
 
-(def dia1 (subvec (vec *tetrachords*) 7 11))
+(def dia1 (subvec (vec tetrachords) 7 11))
 
-(def tri-heavy (subvec (vec *tetrachords*) 11 17))
+(def tri-heavy (subvec (vec tetrachords) 11 17))
 
-(def whole-tones (subvec (vec *tetrachords*) 17  25))
+(def whole-tones (subvec (vec tetrachords) 17  25))
 
 (defn tetra-probs1 [[z x y w] dist]
   (let [n (rand)]
@@ -43,7 +43,7 @@
       (>= n x) (rand-nth tri-heavy)
       (>= n y) (rand-nth dia1)
       (>= n w) (rand-nth zero12s)
-      :else (rand-nth *hexachords* ))))
+      :else (rand-nth hexachords ))))
 
 (tetra-probs1 0.8 0.5 0.2 0.1)
 
@@ -54,7 +54,7 @@
       (>= n x) (rand-nth tri-heavy)
       (>= n y) (rand-nth dia1)
       (>= n w) (rand-nth zero12s)
-      :else (rand-nth *hexachords* ))))
+      :else (rand-nth hexachords ))))
 
 (tetra-probs2 0.8 0.5 0.2 0.1)
 
@@ -72,7 +72,7 @@
       (println set-voicing-group)
       #_set-voicing-group transposed-set)))
 
-(voice-and-transpose-rand-set *tetrachords* 0 #_(rand-int 12))
+(voice-and-transpose-rand-set tetrachords 0 #_(rand-int 12))
 
 (defn voice-and-transpose-tetra-probs [tn-level]
   (let [set (tetra-probs2 0.8 0.5 0.2 0.1)
@@ -93,7 +93,7 @@
 
 (defn piano-dissonances1 [set-type]
   (let [notes (vec (voice-and-transpose-rand-set ; voicing
-                 set-type ;*tetrachords* set-type, for instance
+                 set-type ;tetrachords set-type, for instance
                        (rand-int 12)))]
     (play-piano-chord notes)))
 
@@ -104,13 +104,13 @@
 
 (piano-dissonances3)
 
-(piano-dissonances1 *pentachords*)
+(piano-dissonances1 pentachords)
 
-(piano-dissonances1 *hexachords*)
+(piano-dissonances1 hexachords)
 
 (defn tetrachord-piano-dissonances2 []
    (let [notes (voice-and-transpose-rand-set ; voicing
-                 *tetrachords* ;set-type, for instance
+                 tetrachords ;set-type, for instance
                        (rand-int 12))]
     (play-piano-chord notes)))
 
