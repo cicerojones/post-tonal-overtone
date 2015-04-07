@@ -27,6 +27,8 @@ or rather:
 
   #+RESULTS:
   : #'post-tonal-overtone.core/play-piano-chordnil
+
+
 **** build quieter piano chord player with variable dynamics
   #+BEGIN_SRC clojure :session getting-started :tangle yes
 (defn play-quieter-piano-chord [a-chord]
@@ -276,7 +278,7 @@ see 'testing out the piano' subtree above
  #+END_SRC
 
  #+RESULTS:
- : #'post-tonal-overtone.core/metro#'post-tonal-overtone.core/play-piano-dissonances3#<ScheduledJob id: 1, created-at: Mon 12:31:29s, initial-delay: 11990, desc: "Overtone delayed fn", scheduled? true>
+ : #'post-tonal-overtone.core/metro
 
  #+BEGIN_SRC clojure :session getting-started :tangle yes
 (do (println '(0 1 2)))

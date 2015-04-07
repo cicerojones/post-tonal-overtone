@@ -45,7 +45,7 @@
 ;;       (>= n w) (rand-nth zero12s)
 ;;       :else (rand-nth hexachords ))))
 
-(tetra-probs1 0.8 0.5 0.2 0.1)
+;; (tetra-probs1 0.8 0.5 0.2 0.1)
 
 (defn tetra-probs2 [z x y w]
   (let [n (rand)]

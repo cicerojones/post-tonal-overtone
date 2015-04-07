@@ -68,7 +68,7 @@
 (defn chord-progression-time2 [inst]
   (let [time (now)]
     (at time (inst :attack 0.15 :sustain 0.2 :release 0.4 :vol
-0.5 :length 10))))
+0.1 :length 10))))
 
 (chord-progression-time2 sin3)
 
