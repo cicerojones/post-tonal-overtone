@@ -463,7 +463,7 @@ longer quieter version
   #+END_SRC
 
   #+RESULTS:
-  : #<synth-node[loading]: post-tonal-ov915/audition-synth 177>
+  : #<synth-node[loading]: post-tonal-ov915/audition-synth 201>
 
   #+BEGIN_SRC clojure :session getting-started
 (demo 10 (hpf (saw 100) (mouse-x 40 5000 EXP)))
@@ -604,13 +604,19 @@ See [the end of the midi/keyboard example](https://github.com/overtone/overtone/
 
 ## Using the event stream
 
-Overtone 0.7.1 automatically detects all connected MIDI devices on boot and registers the appropriate handlers for you. To see a list of MIDI devices detected by Overtone, use:
+Overtone 0.7.1 automatically detects all connected MIDI devices on
+boot and registers the appropriate handlers for you. To see a list of
+MIDI devices detected by Overtone, use:
+
 
 ```clj
 (midi-connected-devices)
 ```
 
-The MIDI device should be connected and powered on before starting Overtone. When you bash the keys on the keyboard, Overtone receives internal events in its event stream. To see them use:
+The MIDI device should be connected and powered on before starting
+Overtone. When you bash the keys on the keyboard, Overtone receives
+internal events in its event stream. To see them use:
+
 
 ```clj
 (event-debug-on)
@@ -622,7 +628,9 @@ To stop:
 (event-debug-off)
 ```
 
-You should see that for each key press, there are two events. A general midi control change event:
+You should see that for each key press, there are two events. A
+general midi control change event:
+
 
 ```clj
 [:midi :note-on]
@@ -645,7 +653,9 @@ For simplicity use the general event type:
           ::keyboard-handler)
 ```
 
-The last argument is a keyword which can be used to refer to this handler, so you can later do:
+The last argument is a keyword which can be used to refer to this
+handler, so you can later do:
+
 
 ```clj
 (remove-event-handler ::keyboard-handler)
@@ -1025,7 +1035,7 @@ conv-files
   (recording-stop)
 ** making 'music'
 *** pitches and chords
-**** Here's an example on how you can play notes and chords in Overtone.
+**** playing chords and scale
 
  Much of this can be seen in 
  [the code]
@@ -1035,78 +1045,78 @@ conv-files
 
 
  ```clj
-**** ;; We use a saw-wave that we defined in the oscillators tutorial
- #+BEGIN_SRC clojure
+***** ;; We use a saw-wave that we defined in the oscillators tutorial
+  #+BEGIN_SRC clojure
 ;; We use a saw-wave that we defined in the oscillators tutorial
 (definst saw-wave [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
   (* (env-gen (env-lin attack sustain release) 1 1 0 1 FREE)
      (saw freq)
      vol))
- #+END_SRC
+  #+END_SRC
 
- #+RESULTS:
- : #<instrument: saw-wave>
+  #+RESULTS:
+  : #<instrument: saw-wave>
 
-**** ;; We can play notes using frequency in Hz
- #+BEGIN_SRC clojure
+***** ;; We can play notes using frequency in Hz
+  #+BEGIN_SRC clojure
 
 ;; We can play notes using frequency in Hz
 (saw-wave 440)
 (saw-wave 523.25)
 (saw-wave 261.62) ; This is C4
- #+END_SRC
-**** ;; We can also play notes using MIDI note values
- #+BEGIN_SRC clojure
+  #+END_SRC
+***** ;; We can also play notes using MIDI note values
+  #+BEGIN_SRC clojure
 ;; We can also play notes using MIDI note values
 (saw-wave (midi->hz 69))
 (saw-wave (midi->hz 72))
 (saw-wave (midi->hz 60)) ; This is C4
- #+END_SRC
-**** ;; We can play notes using standard music notes as well
- #+BEGIN_SRC clojure
+  #+END_SRC
+***** ;; We can play notes using standard music notes as well
+  #+BEGIN_SRC clojure
 ;; We can play notes using standard music notes as well
 (saw-wave (midi->hz (note :A4)))
 (saw-wave (midi->hz (note :C5)))
 (saw-wave (midi->hz (note :C4))) ; This is C4! Surprised?
- #+END_SRC
+  #+END_SRC
 
-**** ;; Define a function for convenience
- #+BEGIN_SRC clojure
+***** ;; Define a function for convenience
+  #+BEGIN_SRC clojure
 ;; Define a function for convenience
 (defn note->hz [music-note]
 	(midi->hz (note music-note)))
- #+END_SRC
+  #+END_SRC
 
- #+BEGIN_SRC clojure
+  #+BEGIN_SRC clojure
 ; Slightly less to type	
 (saw-wave (note->hz :C5))
- #+END_SRC
-**** ;; Let's make it even easier
- #+BEGIN_SRC clojure
+  #+END_SRC
+***** ;; Let's make it even easier
+  #+BEGIN_SRC clojure
 ;; Let's make it even easier
 (defn saw2 [music-note]
 	(saw-wave (midi->hz (note music-note))))
-	 #+END_SRC
+	  #+END_SRC
 
- #+RESULTS:
- : #'post-tonal-overtone.core/saw2
+  #+RESULTS:
+  : #'post-tonal-overtone.core/saw2
 
 
- #+BEGIN_SRC clojure
+  #+BEGIN_SRC clojure
 ;; Great!
 (saw2 :A4)
 (saw2 :C5)
 (saw2 :C4)
 
 
- #+END_SRC
+  #+END_SRC
 
- #+RESULTS:
- : #<synth-node[loading]: post-tonal-overtone915/saw-wave 66>#<synth-node[loading]: post-tonal-overtone915/saw-wave 67>#<synth-node[loading]: post-tonal-overtone915/saw-wave 68>
+  #+RESULTS:
+  : #<synth-node[loading]: post-tonal-overtone915/saw-wave 66>#<synth-node[loading]: post-tonal-overtone915/saw-wave 67>#<synth-node[loading]: post-tonal-overtone915/saw-wave 68>
 
-**** ;; Let's play some chords
+***** ;; Let's play some chords
 
- #+BEGIN_SRC clojure
+  #+BEGIN_SRC clojure
 
 ;; this is one possible implementation of play-chord
 (defn play-chord [a-chord]
@@ -1118,7 +1128,7 @@ https://github.com/overtone/overtone/blob/master/src/overtone/music/pitch.clj
 and search for "def CHORD"
 (play-chord (chord :C4 :major))
 
- #+END_SRC
+  #+END_SRC
 
 **** note: these involve timings, thus really belong in metro
 ***** ;; We can play a chord progression on the synth using times:
@@ -1316,7 +1326,7 @@ musical practice. Note that once you define a metronome
   #+END_SRC
 
   #+RESULTS:
-  : #<ScheduledJob id: 25, created-at: Thu 11:04:35s, initial-delay: 199, desc: "Overtone delayed fn", scheduled? true>
+  : #<ScheduledJob id: 4, created-at: Tue 01:35:25s, initial-delay: 10000, desc: "Overtone delayed fn", scheduled? true>
 ***** call the looper to play kick drum
   #+BEGIN_SRC clojure :session getting-started
 (looper march-tempo kick)

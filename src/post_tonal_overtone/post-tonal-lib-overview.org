@@ -22,11 +22,12 @@ note, that this is for the Babel session for the "getting-started" program
 (ns post-tonal-overtone.core
   (:use overtone.live
         overtone.inst.sampled-piano
-	org.clojure/math.combinatorics "0.1.1"
+;;	org.clojure/math.combinatorics "0.1.1"
 	clojure.repl))
 #+END_SRC
 
 #+RESULTS:
+: nil
 
 Note you can also just call this requirement in directly to whatever
 namespace you happen to be in. Does this code cause nREPL to time out
@@ -51,7 +52,7 @@ for some reason?
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: noisey2>#<synth-node[loading]: post-tonal-overtone.915/noisey2 164>
+ : #<instrument: noisey2>#<synth-node[loading]: post-tonal-overtone.915/noisey2 60>
 
 *** definst can involve an envelope for the scaling the ugen output--using lin
 use of lin presents several default keyword args, when called for env-gen
