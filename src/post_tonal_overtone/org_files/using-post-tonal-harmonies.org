@@ -216,6 +216,52 @@ see 'testing out the piano' subtree above
 
 #+RESULTS:
 : nil
+**** borrow random-sample function from clojure 1.7
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(defn random-sample
+  "Returns items from coll with random probability of prob (0.0 -
+  1.0).  Returns a transducer when no collection is provided."
+  {:added "1.7"}
+  ([prob]
+     (filter (fn [_] (< (rand) prob))))
+  ([prob coll]
+     (filter (fn [_] (< (rand) prob)) coll)))
+#+END_SRC
+
+
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(random-sample 0.5 '(1 2))
+#+END_SRC
+
+#+RESULTS:
+| 1 |
+
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(random-sample 0.5 '(1 2))
+#+END_SRC
+
+#+RESULTS:
+| 2 |
+
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(random-sample 0.5 '(1 2))
+#+END_SRC
+
+#+RESULTS:
+| 1 | 2 |
+
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(random-sample 0.5 '(1 2))
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(random-sample 0.5 '((1 2) (3 4)))
+#+END_SRC
+
+#+RESULTS:
+| 1 | 2 |
 
 *** tetrachord piano dissonances; hard-coded set-type
  #+BEGIN_SRC clojure :session getting-started :tangle yes

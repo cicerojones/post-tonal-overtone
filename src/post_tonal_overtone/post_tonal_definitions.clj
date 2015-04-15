@@ -2,8 +2,14 @@
   (:use overtone.live
         overtone.inst.sampled-piano
         clojure.repl
-        clojure.pprint)
-  (:require [post_tonal_overtone.data.set_class_data :as set-class]))
+        clojure.pprint
+        ;;        clojure.contrib.probabilities.finite-distributions
+
+        )
+  (:require [post_tonal_overtone.data.set_class_data :as set-class]
+            [post_tonal_overtone.probability_functions.finite-distributions :as finite-prob]
+            [post_tonal_overtone.probability_functions.examples-finite-distributions :as finite-prob-examples]
+            ))
   
 ;; (in-ns 'post_tonal_overtone.core)
 ;; must (use 'overtone.interface) somewhere?
