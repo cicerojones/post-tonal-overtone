@@ -1,7 +1,5 @@
-;; This buffer is for notes you don't want to save, and for Lisp evaluation.
-;; If you want to create a file, visit that file with C-x C-f,
-;; then enter the text in that file's own buffer.
-
+(ns post_tonal_overtone.data.set_class_data)
+  
 (def ^:const dyads-tn '((0 1) (0 2) (0 3) (0 4) (0 5) (0 6)))
 
 (def ^:const trichords-tn '((0 1 2) (0 1 3) (0 2 3) (0 1 4) (0 3 4) (0 1 5) (0 4 5) (0 1 6) (0 5 6) (0 2 4) (0 2 5) (0 3 5) (0 2 6) (0 4 6) (0 2 7) (0 3 6) (0 3 7) (0 4 7) (0 4 8)))

@@ -1,4 +1,8 @@
-(ns post-tonal-overtone.core)
+(ns post_tonal_overtone.core
+  (:use overtone.live
+        overtone.inst.sampled-piano)
+  (:require [post_tonal_overtone.data.set_class_data :as set-class]))
+  
 
 ;; must (use 'overtone.interface) somewhere?
 
@@ -11,7 +15,7 @@
   (* (pink-noise) ; also have (white-noise) and others...
      vol))
 
-(load "set-class-data")
+;;(load "set-class-data/set-class-data")
 
 (defn voice-rand-set [set-type]
   (let [set (rand-nth set-type)
@@ -60,7 +64,7 @@
 
 (defn sine-tetra-diss []
   (doseq [notes (voice-and-transpose-rand-set ; voicing
-                       tetrachords ; set-type
+                       set-class/tetrachords ; set-type
                        (rand-int 12))]
     (sin3 (midi->hz notes))))
 
@@ -82,7 +86,7 @@
   (let [beat (nome)]
     (at (nome beat)
         (doseq [notes (voice-and-transpose-rand-set ; voicing
-                       tetrachords ; set-type
+                       set-class/tetrachords ; set-type
                        (rand-int 12))]
           (saw1 (midi->hz notes))))
     (apply-at (nome (inc beat)) chord-progression-time4 nome [])))
@@ -102,7 +106,7 @@
 
 (defn saw-diss []
   (doseq [notes (voice-and-transpose-rand-set ; voicing
-                       tetrachords ; set-type
+                       set-class/tetrachords ; set-type
                        (rand-int 12))]
     (saw1 (midi->hz notes))))
 

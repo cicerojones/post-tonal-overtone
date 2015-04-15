@@ -70,6 +70,8 @@ first, maybe set a name-space
  #+RESULTS:
  : nilnil
 
+
+
 #+BEGIN_SRC clojure :session getting-started
 (definst foo [] (saw 220))
 
@@ -77,7 +79,7 @@ first, maybe set a name-space
 #+END_SRC
 
 #+RESULTS:
-: #<instrument: foo>#<synth-node[loading]: post-tonal-overtone.core/foo 35>
+: #<instrument: foo>#<synth-node[loading]: post-tonal-overtone.core/foo 38>
 
 #+BEGIN_SRC clojure :session getting-started
 (stop)
