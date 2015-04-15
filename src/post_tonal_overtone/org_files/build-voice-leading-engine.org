@@ -175,6 +175,8 @@ mysterious errors. Have you checked your REPL lately?
   #+RESULTS:
   : #'post_tonal_overtone.core/chord-progression-timenil
 **** modified and cleaned up standard
+
+Make the function take displacement from time start arguments
   #+BEGIN_SRC clojure
 ;; We can play a chord progression on the synth
 ;; using times:
@@ -196,8 +198,9 @@ mysterious errors. Have you checked your REPL lately?
   : #'post_tonal_overtone.core/my-chord-progression-timenil
 
 *** defined play doesn't have an example?
-
 **** as defined
+Changed to work with sampled-piano instead of saw;
+also, midi->hz appears unnecessary for sampled-piano
 #+BEGIN_SRC clojure :session vle
 (defn play [time notes sep]
   (let [note (first notes)]
@@ -210,41 +213,28 @@ mysterious errors. Have you checked your REPL lately?
 #+RESULTS:
 : #'post_tonal_overtone.core/play
 
-no:
 #+BEGIN_SRC clojure :session vle
 (play (now) [60 64 71] 200)
 #+END_SRC
 
 #+RESULTS:
-: #<ScheduledJob id: 3384651, created-at: Wed 04:32:14s, initial-delay: 199, desc: "Overtone delayed fn", scheduled? true>
-
+: #<ScheduledJob id: 4364621, created-at: Wed 04:48:14s, initial-delay: 199, desc: "Overtone delayed fn", scheduled? true>
+**** nice:
 #+BEGIN_SRC clojure :session vle
-(def forty-bpm (metronome 40))
+(play (now) (flatten set-class/cmajtriads) 100)
 #+END_SRC
 
 #+RESULTS:
-: #'post_tonal_overtone.core/forty-bpm
-
-
+: #<ScheduledJob id: 3730374, created-at: Wed 04:37:55s, initial-delay: 100, desc: "Overtone delayed fn", scheduled? true>
 #+BEGIN_SRC clojure :session vle
-(play forty-bpm [60 64 71] 2)
+(play (now) (flatten set-class/cmajtriads) (rand-nth [100 150 200]))
 #+END_SRC
 
 #+RESULTS:
+: #<ScheduledJob id: 4401268, created-at: Wed 04:48:49s, initial-delay: 200, desc: "Overtone delayed fn", scheduled? true>
 
-#+BEGIN_SRC clojure :session vle
-(play (now) [60 64 67] 2000)
-#+END_SRC
+**** modified (failed?)
 
-#+RESULTS:
-: #<ScheduledJob id: 269952, created-at: Wed 03:40:22s, initial-delay: 1998, desc: "Overtone delayed fn", scheduled? true>
-#+BEGIN_SRC clojure :session vle
-(play (now) (flatten set-class/cmajtriads) 300)
-#+END_SRC
-
-#+RESULTS:
-
-**** modified
 #+BEGIN_SRC clojure :session vle
 (defn my-play [ notes sep]
   (let [note (first notes)
@@ -264,4 +254,89 @@ no:
 
 #+RESULTS:
 : #<ScheduledJob id: 3320421, created-at: Wed 04:31:10s, initial-delay: 1998, desc: "Overtone delayed fn", scheduled? true>
+
+**** modify to play with random intervals between notes (fails)
+#+BEGIN_SRC clojure :session vle
+(defn new-play [time notes seps]
+  (let [note (first notes)
+        sep (rand-nth seps)]
+    (when note
+      (at time (sampled-piano note))
+      (println sep))
+    (let [next-time (+ time (rand-nth seps))]
+      (apply-at next-time play [next-time (rest notes) (rand-nth seps)]))))
+#+END_SRC
+
+#+RESULTS:
+: #'post_tonal_overtone.core/new-play
+
+#+BEGIN_SRC clojure :session vle
+(new-play (now) (flatten set-class/cmajtriads) [100 300 700])
+#+END_SRC
+
+#+RESULTS:
+: #<ScheduledJob id: 424, created-at: Wed 04:54:41s, initial-delay: 698, desc: "Overtone delayed fn", scheduled? true>
+
+* generate large databases of musical events
+
+** transpose triply nested list
+#+BEGIN_SRC clojure :session vle
+(defn tn-colls [tn coll-of-colls]
+  (map (fn [coll] (map #(+ tn %) coll)) coll-of-colls))
+#+END_SRC
+
+#+RESULTS:
+: #'post_tonal_overtone.core/tn-colls
+
+#+BEGIN_SRC clojure :session vle
+(first set-class/nested-transposed-tetrachords)
+#+END_SRC
+
+#+RESULTS:
+| 11 | 12 | 13 | 14 |
+| 10 | 11 | 12 | 13 |
+|  9 | 10 | 11 | 12 |
+|  8 |  9 | 10 | 11 |
+|  7 |  8 |  9 | 10 |
+|  6 |  7 |  8 |  9 |
+|  5 |  6 |  7 |  8 |
+|  4 |  5 |  6 |  7 |
+|  3 |  4 |  5 |  6 |
+|  2 |  3 |  4 |  5 |
+|  1 |  2 |  3 |  4 |
+
+#+BEGIN_SRC clojure :session vle
+(tn-colls 60 (first set-class/nested-transposed-tetrachords))
+#+END_SRC
+
+#+RESULTS:
+| 71 | 72 | 73 | 74 |
+| 70 | 71 | 72 | 73 |
+| 69 | 70 | 71 | 72 |
+| 68 | 69 | 70 | 71 |
+| 67 | 68 | 69 | 70 |
+| 66 | 67 | 68 | 69 |
+| 65 | 66 | 67 | 68 |
+| 64 | 65 | 66 | 67 |
+| 63 | 64 | 65 | 66 |
+| 62 | 63 | 64 | 65 |
+| 61 | 62 | 63 | 64 |
+
+
+#+BEGIN_SRC clojure :session vle
+(subvec (vec set-class/nested-transposed-tetrachords) 0 2)
+#+END_SRC
+
+#+RESULTS:
+| (11 12 13 14) | (10 11 12 13) | (9 10 11 12) | (8 9 10 11) | (7 8 9 10) | (6 7 8 9)  | (5 6 7 8) | (4 5 6 7) | (3 4 5 6) | (2 3 4 5) | (1 2 3 4) |
+| (11 12 13 15) | (10 11 12 14) | (9 10 11 13) | (8 9 10 12) | (7 8 9 11) | (6 7 8 10) | (5 6 7 9) | (4 5 6 8) | (3 4 5 7) | (2 3 4 6) | (1 2 3 5) |
+
+#+BEGIN_SRC clojure :session vle
+((fn [cococ] (map #(tn-colls 60 %) cococ)) (subvec (vec set-class/nested-transposed-tetrachords) 0 3))
+#+END_SRC
+
+#+RESULTS:
+| (71 72 73 74) | (70 71 72 73) | (69 70 71 72) | (68 69 70 71) | (67 68 69 70) | (66 67 68 69) | (65 66 67 68) | (64 65 66 67) | (63 64 65 66) | (62 63 64 65) | (61 62 63 64) |
+| (71 72 73 75) | (70 71 72 74) | (69 70 71 73) | (68 69 70 72) | (67 68 69 71) | (66 67 68 70) | (65 66 67 69) | (64 65 66 68) | (63 64 65 67) | (62 63 64 66) | (61 62 63 65) |
+| (71 72 74 75) | (70 71 73 74) | (69 70 72 73) | (68 69 71 72) | (67 68 70 71) | (66 67 69 70) | (65 66 68 69) | (64 65 67 68) | (63 64 66 67) | (62 63 65 66) | (61 62 64 65) |
 
