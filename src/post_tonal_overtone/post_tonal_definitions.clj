@@ -3,7 +3,7 @@
         overtone.inst.sampled-piano)
   (:require [post_tonal_overtone.data.set_class_data :as set-class]))
   
-
+;; (in-ns 'post_tonal_overtone.core)
 ;; must (use 'overtone.interface) somewhere?
 
 (definst noisey2 [attack 0.01 sustain 0.4 release 0.1 vol 0.4 length 3] 

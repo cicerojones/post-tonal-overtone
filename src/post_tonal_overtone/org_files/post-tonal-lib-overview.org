@@ -31,29 +31,34 @@ Here's a slightly more messed up one
  You'll discover that it is good practice to define a namespace at the
  beginning of a file of related code.
  #+BEGIN_SRC clojure :session getting-started :tangle yes
-(ns post-tonal-overtone.core
-  (:use overtone.live))
+(in-ns 'post_tonal_overtone.core)
  #+END_SRC
 
  #+RESULTS:
- : nil
+ : #<Namespace post_tonal_overtone.core>
 
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 *ns*
  #+END_SRC
 
  #+RESULTS:
- : #<Namespace post-tonal-overtone.core>
+ : #<Namespace post_tonal_overtone.core>
 *** eventually more complex, as you realize what your work will require
-note, that this is for the Babel session for the "getting-started" program
+note, that this is for the Babel session for the "getting-started"
+program. Maybe don't evaluate this unless you are working with a
+strong sense of what your namespace situation is.
+
+Note, that as [2015-04-14 Tue] the use of hyphens vs. underscore is at issue.
+
+
 #+BEGIN_SRC clojure :session getting-started
-(ns post-tonal-overtone.core
-  (:use overtone.live
-        overtone.inst.sampled-piano
-	post-tonal-overtone.set-class-data
-;;	post-tonal-overtone
-;;	org.clojure/math.combinatorics "0.1.1"
-	clojure.repl))
+;; (ns post-tonal-overtone.core
+;;   (:use overtone.live
+;;         overtone.inst.sampled-piano
+;; 	post-tonal-overtone.set-class-data
+;; ;;	post-tonal-overtone
+;; ;;	org.clojure/math.combinatorics "0.1.1"
+;; 	clojure.repl))
 #+END_SRC
 
 #+RESULTS:
@@ -72,25 +77,37 @@ namespace you happen to be in. Does this code cause nREPL to time out
 for some reason?
 
 #+BEGIN_SRC clojure :session getting-started
-(use 'post-tonal-overtone.set-class-data)
-post-tonal-overtone.set-class-data/cmajtriads
+post_tonal_overtone.data.set_class_data/cmajtriads
 #+END_SRC
 
 #+RESULTS:
-
- #+BEGIN_SRC clojure :session getting-started :tangle yes 
-(use 'overtone.live)
- #+END_SRC
-
- #+RESULTS:
- : nil
-
- #+BEGIN_SRC clojure :session getting-started :tangle yes 
-(use 'overtone.live)
- #+END_SRC
-
- #+RESULTS:
- : nil
+| 48 | 52 | 55 |
+| 48 | 52 | 67 |
+| 48 | 52 | 79 |
+| 48 | 64 | 55 |
+| 48 | 64 | 67 |
+| 48 | 64 | 79 |
+| 48 | 76 | 55 |
+| 48 | 76 | 67 |
+| 48 | 76 | 79 |
+| 60 | 52 | 55 |
+| 60 | 52 | 67 |
+| 60 | 52 | 79 |
+| 60 | 64 | 55 |
+| 60 | 64 | 67 |
+| 60 | 64 | 79 |
+| 60 | 76 | 55 |
+| 60 | 76 | 67 |
+| 60 | 76 | 79 |
+| 72 | 52 | 55 |
+| 72 | 52 | 67 |
+| 72 | 52 | 79 |
+| 72 | 64 | 55 |
+| 72 | 64 | 67 |
+| 72 | 64 | 79 |
+| 72 | 76 | 55 |
+| 72 | 76 | 67 |
+| 72 | 76 | 79 |
 
 ** test sound with definst noise 
 *** a definst template (noise, non-pitched)
@@ -104,33 +121,36 @@ post-tonal-overtone.set-class-data/cmajtriads
  #+END_SRC
 
  #+RESULTS:
+ : #<instrument: noisey2>#<synth-node[loading]: post_tonal_overtone.485/noisey2 58>
 
 *** definst can involve an envelope for the scaling the ugen output--using lin
 use of lin presents several default keyword args, when called for env-gen
 #+BEGIN_SRC clojure 
 (lin :attack :sustain :release :level :curve)
 #+END_SRC
+
+#+RESULTS:
+| 0 | 3 | -99 | -99 | :curve | :attack | 1 | 0 | :curve | :release | 1 | 0 | 0 | 1 | 1 | 0 |
+
 *** scale output using an env-gen
 #+BEGIN_SRC clojure
-(env-gen :envelope :gate :level-scale :level-bias :time-scale :action
+;; not for evaluating?
+(env-gen :envelope :gate :level-scale :level-bias :time-scale :action)
 #+END_SRC
+
+#+RESULTS:
 
 *** define constant pink noise
   #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (definst noisey-sustained [vol 0.5] 
   (* (pink-noise) ; also have (white-noise) and others...
      vol))
-  #+END_SRC
 
-  #+RESULTS:
-  : #<instrument: noisey-sustained>
-
-  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (noisey-sustained 1)
   #+END_SRC
 
   #+RESULTS:
-  : #<synth-node[loading]: post-tonal-915/noisey-sustained 52>
+  : #<instrument: noisey-sustained>#<synth-node[loading]: post_tonal_485/noisey-sustained 60>
 
   #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (stop)
@@ -146,12 +166,13 @@ use of lin presents several default keyword args, when called for env-gen
 experimenting with different parameter values reveals that the
 mechanics of ~env-gen~ function are not entirely clear. An attack of
 '1' and sustain of '0' would seem weirder than what sounds.
+
   #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (noisey2 :attack 1 :sustain 0 :release 0.5 :vol 0.3 :length 10)
   #+END_SRC
 
   #+RESULTS:
-  : #<synth-node[loading]: post-tonal-overtone.915/noisey2 47>
+  : #<synth-node[loading]: post_tonal_overtone.485/noisey2 61>
 ** build some synth instruments for playing chords
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (definst sin3 [freq 880 attack 0.1 sustain 0.15 release 0.25 vol 0.4 length 5]
@@ -163,44 +184,31 @@ mechanics of ~env-gen~ function are not entirely clear. An attack of
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: sin3>#<synth-node[loading]: post-tonal-overtone.core/sin3 2527>
+ : #<instrument: sin3>#<synth-node[loading]: post_tonal_overtone.core/sin3 62>
 
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (definst saw1 [freq 880 attack 0.1 sustain 0.15 release 0.25 vol 0.4 length 5]
   (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
      (saw freq)
      vol))
+
+(saw1)
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: saw1>
+ : #<instrument: saw1>#<synth-node[loading]: post_tonal_overtone.core/saw1 63>
 
 * develop post-tonal chords progressions with basic timing using 'now'
 ** start working with post tonal set classes
 *** getting-started babel session
 note, this will only work if...you are in the proper namespace. What
-that really means is...
+that really means is...don't do this. 
+
+Make sure that your data is loaded in a namespace declaration.
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
-(load "set-class-data")
+;; (load "set-class-data")
  #+END_SRC
 
- #+BEGIN_SRC clojure :session getting-started :tangle yes 
-(load "set-class-data/set-class-data")
- #+END_SRC
-
- #+RESULTS:
- : nil
-vs.
-#+BEGIN_SRC clojure :session 
-(load "/Users/a/git-projects/post_tonal_overtone/src/post_tonal_overtone/set-class-data/set-class-data")
-#+END_SRC
-
-#+RESULTS:
-
-
-#+BEGIN_SRC clojure 
-set-class-data/
-#+END_SRC
 ** make a function to work with sets
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (defn voice-and-transpose-rand-set [set-type tn-level]
@@ -214,7 +222,7 @@ set-class-data/
  #+END_SRC
 
  #+RESULTS:
- : #'post-tonal-overtone.core/voice-and-transpose-rand-set
+ : #'post_tonal_overtone.core/voice-and-transpose-rand-set
 
 ** play chords using above sin wave instrument
 
@@ -225,20 +233,21 @@ set-class-data/
  #+END_SRC
 
  #+RESULTS:
- : #'post-tonal-overtone.core/play-chord-sin2
+ : #'post_tonal_overtone.core/play-chord-sin2
 
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (sin3 330)
  #+END_SRC
 
  #+RESULTS:
+ : #<synth-node[loading]: post_tonal_overtone.core/sin3 65>
 
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (sin3 (midi->hz 96))
  #+END_SRC
 
  #+RESULTS:
- : #<synth-node[loading]: post-tonal-overtone.core/sin3 49>
+ : #<synth-node[loading]: post_tonal_overtone.core/sin3 66>
 
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (play-chord-sin2 [64 76 81 86 91 96 101])
@@ -272,31 +281,27 @@ set-class-data/
  #+END_SRC
 
  #+RESULTS:
- : #'post-tonal-overtone.core/chord-progression-time1
+ : #'post_tonal_overtone.core/chord-progression-time1nil
 
 *** test out single event versions using 'at'
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (defn chord-progression-time2 [inst]
   (let [time (now)]
     (at time (inst :attack 0.15 :sustain 0.2 :release 0.4 :vol 0.5 :length 10))))
- #+END_SRC
 
- #+RESULTS:
- : #'post-tonal-overtone.core/chord-progression-time2
-
- #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (chord-progression-time2 sin3)
  #+END_SRC
 
  #+RESULTS:
- : #<synth-node[loading]: post-tonal-overtone.core/sin3 92>
+ : #'post_tonal_overtone.core/chord-progression-time2#<synth-node[loading]: post_tonal_overtone.core/sin3 99>
+
 
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (chord-progression-time2 saw1)
  #+END_SRC
 
  #+RESULTS:
- : #<synth-node[loading]: post-tonal-overtone.core/saw1 93>
+ : #<synth-node[loading]: post_tonal_overtone.core/saw1 100>
 
 ** test out a single chord player
 
@@ -306,20 +311,16 @@ chosen with the above machinery.
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (defn sine-tetra-diss []
   (doseq [notes (voice-and-transpose-rand-set ; voicing
-                       *tetrachords* ; set-type
+                 set-class/tetrachords
                        (rand-int 12))]
     (sin3 (midi->hz notes))))
- #+END_SRC
 
- #+RESULTS:
- : #'post-tonal-overtone.core/sine-tetra-diss
-
- #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (sine-tetra-diss)
  #+END_SRC
 
  #+RESULTS:
- : nil
+ : #'post_tonal_overtone.core/sine-tetra-dissnil
+
 
 * begin creating scheduled events
 ** old experiments
@@ -622,8 +623,7 @@ through the frequencies from a given fundamental
 (foo (now) 40)
 #+END_SRC
 * miscellaneous utilities
-
-** 
+** all caps is a problem--clojure is case sensitive
 #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (LET [TIME (NOW) ]
      (
