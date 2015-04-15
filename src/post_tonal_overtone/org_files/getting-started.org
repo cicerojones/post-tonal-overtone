@@ -86,7 +86,7 @@ repl as well (why did things just automatically sorta happen in the repl?)
 #+END_SRC
 
 #+RESULTS:
-: #<instrument: foo>#<synth-node[loading]: post_tonal_ov485/audition-synth 65>
+: #<instrument: foo>#<synth-node[loading]: post_tonal_ov485/audition-synth 41>
 
 #+BEGIN_SRC clojure :session getting-started
 (stop)

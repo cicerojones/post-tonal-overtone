@@ -591,7 +591,8 @@ chosen with the above machinery.
         (at (nome beat) (sound))
         (apply-by (nome (inc beat)) looper nome sound [])))
 
-; turn on the metronome
+;; turn on the metronome 
+;; uh, where is 'piano' anything defined?
 (looper forty-bpm (play-quieter-piano-chord (map #(+ % 60) (repeatedly 6 (partial rand-int 12)))))
 #+END_SRC
 
