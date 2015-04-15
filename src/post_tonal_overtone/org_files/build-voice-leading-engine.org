@@ -1,0 +1,267 @@
+* setting-up
+** steps
+Once you have followed the below steps:
+
+1.
+
+#+BEGIN_SRC bash
+cd ~/git-projects/post_tonal_overtone
+lein repl
+#+END_SRC
+
+or ~cider-jack-in~ from within the post_tonal_overtone
+directory within emacs
+
+2. 
+
+evaluate (C-c C-k using CIDER) the post_tonal_definitions.clj file 
+
+You will hopefully see overtone loading up in your cider-repl.
+
+** considerations
+One advantage to starting a lein repl and then connecting cider to it
+(with cider-connect) is that the terminal window (which becomes
+dedicated to the overtone server once overtone is loaded) seems happy
+to ~println~ things that cider-repl doesn't. 
+
+[Don't know how to explain it, but please document it here]
+
+Also, note that whether you start cider from within the /src directory
+or the project directory will make a difference. Use the top-level
+project directory, with the project.clj file.
+* loading namespaces and using the relevant vars 
+** repl vs. babel
+Again, there's more than one way to do this. You can choose to have
+babel-blocks do the loading, but in this case the repl will remain
+ignorant of what has been taking place (this hasn't always seemed to
+be the case when working with both. But for whatever I have done, it
+always seems to be the case now).
+
+Maybe name a session to help learn about how babel and cider will
+interact around namespaces
+
+#+BEGIN_SRC clojure :session vle
+ (in-ns 'post_tonal_overtone.core)
+#+END_SRC
+
+#+RESULTS:
+: #<Namespace post_tonal_overtone.core>
+
+#+BEGIN_SRC clojure :session vle
+*ns*
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC clojure
+*ns*
+#+END_SRC
+
+#+RESULTS:
+: #<Namespace post_tonal_overtone.core>
+** what's available
+Do you have access to certain data structures you are going to want to use?
+#+BEGIN_SRC clojure :session vle
+set-class/cmajtriads
+#+END_SRC
+
+#+RESULTS:
+| 48 | 52 | 55 |
+| 48 | 52 | 67 |
+| 48 | 52 | 79 |
+| 48 | 64 | 55 |
+| 48 | 64 | 67 |
+| 48 | 64 | 79 |
+| 48 | 76 | 55 |
+| 48 | 76 | 67 |
+| 48 | 76 | 79 |
+| 60 | 52 | 55 |
+| 60 | 52 | 67 |
+| 60 | 52 | 79 |
+| 60 | 64 | 55 |
+| 60 | 64 | 67 |
+| 60 | 64 | 79 |
+| 60 | 76 | 55 |
+| 60 | 76 | 67 |
+| 60 | 76 | 79 |
+| 72 | 52 | 55 |
+| 72 | 52 | 67 |
+| 72 | 52 | 79 |
+| 72 | 64 | 55 |
+| 72 | 64 | 67 |
+| 72 | 64 | 79 |
+| 72 | 76 | 55 |
+| 72 | 76 | 67 |
+| 72 | 76 | 79 |
+
+What about libraries of functions that you might want to use? What
+kind of namespace-qualification are you going to have to use? Will you
+need to ~use~ anything directly?
+
+#+BEGIN_SRC clojure :session vle
+(finite-prob/certainly 11)
+#+END_SRC
+
+#+RESULTS:
+| 11 | 1 |
+
+
+Note, during all this loading and checking, you may have received
+mysterious errors. Have you checked your REPL lately?
+* check basic sounds
+** sin wave
+#+BEGIN_SRC clojure :session vle
+(demo (sin-osc))
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: post_tonal_ov485/audition-synth 56>
+** white noise
+
+#+BEGIN_SRC clojure :session vle
+(demo (white-noise))
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: post_tonal_ov485/audition-synth 57>
+** loaded samples
+*** piano
+#+BEGIN_SRC clojure :session vle
+(sampled-piano 60)
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: overtone.inst.973/sampled-piano 58>
+
+#+BEGIN_SRC clojure :session vle
+(sampled-piano (note :A4))
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: overtone.inst.973/sampled-piano 60>
+* construct meaningful musical units
+** all-important idiom for playing a chord
+  #+BEGIN_SRC clojure :session vle
+(defn play-piano-chord [a-chord]
+        (doseq [note a-chord] (sampled-piano note)))
+
+(play-piano-chord [60 64 67])
+ #+END_SRC
+
+  #+RESULTS:
+  : #'post_tonal_overtone.core/play-piano-chordnil
+** playing a melody involves time idioms
+*** start simply with 'this' moment
+#+BEGIN_SRC clojure :session vle
+(at (now) (play-piano-chord (chord :C4 :major)))
+#+END_SRC
+*** using a metronome as timer for more sequenced items
+**** copied standard example
+  #+BEGIN_SRC clojure
+;; We can play a chord progression on the synth
+;; using times:
+(defn chord-progression-time []
+  (let [time (now)]
+    (at time (play-piano-chord (chord :C4 :major)))
+    (at (+ 2000 time) (play-piano-chord (chord :G3 :major)))
+    (at (+ 3000 time) (play-piano-chord (chord :F3 :sus4)))
+    (at (+ 4300 time) (play-piano-chord (chord :F3 :major)))
+    (at (+ 5000 time) (play-piano-chord (chord :G3 :major)))))
+
+(chord-progression-time)
+
+  #+END_SRC
+
+  #+RESULTS:
+  : #'post_tonal_overtone.core/chord-progression-timenil
+**** modified and cleaned up standard
+  #+BEGIN_SRC clojure
+;; We can play a chord progression on the synth
+;; using times:
+(defn my-chord-progression-time [times]
+  (let [time (now)
+        [time1 time2 time3 time4 time5] times]
+    (at time (play-piano-chord (chord :C4 :dom7)))
+    (at (+ time1 time) (play-piano-chord (chord :G3 :major7)))
+    (at (+ time2 time) (play-piano-chord (chord :F3 :sus4)))
+    (at (+ time3 time) (play-piano-chord (chord :F3 :sus2)))
+    (at (+ time4 time) (play-piano-chord (chord :G3 :minor7)))
+    (at (+ time4 time) (play-piano-chord (chord :C3 :dim7)))))
+
+(my-chord-progression-time '(2000 4000 6000 8000 1000))
+
+  #+END_SRC
+
+  #+RESULTS:
+  : #'post_tonal_overtone.core/my-chord-progression-timenil
+
+*** defined play doesn't have an example?
+
+**** as defined
+#+BEGIN_SRC clojure :session vle
+(defn play [time notes sep]
+  (let [note (first notes)]
+    (when note
+      (at time (sampled-piano note)))
+    (let [next-time (+ time sep)]
+      (apply-at next-time play [next-time (rest notes) sep]))))
+#+END_SRC
+
+#+RESULTS:
+: #'post_tonal_overtone.core/play
+
+no:
+#+BEGIN_SRC clojure :session vle
+(play (now) [60 64 71] 200)
+#+END_SRC
+
+#+RESULTS:
+: #<ScheduledJob id: 3384651, created-at: Wed 04:32:14s, initial-delay: 199, desc: "Overtone delayed fn", scheduled? true>
+
+#+BEGIN_SRC clojure :session vle
+(def forty-bpm (metronome 40))
+#+END_SRC
+
+#+RESULTS:
+: #'post_tonal_overtone.core/forty-bpm
+
+
+#+BEGIN_SRC clojure :session vle
+(play forty-bpm [60 64 71] 2)
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC clojure :session vle
+(play (now) [60 64 67] 2000)
+#+END_SRC
+
+#+RESULTS:
+: #<ScheduledJob id: 269952, created-at: Wed 03:40:22s, initial-delay: 1998, desc: "Overtone delayed fn", scheduled? true>
+#+BEGIN_SRC clojure :session vle
+(play (now) (flatten set-class/cmajtriads) 300)
+#+END_SRC
+
+#+RESULTS:
+
+**** modified
+#+BEGIN_SRC clojure :session vle
+(defn my-play [ notes sep]
+  (let [note (first notes)
+        time (now)]
+    (when note
+      (at time (sampled-piano note)))
+    (let [next-time (+ time sep)]
+      (apply-at next-time play [(rest notes) sep]))))
+#+END_SRC
+
+#+RESULTS:
+: #'post_tonal_overtone.core/my-play
+
+#+BEGIN_SRC clojure :session vle
+(my-play [60 64 67] 2000)
+#+END_SRC
+
+#+RESULTS:
+: #<ScheduledJob id: 3320421, created-at: Wed 04:31:10s, initial-delay: 1998, desc: "Overtone delayed fn", scheduled? true>
+
