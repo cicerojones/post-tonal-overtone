@@ -1,6 +1,8 @@
 (ns post_tonal_overtone.core
   (:use overtone.live
-        overtone.inst.sampled-piano)
+        overtone.inst.sampled-piano
+        clojure.repl
+        clojure.pprint)
   (:require [post_tonal_overtone.data.set_class_data :as set-class]))
   
 ;; (in-ns 'post_tonal_overtone.core)

@@ -66,24 +66,27 @@ first, maybe set a name-space
 reconsider evaluating this as is. More reliable to have already taken
 care of the namespace using a single method that I have talked about
 in my other files. [Uh, see "other files"]
+
+However, you will likely want to switch into the post_tonal namespace
+to run things here. Additionally, you will want to call this in the
+repl as well (why did things just automatically sorta happen in the repl?)
  #+BEGIN_SRC clojure :session getting-started
-(ns post_tonal_overtone.core)
-(use 'overtone.live)
+(in-ns 'post_tonal_overtone.core)
  #+END_SRC
 
  #+RESULTS:
- : nilnil
+ : #<Namespace post_tonal_overtone.core>
 
 
 
 #+BEGIN_SRC clojure :session getting-started
 (definst foo [] (saw 220))
 
-(foo)
+(demo (foo))
 #+END_SRC
 
 #+RESULTS:
-: #<instrument: foo>#<synth-node[loading]: post_tonal_overtone.core/foo 109>
+: #<instrument: foo>#<synth-node[loading]: post_tonal_ov485/audition-synth 65>
 
 #+BEGIN_SRC clojure :session getting-started
 (stop)
@@ -121,7 +124,7 @@ value, which is nil
 #+END_SRC
 
 #+RESULTS:
-: #<instrument: bar>#<synth-node[loading]: post_tonal_overtone.core/bar 114>
+: #<instrument: bar>#<synth-node[loading]: post_tonal_overtone.core/bar 73>
 
 Kill all versions of one type of synth
 #+BEGIN_SRC clojure :session getting-started
