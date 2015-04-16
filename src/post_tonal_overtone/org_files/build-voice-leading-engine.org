@@ -218,7 +218,7 @@ also, midi->hz appears unnecessary for sampled-piano
 #+END_SRC
 
 #+RESULTS:
-: #<ScheduledJob id: 4364621, created-at: Wed 04:48:14s, initial-delay: 199, desc: "Overtone delayed fn", scheduled? true>
+: #<ScheduledJob id: 1, created-at: Thu 12:37:01s, initial-delay: 199, desc: "Overtone delayed fn", scheduled? true>
 **** nice:
 #+BEGIN_SRC clojure :session vle
 (play (now) (flatten set-class/cmajtriads) 100)
@@ -398,4 +398,11 @@ also, midi->hz appears unnecessary for sampled-piano
 
 #+RESULTS:
 : :A0
+
+#+BEGIN_SRC clojure :session vle
+(note-info "C#5")
+#+END_SRC
+
+#+RESULTS:
+: '(:match "C#5"  :pitch-class :C#  :octave 5  :interval 1  :midi-note 73)
 
