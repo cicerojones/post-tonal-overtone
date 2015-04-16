@@ -1203,11 +1203,11 @@ conv-files
 ;; using times:
 (defn chord-progression-time []
   (let [time (now)]
-    (at time (play-chord (chord :C4 :major)))
-    (at (+ 2000 time) (play-chord (chord :G3 :major)))
-    (at (+ 3000 time) (play-chord (chord :F3 :sus4)))
-    (at (+ 4300 time) (play-chord (chord :F3 :major)))
-    (at (+ 5000 time) (play-chord (chord :G3 :major)))))
+    (at time (play-piano-chord (chord :C4 :m7+9)))
+    (at (+ 2000 time) (play-piano-chord (chord :G3 :m11)))
+    (at (+ 3000 time) (play-piano-chord (chord :F3 :m7+9)))
+    (at (+ 4300 time) (play-piano-chord (chord :F3 :maj11)))
+    (at (+ 5000 time) (play-piano-chord (chord :G3 :7+5-9)))))
 
 (chord-progression-time)
 
@@ -1215,33 +1215,32 @@ conv-files
 
   #+RESULTS:
   : #'post_tonal_overtone.core/chord-progression-timenil
-
 ***** ;; or beats:
   #+BEGIN_SRC clojure
 ;; or beats:
 (defonce metro (metronome 120))
 (metro)
 (defn chord-progression-beat [m beat-num]
-  (at (m (+ 0 beat-num)) (play-chord (chord :C4 :major)))
-  (at (m (+ 4 beat-num)) (play-chord (chord :G3 :major)))
-  (at (m (+ 8 beat-num)) (play-chord (chord :A3 :minor)))
-  (at (m (+ 14 beat-num)) (play-chord (chord :F3 :major)))  
+  (at (m (+ 0 beat-num)) (play-piano-chord (chord :C4 :major)))
+  (at (m (+ 4 beat-num)) (play-piano-chord (chord :G3 :major)))
+  (at (m (+ 8 beat-num)) (play-piano-chord (chord :A3 :minor)))
+  (at (m (+ 14 beat-num)) (play-piano-chord (chord :F3 :major)))  
 )
 
 (chord-progression-beat metro (metro))
   #+END_SRC
 
   #+RESULTS:
-  : nil3769#'post_tonal_overtone.core/chord-progression-beatnil
+  : nil27262#'post_tonal_overtone.core/chord-progression-beatnil
 
   #+BEGIN_SRC clojure
 ;; or beats:
 (def my-metro (metronome 480))
 (defn chord-progression-beat [m beat-num]
-  (at (m (+ 0 beat-num)) (play-chord (chord :C4 :major)))
-  (at (m (+ 4 beat-num)) (play-chord (chord :G3 :major)))
-  (at (m (+ 8 beat-num)) (play-chord (chord :A3 :minor)))
-  (at (m (+ 14 beat-num)) (play-chord (chord :F3 :major)))  
+  (at (m (+ 0 beat-num)) (play-piano-chord (chord :C4 :major)))
+  (at (m (+ 4 beat-num)) (play-piano-chord (chord :G3 :major)))
+  (at (m (+ 8 beat-num)) (play-piano-chord (chord :A3 :minor)))
+  (at (m (+ 14 beat-num)) (play-piano-chord (chord :F3 :major)))  
 )
 
 (chord-progression-beat my-metro (my-metro))
@@ -1250,23 +1249,47 @@ conv-files
   #+RESULTS:
   : #'post_tonal_overtone.core/my-metro#'post_tonal_overtone.core/chord-progression-beatnil
 
-***** ;; We can use recursion to keep playing the chord progression
+***** ;; We can use recursion to keep playing the chord progression--apply at
   #+BEGIN_SRC clojure
 ;; We can use recursion to keep playing the chord progression
+(def my-slow-metro (metronome 40))
 (defn chord-progression-beat [m beat-num]
-  (at (m (+ 0 beat-num)) (play-chord (chord :C4 :major)))
-  (at (m (+ 4 beat-num)) (play-chord (chord :G3 :major)))
-  (at (m (+ 8 beat-num)) (play-chord (chord :A3 :minor)))
-  (at (m (+ 12 beat-num)) (play-chord (chord :F3 :major)))
+  (at (m (+ 0 beat-num)) (play-piano-chord (chord :C4 :m7+9)))
+  (at (m (+ 4 beat-num)) (play-piano-chord (chord :G3 :11)))
+  (at (m (+ 8 beat-num)) (play-piano-chord (chord :A3 :m13)))
+  (at (m (+ 12 beat-num)) (play-piano-chord (chord :F3 :7+5-9)))
   (apply-at (m (+ 16 beat-num)) chord-progression-beat m (+ 16 beat-num) [])
 )
-(chord-progression-beat my-metro (my-metro))
+(chord-progression-beat my-slow-metro (my-slow-metro))
   #+END_SRC
 
   #+RESULTS:
-  : #'post_tonal_overtone.core/chord-progression-beat#<ScheduledJob id: 1, created-at: Tue 11:32:48s, initial-delay: 2076, desc: "Overtone delayed fn", scheduled? true>
+  : #'post_tonal_overtone.core/my-slow-metro#'post_tonal_overtone.core/chord-progression-beat#<ScheduledJob id: 1, created-at: Wed 10:46:45s, initial-delay: 25482, desc: "Overtone delayed fn", scheduled? true>
 
   ```
+#+BEGIN_SRC clojure :session vle
+(apply chord (list (rand-nth [:A4 :B4 :C4 :D4 :E4 :F4 :G4])
+(rand-nth [:7sus2 :7-5 :m7-5 :7+5 :9 :7-9 :m7+5-9 :13 :m11+ :6*9])))
+#+END_SRC
+
+  #+BEGIN_SRC clojure
+;; We can use recursion to keep playing the chord progression
+(def my-slow-metro (metronome 60))
+(defn random-chord-progression-beat [m beat-num]
+  (at (m (+ 0 beat-num)) (play-piano-chord (apply chord (list (rand-nth [:A4 :B4 :C4 :D4 :E4 :F4 :G4])
+(rand-nth [:7sus2 :7-5 :m7-5 :7+5 :9 :7-9 :m7+5-9 :13 :m11+ :6*9])))))
+  (at (m (+ 4 beat-num)) (play-piano-chord (apply chord (list (rand-nth [:A4 :B4 :C4 :D4 :E4 :F4 :G4])
+(rand-nth [:7sus2 :7-5 :m7-5 :7+5 :9 :7-9 :m7+5-9 :13 :m11+ :6*9])))))
+  (at (m (+ 8 beat-num)) (play-piano-chord (apply chord (list (rand-nth [:A4 :B4 :C4 :D4 :E4 :F4 :G4])
+(rand-nth [:7sus2 :7-5 :m7-5 :7+5 :9 :7-9 :m7+5-9 :13 :m11+ :6*9])))))
+  (at (m (+ 12 beat-num)) (play-piano-chord (chord :F3 :7+5-9)))
+  (apply-at (m (+ 16 beat-num)) random-chord-progression-beat m (+ 16 beat-num) [])
+)
+(random-chord-progression-beat my-slow-metro (my-slow-metro))
+  #+END_SRC
+
+  #+RESULTS:
+  : #'post_tonal_overtone.core/my-slow-metro#'post_tonal_overtone.core/random-chord-progression-beat#<ScheduledJob id: 1, created-at: Wed 11:04:54s, initial-delay: 16982, desc: "Overtone delayed fn", scheduled? true>
 
 #+BEGIN_SRC clojure
 (stop)

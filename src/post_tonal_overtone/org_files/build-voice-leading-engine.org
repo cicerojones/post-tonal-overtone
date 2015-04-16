@@ -275,7 +275,7 @@ also, midi->hz appears unnecessary for sampled-piano
 #+END_SRC
 
 #+RESULTS:
-: #<ScheduledJob id: 424, created-at: Wed 04:54:41s, initial-delay: 698, desc: "Overtone delayed fn", scheduled? true>
+: #<ScheduledJob id: 1, created-at: Wed 10:34:54s, initial-delay: 99, desc: "Overtone delayed fn", scheduled? true>
 
 * generate large databases of musical events
 ** transpose triply nested list
@@ -384,3 +384,18 @@ also, midi->hz appears unnecessary for sampled-piano
 #+RESULTS:
 | 10 | 11 | 12 | 13 |
 **** automate key assignment (arbitrary) for sets of chords
+** 
+#+BEGIN_SRC clojure :session vle
+(note :A4)
+#+END_SRC
+
+#+RESULTS:
+: 69
+
+#+BEGIN_SRC clojure :session vle
+(find-note-name 21)
+#+END_SRC
+
+#+RESULTS:
+: :A0
+
