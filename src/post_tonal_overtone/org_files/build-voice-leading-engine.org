@@ -52,6 +52,7 @@ interact around namespaces
 #+END_SRC
 
 #+RESULTS:
+: #<Namespace post_tonal_overtone.core>
 
 #+BEGIN_SRC clojure
 *ns*
@@ -108,14 +109,23 @@ need to ~use~ anything directly?
 
 Note, during all this loading and checking, you may have received
 mysterious errors. Have you checked your REPL lately?
-* check basic sounds
+* check basic sounds and levels
 ** sin wave
+*** basic
 #+BEGIN_SRC clojure :session vle
 (demo (sin-osc))
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: post_tonal_ov485/audition-synth 56>
+: #<synth-node[loading]: post_tonal_ov485/audition-synth 10911>
+*** louder
+#+BEGIN_SRC clojure :session vle
+(demo  (out 0 (* 2 (sin-osc))))
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: post_tonal_ov485/audition-synth 10910>
+
 ** white noise
 
 #+BEGIN_SRC clojure :session vle
@@ -123,7 +133,7 @@ mysterious errors. Have you checked your REPL lately?
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: post_tonal_ov485/audition-synth 57>
+: #<synth-node[loading]: post_tonal_ov485/audition-synth 10912>
 ** loaded samples
 *** piano
 #+BEGIN_SRC clojure :session vle
@@ -131,14 +141,14 @@ mysterious errors. Have you checked your REPL lately?
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: overtone.inst.973/sampled-piano 58>
+: #<synth-node[loading]: overtone.inst.973/sampled-piano 10913>
 
 #+BEGIN_SRC clojure :session vle
 (sampled-piano (note :A4))
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: overtone.inst.973/sampled-piano 60>
+: #<synth-node[loading]: overtone.inst.973/sampled-piano 10915>
 * construct meaningful musical units
 ** all-important idiom for playing a chord
   #+BEGIN_SRC clojure :session vle
@@ -150,6 +160,16 @@ mysterious errors. Have you checked your REPL lately?
 
   #+RESULTS:
   : #'post_tonal_overtone.core/play-piano-chordnil
+
+#+BEGIN_SRC clojure :session vle
+(let [midis (rand-chord :A2 :7+5-9 5 48)]
+(play-piano-chord midis )
+midis)
+#+END_SRC
+
+#+RESULTS:
+| 61 | 67 | 69 | 77 | 82 |
+
 ** playing a melody involves time idioms
 *** start simply with 'this' moment
 #+BEGIN_SRC clojure :session vle

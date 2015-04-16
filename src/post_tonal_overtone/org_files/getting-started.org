@@ -76,7 +76,7 @@ things - we'll love you forever.
 -  [[Comparing sclang and Overtone synthdefs]]
 
 * start with some basics of getting-started github wiki
-** define, start and kill a synth
+** define, start and kill a definst
 first, maybe set a name-space
 
 reconsider evaluating this as is. More reliable to have already taken
