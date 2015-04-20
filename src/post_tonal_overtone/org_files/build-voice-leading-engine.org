@@ -245,10 +245,7 @@ also, midi->hz appears unnecessary for sampled-piano
 #+END_SRC
 
 #+RESULTS:
-: #<ScheduledJob id: 3730374, created-at: Wed 04:37:55s, initial-delay: 100, desc: "Overtone delayed fn", scheduled? true>
-#+BEGIN_SRC clojure :session vle
-(play (now) (flatten set-class/cmajtriads) (rand-nth [100 150 200]))
-#+END_SRC
+: #<ScheduledJob id: 1, created-at: Sat 01:42:53s, initial-delay: 95, desc: "Overtone delayed fn", scheduled? false>
 
 #+RESULTS:
 : #<ScheduledJob id: 4401268, created-at: Wed 04:48:49s, initial-delay: 200, desc: "Overtone delayed fn", scheduled? true>
