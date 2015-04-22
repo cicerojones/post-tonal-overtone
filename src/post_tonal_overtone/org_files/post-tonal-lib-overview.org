@@ -1,3 +1,4 @@
+#+COMMENT prefer the other post-tonal project org files
 * starting-up--basics
 ** namespaces
 *** starting up from a .clj source file
@@ -121,7 +122,7 @@ post_tonal_overtone.data.set_class_data/cmajtriads
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: noisey2>#<synth-node[loading]: post_tonal_overtone.485/noisey2 58>
+ : #<instrument: noisey2>#<synth-node[loading]: post_tonal_overtone.485/noisey2 7893>
 
 *** definst can involve an envelope for the scaling the ugen output--using lin
 use of lin presents several default keyword args, when called for env-gen
@@ -150,7 +151,7 @@ use of lin presents several default keyword args, when called for env-gen
   #+END_SRC
 
   #+RESULTS:
-  : #<instrument: noisey-sustained>#<synth-node[loading]: post_tonal_485/noisey-sustained 60>
+  : #<instrument: noisey-sustained>#<synth-node[loading]: post_tonal_485/noisey-sustained 7894>
 
   #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (stop)
@@ -172,7 +173,7 @@ mechanics of ~env-gen~ function are not entirely clear. An attack of
   #+END_SRC
 
   #+RESULTS:
-  : #<synth-node[loading]: post_tonal_overtone.485/noisey2 61>
+  : #<synth-node[loading]: post_tonal_overtone.485/noisey2 7895>
 ** build some synth instruments for playing chords
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (definst sin3 [freq 880 attack 0.1 sustain 0.15 release 0.25 vol 0.4 length 5]
@@ -204,7 +205,8 @@ mechanics of ~env-gen~ function are not entirely clear. An attack of
 note, this will only work if...you are in the proper namespace. What
 that really means is...don't do this. 
 
-Make sure that your data is loaded in a namespace declaration.
+Make sure that your data is loaded in a namespace declaration, i.e.
+don't call this.
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 ;; (load "set-class-data")
  #+END_SRC
@@ -240,7 +242,7 @@ Make sure that your data is loaded in a namespace declaration.
  #+END_SRC
 
  #+RESULTS:
- : #<synth-node[loading]: post_tonal_overtone.core/sin3 65>
+ : #<synth-node[loading]: post_tonal_overtone.core/sin3 7896>
 
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (sin3 (midi->hz 96))
@@ -304,7 +306,6 @@ Make sure that your data is loaded in a namespace declaration.
  : #<synth-node[loading]: post_tonal_overtone.core/saw1 100>
 
 ** test out a single chord player
-
 *** this functionality has largely been superseded elsewhere
 This provides sets of pitches to a sine instrument. The pitches are
 chosen with the above machinery.
@@ -320,7 +321,6 @@ chosen with the above machinery.
 
  #+RESULTS:
  : #'post_tonal_overtone.core/sine-tetra-dissnil
-
 
 * begin creating scheduled events
 ** old experiments
@@ -623,7 +623,7 @@ through the frequencies from a given fundamental
 
 (foo (now) 40)
 #+END_SRC
-* miscellaneous utilities
+* miscellaneous utilities and problems
 ** all caps is a problem--clojure is case sensitive
 #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (LET [TIME (NOW) ]

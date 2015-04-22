@@ -61,7 +61,9 @@ interact around namespaces
 #+RESULTS:
 : #<Namespace post_tonal_overtone.core>
 ** what's available
-Do you have access to certain data structures you are going to want to use?
+Do you have access to certain data structures you are going to want to
+use? If not, how do you load these things?
+
 #+BEGIN_SRC clojure :session vle
 set-class/cmajtriads
 #+END_SRC
@@ -141,16 +143,17 @@ mysterious errors. Have you checked your REPL lately?
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: overtone.inst.973/sampled-piano 10913>
+: #<synth-node[loading]: overtone.inst.973/sampled-piano 7904>
 
 #+BEGIN_SRC clojure :session vle
 (sampled-piano (note :A4))
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: overtone.inst.973/sampled-piano 10915>
+: #<synth-node[loading]: overtone.inst.973/sampled-piano 7905>
 * construct meaningful musical units
 ** all-important idiom for playing a chord
+*** simple middle C triad
   #+BEGIN_SRC clojure :session vle
 (defn play-piano-chord [a-chord]
         (doseq [note a-chord] (sampled-piano note)))
@@ -160,21 +163,25 @@ mysterious errors. Have you checked your REPL lately?
 
   #+RESULTS:
   : #'post_tonal_overtone.core/play-piano-chordnil
-
+*** randomly voice an A7 flat9 sharp13, play chord as side-effect
 #+BEGIN_SRC clojure :session vle
 (let [midis (rand-chord :A2 :7+5-9 5 48)]
-(play-piano-chord midis )
-midis)
+  (play-piano-chord midis)
+  midis)
 #+END_SRC
 
 #+RESULTS:
-| 61 | 67 | 69 | 77 | 82 |
+| 49 | 53 | 58 | 70 | 79 |
 
 ** playing a melody involves time idioms
 *** start simply with 'this' moment
 #+BEGIN_SRC clojure :session vle
 (at (now) (play-piano-chord (chord :C4 :major)))
 #+END_SRC
+
+#+RESULTS:
+: nil
+
 *** using a metronome as timer for more sequenced items
 **** copied standard example
   #+BEGIN_SRC clojure
@@ -194,7 +201,7 @@ midis)
 
   #+RESULTS:
   : #'post_tonal_overtone.core/chord-progression-timenil
-**** modified and cleaned up standard
+**** cleaned up standard modified with other chord qualities
 
 Make the function take displacement from time start arguments
   #+BEGIN_SRC clojure
@@ -245,7 +252,7 @@ also, midi->hz appears unnecessary for sampled-piano
 #+END_SRC
 
 #+RESULTS:
-: #<ScheduledJob id: 1, created-at: Sat 01:42:53s, initial-delay: 95, desc: "Overtone delayed fn", scheduled? false>
+: #<ScheduledJob id: 1, created-at: Tue 11:39:53s, initial-delay: 100, desc: "Overtone delayed fn", scheduled? true>
 
 #+RESULTS:
 : #<ScheduledJob id: 4401268, created-at: Wed 04:48:49s, initial-delay: 200, desc: "Overtone delayed fn", scheduled? true>
@@ -401,7 +408,7 @@ also, midi->hz appears unnecessary for sampled-piano
 #+RESULTS:
 | 10 | 11 | 12 | 13 |
 **** automate key assignment (arbitrary) for sets of chords
-** 
+** note names vs. midi numbers--note vs. find-note-name
 #+BEGIN_SRC clojure :session vle
 (note :A4)
 #+END_SRC
