@@ -52,7 +52,7 @@ interact around namespaces
 #+END_SRC
 
 #+RESULTS:
-: #<Namespace post_tonal_overtone.core>
+: #<Namespace user>
 
 #+BEGIN_SRC clojure
 *ns*
@@ -119,14 +119,14 @@ mysterious errors. Have you checked your REPL lately?
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: post_tonal_ov485/audition-synth 10911>
+: #<synth-node[loading]: post_tonal_ov485/audition-synth 56>
 *** louder
 #+BEGIN_SRC clojure :session vle
 (demo  (out 0 (* 2 (sin-osc))))
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: post_tonal_ov485/audition-synth 10910>
+: #<synth-node[loading]: post_tonal_ov485/audition-synth 57>
 
 ** white noise
 
@@ -135,7 +135,7 @@ mysterious errors. Have you checked your REPL lately?
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: post_tonal_ov485/audition-synth 10912>
+: #<synth-node[loading]: post_tonal_ov485/audition-synth 58>
 ** loaded samples
 *** piano
 #+BEGIN_SRC clojure :session vle
@@ -143,14 +143,14 @@ mysterious errors. Have you checked your REPL lately?
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: overtone.inst.973/sampled-piano 7904>
+: #<synth-node[loading]: overtone.inst.973/sampled-piano 59>
 
 #+BEGIN_SRC clojure :session vle
 (sampled-piano (note :A4))
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: overtone.inst.973/sampled-piano 7905>
+: #<synth-node[loading]: overtone.inst.973/sampled-piano 60>
 * construct meaningful musical units
 ** all-important idiom for playing a chord
 *** simple middle C triad
@@ -164,15 +164,119 @@ mysterious errors. Have you checked your REPL lately?
   #+RESULTS:
   : #'post_tonal_overtone.core/play-piano-chordnil
 *** randomly voice an A7 flat9 sharp13, play chord as side-effect
-#+BEGIN_SRC clojure :session vle
-(let [midis (rand-chord :A2 :7+5-9 5 48)]
-  (play-piano-chord midis)
-  midis)
+**** 4 note voicing
+#+BEGIN_SRC clojure :session vle :results output
+(defn mod12 [n] (mod n 12))
+
+(let [midis (rand-chord :A2 :7+5-9 4 48)]
+(do (println (map find-note-name midis))
+    (println midis)
+    (println (map mod12 midis))
+    (play-piano-chord midis)
+  ))
 #+END_SRC
 
 #+RESULTS:
-| 49 | 53 | 58 | 70 | 79 |
+: (:C#3 :F3 :Bb3 :Bb5)
+: (49 53 58 82)
+: (1 5 10 10)
+*** remember meaningful phenomena
+**** write 6 note voicing to disk
 
+Define mod12 function 
+#+BEGIN_SRC clojure :session vle :results output
+
+
+(let [midis (rand-chord :A2 :7+5-9 6 48)]
+  (play-piano-chord midis)
+  (do (println (map find-note-name midis))
+      (println midis)
+      (println (map mod12 midis))
+      (spit "src/post_tonal_overtone/data/saved-voicings.clj"
+            (pr-str midis) :append true)
+  ))
+#+END_SRC
+
+#+RESULTS:
+: (:F3 :A3 :Bb3 :F4 :G5 :A5)
+: (53 57 58 65 79 81)
+: (5 9 10 5 7 9) nil
+**** stateful versions
+
+For example, this generated chord was particularly attractive.
+Wouldn't it be nice to keep track of such things? And to revist and
+try out sequences of these things? And then be able to vary their
+order? And articulate them differently? Or subsume them within some
+larger structure that begins to emerge after using a bunch of them?
+
+
+i.e. how do you cycle between these two things?
+#+BEGIN_SRC clojure
+(play-piano-chord '(57 58 65 67 79 85))
+;; (play-piano-chord '(53 57 58 65 79 81))
+#+END_SRC
+
+#+RESULTS:
+: nil
+
+You CAN do this, but whether you should is another matter. Or rather
+an exact understanding of why you shouldn't and what you should do
+instead is what ultimately is most important (it involves ~atoms~).
+For now, however, let's see how this works.
+#+BEGIN_SRC clojure :session vle :results output
+(def stateful-chord (rand-chord :A2 :7+5-9 6 48))
+
+(let [midis stateful-chord]
+  (play-piano-chord midis)
+  (do (println (map find-note-name midis))
+  (println midis)
+  (println (map mod12 midis)
+    )))
+#+END_SRC
+
+#+RESULTS:
+: (:A3 :Bb3 :F4 :G4 :G5 :C#6)
+: (57 58 65 67 79 85)
+: (9 10 5 7 7 1)
+
+See it here again:
+#+BEGIN_SRC clojure
+stateful-chord
+#+END_SRC
+
+#+RESULTS:
+| 57 | 58 | 65 | 67 | 79 | 85 |
+
+
+If you particularly liked it, why not write it to disk?
+
+#+BEGIN_SRC clojure
+(spit "src/post_tonal_overtone/data/fave-voicings.clj"
+      (pr-str stateful-chord) :append true)
+#+END_SRC
+
+#+RESULTS:
+: nil
+
+And C-c C-o to see that the file contains the last "stateful chord"
+[[file:~/git-projects/post_tonal_overtone/src/post_tonal_overtone/data/fave-voicings.clj]]
+
+Compare writing out to disk with java.io interop. (See 
+[[file:~/git/org/clojure-books.org::*4.9.%20Reading%20and%20Writing%20Text%20Files][4.9. Reading and Writing Text Files]] in cookbook
+ #+BEGIN_SRC clojure
+(with-open [w (clojure.java.io/writer "stuff.txt")] (doseq [line some-large-seq-of-strings] (.write w line) (.newLine w)))
+ #+END_SRC
+**** developing an understanding of state
+The real issue in the above comes when there are other "clients"
+interacting with that "object." Or what about if you wanted to keep
+that object available in clojure and not just on disk somehow, i.e.
+how should it persist?
+
+And what if you wanted to keep that thing around when using clojure
+and wanted it to contain an ever expanding list of your favorite chords?
+#+BEGIN_SRC clojure
+
+#+END_SRC
 ** playing a melody involves time idioms
 *** start simply with 'this' moment
 #+BEGIN_SRC clojure :session vle
@@ -205,8 +309,8 @@ mysterious errors. Have you checked your REPL lately?
 
 Make the function take displacement from time start arguments
   #+BEGIN_SRC clojure
-;; We can play a chord progression on the synth
-;; using times:
+;; you will now be able to assign play-times relative to the start
+;; time, by passing in a list of "on-times" in milliseconds
 (defn my-chord-progression-time [times]
   (let [time (now)
         [time1 time2 time3 time4 time5] times]
@@ -215,17 +319,24 @@ Make the function take displacement from time start arguments
     (at (+ time2 time) (play-piano-chord (chord :F3 :sus4)))
     (at (+ time3 time) (play-piano-chord (chord :F3 :sus2)))
     (at (+ time4 time) (play-piano-chord (chord :G3 :minor7)))
-    (at (+ time4 time) (play-piano-chord (chord :C3 :dim7)))))
+    (at (+ time5 time) (play-piano-chord (chord :C3 :dim7)))))
 
-(my-chord-progression-time '(2000 4000 6000 8000 1000))
+
 
   #+END_SRC
 
   #+RESULTS:
   : #'post_tonal_overtone.core/my-chord-progression-timenil
 
-*** defined play doesn't have an example?
-**** as defined
+#+BEGIN_SRC clojure
+(my-chord-progression-time '(2000 4000 6000 9000 130000))
+#+END_SRC
+
+#+RESULTS:
+: nil
+
+*** defined ~play~ doesn't have an example in the documentation
+**** as defined, will play a sequence separated by a specified millisecond amount
 Changed to work with sampled-piano instead of saw;
 also, midi->hz appears unnecessary for sampled-piano
 #+BEGIN_SRC clojure :session vle
@@ -245,41 +356,43 @@ also, midi->hz appears unnecessary for sampled-piano
 #+END_SRC
 
 #+RESULTS:
-: #<ScheduledJob id: 1, created-at: Thu 12:37:01s, initial-delay: 199, desc: "Overtone delayed fn", scheduled? true>
-**** nice:
+: #<ScheduledJob id: 1, created-at: Wed 04:48:12s, initial-delay: 198, desc: "Overtone delayed fn", scheduled? false>
+**** nice: provide a large list as an argument and get out a long sequence of notes
 #+BEGIN_SRC clojure :session vle
 (play (now) (flatten set-class/cmajtriads) 100)
 #+END_SRC
 
 #+RESULTS:
-: #<ScheduledJob id: 1, created-at: Tue 11:39:53s, initial-delay: 100, desc: "Overtone delayed fn", scheduled? true>
+: #<ScheduledJob id: 223, created-at: Wed 04:48:57s, initial-delay: 99, desc: "Overtone delayed fn", scheduled? true>
 
 #+RESULTS:
 : #<ScheduledJob id: 4401268, created-at: Wed 04:48:49s, initial-delay: 200, desc: "Overtone delayed fn", scheduled? true>
 
-**** modified (failed?)
-
+**** modified (fails?)
+Why do you need to pass in the time it starts? Any reason that
+shouldn't be now? Wouldn't be more useful to be able to vary what
+instrument you want to be playing?
 #+BEGIN_SRC clojure :session vle
-(defn my-play [ notes sep]
+(defn my-play [inst notes sep]
   (let [note (first notes)
         time (now)]
     (when note
-      (at time (sampled-piano note)))
+      (at time (inst note)))
     (let [next-time (+ time sep)]
-      (apply-at next-time play [(rest notes) sep]))))
+      (apply-at next-time my-play [inst (rest notes) sep]))))
 #+END_SRC
 
 #+RESULTS:
 : #'post_tonal_overtone.core/my-play
 
 #+BEGIN_SRC clojure :session vle
-(my-play [60 64 67] 2000)
+(my-play sampled-piano [60 64 67] 2000)
 #+END_SRC
 
 #+RESULTS:
-: #<ScheduledJob id: 3320421, created-at: Wed 04:31:10s, initial-delay: 1998, desc: "Overtone delayed fn", scheduled? true>
+: #<ScheduledJob id: 3858, created-at: Wed 04:52:54s, initial-delay: 1999, desc: "Overtone delayed fn", scheduled? true>
 
-**** modify to play with random intervals between notes (fails)
+**** modify to play with random intervals between notes (fails to reapply)
 #+BEGIN_SRC clojure :session vle
 (defn new-play [time notes seps]
   (let [note (first notes)
@@ -295,11 +408,11 @@ also, midi->hz appears unnecessary for sampled-piano
 : #'post_tonal_overtone.core/new-play
 
 #+BEGIN_SRC clojure :session vle
-(new-play (now) (flatten set-class/cmajtriads) [100 300 700])
+(new-play (now) (flatten set-class/cmajtriads) [100 1000])
 #+END_SRC
 
 #+RESULTS:
-: #<ScheduledJob id: 1, created-at: Wed 10:34:54s, initial-delay: 99, desc: "Overtone delayed fn", scheduled? true>
+: #<ScheduledJob id: 5259, created-at: Wed 04:53:56s, initial-delay: 99, desc: "Overtone delayed fn", scheduled? true>
 
 * generate large databases of musical events
 ** transpose triply nested list
