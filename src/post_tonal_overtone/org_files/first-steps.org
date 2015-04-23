@@ -31,6 +31,7 @@ Here's a slightly more messed up one
 *** simple
  You'll discover that it is good practice to define a namespace at the
  beginning of a file of related code.
+
  #+BEGIN_SRC clojure :session getting-started :tangle yes
 (in-ns 'post_tonal_overtone.core)
  #+END_SRC
@@ -38,12 +39,34 @@ Here's a slightly more messed up one
  #+RESULTS:
  : #<Namespace post_tonal_overtone.core>
 
+You can either call this in the CIDER repl, or from within a org-babel block.
+
+Now, you should check to see what went down (especially in a babel
+block where it might not be obvious). If you have called code in the
+REPL but not within a Babel block you may not always be in the right
+place (note a discrepancy here).
+
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 *ns*
  #+END_SRC
 
  #+RESULTS:
+ : #<Namespace user>
+
+ #+BEGIN_SRC clojure :session getting-started :tangle yes
+(in-ns 'post_tonal_overtone.core)
+ #+END_SRC
+
+ #+RESULTS:
  : #<Namespace post_tonal_overtone.core>
+
+ #+BEGIN_SRC clojure :session getting-started
+*ns*
+ #+END_SRC
+
+ #+RESULTS:
+ : #<Namespace post_tonal_overtone.core>
+
 *** eventually more complex, as you realize what your work will require
 note, that this is for the Babel session for the "getting-started"
 program. Maybe don't evaluate this unless you are working with a
@@ -66,9 +89,7 @@ Note, that as [2015-04-14 Tue] the use of hyphens vs. underscore is at issue.
 : nil
 
 
- #+BEGIN_SRC clojure :session getting-started
-*ns*
- #+END_SRC
+
 
  #+RESULTS:
  : #<Namespace post-tonal-overtone.core>
