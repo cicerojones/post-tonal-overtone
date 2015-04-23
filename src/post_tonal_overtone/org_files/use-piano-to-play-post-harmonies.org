@@ -1,0 +1,319 @@
+* develop post-tonal contributions to getting started.org
+** building the dissonant piano player
+There are several topics that we get into here. Perhaps the most in
+need of further exploration and development will be
+*** testing out the piano
+**** build piano chord player
+  #+BEGIN_SRC clojure :session getting-started :tangle yes
+(defn play-piano-chord [a-chord]
+        (doseq [note a-chord] (sampled-piano note)))
+
+(play-piano-chord [60 64 67])
+ #+END_SRC
+
+  #+RESULTS:
+  : #'post_tonal_overtone.core/play-piano-chordnil
+
+**** build quieter piano chord player with variable dynamics
+Note, by rand-nth means we will be getting some change in how loud
+chords are played. This suggests that probability might start to be important
+  #+BEGIN_SRC clojure :session getting-started :tangle yes
+(defn play-quieter-piano-chord [a-chord]
+  (let [level (rand-nth [0.2 0.4 0.6])]
+    (doseq [note a-chord] (sampled-piano note :level level))))
+
+(play-quieter-piano-chord [60 64 67])
+ #+END_SRC
+
+  #+RESULTS:
+  : #'post_tonal_overtone.core/play-quieter-piano-chordnil
+
+#+BEGIN_SRC clojure
+;; note, looper it defined in the first-steps, as is the metro it
+;; takes
+(looper forty-bpm (play-quieter-piano-chord (map #(+ % 60) (repeatedly 6 (partial rand-int 12)))))
+#+END_SRC
+
+*** load chord data and chord selection+transposition functions
+**** load set data in the ./src/ directory
+
+  #+BEGIN_SRC clojure :session getting-started :tangle yes
+(rand-nth set-class/tetrachords)
+  #+END_SRC 
+
+  #+RESULTS:
+  | 0 | 1 | 3 | 5 |
+**** begin voicing chords and printingout
+  #+BEGIN_SRC clojure :session getting-started :tangle yes
+(defn voice-rand-set [set-type]
+  (let [set (rand-nth set-type)
+        voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
+        set-voicing-pair (list set voiced-set)]
+    (do
+      (println set-voicing-pair)
+      set-voicing-pair)))
+  #+END_SRC
+
+  #+RESULTS:
+  : #'post_tonal_overtone.core/voice-rand-set
+
+
+ #+BEGIN_SRC clojure :session getting-started :tangle yes
+(voice-rand-set set-class/tetrachords)
+ #+END_SRC
+
+ #+RESULTS:
+ |  0 |  1 |  4 |  6 |
+ | 48 | 49 | 64 | 78 |
+*** begin selecting chords according to probability distr
+**** segment set-type space into 4 components
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(def zero12s (subvec (vec set-class/tetrachords) 0 6))
+
+(def dia1 (subvec (vec set-class/tetrachords) 7 11))
+
+(def tri-heavy (subvec (vec set-class/tetrachords) 11 17))
+
+(def whole-tones (subvec (vec set-class/tetrachords) 17  25))
+#+END_SRC
+
+#+RESULTS:
+: #'post_tonal_overtone.core/zero12s#'post_tonal_overtone.core/dia1#'post_tonal_overtone.core/tri-heavy#'post_tonal_overtone.core/whole-tones
+
+
+destructuring not working correctly
+
+#+COMMENT does not work! do not tangle
+#+BEGIN_SRC clojure :session getting-started :tangle no
+(defn tetra-probs1 [[z x y w] dist]
+  (let [n (rand)]
+    (cond
+      (>= n z) (rand-nth whole-tones)
+      (>= n x) (rand-nth tri-heavy)
+      (>= n y) (rand-nth dia1)
+      (>= n w) (rand-nth zero12s)
+      :else (rand-nth set-class/hexachords ))))
+#+END_SRC
+
+#+RESULTS:
+: #'post_tonal_overtone.core/tetra-probs1
+
+how to construct the argument list?
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(tetra-probs1 0.8 0.5 0.2 0.1)
+#+END_SRC
+
+#+RESULTS:
+**** create logic for random selection according to prob distribution
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(defn tetra-probs2 [z x y w]
+  (let [n (rand)]
+    (cond
+      (>= n z) (rand-nth whole-tones)
+      (>= n x) (rand-nth tri-heavy)
+      (>= n y) (rand-nth dia1)
+      (>= n w) (rand-nth zero12s)
+      :else (rand-nth set-class/hexachords ))))
+#+END_SRC
+
+#+RESULTS:
+: #'post_tonal_overtone.core/tetra-probs2
+
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(tetra-probs2 0.8 0.5 0.2 0.1)
+#+END_SRC
+
+#+RESULTS:
+| 0 | 2 | 4 | 8 |
+
+**** add fully functional transpositions and printout info
+***** choose set randomly according to old logic
+ #+BEGIN_SRC clojure :session getting-started :tangle yes
+(defn voice-and-transpose-rand-set [set-type tn-level]
+  (let [set (rand-nth set-type)
+        voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
+	visible-pairings (map #(list % (mod % 12)) voiced-set)
+        transposed-set (map #(+ tn-level %) voiced-set)
+	paired-transposed-set (map #(list (mod % 12) (+ tn-level %)) (sort voiced-set))
+        set-voicing-group (list :set set
+                                :tn-level tn-level
+				:reg visible-pairings
+                                :sorted-trans paired-transposed-set)]
+    (do
+      (println set-voicing-group)
+      #_set-voicing-group transposed-set)))
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post-tonal-overtone.core/voice-and-transpose-rand-set
+ #+BEGIN_SRC clojure :session getting-started :tangle yes
+(voice-and-transpose-rand-set set-class/tetrachords 0 #_(rand-int 12))
+ #+END_SRC
+
+ #+RESULTS:
+ | 60 | 37 | 39 | 77 |
+
+***** choose set using new logic w prob. distribution
+ #+BEGIN_SRC clojure :session getting-started :tangle yes
+(defn voice-and-transpose-tetra-probs [tn-level]
+  (let [set (tetra-probs2 0.8 0.5 0.2 0.1)
+        voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
+	visible-pairings (map #(list % (mod % 12)) voiced-set)
+        transposed-set (map #(+ tn-level %) voiced-set)
+	paired-transposed-set (map #(list (mod % 12) (+ tn-level %)) (sort voiced-set))
+        set-voicing-group (list :set set
+                                :tn-level tn-level
+				:reg visible-pairings
+                                :sorted-trans paired-transposed-set)]
+    (do
+      (println set-voicing-group)
+      #_set-voicing-group transposed-set)))
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post_tonal_overtone.core/voice-and-transpose-tetra-probs
+
+*** choose the set type for dissonances
+use play piano as above to play dissonances
+ play-piano-chord will appear to want a vector!
+see 'testing out the piano' subtree above
+**** play chords according to selection with old logic
+ #+BEGIN_SRC clojure :session getting-started :tangle yes
+(defn piano-dissonances1 [set-type]
+  (let [notes (vec (voice-and-transpose-rand-set ; voicing
+                 set-type ;set-class/tetrachords set-type, for instance
+                       (rand-int 12)))]
+    (play-piano-chord notes)))
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post_tonal_overtone.core/piano-dissonances1
+
+
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(piano-dissonances1 set-class/pentachords)
+#+END_SRC
+
+#+RESULTS:
+: nil
+
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(piano-dissonances1 set-class/hexachords)
+#+END_SRC
+
+#+RESULTS:
+: nil
+**** play chords selected according to prob distribution; use quieter playing function
+ #+BEGIN_SRC clojure :session getting-started :tangle yes
+(defn piano-dissonances3 []
+  (let [notes (vec (voice-and-transpose-tetra-probs  ; voicing
+                    (rand-int 12)))]
+    (play-quieter-piano-chord notes)))
+ #+END_SRC
+
+ #+RESULTS:
+
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(piano-dissonances3)
+#+END_SRC
+
+#+RESULTS:
+: nil
+**** borrow random-sample function from clojure 1.7
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(defn random-sample
+  "Returns items from coll with random probability of prob (0.0 -
+  1.0).  Returns a transducer when no collection is provided."
+  {:added "1.7"}
+  ([prob]
+     (filter (fn [_] (< (rand) prob))))
+  ([prob coll]
+     (filter (fn [_] (< (rand) prob)) coll)))
+#+END_SRC
+
+
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(random-sample 0.5 '(1 2))
+#+END_SRC
+
+#+RESULTS:
+| 1 |
+
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(random-sample 0.5 '(1 2))
+#+END_SRC
+
+#+RESULTS:
+| 2 |
+
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(random-sample 0.5 '(1 2))
+#+END_SRC
+
+#+RESULTS:
+| 1 | 2 |
+
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(random-sample 0.5 '(1 2))
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(random-sample 0.5 '((1 2) (3 4)))
+#+END_SRC
+
+#+RESULTS:
+| 1 | 2 |
+
+*** tetrachord piano dissonances; hard-coded set-type
+ #+BEGIN_SRC clojure :session getting-started :tangle yes
+(defn tetrachord-piano-dissonances2 []
+   (let [notes (voice-and-transpose-rand-set ; voicing
+                 set-class/tetrachords ;set-type, for instance
+                       (rand-int 12))]
+    (play-piano-chord notes)))
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post_tonal_overtone.core/tetrachord-piano-dissonances2
+
+ #+BEGIN_SRC clojure :session getting-started :tangle yes
+(tetrachord-piano-dissonances2 )
+ #+END_SRC
+
+ #+RESULTS:
+ : nil
+
+** dealing with timing
+*** making the dissonant piano player play in time
+ note, this will be writing out to the repl!!! Why and where?
+ Because that is how chord-progression-time8 works? Which is defined where?
+
+ #+BEGIN_SRC clojure :session getting-started :tangle yes
+(def metro (metronome 10))
+
+(defn play-piano-dissonances2 [nome]
+  (let [beat (nome)]
+    (at (nome beat) (tetrachord-piano-dissonances2))
+    (apply-at (nome (inc beat)) play-piano-dissonances2 nome [])))
+
+(defn play-piano-dissonances3 [nome]
+  (let [beat (nome)]
+    (at (nome beat) (piano-dissonances3))
+    (apply-at (nome (inc beat)) play-piano-dissonances3 nome [])))
+
+
+;(play-piano-dissonances2 metro)
+(play-piano-dissonances3 metro)
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post_tonal_overtone.core/metro#'post_tonal_overtone.core/play-piano-dissonances2
+
+ #+BEGIN_SRC clojure :session getting-started :tangle yes
+(do (println '(0 1 2)))
+ #+END_SRC
+
+ #+RESULTS:
+ : nil
