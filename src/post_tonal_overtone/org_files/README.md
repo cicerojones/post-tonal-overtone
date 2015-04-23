@@ -16,15 +16,15 @@ a kind of etude book.
 Right now, since this is a work in process, it would appear that from
 time of last usage, this is reverse order in which I use these files. 
 
- modeling-musical-time
+1. first-steps
 
-- getting-started
+2. wiki-getting-started
 
-- build-voice-leading-engine
+3. modeling-musical-time
 
-- post-tonal-lib-overview
+4. using-post-tonal-harmonies
 
-- using-post-tonal-harmonies
+5. build-voice-leading-engine
 
 
 Which means that there should be a simple first document, which
