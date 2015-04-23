@@ -13,9 +13,6 @@ a kind of etude book.
 
 ## Gradus ad Parnassum
 
-Right now, since this is a work in process, it would appear that from
-time of last usage, this is reverse order in which I use these files. 
-
 1. get sound, play chords, make progressions
 
    1. [first-steps.org](https://github.com/cicerojones/post-tonal-overtone/blob/master/src/post_tonal_overtone/org_files/first-steps.org)
