@@ -1,5 +1,5 @@
 # How to Use Org Mode files to learn Clojure and Overtone
-## Description
+### Description
 The idea here seems to be that moving through one file after another,
 and evaluating code while reading through the descriptions is a good
 way to get started playing.
