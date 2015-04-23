@@ -27,7 +27,7 @@ a kind of etude book.
 
 3. rethink existing documentation
 
-   1. [wiki-getting-started.org](https://github.com/cicerojones/post-tonal-overtone/blob/master/src/post_tonal_overtone/org_files/overtone-wiki-getting-started.org)
+   1. [personalized-overtone-wiki-in-one-file.org](https://github.com/cicerojones/post-tonal-overtone/blob/master/src/post_tonal_overtone/org_files/personalized-overtone-wiki-in-one-file.org)
 
 
 Which means that there should be a simple first document, which
