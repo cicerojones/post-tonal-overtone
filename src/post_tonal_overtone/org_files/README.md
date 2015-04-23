@@ -16,15 +16,21 @@ a kind of etude book.
 Right now, since this is a work in process, it would appear that from
 time of last usage, this is reverse order in which I use these files. 
 
-1. first-steps
+1. get sound, play chords, make progressions
 
-   1. use-piano-to-play-post-harmonies.org
+   1. [first-steps.org](https://github.com/cicerojones/post-tonal-overtone/blob/master/src/post_tonal_overtone/org_files/first-steps.org)
 
-   2. build-voice-leading-engine
+   2. [use-piano-to-play-post-harmonies.org](https://github.com/cicerojones/post-tonal-overtone/blob/master/src/post_tonal_overtone/org_files/use-piano-to-play-post-harmonies.org)
 
-2. modeling-musical-time
+   3. [build-voice-leading-engine.org](https://github.com/cicerojones/post-tonal-overtone/blob/master/src/post_tonal_overtone/org_files/build-voice-leading-engine.org)
 
-3. wiki-getting-started
+2. develop compositions
+
+   1. [modeling-musical-time.org](https://github.com/cicerojones/post-tonal-overtone/blob/master/src/post_tonal_overtone/org_files/modeling-musical-time.org)
+
+3. rethink existing documentation
+
+   1. [wiki-getting-started.org](https://github.com/cicerojones/post-tonal-overtone/blob/master/src/post_tonal_overtone/org_files/overtone-wiki-getting-started.org)
 
 
 Which means that there should be a simple first document, which
