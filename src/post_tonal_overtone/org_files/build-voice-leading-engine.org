@@ -177,11 +177,11 @@ mysterious errors. Have you checked your REPL lately?
 #+END_SRC
 
 #+RESULTS:
-: (:C#3 :F3 :Bb3 :Bb5)
-: (49 53 58 82)
-: (1 5 10 10)
-*** remember meaningful phenomena
-**** write 6 note voicing to disk
+: (:A3 :C#4 :Bb4 :F5)
+: (57 61 70 77)
+: (9 1 10 5)
+** remember meaningful phenomena
+*** write 6 note voicing to disk
 
 Define mod12 function 
 #+BEGIN_SRC clojure :session vle :results output
@@ -198,10 +198,10 @@ Define mod12 function
 #+END_SRC
 
 #+RESULTS:
-: (:F3 :A3 :Bb3 :F4 :G5 :A5)
-: (53 57 58 65 79 81)
-: (5 9 10 5 7 9) nil
-**** stateful versions
+: (:Bb3 :C#4 :A4 :F5 :G5 :A5)
+: (58 61 69 77 79 81)
+: (10 1 9 5 7 9)
+*** stateful versions
 
 For example, this generated chord was particularly attractive.
 Wouldn't it be nice to keep track of such things? And to revist and
@@ -211,6 +211,8 @@ larger structure that begins to emerge after using a bunch of them?
 
 
 i.e. how do you cycle between these two things?
+
+Need to be some kind of swap-ping or dereferencing of a stateful thing..
 #+BEGIN_SRC clojure
 (play-piano-chord '(57 58 65 67 79 85))
 ;; (play-piano-chord '(53 57 58 65 79 81))
@@ -218,11 +220,77 @@ i.e. how do you cycle between these two things?
 
 #+RESULTS:
 : nil
+*** using an atom and swap to derefence and set a new value
 
+#+BEGIN_SRC clojure
+(def a (atom (vec (take 100 (cycle [[57 58 65 67 79 85]
+                                    [53 57 58 65 79 81]])))))
+#+END_SRC
+
+#+RESULTS:
+: #'post_tonal_overtone.core/a
+
+#+BEGIN_SRC clojure
+(first (swap! a rest))
+#+END_SRC
+
+#+RESULTS:
+| 57 | 58 | 65 | 67 | 79 | 85 | 
+
+#+BEGIN_SRC clojure
+(play-piano-chord (first (swap! a rest)))
+#+END_SRC  
+
+#+RESULTS:
+: nil
+
+#+BEGIN_SRC clojure :results output
+(let [midis (first (swap! a rest))]
+(do (println (map find-note-name midis))
+    (println midis)
+    (println (map mod12 midis))
+    (println (count @a))
+    (play-piano-chord midis)
+  ))
+#+END_SRC
+
+#+RESULTS:
+: (:A3 :Bb3 :F4 :G4 :G5 :C#6)
+: [57 58 65 67 79 85]
+: (9 10 5 7 7 1)
+: 62
+*** let's make a big cycle
+#+BEGIN_SRC clojure
+(def b (atom (vec (take 100 (cycle '((53 55 58 61 77 85)(57 58 65 67 79 85)(45 55 61 65 67 70)(45 61 65 67 70 77)))))))
+#+END_SRC
+
+#+RESULTS:
+: #'post_tonal_overtone.core/b
+
+
+#+BEGIN_SRC clojure :results output
+(let [midis (first (swap! b rest))]
+(do (println (map find-note-name midis))
+    (println midis)
+    (println (map mod12 midis))
+    (println (count @b))
+    (play-piano-chord midis)
+  ))
+#+END_SRC
+
+#+RESULTS:
+: (:A3 :Bb3 :F4 :G4 :G5 :C#6)
+: (57 58 65 67 79 85)
+: (9 10 5 7 7 1)
+: 75
+
+*** stateful object without atom management
 You CAN do this, but whether you should is another matter. Or rather
-an exact understanding of why you shouldn't and what you should do
-instead is what ultimately is most important (it involves ~atoms~).
-For now, however, let's see how this works.
+an exact understanding of why you should or shouldn't and how to do it
+if you do is what ultimately is most important (it involves ~atoms~,
+as above).
+
+For now, however, let's see how this works, in contrast to using ~atoms~
 #+BEGIN_SRC clojure :session vle :results output
 (def stateful-chord (rand-chord :A2 :7+5-9 6 48))
 
@@ -235,19 +303,22 @@ For now, however, let's see how this works.
 #+END_SRC
 
 #+RESULTS:
-: (:A3 :Bb3 :F4 :G4 :G5 :C#6)
-: (57 58 65 67 79 85)
-: (9 10 5 7 7 1)
+: (:A2 :C#4 :F4 :G4 :Bb4 :F5)
+: (45 61 65 67 70 77)
+: (9 1 5 7 10 5)
 
 See it here again:
 #+BEGIN_SRC clojure
+(let [midis stateful-chord]
+  (play-piano-chord midis)
+    )
+
 stateful-chord
 #+END_SRC
 
 #+RESULTS:
-| 57 | 58 | 65 | 67 | 79 | 85 |
-
-
+: nil(45 61 65 67 70 77)
+*** reading from and writing to disk
 If you particularly liked it, why not write it to disk?
 
 #+BEGIN_SRC clojure
@@ -258,15 +329,30 @@ If you particularly liked it, why not write it to disk?
 #+RESULTS:
 : nil
 
+However, reading from this doesn't quite work the way you would want.
+
+#+BEGIN_SRC clojure
+(read-string (slurp "src/post_tonal_overtone/data/fave-voicings.clj"))
+#+END_SRC
+
+#+RESULTS:
+| 53 | 55 | 58 | 61 | 77 | 85 | 
+
+That is, we are always only slurping the first thing  
+
 And C-c C-o to see that the file contains the last "stateful chord"
 [[file:~/git-projects/post_tonal_overtone/src/post_tonal_overtone/data/fave-voicings.clj]]
+*** we want to read-write with streams instead
+
 
 Compare writing out to disk with java.io interop. (See 
 [[file:~/git/org/clojure-books.org::*4.9.%20Reading%20and%20Writing%20Text%20Files][4.9. Reading and Writing Text Files]] in cookbook
+
  #+BEGIN_SRC clojure
 (with-open [w (clojure.java.io/writer "stuff.txt")] (doseq [line some-large-seq-of-strings] (.write w line) (.newLine w)))
  #+END_SRC
-**** developing an understanding of state
+
+*** developing an understanding of state
 The real issue in the above comes when there are other "clients"
 interacting with that "object." Or what about if you wanted to keep
 that object available in clojure and not just on disk somehow, i.e.
