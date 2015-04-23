@@ -18,13 +18,13 @@ time of last usage, this is reverse order in which I use these files.
 
 1. first-steps
 
-2. wiki-getting-started
+   1. use-piano-to-play-post-harmonies.org
 
-3. modeling-musical-time
+   2. build-voice-leading-engine
 
-4. using-post-tonal-harmonies
+2. modeling-musical-time
 
-5. build-voice-leading-engine
+3. wiki-getting-started
 
 
 Which means that there should be a simple first document, which
