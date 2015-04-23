@@ -227,80 +227,14 @@ respective waveforms.
  #+RESULTS:
  : #<instrument: saw1>#<synth-node[loading]: post_tonal_overtone.core/saw1 63>
 
-* develop chords progressions 
-Because I am interested in post-tonal music, the following is about
-how to incorporate such sounds into overtone projects.
-** start working with post tonal set classes
-*** getting-started babel session
-note, this will only work if...you are in the proper namespace. What
-that really means is...don't do this. 
-
-Make sure that your data is loaded in a namespace declaration, i.e.
-don't call this.
- #+BEGIN_SRC clojure :session getting-started :tangle yes 
-;; (load "set-class-data")
- #+END_SRC
-
-** make a function to work with sets
- #+BEGIN_SRC clojure :session getting-started :tangle yes 
-(defn voice-and-transpose-rand-set [set-type tn-level]
-  (let [set (rand-nth set-type)
-        voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
-        transposed-set (map #(+ tn-level %) voiced-set)
-        set-voicing-group (list set voiced-set tn-level transposed-set)]
-    (do
-      (println set-voicing-group)
-      (last set-voicing-group))))
- #+END_SRC
-
- #+RESULTS:
- : #'post_tonal_overtone.core/voice-and-transpose-rand-set
-
-** play chords using above sin wave instrument
-*** doseq chord tones by giving sin3 midi-converted hz values
- #+BEGIN_SRC clojure :session getting-started :tangle yes 
-(defn play-chord-sin2 [a-chord]
-  (doseq [note a-chord] (sin3 (midi->hz note))))
- #+END_SRC
-
- #+RESULTS:
- : #'post_tonal_overtone.core/play-chord-sin2
-
- #+BEGIN_SRC clojure :session getting-started :tangle yes 
-(sin3 330)
- #+END_SRC
-
- #+RESULTS:
- : #<synth-node[loading]: post_tonal_overtone.core/sin3 7896>
-
- #+BEGIN_SRC clojure :session getting-started :tangle yes 
-(sin3 (midi->hz 96))
- #+END_SRC
-
- #+RESULTS:
- : #<synth-node[loading]: post_tonal_overtone.core/sin3 66>
-
- #+BEGIN_SRC clojure :session getting-started :tangle yes 
-(play-chord-sin2 [64 76 81 86 91 96 101])
- #+END_SRC
-
- #+RESULTS:
- : nil
-
-#+COMMENT why do you want to hear an extremely high pitched sin wave?
- #+BEGIN_SRC clojure :session getting-started :tangle yes 
-(definst med96 [] (* 0.01 (sin-osc (midi->hz 96))))
-
-(med96)
- #+END_SRC
-
- #+RESULTS:
- : #<instrument: med96>
-
 * begin creating scheduled events
-To really understand how to use scheduling we'll need to look at some
-other files that are dedicated to this pursuit. For now, here are some
-quick examples
+To really make music, we're going to have to understand how to get
+things to play in time, without use simply triggering everything at
+the REPL. That meas we are going to have to schedule things.
+
+And to really understand how to use scheduling we'll ultimately need
+to look at some other files that are dedicated to this pursuit. For
+now, here are some quick examples
 ** old experiments
 *** use 'at' to schedule chord events
 Simply, we can use the `at` function to schedule some events relative
@@ -322,29 +256,6 @@ quanitified--here in milliseconds.
 (chord-progression-time1)
   #+END_SRC
 ** test out a single chord player
-*** this functionality has largely been superseded elsewhere
-This provides sets of pitches to a sine instrument. The pitches are
-chosen with the above machinery.
- #+BEGIN_SRC clojure :session getting-started :tangle yes 
-(defn sine-tetra-diss []
-  (doseq [notes (voice-and-transpose-rand-set ; voicing
-                 set-class/tetrachords
-                       (rand-int 12))]
-    (sin3 (midi->hz notes))))
-
-(sine-tetra-diss)
- #+END_SRC
-
- #+RESULTS:
- : #'post_tonal_overtone.core/sine-tetra-dissnil
-
-
-
-
-
-  #+RESULTS:
-  : #'post_tonal_overtone.core/chord-progression-time1nil
-
 *** test out single event versions using 'at'
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (defn chord-progression-time2 [inst]
@@ -372,32 +283,68 @@ chosen with the above machinery.
 
   #+RESULTS:
   : #'post-tonal-overtone.core/metro
+*** Preparing dissonant chords 
+(Note: this functionality has largely been superseded elsewhere)
 
-*** define and use a chord progression player--use 'apply-at'
+The function `sine-tetra-diss` will provide sets of pitches to a sine
+instrument. The pitches are chosen from a local file (which is aliased
+with `set-class.` We'll get to explaining this soon.)
 
- Note that this uses the sine-tetra-diss as a hard-coded 'instrument',
- or rather an instrumentalist.
-  # the best one yet
+Note that it also calls a special function for making voicings. There
+is some functionality like this in overtone already, namely a
+`rand-chord` function..
+
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+;; A function to work with sets
+(defn voice-and-transpose-rand-set [set-type tn-level]
+  (let [set (rand-nth set-type)
+        voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
+        transposed-set (map #(+ tn-level %) voiced-set)
+        set-voicing-group (list set voiced-set tn-level transposed-set)]
+    (do
+      (println set-voicing-group)
+      (last set-voicing-group))))
+
+(defn sine-tetra-diss []
+  (doseq [notes (voice-and-transpose-rand-set ; voicing
+                 set-class/tetrachords
+                       (rand-int 12))]
+    (sin3 (midi->hz notes))))
+
+(sine-tetra-diss)
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post_tonal_overtone.core/voice-and-transpose-rand-set#'post_tonal_overtone.core/sine-tetra-dissnil
+
+*** Schedule dissonant chords
+Define and use a chord progression player--use 'apply-at'
+
+Note that this uses the sine-tetra-diss as a hard-coded 'instrument',
+or rather an instrumentalist.
+
+There one major thing not described here, which is how this can just
+keep going. We'll get to that. The main purpose here is to give us
+something interesting to listen to.
+
 
   #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (defn chord-progression-time8 [nome]
   (let [beat (nome)]
     (at (nome beat) (sine-tetra-diss))
     (apply-at (nome (inc beat)) chord-progression-time8 nome [])))
-  #+END_SRC
 
-  #+RESULTS:
-  : #'post-tonal-overtone.core/chord-progression-time8
-
-  # to paraphrase "A Foggy Day", how long can this thing last?
-
-  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+;; to paraphrase "A Foggy Day", how long can this thing last?
 (chord-progression-time8 metro)
   #+END_SRC
 
-  #+RESULTS:
-  : #<ScheduledJob id: 1, created-at: Tue 05:51:04s, initial-delay: 1069, desc: "Overtone delayed fn", scheduled? true>
+* various experiments 
+The rest is mostly slight variation on the above. In a sense it shows 
+the process that may have been used to arrive at the above, as these
+various progressions were numbered, and the above one (which is the
+preferred of these others) was number 8 in the series.
 
+** Experiment with progression based on sawtooth synths
 *** use sawtooth synth to play various chords
   #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (map saw1 (map #(midi->hz %) (last (voice-rand-set *pentachords*))))
@@ -449,9 +396,13 @@ chosen with the above machinery.
 (chord-progression-time4 metro)
   #+END_SRC
 
-*** chord progression 5
+** chord progression 5
   # hack to get around the apply-at problem
-
+use a set of pitched chords
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(def some-midis [[72 61 50 46] [60 49 51 55 44] [74 63 52 68] [42 79
+70 61]])
+  #+END_SRC
 
   #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (defn chord-progression-time5 [nome]
@@ -460,12 +411,6 @@ chosen with the above machinery.
         (doseq [note (rand-nth some-midis)]
           (saw1 (midi->hz note))))
     (apply-at (nome (inc beat)) chord-progression-time5 nome [])))
-  #+END_SRC
-
-*** use a set of pitched chords
-  #+BEGIN_SRC clojure :session getting-started :tangle yes 
-(def some-midis [[72 61 50 46] [60 49 51 55 44] [74 63 52 68] [42 79
-70 61]])
   #+END_SRC
 
   #+BEGIN_SRC clojure :session getting-started :tangle yes 
@@ -581,8 +526,8 @@ chosen with the above machinery.
 (chord-progression-time10 play-chord-saw1)
   #+END_SRC
 
-** from the 'sequencing' wiki tutorial
-*** use kick on each beat of a metronome
+* from the 'sequencing' wiki tutorial
+** use kick on each beat of a metronome
 #+BEGIN_SRC clojure
 (def kick (sample (freesound-path 2086)))
 
@@ -609,7 +554,7 @@ chosen with the above machinery.
 #+RESULTS:
 : nil
 
-*** startup a metronome and check in with its beats as it runs
+** startup a metronome and check in with its beats as it runs
 #+BEGIN_SRC clojure
 ; to get a feel for how the metronome works, try defining one at the REPL
 (def nome (metronome 200))
@@ -664,6 +609,72 @@ through the frequencies from a given fundamental
 
 (foo (now) 40)
 #+END_SRC
+
+* develop chords progressions (not "intro" enough--should be moved elsewhere?)
+Because I am interested in post-tonal music, the following is about
+how to incorporate such sounds into overtone projects.
+** start working with post tonal set classes
+*** getting-started babel session
+note, this will only work if...you are in the proper namespace. What
+that really means is...don't do this. 
+
+Make sure that your data is loaded in a namespace declaration, i.e.
+don't call this. There is a general preference for using a different
+idiom than the following, which is very easy, but obscures some things
+about how namespaces work.
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+;; (load "set-class-data")
+ #+END_SRC
+
+While the above seems so innocent, it fails to reveal anything about
+where this file lives, which means you will be able to use things
+defined in there with a false sense of security. "Everything just
+works!" Until it doesn't. 
+
+What should you do instead? Use `require` which will be described more
+elsewhere [link]
+
+
+** play chords using above sin wave instrument
+*** doseq chord tones by giving sin3 midi-converted hz values
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(defn play-chord-sin2 [a-chord]
+  (doseq [note a-chord] (sin3 (midi->hz note))))
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post_tonal_overtone.core/play-chord-sin2
+
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(sin3 330)
+ #+END_SRC
+
+ #+RESULTS:
+ : #<synth-node[loading]: post_tonal_overtone.core/sin3 7896>
+
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(sin3 (midi->hz 96))
+ #+END_SRC
+
+ #+RESULTS:
+ : #<synth-node[loading]: post_tonal_overtone.core/sin3 66>
+
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(play-chord-sin2 [64 76 81 86 91 96 101])
+ #+END_SRC
+
+ #+RESULTS:
+ : nil
+
+#+COMMENT why do you want to hear an extremely high pitched sin wave?
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(definst med96 [] (* 0.01 (sin-osc (midi->hz 96))))
+
+(med96)
+ #+END_SRC
+
+ #+RESULTS:
+ : #<instrument: med96>
 * miscellaneous utilities and problems
 ** all caps is a problem--clojure is case sensitive
 #+BEGIN_SRC clojure :session getting-started :tangle yes 
