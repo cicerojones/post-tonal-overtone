@@ -1,8 +1,10 @@
 #+COMMENT prefer the other post-tonal project org files
 * starting-up--basics
+When viewing this in emacs org-mode, you will see results for running
+any block code; however, these results will not appear on the github wiki.
 ** namespaces
 *** starting up from a .clj source file
-the key here will be having an functioning cider-repl open and
+The key here will be having an functioning cider-repl open and
 evaluating the whole file.
 
 But, even more significantly, you will want to develop a strong
@@ -143,9 +145,9 @@ post_tonal_overtone.data.set_class_data/cmajtriads
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: noisey2>#<synth-node[loading]: post_tonal_overtone.485/noisey2 7893>
+ : #<instrument: noisey2>#<synth-node[loading]: post_tonal_overtone.485/noisey2 1575>
 
-*** definst can involve an envelope for the scaling the ugen output--using lin
+*** definst can take an envelope for scaling the ugen output--using lin
 use of lin presents several default keyword args, when called for env-gen
 #+BEGIN_SRC clojure 
 (lin :attack :sustain :release :level :curve)
@@ -182,7 +184,8 @@ use of lin presents several default keyword args, when called for env-gen
   : nil
 
 * producing basic sounds
-** play long white noise from above function (now called with parameters)
+** play long white noise
+We now call the above function with parameters.
 *** example--10 second version, long release?
 
 experimenting with different parameter values reveals that the
@@ -194,8 +197,12 @@ mechanics of ~env-gen~ function are not entirely clear. An attack of
   #+END_SRC
 
   #+RESULTS:
-  : #<synth-node[loading]: post_tonal_overtone.485/noisey2 7895>
+  : #<synth-node[loading]: post_tonal_overtone.485/noisey2 1576>
 ** build some synth instruments for playing chords
+Really understanding `definst` will take some time. Here are some
+quick sound examples that use `sin-osc` and `saw` to produce those
+respective waveforms.
+
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (definst sin3 [freq 880 attack 0.1 sustain 0.15 release 0.25 vol 0.4 length 5]
   (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
@@ -220,7 +227,9 @@ mechanics of ~env-gen~ function are not entirely clear. An attack of
  #+RESULTS:
  : #<instrument: saw1>#<synth-node[loading]: post_tonal_overtone.core/saw1 63>
 
-* develop post-tonal chords progressions with basic timing using 'now'
+* develop chords progressions 
+Because I am interested in post-tonal music, the following is about
+how to incorporate such sounds into overtone projects.
 ** start working with post tonal set classes
 *** getting-started babel session
 note, this will only work if...you are in the proper namespace. What
@@ -248,7 +257,6 @@ don't call this.
  : #'post_tonal_overtone.core/voice-and-transpose-rand-set
 
 ** play chords using above sin wave instrument
-
 *** doseq chord tones by giving sin3 midi-converted hz values
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (defn play-chord-sin2 [a-chord]
@@ -289,9 +297,20 @@ don't call this.
  #+RESULTS:
  : #<instrument: med96>
 
-** define a set of chord progressions to be played in time
-*** use 'at' to schedule chord events, hard-coding offsets
- #+BEGIN_SRC clojure :session getting-started :tangle yes 
+* begin creating scheduled events
+To really understand how to use scheduling we'll need to look at some
+other files that are dedicated to this pursuit. For now, here are some
+quick examples
+** old experiments
+*** use 'at' to schedule chord events
+Simply, we can use the `at` function to schedule some events relative
+to a given starting point (which will be determined by calling `now`).
+Note, that we hard-coding in the offsets, which means that this won't
+be especially useful for more than a few listens. 
+
+However, it neatly demonstrates that time can be quite nicely
+quanitified--here in milliseconds.
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (defn chord-progression-time1 []
   (let [time (now)]
     (at time          (play-chord-sin2 [68 81 46 50 88]))
@@ -301,10 +320,30 @@ don't call this.
     (at (+ 8000 time) (play-chord-sin2 [89 55 45 60 62]))))
 
 (chord-progression-time1)
+  #+END_SRC
+** test out a single chord player
+*** this functionality has largely been superseded elsewhere
+This provides sets of pitches to a sine instrument. The pitches are
+chosen with the above machinery.
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(defn sine-tetra-diss []
+  (doseq [notes (voice-and-transpose-rand-set ; voicing
+                 set-class/tetrachords
+                       (rand-int 12))]
+    (sin3 (midi->hz notes))))
+
+(sine-tetra-diss)
  #+END_SRC
 
  #+RESULTS:
- : #'post_tonal_overtone.core/chord-progression-time1nil
+ : #'post_tonal_overtone.core/sine-tetra-dissnil
+
+
+
+
+
+  #+RESULTS:
+  : #'post_tonal_overtone.core/chord-progression-time1nil
 
 *** test out single event versions using 'at'
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
@@ -326,25 +365,6 @@ don't call this.
  #+RESULTS:
  : #<synth-node[loading]: post_tonal_overtone.core/saw1 100>
 
-** test out a single chord player
-*** this functionality has largely been superseded elsewhere
-This provides sets of pitches to a sine instrument. The pitches are
-chosen with the above machinery.
- #+BEGIN_SRC clojure :session getting-started :tangle yes 
-(defn sine-tetra-diss []
-  (doseq [notes (voice-and-transpose-rand-set ; voicing
-                 set-class/tetrachords
-                       (rand-int 12))]
-    (sin3 (midi->hz notes))))
-
-(sine-tetra-diss)
- #+END_SRC
-
- #+RESULTS:
- : #'post_tonal_overtone.core/sine-tetra-dissnil
-
-* begin creating scheduled events
-** old experiments
 *** establish a beat for scheduling events using metronome
   #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (def metro (metronome 60))
