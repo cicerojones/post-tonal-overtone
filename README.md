@@ -5,8 +5,12 @@ Exploration of the Overtone library in Clojure using post-tonal music
 
 ## Usage
 
-This file is intended to be worked through in a "literate programming"
-manner, evaluating one expression at a time.
+The files in
+[src/org-files](https://github.com/cicerojones/post-tonal-overtone/tree/master/src/post_tonal_overtone/org_files)
+are intended to be worked through in a "literate programming" manner,
+evaluating one expression at a time. Additionally. since Github
+renders .org files, they can be read on the github website as a less
+interactive kind of tutorial.
 
 ## Purpose
 
