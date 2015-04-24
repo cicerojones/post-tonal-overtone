@@ -4654,7 +4654,7 @@ For the moment, let's see what evaluating the following reveals.
  You'll discover that it is good practice to define a namespace at the
  beginning of a file of related code. If you are working through this
  in emacs org-mode babel, evaluate this now (The results of executing
- `C-c C-c` on or within block will be telling).
+ src_elisp{C-c C-c} on or within block will be telling).
 
  #+BEGIN_SRC clojure :session getting-started :tangle yes
 (in-ns 'post_tonal_overtone.core)
@@ -4821,7 +4821,7 @@ these things in some way other than typing values at the keyboard?
 We'll have to get to this.
 
 ** build some 'pitched' synth instruments for playing chords
-Really understanding `definst` will take some time. Here are some
+Really understanding src_clojure{definst} will take some time. Here are some
 quick sound examples that use `sin-osc` and `saw` to produce those
 respective waveforms, which now will allow us to use actual
 frequencies and pitches.
