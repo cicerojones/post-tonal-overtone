@@ -19,7 +19,9 @@ Here's one good example.
   (:use overtone.live)
   (:require [post_tonal_overtone.data.set_class_data :as set-class]))
 #+END_SRC
-Here's a slightly more messed up one
+Here's a slightly more messed up one. Can you spot the differences,
+subtle and obvious?
+
 #+BEGIN_SRC clojure
 (ns post-tonal-overtone.core
   (:use overtone.live
@@ -29,10 +31,114 @@ Here's a slightly more messed up one
 ;;	org.clojure/math.combinatorics "0.1.1"
 	clojure.repl))
 #+END_SRC
-#+BEGIN_SRC clojure
+*** calling dir
+If you want to get a sense of what you have been bringing in, and want
+to begin to get a sense of how namespaces really work, take a look at
+what may be defined in a given namespace.
 
+#+BEGIN_SRC clojure :results output
+(dir post_tonal_overtone.core)
 #+END_SRC
-*** simple
+
+#+RESULTS:
+#+begin_example
+a
+actual-melody
+append-to
+b
+bpm
+chord-progression-time1
+chord-progression-time10
+chord-progression-time2
+chord-progression-time3
+chord-progression-time4
+chord-progression-time5
+chord-progression-time6
+chord-progression-time7
+chord-progression-time8
+chord-progression-time9
+do-re-mi
+event-list
+event-list1
+from
+looper
+m
+med96
+metro
+mod12
+my-chord-progression-time
+my-ctford-play
+my-play
+new-play
+noisey-sustained
+noisey2
+piano-dissonances3
+play
+play-chord-saw1
+play-chord-sin2
+play-piano-chord
+play-piano-dissonances2
+play-piano-dissonances3
+play-quieter-piano-chord
+random-sample
+saw-diss
+saw1
+scale-degrees
+sin3
+sine-tetra-diss
+some-midis
+stateful-chord
+tetrachord-piano-dissonances2
+voice-and-transpose-rand-set
+voice-rand-set
+where
+#+end_example
+
+#+BEGIN_SRC clojure :results output
+(dir post_tonal_overtone.data.set_class_data)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+cmajtriads
+dyads
+dyads-tn
+hexachords
+hexachords-tn
+nested-transposed-tetrachords
+pentachords
+pentachords-tn
+tetrachords
+tetrachords-tn
+trichords
+trichords-tn
+#+end_example
+
+
+#+BEGIN_SRC clojure :results output
+(dir post_tonal_overtone.probability_functions.finite-distributions)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+bernoulli
+binomial
+certainly
+choose
+cond-dist-m
+cond-prob
+dist-m
+join-with
+make-distribution
+normalize
+normalize-cond
+prob
+select
+uniform
+zipf
+#+end_example
+
+*** simple namespaces moves
  You'll discover that it is good practice to define a namespace at the
  beginning of a file of related code.
 
@@ -138,10 +244,14 @@ post_tonal_overtone.data.set_class_data/cmajtriads
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: noisey2>#<synth-node[loading]: post_tonal_overtone.485/noisey2 1575>
+ : #<instrument: noisey2>#<synth-node[loading]: post_tonal_overtone.485/noisey2 2246>
 
 *** definst can take an envelope for scaling the ugen output--using lin
-use of lin presents several default keyword args, when called for env-gen
+use of lin presents several default keyword args. When called as an
+argument for env-gen as is you will get these default values that
+basically make for a "sharp" sound, i.e. no gentle entrance and ending
+to the sound.
+
 #+BEGIN_SRC clojure 
 (lin :attack :sustain :release :level :curve)
 #+END_SRC
@@ -183,18 +293,34 @@ We now call the above function with parameters.
 
 experimenting with different parameter values reveals that the
 mechanics of ~env-gen~ function are not entirely clear. An attack of
-'1' and sustain of '0' would seem weirder than what sounds.
+'0.5' and sustain of '0' would seem weirder than what sounds.
 
+Sounds like a pleasant wave just rolled up?
   #+BEGIN_SRC clojure :session getting-started :tangle yes 
-(noisey2 :attack 1 :sustain 0 :release 0.5 :vol 0.3 :length 10)
+(noisey2 :attack 0.4 :sustain 0 :release 0.7 :vol 0.3 :length 10)
   #+END_SRC
 
   #+RESULTS:
-  : #<synth-node[loading]: post_tonal_overtone.485/noisey2 1576>
-** build some synth instruments for playing chords
+  : #<synth-node[loading]: post_tonal_overtone.485/noisey2 2262>
+
+
+Sounds like percussion now?
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(noisey2 :attack 0 :sustain 0 :release 0.1 :vol 0.3 :length 1)
+  #+END_SRC
+
+  #+RESULTS:
+  : #<synth-node[loading]: post_tonal_overtone.485/noisey2 2257>
+
+Wouldn't it be nice to be able to experiment with different values for
+these things in some way other than typing values at the keyboard?
+We'll have to get to this.
+
+** build some 'pitched' synth instruments for playing chords
 Really understanding `definst` will take some time. Here are some
 quick sound examples that use `sin-osc` and `saw` to produce those
-respective waveforms.
+respective waveforms, which now will allow us to use actual
+frequencies and pitches.
 
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (definst sin3 [freq 880 attack 0.1 sustain 0.15 release 0.25 vol 0.4 length 5]
@@ -205,6 +331,9 @@ respective waveforms.
 (sin3)
  #+END_SRC
 
+ #+RESULTS:
+ : #<instrument: sin3>#<synth-node[loading]: post_tonal_overtone.core/sin3 2263>
+
 You can also give sin3 an argument:
 
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
@@ -212,10 +341,10 @@ You can also give sin3 an argument:
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: sin3>#<synth-node[loading]: post_tonal_overtone.core/sin3 62>
+ : #<synth-node[loading]: post_tonal_overtone.core/sin3 2264>
 
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
-(definst saw1 [freq 880 attack 0.1 sustain 0.15 release 0.25 vol 0.4 length 5]
+(definst saw1 [freq 330 attack 0.3 sustain 0.15 release 0.25 vol 0.2 length 5]
   (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
      (saw freq)
      vol))
@@ -224,7 +353,43 @@ You can also give sin3 an argument:
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: saw1>#<synth-node[loading]: post_tonal_overtone.core/saw1 63>
+ : #<instrument: saw1>#<synth-node[loading]: post_tonal_overtone.core/saw1 2272>
+
+** saw waves are harmonically rich--sine waves not so much...
+The above options give us comparatively straightforward sounds.
+However, they are not necessarily very pleasant or interesting by
+themselves. If you're interested right now, we can play around a
+little with a saw wave, just to give any idea of other ways you can
+get sounds.
+
+
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(definst saw2 [freq 220 attack 0.3 sustain 0.15 release 0.25 vol 0.2 length 5]
+  (bpf (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
+          (saw freq)
+          vol)
+       (* 10 (inc (rand-int 10)))
+       (* 0.01 (inc (rand-int 10)))))
+
+(saw2)
+ #+END_SRC
+
+ #+RESULTS:
+ : #<instrument: saw2>#<synth-node[loading]: post_tonal_overtone.core/saw2 2367>
+
+#+BEGIN_SRC clojure
+(saw2 (overtone.algo.chance/ranged-rand 300 302) :vol 3)
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: post_tonal_overtone.core/saw2 2393>
+
+#+BEGIN_SRC clojure
+(demo (bpf (* (env-gen (lin 0.0 0.2 0.3)) (saw)) 800 0.3))
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: post_tonal_ov485/audition-synth 2434>
 
 * begin creating scheduled events
 To really make music, we're going to have to understand how to get
@@ -249,6 +414,8 @@ quanitified--here in milliseconds.
 ;; note, we are using midi->hz because synths will tend to expect
 ;; arguments in hz
 
+;; Note, that sin3 was defined early
+
 (defn play-chord-sin2 [a-chord]
   (doseq [note a-chord] (sin3 (midi->hz note))))
  #+END_SRC
@@ -263,7 +430,7 @@ quanitified--here in milliseconds.
  #+END_SRC
 
  #+RESULTS:
- : #<synth-node[loading]: post_tonal_overtone.core/sin3 1585>
+ : #<synth-node[loading]: post_tonal_overtone.core/sin3 2435>
 
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (play-chord-sin2 [64 76 81 86 91 96 101])
@@ -326,7 +493,24 @@ fluid, eventually maybe even treating it like an instrument!)
   #+END_SRC
 
   #+RESULTS:
-  : #'post-tonal-overtone.core/metro
+  : #'post_tonal_overtone.core/metro
+
+Understanding how to use the values that this produces gets at the
+heart of language, and is crucial to doing musical things--to the
+extent that music happens in time, or according to some constructed
+notion of time.
+
+We will get to this. For now just observe that we have a special type
+of named thing here:
+
+#+BEGIN_SRC clojure
+(type metro)
+(metro)
+#+END_SRC
+
+#+RESULTS:
+: overtone.music.rhythm.Metronome56
+
 *** Preparing dissonant chords 
 (Note: this functionality has largely been superseded elsewhere)
 
@@ -385,11 +569,34 @@ to listen to.
 (chord-progression-time8 metro)
   #+END_SRC
 
+  #+RESULTS:
+  : #'post_tonal_overtone.core/chord-progression-time8#<ScheduledJob id: 1, created-at: Fri 07:57:05s, initial-delay: 1364, desc: "Overtone delayed fn", scheduled? true>
+
+How might we want to modify this? One of the first things we should
+take care of is the ability to pass in a different instrument. That
+is, playing chord progressions is a different concern from the sound
+that will render those.
+
+A lot depends on the nature of that instrument, which in this case
+performs a series of calculations that are encapsulated and abstracted
+away from our view. But a lot also depends on the means by which each
+new chord is scheduled according to the relentless march of the
+metronome. 
+
+Since a metronome (or at least the old-fashioned physical ones) is
+quite truly a mechanical thing, we are only going to get out a kind of
+mechanical-sounding series of events. How we eventually improve this
+is another matter.
 * miscellaneous experiments 
 The rest is mostly slight variation on the above. In a sense it shows 
 the process that may have been used to arrive at the above, as these
 various progressions were numbered, and the above one (which is the
 preferred of these others) was number 8 in the series.
+
+That will have to wait till we begin building a voice-leading engine,
+and especially when we consider preparing scores of musical events all
+at once. In such a situation, we are modeling musical time using a
+rather different technique.
 
 ** Experiment with progression based on sawtooth synths
 *** use sawtooth synth to play various chords

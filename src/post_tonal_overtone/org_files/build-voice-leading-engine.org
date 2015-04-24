@@ -258,8 +258,8 @@ Need to be some kind of swap-ping or dereferencing of a stateful thing..
 : (:A3 :Bb3 :F4 :G4 :G5 :C#6)
 : [57 58 65 67 79 85]
 : (9 10 5 7 7 1)
-: 62
-*** let's make a big cycle
+: 58
+*** let's make a cycle with a few more things
 #+BEGIN_SRC clojure
 (def b (atom (vec (take 100 (cycle '((53 55 58 61 77 85)(57 58 65 67 79 85)(45 55 61 65 67 70)(45 61 65 67 70 77)))))))
 #+END_SRC
@@ -279,10 +279,27 @@ Need to be some kind of swap-ping or dereferencing of a stateful thing..
 #+END_SRC
 
 #+RESULTS:
-: (:A3 :Bb3 :F4 :G4 :G5 :C#6)
-: (57 58 65 67 79 85)
-: (9 10 5 7 7 1)
-: 75
+: (:A2 :C#4 :F4 :G4 :Bb4 :F5)
+: (45 61 65 67 70 77)
+: (9 1 5 7 10 5)
+: 81
+
+And now let's read it from another source
+#+BEGIN_SRC clojure :results output
+(let [midis (first (swap! b rest))]
+(do (println (map find-note-name midis))
+    (println midis)
+    (println (map mod12 midis))
+    (println (count @b))
+    (play-chord-saw1 midis)
+  ))
+#+END_SRC
+
+#+RESULTS:
+: (:A2 :G3 :C#4 :F4 :G4 :Bb4)
+: (45 55 61 65 67 70)
+: (9 7 1 5 7 10)
+: 82
 
 *** stateful object without atom management
 You CAN do this, but whether you should is another matter. Or rather

@@ -520,7 +520,7 @@ as arguments for the env-gen
   #+END_SRC
 
   #+RESULTS:
-  : #<synth-node[loading]: post_tonal_ov485/audition-synth 9755>
+  : #<synth-node[loading]: post_tonal_ov485/audition-synth 2266>
 
   #+BEGIN_SRC clojure :session getting-started
 (demo 10 (hpf (saw 100) (mouse-x 40 5000 EXP)))
@@ -529,15 +529,18 @@ as arguments for the env-gen
   #+END_SRC
 
   #+RESULTS:
-  : #<synth-node[loading]: post_tonal_ov485/audition-synth 9756>
+  : #<synth-node[loading]: post_tonal_ov485/audition-synth 2267>
 
   #+BEGIN_SRC clojure :session getting-started
-(demo 30 (bpf (saw 100) (mouse-x 40 5000 EXP) (mouse-y 0.01 1 LIN)))
+(demo 30 
+      (bpf (saw 100)
+           (mouse-x 40 5000 EXP)
+           (mouse-y 0.01 1 LIN)))
 ;; band-pass; move mouse left/right to change threshold frequency; up/down to change bandwidth (top is narrowest)
   #+END_SRC
 
   #+RESULTS:
-  : #<synth-node[loading]: post_tonal_ov485/audition-synth 9757>
+  : #<synth-node[loading]: post_tonal_ov485/audition-synth 2268>
 ***** (demo 30 (bpf (pink-noise) (mouse-x 40 5000 EXP) (mouse-y 0.01 1 LIN)))
   #+BEGIN_SRC clojure :session getting-started
 (demo 30 (bpf (pink-noise) (mouse-x 40 5000 EXP) (mouse-y 0.01 1 LIN)))
