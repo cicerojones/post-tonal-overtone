@@ -4822,7 +4822,7 @@ We'll have to get to this.
 
 ** build some 'pitched' synth instruments for playing chords
 Really understanding src_clojure{definst} will take some time. Here are some
-quick sound examples that use `sin-osc` and `saw` to produce those
+quick sound examples that use =sin-osc= and ~saw~ to produce those
 respective waveforms, which now will allow us to use actual
 frequencies and pitches.
 
