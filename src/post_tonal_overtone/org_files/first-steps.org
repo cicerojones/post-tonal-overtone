@@ -49,7 +49,7 @@ what may be defined in a given namespace.
 #+END_SRC
 
 #+RESULTS:
-#+begin_example
+#+BEGIN_EXAMPLE
 a
 actual-melody
 append-to
@@ -100,7 +100,7 @@ tetrachord-piano-dissonances2
 voice-and-transpose-rand-set
 voice-rand-set
 where
-#+end_example
+#+END_EXAMPLE
 **** 
 #+BEGIN_SRC clojure :results output
 (dir post_tonal_overtone.data.set_class_data)
@@ -4821,7 +4821,7 @@ these things in some way other than typing values at the keyboard?
 We'll have to get to this.
 
 ** build some 'pitched' synth instruments for playing chords
-Really understanding src_clojure{definst} will take some time. Here are some
+Really understanding SRC_clojure{definst} will take some time. Here are some
 quick sound examples that use =sin-osc= and ~saw~ to produce those
 respective waveforms, which now will allow us to use actual
 frequencies and pitches.
