@@ -1,9 +1,22 @@
 * develop post-tonal contributions to getting started.org
+"Post-tonal" is not a familiar term outside of a small group of people
+who are devoted to a particular swath of music of the (early)
+twentieth century. Your typical introduction to computer music may
+skirt the topic of explaining exactly what it is--we'll largely follow
+suit here for the moment.
 ** building the dissonant piano player
-There are several topics that we get into here. Perhaps the most in
-need of further exploration and development will be
+Let's start by working with a familiar sound, that of the acoustic
+piano. We have access to an overtone library dedicated to working with
+that sound. It's helpful to work with the piano because it will allow
+us to elide questions about synthesizers and electronic music production.
 *** testing out the piano
+You will need access to the sampled-piano library provided by
+overtone, which will take some time to download.
 **** build piano chord player
+Once you have the loaded the =sampled-piano= instrument you can use it
+to play chords, which of course is a particular specialty of keyboard
+instruments.
+
   #+BEGIN_SRC clojure :session getting-started :tangle yes
 (defn play-piano-chord [a-chord]
         (doseq [note a-chord] (sampled-piano note)))
@@ -15,8 +28,11 @@ need of further exploration and development will be
   : #'post_tonal_overtone.core/play-piano-chordnil
 
 **** build quieter piano chord player with variable dynamics
-Note, by rand-nth means we will be getting some change in how loud
-chords are played. This suggests that probability might start to be important
+Note, by using rand-nth, we will be getting some (slightly arbitrary)
+change in how loud chords are played. This suggests that probability
+might start to be important. We will get to the question of automated
+decision-making soon.
+
   #+BEGIN_SRC clojure :session getting-started :tangle yes
 (defn play-quieter-piano-chord [a-chord]
   (let [level (rand-nth [0.2 0.4 0.6])]
@@ -31,10 +47,7 @@ chords are played. This suggests that probability might start to be important
 Here's we use an interesting functional programming idiom to generate
 chord tones for the =play-quieter-piano-chord= function. 
 
-
 #+BEGIN_SRC clojure
-;; note, looper is defined in the first-steps, as is the metro it
-;; takes
 (play-quieter-piano-chord (map #(+ % 60) (repeatedly 4 (partial rand-int 12)))))
 #+END_SRC
 
@@ -43,7 +56,7 @@ chord tones for the =play-quieter-piano-chord= function.
 
 ***** using overtone libraries
 Note that overtone itself has good support in its algorithmic library
-for generating chords.
+for generating chords using chance procedures.
 
 #+BEGIN_SRC clojure :results output
 (dir overtone.algo.chance)
@@ -180,16 +193,35 @@ for generating chords.
 :     (< (rand) n)))
 
 *** load chord data and chord selection+transposition functions
+One term you will hear when studying post-tonal music is "set theory."
+This term has a particular meaning in mathematics that is
+not especially related to its use in music, so it is useful to
+distinguish its usage here. The best way to do that is to think about
+the organization of pitch elements of music using "integer notation."
+Luckily, computer languages deal quite readily with integers. Let's
+talk a look.
 **** load set data in the ./src/ directory
-
+The main contribution that I am providing here is a simple one that
+anyone could provide: access to a bunch of sets of numbers that have
+special musical meaning. Rather than explain every step of that
+meaning off the bat, we can instead look quite quickly at what I am
+referring to.
   #+BEGIN_SRC clojure :session getting-started :tangle yes
 (rand-nth set-class/tetrachords)
   #+END_SRC 
 
   #+RESULTS:
-  | 0 | 1 | 3 | 5 |
+  | 0 | 1 | 5 | 6 |
 **** begin voicing chords and printingout
+In order to get more experience with these set refer to, it will help
+to create a quick bit of code that will help us listen to some
+manifestations of these sets.
+
+The following function makes it easy to put us quickly in touch with
+some arbitrary "realizations" of these sets.
+
   #+BEGIN_SRC clojure :session getting-started :tangle yes
+;; might be better to refer to set-type cardinality in the argument here
 (defn voice-rand-set [set-type]
   (let [set (rand-nth set-type)
         voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
@@ -209,8 +241,11 @@ for generating chords.
 
  #+RESULTS:
  |  0 |  1 |  4 |  6 |
- | 48 | 49 | 64 | 78 |
+ | 60 | 37 | 76 | 54 |
 *** begin selecting chords according to probability distr
+This section jumps rather peremptorily to the topic of using
+probability to make decision about these sets. Consider refiling this
+in another section.
 **** segment set-type space into 4 components
 #+BEGIN_SRC clojure :session getting-started :tangle yes
 (def zero12s (subvec (vec set-class/tetrachords) 0 6))
