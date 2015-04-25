@@ -4,14 +4,18 @@ who are devoted to a particular swath of music of the (early)
 twentieth century. Your typical introduction to computer music may
 skirt the topic of explaining exactly what it is--we'll largely follow
 suit here for the moment.
+
 ** building the dissonant piano player
 Let's start by working with a familiar sound, that of the acoustic
 piano. We have access to an overtone library dedicated to working with
 that sound. It's helpful to work with the piano because it will allow
-us to elide questions about synthesizers and electronic music production.
+us to elide questions about synthesizers and electronic music
+production.
+
 *** testing out the piano
 You will need access to the sampled-piano library provided by
 overtone, which will take some time to download.
+
 **** build piano chord player
 Once you have the loaded the =sampled-piano= instrument you can use it
 to play chords, which of course is a particular specialty of keyboard
@@ -54,7 +58,7 @@ chord tones for the =play-quieter-piano-chord= function.
 #+RESULTS:
 : nil
 
-***** using overtone libraries
+***** using overtone algorithmic composition libraries
 Note that overtone itself has good support in its algorithmic library
 for generating chords using chance procedures.
 
@@ -200,21 +204,23 @@ distinguish its usage here. The best way to do that is to think about
 the organization of pitch elements of music using "integer notation."
 Luckily, computer languages deal quite readily with integers. Let's
 talk a look.
+
 **** load set data in the ./src/ directory
 The main contribution that I am providing here is a simple one that
 anyone could provide: access to a bunch of sets of numbers that have
 special musical meaning. Rather than explain every step of that
 meaning off the bat, we can instead look quite quickly at what I am
 referring to.
+
   #+BEGIN_SRC clojure :session getting-started :tangle yes
 (rand-nth set-class/tetrachords)
   #+END_SRC 
 
   #+RESULTS:
-  | 0 | 1 | 5 | 6 |
+  | 0 | 1 | 3 | 7 |
 **** begin voicing chords and printingout
-In order to get more experience with these set refer to, it will help
-to create a quick bit of code that will help us listen to some
+In order to get more experience with what these sets refer to, it will
+help to create a quick bit of code that will help us listen to some
 manifestations of these sets.
 
 The following function makes it easy to put us quickly in touch with
@@ -240,13 +246,22 @@ some arbitrary "realizations" of these sets.
  #+END_SRC
 
  #+RESULTS:
- |  0 |  1 |  4 |  6 |
- | 60 | 37 | 76 | 54 |
+ |  0 |  1 |  2 |  5 |
+ | 36 | 73 | 38 | 53 |
 *** begin selecting chords according to probability distr
 This section jumps rather peremptorily to the topic of using
 probability to make decision about these sets. Consider refiling this
 in another section.
+
 **** segment set-type space into 4 components
+Tetrachords are, roughly-speaking, a fancy word for collections of
+four distinct notes. While four-note chords don't seem especially
+unusual or dramatic, there are quite a few different "types" of such
+collections. Without going too much into the details, we can form four
+groups of these four-note collections in order to facilitate selecting
+chords that may have special qualities.
+
+
 #+BEGIN_SRC clojure :session getting-started :tangle yes
 (def zero12s (subvec (vec set-class/tetrachords) 0 6))
 
@@ -261,11 +276,15 @@ in another section.
 : #'post_tonal_overtone.core/zero12s#'post_tonal_overtone.core/dia1#'post_tonal_overtone.core/tri-heavy#'post_tonal_overtone.core/whole-tones
 
 
-destructuring not working correctly
+Once these groups are defined, we can make slections from them in
+according to a rough kind of plan. First, however, we should take note
+of /destructuring/, which is a special technique for creating names in
+as efficient a manner as possible.
 
-#+COMMENT does not work! do not tangle
+In this case, it means that 
+
 #+BEGIN_SRC clojure :session getting-started :tangle no
-(defn tetra-probs1 [[z x y w] dist]
+(defn tetra-probs1 [[z x y w]]
   (let [n (rand)]
     (cond
       (>= n z) (rand-nth whole-tones)
@@ -278,13 +297,19 @@ destructuring not working correctly
 #+RESULTS:
 : #'post_tonal_overtone.core/tetra-probs1
 
-how to construct the argument list?
+
 #+BEGIN_SRC clojure :session getting-started :tangle yes
-(tetra-probs1 0.8 0.5 0.2 0.1)
+(tetra-probs1 [0.8 0.5 0.2 0.1])
 #+END_SRC
 
 #+RESULTS:
+| 0 | 1 | 5 | 6 |
+
+
 **** create logic for random selection according to prob distribution
+If we were not to use destructuring it would like this. Perhaps not a
+significant appearing difference...
+
 #+BEGIN_SRC clojure :session getting-started :tangle yes
 (defn tetra-probs2 [z x y w]
   (let [n (rand)]
@@ -304,7 +329,7 @@ how to construct the argument list?
 #+END_SRC
 
 #+RESULTS:
-| 0 | 2 | 4 | 8 |
+| 0 | 1 | 2 | 4 | 6 | 8 |
 
 **** add fully functional transpositions and printout info
 ***** choose set randomly according to old logic
@@ -325,13 +350,13 @@ how to construct the argument list?
  #+END_SRC
 
  #+RESULTS:
- : #'post-tonal-overtone.core/voice-and-transpose-rand-set
+ : #'post_tonal_overtone.core/voice-and-transpose-rand-set
  #+BEGIN_SRC clojure :session getting-started :tangle yes
 (voice-and-transpose-rand-set set-class/tetrachords 0 #_(rand-int 12))
  #+END_SRC
 
  #+RESULTS:
- | 60 | 37 | 39 | 77 |
+ | 72 | 38 | 51 | 42 |
 
 ***** choose set using new logic w prob. distribution
  #+BEGIN_SRC clojure :session getting-started :tangle yes
@@ -340,7 +365,7 @@ how to construct the argument list?
         voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
 	visible-pairings (map #(list % (mod % 12)) voiced-set)
         transposed-set (map #(+ tn-level %) voiced-set)
-	paired-transposed-set (map #(list (mod % 12) (+ tn-level %)) (sort voiced-set))
+	paired-transposed-set (map #(list (mod % 12) (+ tn-level %) (find-note-name %)) (sort voiced-set))
         set-voicing-group (list :set set
                                 :tn-level tn-level
 				:reg visible-pairings
@@ -392,6 +417,7 @@ see 'testing out the piano' subtree above
  #+END_SRC
 
  #+RESULTS:
+ : #'post_tonal_overtone.core/piano-dissonances3
 
 #+BEGIN_SRC clojure :session getting-started :tangle yes
 (piano-dissonances3)
@@ -400,6 +426,23 @@ see 'testing out the piano' subtree above
 #+RESULTS:
 : nil
 **** borrow random-sample function from clojure 1.7
+Here, the use of =filter= with a function that returns boolean values
+in accordance with a certain probability distribution may take a
+little figuring out.
+
+The idea with =filter= is that it will call the function given as its
+first argument on each member of the collection passed as its second
+argument. Looking at the source for filter, we see that it:
+
+#+BEGIN_QUOTE
+Returns a lazy sequence of the items in coll for which (pred item)
+returns true. pred must be free of side-effects.
+#+END_QUOTE
+
+This means that, for each item in the coll, you have a =prob= chance
+of selecting it.
+
+
 #+BEGIN_SRC clojure :session getting-started :tangle yes
 (defn random-sample
   "Returns items from coll with random probability of prob (0.0 -
@@ -411,6 +454,9 @@ see 'testing out the piano' subtree above
      (filter (fn [_] (< (rand) prob)) coll)))
 #+END_SRC
 
+#+RESULTS:
+: #'post_tonal_overtone.core/random-sample
+
 
 #+BEGIN_SRC clojure :session getting-started :tangle yes
 (random-sample 0.5 '(1 2))
@@ -419,32 +465,6 @@ see 'testing out the piano' subtree above
 #+RESULTS:
 | 1 |
 
-#+BEGIN_SRC clojure :session getting-started :tangle yes
-(random-sample 0.5 '(1 2))
-#+END_SRC
-
-#+RESULTS:
-| 2 |
-
-#+BEGIN_SRC clojure :session getting-started :tangle yes
-(random-sample 0.5 '(1 2))
-#+END_SRC
-
-#+RESULTS:
-| 1 | 2 |
-
-#+BEGIN_SRC clojure :session getting-started :tangle yes
-(random-sample 0.5 '(1 2))
-#+END_SRC
-
-#+RESULTS:
-
-#+BEGIN_SRC clojure :session getting-started :tangle yes
-(random-sample 0.5 '((1 2) (3 4)))
-#+END_SRC
-
-#+RESULTS:
-| 1 | 2 |
 
 *** tetrachord piano dissonances; hard-coded set-type
  #+BEGIN_SRC clojure :session getting-started :tangle yes
@@ -466,9 +486,13 @@ see 'testing out the piano' subtree above
  : nil
 
 ** dealing with timing
+THe following bits of code might best be thought of as ear-training
+exercise. If you're into that sort of thing.
 *** making the dissonant piano player play in time
- note, this will be writing out to the repl!!! Why and where?
- Because that is how chord-progression-time8 works? Which is defined where?
+Note, this will be writing out to the repl!!! Why and where? Because
+that is how chord-progression-time8 works? Which is defined where?
+
+
 
  #+BEGIN_SRC clojure :session getting-started :tangle yes
 (def metro (metronome 10))
@@ -489,11 +513,6 @@ see 'testing out the piano' subtree above
  #+END_SRC
 
  #+RESULTS:
- : #'post_tonal_overtone.core/metro#'post_tonal_overtone.core/play-piano-dissonances2
+ : #'post_tonal_overtone.core/metro#'post_tonal_overtone.core/play-piano-dissonances2#'post_tonal_overtone.core/play-piano-dissonances3#<ScheduledJob id: 1, created-at: Sat 12:44:00s, initial-delay: 11985, desc: "Overtone delayed fn", scheduled? true>
 
- #+BEGIN_SRC clojure :session getting-started :tangle yes
-(do (println '(0 1 2)))
- #+END_SRC
 
- #+RESULTS:
- : nil
