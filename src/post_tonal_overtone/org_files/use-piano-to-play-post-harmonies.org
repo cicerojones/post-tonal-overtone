@@ -358,6 +358,7 @@ significant appearing difference...
  | 72 | 61 | 64 | 65 |
 
 ***** choose set using new logic w prob. distribution
+Different kinds of printing out to the repl are being experimented with
  #+BEGIN_SRC clojure :session getting-started :tangle yes
 (defn voice-and-transpose-tetra-probs [tn-level]
   (let [set (tetra-probs2 0.8 0.5 0.2 0.1)
@@ -381,23 +382,49 @@ significant appearing difference...
 #+BEGIN_SRC clojure :session getting-started :tangle yes
 (defn voice-and-transpose-tetra-probs [tn-level]
   (let [set (tetra-probs2 0.8 0.5 0.2 0.1)
-        voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
+        voiced-set (sort (map #(+ (rand-nth [36 48 60 72]) %) set))
 	visible-pairings (map #(list % (mod % 12)) voiced-set)
         transposed-set (map #(+ tn-level %) voiced-set)
-	paired-transposed-set (map #(list (mod % 12) (+ tn-level %) (find-note-name %)) (sort voiced-set))
+	paired-transposed-set (map #(list (mod % 12) (+ tn-level %) (find-note-name %)) (sort transposed-set))
         set-voicing-group (list :set set
                                 :tn-level tn-level
 				:reg visible-pairings
                                 :sorted-trans paired-transposed-set)]
-    (doseq [info set-voicing-group]
-      (pprint info))
+(do (println set tn-level)
+    (doseq [mids visible-pairings]
+      (println mids))
     (println)
-            #_set-voicing-group 
-	    transposed-set))
+    (doseq [names paired-transposed-set]
+      (cl-format true "~{~10@a~}~%" names))
+    (println)
+    #_set-voicing-group 
+    transposed-set)))
  #+END_SRC
 
 #+RESULTS:
 : #'post_tonal_overtone.core/voice-and-transpose-tetra-probs
+
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(defn voice-and-transpose-tetra-probs [tn-level]
+  (let [set (tetra-probs2 0.8 0.5 0.2 0.1)
+        voiced-set (sort (map #(+ (rand-nth [36 48 60 72]) %) set))
+	visible-pairings (map #(list % (mod % 12)) voiced-set)
+        transposed-set (map #(+ tn-level %) voiced-set)
+	paired-transposed-set (map #(list (mod % 12) (+ tn-level %) (find-note-name %)) (sort transposed-set))
+        set-voicing-group (list :set set
+                                :tn-level tn-level
+				:reg visible-pairings
+                                :sorted-trans paired-transposed-set)]
+(do (println set tn-level)
+    (doseq [mids visible-pairings]
+      (println mids))
+    (println)
+    (doseq [names paired-transposed-set]
+      (cl-format true "~{~10@a~}~%" names))
+    (println)
+    #_set-voicing-group 
+    transposed-set)))
+ #+END_SRC
 
 *** choose the set type for dissonances
 use play piano as above to play dissonances
@@ -533,16 +560,19 @@ that is how chord-progression-time8 works? Which is defined where?
  #+END_SRC
 
  #+RESULTS:
- : #'post_tonal_overtone.core/metro#'post_tonal_overtone.core/play-piano-dissonances2#'post_tonal_overtone.core/play-piano-dissonances3#<ScheduledJob id: 1, created-at: Tue 09:22:44s, initial-delay: 11973, desc: "Overtone delayed fn", scheduled? true>
-*** arpeggiation
+ : #'post_tonal_overtone.core/metro#'post_tonal_overtone.core/play-piano-dissonances2#'post_tonal_overtone.core/play-piano-dissonances3#<ScheduledJob id: 1, created-at: Tue 10:38:56s, initial-delay: 11980, desc: "Overtone delayed fn", scheduled? true>
+
+* reflection
 The next thing to experiment with would be to work with the following
 functions to see how much flexibility could be achieved. Right now,
 there's a certain amount that is hard-coded in to all of these things
 that it would be nice to abstract out, making it easier to create
 variation.
 
-
+** This is the stable code for this page.
 #+BEGIN_SRC clojure :session getting-started :tangle yes
+(def metro (metronome 10))
+
 (defn voice-and-transpose-tetra-probs [tn-level]
   (let [set (tetra-probs2 0.8 0.5 0.2 0.1)
         voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
@@ -572,8 +602,63 @@ variation.
   (let [beat (nome)]
     (at (nome beat) (piano-dissonances3))
     (apply-at (nome (inc beat)) play-piano-dissonances3 nome [])))
+
+(play-piano-dissonances3 metro)
  #+END_SRC
 
+#+RESULTS:
+: #'post_tonal_overtone.core/voice-and-transpose-tetra-probs#'post_tonal_overtone.core/piano-dissonances3#'post_tonal_overtone.core/play-piano-dissonances3#<ScheduledJob id: 1, created-at: Tue 11:42:22s, initial-delay: 10381, desc: "Overtone delayed fn", scheduled? true>
+
+** experiment with different printing options
+#+COMMENT works
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(defn voice-and-transpose-tetra-probs [tn-level]
+  (let [set (tetra-probs2 0.8 0.5 0.2 0.1)
+        voiced-set (sort (map #(+ (rand-nth [36 48 60 72]) %) set))
+	visible-pairings (map #(list % (mod % 12)) voiced-set)
+        transposed-set (map #(+ tn-level %) voiced-set)
+	paired-transposed-set (map #(list (mod % 12) (+ tn-level %) (find-note-name %)) (sort transposed-set))
+        set-voicing-group (list :set set
+                                :tn-level tn-level
+				:reg visible-pairings
+                                :sorted-trans paired-transposed-set)]
+(do (println set tn-level)
+    (doseq [mids visible-pairings]
+      (println mids))
+    (println)
+    (doseq [names paired-transposed-set]
+      (cl-format true "~{~10@a~}~%" names))
+    (println)
+    #_set-voicing-group 
+    transposed-set)))
+ #+END_SRC
+
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(defn voice-and-transpose-tetra-probs [tn-level]
+  (let [set (tetra-probs2 0.8 0.5 0.2 0.1)
+        voiced-set (sort (map #(+ (rand-nth [36 48 60 72]) %) set))
+	visible-pairings (map #(list % (mod % 12)) voiced-set)
+        transposed-set (map #(+ tn-level %) voiced-set)
+	paired-transposed-set (map #(list (mod % 12) (+ tn-level %) (find-note-name %)) (sort transposed-set))
+        set-voicing-group (list :set set
+                                :tn-level tn-level
+				:reg visible-pairings
+                                :sorted-trans paired-transposed-set)]
+(do (println set tn-level)
+    (doseq [mids visible-pairings]
+      (println mids))
+    (println)
+    (doseq [names paired-transposed-set]
+      (cl-format true "~{~2@a ~a ~a~}~%" names))
+    (println)
+    #_set-voicing-group 
+    transposed-set)))
+ #+END_SRC
+
+#+RESULTS:
+: #'post_tonal_overtone.core/voice-and-transpose-tetra-probs
+
+** improvements and refactoring
 One of the first things that would be nice would be to achieve easy
 changes in texture. This is closely related to questions of timing,
 which technically could be their own thing.
