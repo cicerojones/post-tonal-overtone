@@ -217,7 +217,7 @@ referring to.
   #+END_SRC 
 
   #+RESULTS:
-  | 0 | 1 | 3 | 7 |
+  | 0 | 1 | 2 | 3 |
 **** begin voicing chords and printingout
 In order to get more experience with what these sets refer to, it will
 help to create a quick bit of code that will help us listen to some
@@ -246,8 +246,8 @@ some arbitrary "realizations" of these sets.
  #+END_SRC
 
  #+RESULTS:
- |  0 |  1 |  2 |  5 |
- | 36 | 73 | 38 | 53 |
+ |  0 |  1 |  4 |  8 |
+ | 60 | 61 | 52 | 68 |
 *** begin selecting chords according to probability distr
 This section jumps rather peremptorily to the topic of using
 probability to make decision about these sets. Consider refiling this
@@ -303,7 +303,7 @@ In this case, it means that
 #+END_SRC
 
 #+RESULTS:
-| 0 | 1 | 5 | 6 |
+| 0 | 2 | 4 | 6 |
 
 
 **** create logic for random selection according to prob distribution
@@ -329,7 +329,7 @@ significant appearing difference...
 #+END_SRC
 
 #+RESULTS:
-| 0 | 1 | 2 | 4 | 6 | 8 |
+| 0 | 1 | 4 | 6 |
 
 **** add fully functional transpositions and printout info
 ***** choose set randomly according to old logic
@@ -356,7 +356,7 @@ significant appearing difference...
  #+END_SRC
 
  #+RESULTS:
- | 72 | 38 | 51 | 42 |
+ | 36 | 74 | 39 | 43 |
 
 ***** choose set using new logic w prob. distribution
  #+BEGIN_SRC clojure :session getting-started :tangle yes
@@ -513,6 +513,6 @@ that is how chord-progression-time8 works? Which is defined where?
  #+END_SRC
 
  #+RESULTS:
- : #'post_tonal_overtone.core/metro#'post_tonal_overtone.core/play-piano-dissonances2#'post_tonal_overtone.core/play-piano-dissonances3#<ScheduledJob id: 1, created-at: Sat 12:44:00s, initial-delay: 11985, desc: "Overtone delayed fn", scheduled? true>
+ : #'post_tonal_overtone.core/metro#'post_tonal_overtone.core/play-piano-dissonances2#'post_tonal_overtone.core/play-piano-dissonances3#<ScheduledJob id: 105, created-at: Mon 09:11:48s, initial-delay: 11989, desc: "Overtone delayed fn", scheduled? true>
 
 

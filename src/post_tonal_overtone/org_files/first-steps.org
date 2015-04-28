@@ -4680,6 +4680,38 @@ place (note a discrepancy here).
  #+RESULTS:
  : #<Namespace post_tonal_overtone.core>
 
+#+BEGIN_SRC clojure :results output
+(dir post_tonal_overtone.core)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+chord-progression-time1
+chord-progression-time10
+chord-progression-time2
+chord-progression-time3
+chord-progression-time4
+chord-progression-time5
+chord-progression-time6
+chord-progression-time7
+chord-progression-time8
+chord-progression-time9
+looper
+med96
+metro
+noisey-sustained
+noisey2
+play-chord-saw1
+play-chord-sin2
+saw-diss
+saw1
+sin3
+sine-tetra-diss
+some-midis
+voice-and-transpose-rand-set
+voice-rand-set
+#+end_example
+
 *** eventually more complex, as you realize what your work will require
 note, that this is for the Babel session for the "getting-started"
 program. Maybe don't evaluate this unless you are working with a
@@ -4747,7 +4779,7 @@ post_tonal_overtone.data.set_class_data/cmajtriads
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: noisey2>#<synth-node[loading]: post_tonal_overtone.485/noisey2 58>
+ : #<instrument: noisey2>#<synth-node[loading]: post_tonal_overtone.485/noisey2 56>
 
 *** definst can take an envelope for scaling the ugen output--using lin
 use of lin presents several default keyword args. When called as an
@@ -4838,7 +4870,7 @@ frequencies and pitches.
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: sin3>#<synth-node[loading]: post_tonal_overtone.core/sin3 63>
+ : #<instrument: sin1>#<synth-node[loading]: post_tonal_overtone.core/sin1 71>
 
 You can also give sin1 an argument:
 
@@ -4887,7 +4919,7 @@ you progressively evaluate it.
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: saw2>#<synth-node[loading]: post_tonal_overtone.core/saw2 145>
+ : #<instrument: saw2>#<synth-node[loading]: post_tonal_overtone.core/saw2 63>
 
 Just to compare against the unfiltered version with no envelope:
 #+BEGIN_SRC clojure
@@ -4895,14 +4927,14 @@ Just to compare against the unfiltered version with no envelope:
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: post_tonal_ov485/audition-synth 156>
+: #<synth-node[loading]: post_tonal_ov485/audition-synth 62>
 
 #+BEGIN_SRC clojure
-(saw2 (overtone.algo.chance/ranged-rand 300 302) :vol 0.1)
+(saw2 (overtone.algo.chance/ranged-rand 300 302) :vol 0.3)
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: post_tonal_overtone.core/saw2 162>
+: #<synth-node[loading]: post_tonal_overtone.core/saw2 66>
 
 Giving it a different envelope begins to give it another quality as
 well, as if a kind simple little synthesizer.
@@ -4957,7 +4989,7 @@ will take midi number arguments and convert it to Hertz.
  #+END_SRC
 
  #+RESULTS:
- : #<synth-node[loading]: post_tonal_overtone.core/sin1 2435>
+ : #<synth-node[loading]: post_tonal_overtone.core/sin1 72>
 
 And here's an interesting 7-note chord
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
@@ -4980,6 +5012,9 @@ Now, here's a progression.
 (chord-progression-time1)
   #+END_SRC
 
+ #+RESULTS:
+ : #'post_tonal_overtone.core/chord-progression-time1nil
+
 Note that having to type all this out every time would be a pain. And
 ultimately, there are a lot of things we might like to change about
 this. For one thing, wouldn't it be nice to know more about those
@@ -4993,7 +5028,7 @@ deal with time more robustly. We'll get there.
 org-mode and emacs kmacro and functions to make it a little more
 fluid, eventually maybe even treating it like an instrument!)
 
-** test out a single chord player
+** schedule a single event
 *** test out single event versions using 'at'
 Here's a test of making a chord progression function that take an
 instrument (with a whole series of default keyword arguments
@@ -5040,7 +5075,7 @@ of named thing here:
 #+END_SRC
 
 #+RESULTS:
-: overtone.music.rhythm.Metronome56
+: overtone.music.rhythm.Metronome2
 
 *** Preparing dissonant chords 
 (Note: this functionality has largely been superseded elsewhere)
@@ -5101,7 +5136,7 @@ to listen to.
   #+END_SRC
 
   #+RESULTS:
-  : #'post_tonal_overtone.core/chord-progression-time8#<ScheduledJob id: 1, created-at: Fri 07:57:05s, initial-delay: 1364, desc: "Overtone delayed fn", scheduled? true>
+  : #'post_tonal_overtone.core/chord-progression-time8#<ScheduledJob id: 1, created-at: Mon 09:08:21s, initial-delay: 1964, desc: "Overtone delayed fn", scheduled? true>
 
 How might we want to modify this? One of the first things we should
 take care of is the ability to pass in a different instrument. That

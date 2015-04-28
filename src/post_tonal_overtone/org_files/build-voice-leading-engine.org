@@ -23,7 +23,6 @@ evaluate (C-c C-k using CIDER) the post_tonal_definitions.clj file
 You will hopefully see overtone loading up in your cider-repl.
 
 ** considerations
-
 *** printing to standard out
 One advantage to starting a lein repl and then connecting cider to it
 (with cider-connect) is that the terminal window (which becomes
@@ -50,7 +49,7 @@ For example see this function from an earlier section.
 #+END_SRC
 
 #+RESULTS:
-: (:set (0 4 8) :tn-level 3 :reg ((72 0) (40 4) (44 8)) :sorted-trans ((4 43) (8 47) (0 75)))
+: (:set (0 4 8) :tn-level 3 :reg ((36 0) (76 4) (80 8)) :sorted-trans ((0 39) (4 79) (8 83)))
 
 
 
@@ -193,14 +192,14 @@ case of just making sure everything is working).
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: post_tonal_ov485/audition-synth 288>
+: #<synth-node[loading]: post_tonal_ov485/audition-synth 822>
 *** louder
 #+BEGIN_SRC clojure :session vle
 (demo  (out 0 (* 2 (sin-osc))))
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: post_tonal_ov485/audition-synth 289>
+: #<synth-node[loading]: post_tonal_ov485/audition-synth 839>
 
 ** white noise
 
@@ -209,7 +208,7 @@ case of just making sure everything is working).
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: post_tonal_ov485/audition-synth 58>
+: #<synth-node[loading]: post_tonal_ov485/audition-synth 864>
 ** loaded samples
 *** piano
 #+BEGIN_SRC clojure :session vle
@@ -217,14 +216,14 @@ case of just making sure everything is working).
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: overtone.inst.973/sampled-piano 59>
+: #<synth-node[loading]: overtone.inst.973/sampled-piano 869>
 
 #+BEGIN_SRC clojure :session vle
 (sampled-piano (note :A4))
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: overtone.inst.973/sampled-piano 60>
+: #<synth-node[loading]: overtone.inst.973/sampled-piano 874>
 * construct meaningful musical units
 In all the tutorials so far we have used the =doseq= function. Here it
 is again, taken out of context and with some imagined function body
