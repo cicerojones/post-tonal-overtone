@@ -1080,7 +1080,6 @@ picture of what actually is available when we crack open the overtone
 
   #+END_SRC
 
-
 ** remember meaningful phenomena
 While randomly generating material can be great fun, sometimes you
 strike on something you really like, or you desire to start building

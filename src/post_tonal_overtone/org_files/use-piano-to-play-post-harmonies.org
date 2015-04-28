@@ -58,7 +58,7 @@ chord tones for the =play-quieter-piano-chord= function.
 #+RESULTS:
 : nil
 
-***** using overtone algorithmic composition libraries
+***** load overtone algorithmic composition libraries
 Note that overtone itself has good support in its algorithmic library
 for generating chords using chance procedures.
 
@@ -217,7 +217,7 @@ referring to.
   #+END_SRC 
 
   #+RESULTS:
-  | 0 | 1 | 2 | 3 |
+  | 0 | 3 | 4 | 7 |
 **** begin voicing chords and printingout
 In order to get more experience with what these sets refer to, it will
 help to create a quick bit of code that will help us listen to some
@@ -246,8 +246,8 @@ some arbitrary "realizations" of these sets.
  #+END_SRC
 
  #+RESULTS:
- |  0 |  1 |  4 |  8 |
- | 60 | 61 | 52 | 68 |
+ |  0 |  2 |  3 |  5 |
+ | 72 | 50 | 51 | 41 |
 *** begin selecting chords according to probability distr
 This section jumps rather peremptorily to the topic of using
 probability to make decision about these sets. Consider refiling this
@@ -303,8 +303,7 @@ In this case, it means that
 #+END_SRC
 
 #+RESULTS:
-| 0 | 2 | 4 | 6 |
-
+| 0 | 1 | 3 | 6 |
 
 **** create logic for random selection according to prob distribution
 If we were not to use destructuring it would like this. Perhaps not a
@@ -329,7 +328,7 @@ significant appearing difference...
 #+END_SRC
 
 #+RESULTS:
-| 0 | 1 | 4 | 6 |
+| 0 | 2 | 3 | 7 |
 
 **** add fully functional transpositions and printout info
 ***** choose set randomly according to old logic
@@ -356,7 +355,7 @@ significant appearing difference...
  #+END_SRC
 
  #+RESULTS:
- | 36 | 74 | 39 | 43 |
+ | 72 | 61 | 64 | 65 |
 
 ***** choose set using new logic w prob. distribution
  #+BEGIN_SRC clojure :session getting-started :tangle yes
@@ -371,12 +370,34 @@ significant appearing difference...
 				:reg visible-pairings
                                 :sorted-trans paired-transposed-set)]
     (do
-      (println set-voicing-group)
+      (pprint set-voicing-group)
       #_set-voicing-group transposed-set)))
  #+END_SRC
 
  #+RESULTS:
  : #'post_tonal_overtone.core/voice-and-transpose-tetra-probs
+
+
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(defn voice-and-transpose-tetra-probs [tn-level]
+  (let [set (tetra-probs2 0.8 0.5 0.2 0.1)
+        voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
+	visible-pairings (map #(list % (mod % 12)) voiced-set)
+        transposed-set (map #(+ tn-level %) voiced-set)
+	paired-transposed-set (map #(list (mod % 12) (+ tn-level %) (find-note-name %)) (sort voiced-set))
+        set-voicing-group (list :set set
+                                :tn-level tn-level
+				:reg visible-pairings
+                                :sorted-trans paired-transposed-set)]
+    (doseq [info set-voicing-group]
+      (pprint info))
+    (println)
+            #_set-voicing-group 
+	    transposed-set))
+ #+END_SRC
+
+#+RESULTS:
+: #'post_tonal_overtone.core/voice-and-transpose-tetra-probs
 
 *** choose the set type for dissonances
 use play piano as above to play dissonances
@@ -465,7 +486,6 @@ of selecting it.
 #+RESULTS:
 | 1 |
 
-
 *** tetrachord piano dissonances; hard-coded set-type
  #+BEGIN_SRC clojure :session getting-started :tangle yes
 (defn tetrachord-piano-dissonances2 []
@@ -513,6 +533,81 @@ that is how chord-progression-time8 works? Which is defined where?
  #+END_SRC
 
  #+RESULTS:
- : #'post_tonal_overtone.core/metro#'post_tonal_overtone.core/play-piano-dissonances2#'post_tonal_overtone.core/play-piano-dissonances3#<ScheduledJob id: 105, created-at: Mon 09:11:48s, initial-delay: 11989, desc: "Overtone delayed fn", scheduled? true>
+ : #'post_tonal_overtone.core/metro#'post_tonal_overtone.core/play-piano-dissonances2#'post_tonal_overtone.core/play-piano-dissonances3#<ScheduledJob id: 1, created-at: Tue 09:22:44s, initial-delay: 11973, desc: "Overtone delayed fn", scheduled? true>
+*** arpeggiation
+The next thing to experiment with would be to work with the following
+functions to see how much flexibility could be achieved. Right now,
+there's a certain amount that is hard-coded in to all of these things
+that it would be nice to abstract out, making it easier to create
+variation.
 
 
+#+BEGIN_SRC clojure :session getting-started :tangle yes
+(defn voice-and-transpose-tetra-probs [tn-level]
+  (let [set (tetra-probs2 0.8 0.5 0.2 0.1)
+        voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
+	visible-pairings (map #(list % (mod % 12)) voiced-set)
+        transposed-set (map #(+ tn-level %) voiced-set)
+	paired-transposed-set (map #(list (mod % 12)
+                                          (+ tn-level %)
+                                          (find-note-name %))
+                                   (sort voiced-set))
+        set-voicing-group (list :set set
+                                :tn-level tn-level
+				:reg visible-pairings
+                                :sorted-trans paired-transposed-set)]
+    (doseq [info set-voicing-group]
+      (pprint info))
+    (println)
+            #_set-voicing-group 
+	    transposed-set))
+
+(defn piano-dissonances3 []
+  (let [notes (vec (voice-and-transpose-tetra-probs  ; voicing
+                    (rand-int 12)))]
+    (play-quieter-piano-chord notes)))
+
+
+(defn play-piano-dissonances3 [nome]
+  (let [beat (nome)]
+    (at (nome beat) (piano-dissonances3))
+    (apply-at (nome (inc beat)) play-piano-dissonances3 nome [])))
+ #+END_SRC
+
+One of the first things that would be nice would be to achieve easy
+changes in texture. This is closely related to questions of timing,
+which technically could be their own thing.
+
+The other big thing would be to have more sophisticated control over
+chord selection. This actually entails a lot:
+
+- choice of set
+- choice of transposition level
+- choice of voicing
+
+Though this seems like not many things, the fact is that any given
+choice for one of the three could affect what choice we would want to
+make from the other two. That is, these three things are highly
+interdependent. 
+
+Finally, most people like a bit of melody with their chord
+progressions; building in a notion of top line would sort of fall out
+of the issues of timing and voice-leading as above.
+
+This will lead us more properly into the next tutorial, which will
+begin to lead us more deeply into the above points.
+
+The question of holding onto these generated chords will arise and
+lead us from the next tutorial
+
+[building-voice-leading-engine](https://github.com/cicerojones/post-tonal-overtone/blob/master/src/post_tonal_overtone/org_files/build-voice-leading-engine.org)
+
+into the final one of this series
+[modeling-musical-time](https://github.com/cicerojones/post-tonal-overtone/blob/master/src/post_tonal_overtone/org_files/modeling-musical-time.org)
+*** addendum
+There are, of course, at least a few other things to consider that
+were left out above. One of the hardest to overlook is what /sound/
+you actually use! Relying on the sampled-piano makes good sense for
+the moment, as it allows us to concentrate on problems not related to
+synthesis, which brings with it a whole other slew of other things to
+think about it.
