@@ -1,4 +1,9 @@
-(ns post_tonal_overtone.core
+;;;; not sure this is used or useful!
+
+;;; if it is, be sure to check the namespaces
+;;; e.g. post_tonal_overtone.data.set_class_data doesn't exist
+;;; file was moved to resources
+(ns post-tonal-overtone.post-tonal-definitions
   (:use overtone.live
         overtone.inst.sampled-piano
         clojure.repl
@@ -7,6 +12,7 @@
 
         )
   (:require [post_tonal_overtone.data.set_class_data :as set-class]
+            ;; [post_tonal_overtone.data.set_class_data :as set-class]
             [post_tonal_overtone.probability_functions.finite-distributions :as finite-prob]
 ;;            [post_tonal_overtone.probability_functions.examples-finite-distributions :as finite-prob-examples]
             ))
@@ -163,3 +169,7 @@
 ;;        (AT (+ 3000 TIME) (PLAYER-FN '(68 69 72 87 52)))
 ;;        (AT (+ 4000 TIME) (PLAYER-FN '(89 55 45 60 62)))))
 
+(def chord-store {:midis [60 64 67] })
+(def chord-store-long {:pcs [0 3 7], :normalized-midis [60 64 67] , :t-level 2, :midis [62 66 69]})
+(def chord-store-long-atom (atom {:pcs [0 3 7], :normalized-midis [60 64 67] , :t-level 2, :midis [62 66 69]}))
+(swap)
