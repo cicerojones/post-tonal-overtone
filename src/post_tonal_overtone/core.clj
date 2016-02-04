@@ -19,8 +19,15 @@
 
 (noisey-sustained 1)
 
-(load "set-class-data")
-(first *tetrachords*) ;(0 1 2 3)
+;;; what is the correct namespace here?
+
+;; This says to look at post_tonal_overtone/set-class-data.clj
+;; which doesn't exist now.
+;; (load "set-class-data")
+
+(load "data/set_class_data")
+;; (first *tetrachords*) ;(0 1 2 3)
+(first post_tonal_overtone.data.set_class_data/tetrachords-tn)
 
 
 ;; note that these functions will print out,
@@ -33,7 +40,7 @@
       (println set-voicing-pair)
       set-voicing-pair)))
 
-(voice-rand-set *tetrachords*)
+;; (voice-rand-set *tetrachords*)
 
 (defn voice-and-transpose-rand-set [set-type tn-level]
   (let [set (rand-nth set-type)
@@ -86,7 +93,7 @@
 
 (defn sine-tetra-diss []
   (doseq [notes (voice-and-transpose-rand-set ; voicing
-                       *tetrachords* ; set-type
+                 post_tonal_overtone.data.set_class_data/tetrachords-tn
                        (rand-int 12))]
     (sin3 (midi->hz notes))))
 
@@ -94,7 +101,7 @@
 
 (def metro (metronome 60))
 
-;; the best one yet
+;; the best one yet (recursive)
 (defn chord-progression-time8 [nome]
   (let [beat (nome)]
     (at (nome beat) (sine-tetra-diss))
@@ -103,7 +110,7 @@
 ;; to paraphrase "A Foggy Day", how long can this thing last?
 (chord-progression-time8 metro)
 
-(map saw1 (map #(midi->hz %) (last (voice-rand-set *pentachords*))))
+(map saw1 (map #(midi->hz %) (last (voice-rand-set post_tonal_overtone.data.set_class_data/pentachords-tn))))
 
 
 ;; apply-at appears to cause problems when attempting to
@@ -123,7 +130,7 @@
   (let [beat (nome)]
     (at (nome beat)
         (doseq [notes (voice-and-transpose-rand-set ; voicing
-                       *tetrachords* ; set-type
+                       post_tonal_overtone.data.set_class_data/tetrachords-tn
                        (rand-int 12))]
           (saw1 (midi->hz notes))))
     (apply-at (nome (inc beat)) chord-progression-time4 nome [])))
@@ -145,7 +152,7 @@
 
 (defn saw-diss []
   (doseq [notes (voice-and-transpose-rand-set ; voicing
-                       *tetrachords* ; set-type
+;;                       *tetrachords* ; set-type
                        (rand-int 12))]
     (saw1 (midi->hz notes))))
 
@@ -220,3 +227,19 @@
        (AT (+ 4000 TIME) (PLAYER-FN '(89 55 45 60 62)))))
 
 (stop)
+
+(def little-db {})
+
+(defn write-chord-history [hist-vec new-vec]
+        (def chord-history (conj hist-vec new-vec)))
+
+(defn voice-and-transpose-rand-set! [set-type tn-level]
+  (let [set (rand-nth set-type)
+        voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
+        transposed-set (map #(+ tn-level %) voiced-set)
+        set-voicing-group {:set set :voiced-set voiced-set :tn-level tn-level :transposed-set transposed-set})]
+    (do
+      (println set-voicing-group)
+      (last set-voicing-group))))
+
+(write-chord-history post-tonal-overtone.core/little-db {:pcs (0 3 5 7) :midis-normalized (60 51 65 43) :tn-level 2 :midis-transposed(62 53 67 45))
