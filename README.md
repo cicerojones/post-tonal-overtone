@@ -26,7 +26,9 @@ Navigate to the post_tonal_overtone directory and start up a 'lein
 repl'. Then, in emacs, m-x cider-connect, choosing localhost and tab
 completion-ing to get the port that lein started the repl on.
 
-If all went well, now begin evaluating the lisp forms one at a time.
+If all went well, now begin evaluating the lisp forms [in the org-mode
+src blocks? or in some dedicated .clj file?] one at a time.
+
 'Use'-ing overtone.live will start up a background process (the
 overtone server), which I believe appears as 'coreaudiod' in the
 Activity Monitor.
