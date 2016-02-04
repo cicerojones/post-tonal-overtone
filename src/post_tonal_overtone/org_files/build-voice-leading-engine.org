@@ -192,7 +192,7 @@ case of just making sure everything is working).
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: post_tonal_ov485/audition-synth 822>
+: #<synth-node[loading]: post_tonal_ov485/audition-synth 56>
 *** louder
 #+BEGIN_SRC clojure :session vle
 (demo  (out 0 (* 2 (sin-osc))))
