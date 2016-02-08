@@ -31,6 +31,7 @@
 
 ;;(load "set-class-data/set-class-data")
 
+;;; refactor these to not print but instead to write to file
 (defn voice-rand-set [set-type]
   (let [set (rand-nth set-type)
         voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
@@ -169,7 +170,20 @@
 ;;        (AT (+ 3000 TIME) (PLAYER-FN '(68 69 72 87 52)))
 ;;        (AT (+ 4000 TIME) (PLAYER-FN '(89 55 45 60 62)))))
 
-(def chord-store {:midis [60 64 67] })
+(def chord-store [{:midis [60 64 67] }])
+
+
+
 (def chord-store-long {:pcs [0 3 7], :normalized-midis [60 64 67] , :t-level 2, :midis [62 66 69]})
 (def chord-store-long-atom (atom {:pcs [0 3 7], :normalized-midis [60 64 67] , :t-level 2, :midis [62 66 69]}))
-(swap)
+
+(def chord-store-atom (atom []))
+
+@chord-store-atom
+
+(swap! chord-store-atom conj {:midis [61 65 68]})
+
+(swap! chord-store-atom conj nil)
+
+@chord-store-atom
+

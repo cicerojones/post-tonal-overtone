@@ -40,7 +40,7 @@
       (println set-voicing-pair)
       set-voicing-pair)))
 
-;; (voice-rand-set *tetrachords*)
+;; (voice-rand-set post_tonal_overtone.data.set_class_data/tetrachords-tn)
 
 (defn voice-and-transpose-rand-set [set-type tn-level]
   (let [set (rand-nth set-type)
@@ -97,8 +97,14 @@
                        (rand-int 12))]
     (sin3 (midi->hz notes))))
 
+;;;; candidates for development with history writing code
+;;; this is one for calling interactively
 (sine-tetra-diss)
 
+;;; listen to (and print out info about) pentachords 
+(map saw1 (map #(midi->hz %) (last (voice-rand-set post_tonal_overtone.data.set_class_data/pentachords-tn))))
+
+;;;; from here on, begin working with a metronome trigger for timing
 (def metro (metronome 60))
 
 ;; the best one yet (recursive)
@@ -110,7 +116,7 @@
 ;; to paraphrase "A Foggy Day", how long can this thing last?
 (chord-progression-time8 metro)
 
-(map saw1 (map #(midi->hz %) (last (voice-rand-set post_tonal_overtone.data.set_class_data/pentachords-tn))))
+
 
 
 ;; apply-at appears to cause problems when attempting to
@@ -137,6 +143,8 @@
 
 (chord-progression-time4 metro)
 
+(def some-midis [[72 61 50 46] [60 49 51 55 44] [74 63 52 68] [42 79 70 61]])
+
 ;; hack to get around the apply-at problem
 (defn chord-progression-time5 [nome]
   (let [beat (nome)]
@@ -145,7 +153,7 @@
           (saw1 (midi->hz note))))
     (apply-at (nome (inc beat)) chord-progression-time5 nome [])))
 
-(def some-midis [[72 61 50 46] [60 49 51 55 44] [74 63 52 68] [42 79 70 61]])
+
 
 (chord-progression-time5 metro)
 
@@ -226,7 +234,7 @@
        (AT (+ 3000 TIME) (PLAYER-FN '(68 69 72 87 52)))
        (AT (+ 4000 TIME) (PLAYER-FN '(89 55 45 60 62)))))
 
-(stop)
+
 
 (def little-db {})
 
@@ -242,4 +250,8 @@
       (println set-voicing-group)
       (last set-voicing-group))))
 
-(write-chord-history post-tonal-overtone.core/little-db {:pcs (0 3 5 7) :midis-normalized (60 51 65 43) :tn-level 2 :midis-transposed(62 53 67 45))
+(write-chord-history post-tonal-overtone.core/little-db {:pcs (0 3 5 7) :midis-normalized (60 51 65 43) :tn-level 2 :midis-transposed(62 53 67 45)))
+
+(sine-tetra-diss)
+
+(stop)
