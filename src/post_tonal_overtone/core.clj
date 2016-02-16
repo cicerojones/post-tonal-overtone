@@ -154,13 +154,14 @@
     (apply-at (nome (inc beat)) chord-progression-time5 nome [])))
 
 
-
+;;; randomly cycle around the midis chords
 (chord-progression-time5 metro)
 
 
+;;; this should be renamed to saw-tetrachords
 (defn saw-diss []
   (doseq [notes (voice-and-transpose-rand-set ; voicing
-;;                       *tetrachords* ; set-type
+                 post_tonal_overtone.data.set_class_data/tetrachords-tn
                        (rand-int 12))]
     (saw1 (midi->hz notes))))
 
@@ -186,13 +187,12 @@
 (chord-progression-time7 metro saw-diss)
 
 
-
-
 (defn looper [sound]    
     (let [beat (metro)]
         (at (metro beat) (sound))
         (apply-at (metro (inc beat)) looper sound [])))
 
+;;; problem?
 (looper (play-chord-sin2 '(80 69 46 73 86)))
 
 (defn play-chord-saw1 [a-chord]
@@ -234,7 +234,12 @@
        (AT (+ 3000 TIME) (PLAYER-FN '(68 69 72 87 52)))
        (AT (+ 4000 TIME) (PLAYER-FN '(89 55 45 60 62)))))
 
+;; all the above code that deals with timings could be broken out to a
+;; separate file that deals with timing functions
+;; everything that follows is concerned with developing an interactive
+;; database of chords
 
+;; actually see post_tonal_definitions.clj for use of atoms
 
 (def little-db {})
 

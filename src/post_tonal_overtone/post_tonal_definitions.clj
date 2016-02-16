@@ -172,9 +172,8 @@
 
 (def chord-store [{:midis [60 64 67] }])
 
-
-
 (def chord-store-long {:pcs [0 3 7], :normalized-midis [60 64 67] , :t-level 2, :midis [62 66 69]})
+
 (def chord-store-long-atom (atom {:pcs [0 3 7], :normalized-midis [60 64 67] , :t-level 2, :midis [62 66 69]}))
 
 (def chord-store-atom (atom []))
@@ -183,7 +182,9 @@
 
 (swap! chord-store-atom conj {:midis [61 65 68]})
 
+
 (swap! chord-store-atom conj nil)
 
+(reset! chord-store-atom nil)
 @chord-store-atom
 
