@@ -416,3 +416,26 @@ event:  (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0 :control-cha
                                     (ctl anoise :vol (scale-range velocity 1 127 0 1)))
           ::cc-player)
 #+END_SRC
+** make a recording
+
+#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
+(recording-start "/Users/a/Google Drive/wav-file-uploads/brown-noise-test.wav")
+#+END_SRC
+
+#+RESULTS:
+: :recording-started
+
+#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
+;; make some noise. i.e.
+(demo (pan2 (sin-osc)))
+#+END_SRC
+
+#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
+;; stop recording
+(recording-stop)
+
+#+END_SRC
+
+#+RESULTS:
+: /Users/a/Google Drive/wav-file-uploads/brown-noise-test.wav
+
