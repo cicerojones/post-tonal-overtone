@@ -8,5 +8,5 @@
                  [org.clojure/java.jdbc "0.5.0"]
                  [org.postgresql/postgresql "9.4-1201-jdbc41"]
                  [yesql  "0.5.2"]
-;;                 [quil "2.2.5"]
+                 [quil "2.2.5"]
                  ])
