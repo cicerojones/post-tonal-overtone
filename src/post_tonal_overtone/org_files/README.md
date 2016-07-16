@@ -29,6 +29,7 @@ a kind of etude book.
 
    1. [personalized-overtone-wiki-in-one-file.org](https://github.com/cicerojones/post-tonal-overtone/blob/master/src/post_tonal_overtone/org_files/personalized-overtone-wiki-in-one-file.org)
 
+4. use a MIDI-contoller
 
 Which means that there should be a simple first document, which
 `using-post-tonal-harmonies` is most certainly not.
