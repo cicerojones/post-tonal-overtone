@@ -3606,6 +3606,41 @@ elsewhere [link]
 
 #+RESULTS:
 : nil
+* play piano in overtone
+** 
+#+BEGIN_SRC clojure
+(use 'overtone.live)
+
+(use 'overtone.inst.sampled-piano)
+#+END_SRC
+
+#+RESULTS:
+: nilnil
+
+#+BEGIN_SRC clojure
+(midi-connected-devices)
+#+END_SRC
+
+#+RESULTS:
+: '((:description "Axiom A.I.R. Mini32 MIDI"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "MIDI"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x7c3ca8b7 "MIDI")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x749e1319 "com.sun.media.sound.MidiInDevice@749e1319")  :version "Unknown version") (:description "Axiom A.I.R. Mini32 HyperControl"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "HyperControl"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "HyperControl" "Axiom A.I.R. Mini32 HyperControl" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x3e9db3f "HyperControl")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x6a97965c "com.sun.media.sound.MidiInDevice@6a97965c")  :version "Unknown version"))
+
+: '((:description "Axiom A.I.R. Mini32 MIDI"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "MIDI"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x6fc3836b "MIDI")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x5e406927 "com.sun.media.sound.MidiInDevice@5e406927")  :version "Unknown version") (:description "Axiom A.I.R. Mini32 HyperControl"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "HyperControl"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "HyperControl" "Axiom A.I.R. Mini32 HyperControl" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x40d9b724 "HyperControl")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x534c9c7b "com.sun.media.sound.MidiInDevice@534c9c7b")  :version "Unknown version"))
+
+#+BEGIN_SRC clojure
+(sampled-piano)
+
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: overtone.inst.973/sampled-piano 39>
+
+ #+BEGIN_SRC clojure
+(def piano-player (midi-poly-player sampled-piano))
+
+#+END_SRC
+
+#+RESULTS:
+: #'user/piano-player
 * stop all playing sound
 #+BEGIN_SRC clojure
 (stop)
@@ -3613,4 +3648,3 @@ elsewhere [link]
 
 #+RESULTS:
 : nil
-
