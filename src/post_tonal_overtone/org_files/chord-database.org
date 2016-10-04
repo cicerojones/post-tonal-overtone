@@ -202,7 +202,7 @@ dbchords
 | Indexes:                                       |         |                                                              |
 | "pcs_event_pkey" PRIMARY KEY, btree (chord_id) |         |                                                              |
 
-* insert from Clojure
+* call INSERT INTO functions from Clojure
 ** tables
 #+BEGIN_SRC sql :engine postgresql :database heroku_psql_tutorial
 DROP TABLE monochord_events; 
@@ -222,6 +222,7 @@ DROP TABLE hexachord_events;
 
 #+BEGIN_SRC sql :engine postgresql :database heroku_psql_tutorial
 CREATE TABLE monochord_events (chord_id serial PRIMARY KEY, midi1 int);
+CREATE TABLE dyad_events (chord_id serial PRIMARY KEY, midi1 int, midi2 int);
 CREATE TABLE trichord_events (chord_id serial PRIMARY KEY, midi1 int, midi2 int, midi3 int);
 CREATE TABLE tetrachord_events (chord_id serial PRIMARY KEY, midi1 int, midi2 int, midi3 int, midi4 int);
 CREATE TABLE pentachord_events (chord_id serial PRIMARY KEY, midi1 int, midi2 int, midi3 int, midi4 int, midi5 int);
@@ -231,10 +232,6 @@ CREATE TABLE hexachord_events (chord_id serial PRIMARY KEY, midi1 int, midi2 int
 #+RESULTS:
 | CREATE TABLE |
 |--------------|
-| CREATE TABLE |
-| CREATE TABLE |
-| CREATE TABLE |
-| CREATE TABLE |
 
 ** monochord
 
@@ -320,10 +317,13 @@ select * from monochord_events
 |        1 |    60 |
 
 #+BEGIN_SRC sql :engine postgresql :database heroku_psql_tutorial
-select * from pentachord_events
+select * from tetrachord_events
 #+END_SRC
 
 #+RESULTS:
-| chord_id | midi1 | midi2 | midi3 | midi4 | midi5 |
-|----------+-------+-------+-------+-------+-------|
+| chord_id | midi1 | midi2 | midi3 | midi4 |
+|----------+-------+-------+-------+-------|
+|        1 |    58 |    62 |    64 |    67 |
+|        2 |    57 |    63 |    64 |    67 |
+|        3 |    48 |    75 |    65 |    80 |
 

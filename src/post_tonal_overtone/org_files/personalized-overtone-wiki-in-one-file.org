@@ -701,6 +701,8 @@ MIDI devices detected by Overtone, use:
 (midi-connected-devices)
 #+END_SRC
 
+#+RESULTS:
+
 The MIDI device should be connected and powered on before starting
 Overtone. When you bash the keys on the keyboard, Overtone receives
 internal events in its event stream. To see them use:
@@ -710,11 +712,17 @@ internal events in its event stream. To see them use:
 (event-debug-on)
 #+END_SRC
 
+#+RESULTS:
+: true
+
 To stop:
 
 #+BEGIN_SRC clojure :session getting-started
 (event-debug-off)
 #+END_SRC
+
+#+RESULTS:
+: false
 
 You should see that for each key press, there are two events. A
 general midi control change event:
@@ -1033,17 +1041,21 @@ conv-files
   #+RESULTS:
   : #<synth: all-big-reverb>#<synth-node[loading]: post-tona915/big-reverb-on-left 354>
 **** loading sample from freesound
+
   #+BEGIN_SRC clojure :session getting-started
 (def snare (freesound 26903))
 (snare)
   #+END_SRC
 
+  #+RESULTS:
+  : #'user/snare#<synth-node[loading]: overtoddd/stereo-partial-player 375>
+
   #+BEGIN_SRC clojure :session getting-started
 (snare)
   #+END_SRC
   #+RESULTS:
-  : #<synth-node[loading]: overtone.sc.saddd/stereo-player 356>
-**** other freesound samples
+  : #<synth-node[loading]: overtoddd/stereo-partial-player 377>
+**** other freesound samples (percussion)
   |   406 | click      |   436 | ride           |   777 | kick         |   802 | close-hat    |
   |  2086 | kick2      |  8323 | powerwords     |  9088 | jetbike      | 13254 | cymbal       |
   | 16309 | open-snare | 16568 | two-cows       | 25649 | subby        | 26657 | open-hat     |
@@ -1542,8 +1554,6 @@ uses both note ornament and the `:_` nil value:
 
 #+RESULTS:
 : #'post_tonal_overtone.core/play#<ScheduledJob id: 3943, created-at: Thu 12:43:03s, initial-delay: 199, desc: "Overtone delayed fn", scheduled? true>
-
-
 
 
 *** metronome and sequencing
