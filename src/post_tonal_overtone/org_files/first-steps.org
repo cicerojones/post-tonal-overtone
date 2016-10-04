@@ -20,7 +20,21 @@ But, even more significantly, you will want to develop a strong
 concept of how to instantiate a namespace, and how to load in any code
 you want to be working with from WITHIN the namespace declaration.
 
-Here's one good example.
+Here's one good example (note, the presence of overtone.live on your
+machine or in your files is no minor thing! There should be a link to 
+how to best deal with this for those times when you are starting up a
+system that hasn't had overtone working for it yet. The simplest
+answer is to--once this project is cloned--navigate to the directory
+containing it and start up your lein repl/cider-jack-in from there.
+
+Note that the first time you do this, there may be a lot of stuff to
+download! You can also simply just:
+
+#+BEGIN_SRC clojure
+(use 'overtone.live)
+#+END_SRC
+)
+
 #+BEGIN_SRC clojure
 (ns post_tonal_overtone.core
   (:use overtone.live)
@@ -2854,7 +2868,7 @@ post_tonal_overtone.data.set_class_data/cmajtriads
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: noisey2>#<synth-node[loading]: post_tonal_overtone.485/noisey2 56>
+ : #<instrument: noisey2>#<synth-node[loading]: user/noisey2 35>
 
 *** definst can take an envelope for scaling the ugen output--using lin
 use of lin presents several default keyword args. When called as an
@@ -2878,6 +2892,9 @@ to the sound.
 #+RESULTS:
 
 *** define constant pink noise
+You'll have to stop this on your own (if you want to!) by evaluating
+the ~(stop)~ function below.
+
   #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (definst noisey-sustained [vol 0.5] 
   (* (pink-noise) ; also have (white-noise) and others...
@@ -2887,7 +2904,7 @@ to the sound.
   #+END_SRC
 
   #+RESULTS:
-  : #<instrument: noisey-sustained>#<synth-node[loading]: post_tonal_485/noisey-sustained 59>
+  : #<instrument: noisey-sustained>#<synth-node[loading]: user/noisey-sustained 42>
 
   #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (stop)
@@ -2896,6 +2913,8 @@ to the sound.
   #+RESULTS:
   : nil
 
+Since you might have to do this frequently (that is, stop some playing
+sound), it's wise to create an emacs function or macro to invoke this quickly.
 * shaping some basic sounds
 What sounds can you make with your computer? And how easily can you
 figure out what they are and how to use them? I like to start with
@@ -2908,13 +2927,14 @@ Experimenting with different parameter values reveals that there are
 some mechanics to the ~env-gen~ function. What's happens when we use
 an attack of '0.4' and a sustain of '0?'
 
-Sounds like a pleasant wave just rolled up?
+Sounds like a pleasant (and quiet, depending on how loud your system is
+turned up) wave just rolled up?
   #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (noisey2 :attack 0.4 :sustain 0 :release 0.7 :vol 0.3 :length 10)
   #+END_SRC
 
   #+RESULTS:
-  : #<synth-node[loading]: post_tonal_overtone.485/noisey2 205>
+  : #<synth-node[loading]: user/noisey2 43>
 
 
 Sounds like percussion now?
@@ -2923,7 +2943,7 @@ Sounds like percussion now?
   #+END_SRC
 
   #+RESULTS:
-  : #<synth-node[loading]: post_tonal_overtone.485/noisey2 207>
+  : #<synth-node[loading]: user/noisey2 44>
 
 Wouldn't it be nice to be able to experiment with different values for
 these things in some way other than typing values at the keyboard?
@@ -2945,7 +2965,7 @@ frequencies and pitches.
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: sin1>#<synth-node[loading]: post_tonal_overtone.core/sin1 71>
+ : #<instrument: sin1>#<synth-node[loading]: user/sin1 49>
 
 You can also give sin1 an argument:
 
@@ -2954,7 +2974,7 @@ You can also give sin1 an argument:
  #+END_SRC
 
  #+RESULTS:
- : #<synth-node[loading]: post_tonal_overtone.core/sin3 64>
+ : #<synth-node[loading]: user/sin1 50>
 
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
 (definst saw1 [freq 330 attack 0.3 sustain 0.15 release 0.25 vol 0.2 length 5]
@@ -2966,7 +2986,7 @@ You can also give sin1 an argument:
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: saw1>#<synth-node[loading]: post_tonal_overtone.core/saw1 65>
+ : #<instrument: saw1>#<synth-node[loading]: user/saw1 55>
 
 ** saw waves are harmonically rich--sine waves not so much...
 The above options give us comparatively straightforward sounds.
@@ -2994,7 +3014,18 @@ you progressively evaluate it.
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: saw2>#<synth-node[loading]: post_tonal_overtone.core/saw2 63>
+ : #<instrument: saw2>#<synth-node[loading]: user/saw2 63>
+
+ #+BEGIN_EXAMPLE
+evaluating clojure/babel blocks can be annoying if they block your navigation in emacs. If this happens, try evaluating the blocks that don't contain the definst as well as the function call.
+ #+END_EXAMPLE
+
+#+BEGIN_SRC clojure
+(saw2)
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: user/saw2 76>
 
 Just to compare against the unfiltered version with no envelope:
 #+BEGIN_SRC clojure
@@ -3002,14 +3033,15 @@ Just to compare against the unfiltered version with no envelope:
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: post_tonal_ov485/audition-synth 62>
+: #<synth-node[loading]: user/audition-synth 72>
 
+** here's a use of a built-in overtone library for making choices algorithmically
 #+BEGIN_SRC clojure
 (saw2 (overtone.algo.chance/ranged-rand 300 302) :vol 0.3)
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: post_tonal_overtone.core/saw2 66>
+: #<synth-node[loading]: user/saw2 81>
 
 Giving it a different envelope begins to give it another quality as
 well, as if a kind simple little synthesizer.
@@ -3018,25 +3050,25 @@ well, as if a kind simple little synthesizer.
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: post_tonal_ov485/audition-synth 169>
+: #<synth-node[loading]: user/audition-synth 87>
 
 * begin creating scheduled events
 To really make music, we're going to have to understand how to get
-things to play in time, without use simply triggering everything at
-the REPL. That meas we are going to have to schedule things.
+things to play in time, without simply triggering everything at the
+REPL. That means we are going to have to schedule things.
 
 And to really understand how to use scheduling we'll ultimately need
 to look at some other files that are dedicated to this pursuit. For
 now, here are some quick examples
 ** basic example
 There are two keys functions to wrap your head around: =at= and
-=metro.= Let's start with at.
+=metro.= Let's start with =at=.
 
 *** use 'at' to schedule chord events
 Simply, we can use the =at= function to schedule some events relative
 to a given starting point (which will be determined by calling =now=).
-Note, that we hard-coding in the offsets, which means that this won't
-be especially useful for more than a few listens. 
+Note that below, we are hard-coding in the offsets, which means that
+this won't be especially useful for more than a few listens.
 
 However, it neatly demonstrates that time can be quite nicely
 quanitified--here in milliseconds.
@@ -3053,7 +3085,7 @@ quanitified--here in milliseconds.
  #+END_SRC
 
   #+RESULTS:
-  : #'post_tonal_overtone.core/play-chord-sin2
+  : #'user/play-chord-sin2
 
 Here is the sine instrument at work, demonstrating the fact that it
 will take midi number arguments and convert it to Hertz.
@@ -3064,7 +3096,7 @@ will take midi number arguments and convert it to Hertz.
  #+END_SRC
 
  #+RESULTS:
- : #<synth-node[loading]: post_tonal_overtone.core/sin1 72>
+ : #<synth-node[loading]: user/sin1 88>
 
 And here's an interesting 7-note chord
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
@@ -3088,7 +3120,7 @@ Now, here's a progression.
   #+END_SRC
 
  #+RESULTS:
- : #'post_tonal_overtone.core/chord-progression-time1nil
+ : #'user/chord-progression-time1nil
 
 Note that having to type all this out every time would be a pain. And
 ultimately, there are a lot of things we might like to change about
@@ -3117,7 +3149,7 @@ hard-coded in--eek!) as an argument instead.
  #+END_SRC
 
  #+RESULTS:
- : #'post_tonal_overtone.core/chord-progression-time2#<synth-node[loading]: post_tonal_overtone.core/sin3 204>
+ : #'user/chord-progression-time2#<synth-node[loading]: user/sin1 121>
 
 
  #+BEGIN_SRC clojure :session getting-started :tangle yes 
@@ -3125,7 +3157,7 @@ hard-coded in--eek!) as an argument instead.
  #+END_SRC
 
  #+RESULTS:
- : #<synth-node[loading]: post_tonal_overtone.core/saw2 210>
+ : #<synth-node[loading]: user/saw2 122>
 
 ** how do we establish a beat for scheduling events using metronome?
 
@@ -3134,12 +3166,12 @@ hard-coded in--eek!) as an argument instead.
   #+END_SRC
 
   #+RESULTS:
-  : #'post_tonal_overtone.core/metro
+  : #'user/metro
 
 Understanding how to use the values that this produces gets at the
-heart of language, and is crucial to doing musical things--to the
-extent that music happens in time, or according to some constructed
-notion of time.
+part of the overtone language that is at the heart of scheduling, and
+is crucial to doing musical things--to the extent that music happens
+in time, or according to some constructed notion of time.
 
 We will get to this. For now just observe that we have a special type
 of named thing here:
@@ -3150,7 +3182,7 @@ of named thing here:
 #+END_SRC
 
 #+RESULTS:
-: overtone.music.rhythm.Metronome2
+: overtone.music.rhythm.Metronome6
 
 *** Preparing dissonant chords 
 (Note: this functionality has largely been superseded elsewhere)
@@ -3574,4 +3606,45 @@ elsewhere [link]
 
 #+RESULTS:
 : nil
+* play piano in overtone
+** 
+#+BEGIN_SRC clojure
+(use 'overtone.live)
 
+(use 'overtone.inst.sampled-piano)
+#+END_SRC
+
+#+RESULTS:
+: nilnil
+
+#+BEGIN_SRC clojure
+(midi-connected-devices)
+#+END_SRC
+
+#+RESULTS:
+: '((:description "Axiom A.I.R. Mini32 MIDI"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "MIDI"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x7c3ca8b7 "MIDI")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x749e1319 "com.sun.media.sound.MidiInDevice@749e1319")  :version "Unknown version") (:description "Axiom A.I.R. Mini32 HyperControl"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "HyperControl"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "HyperControl" "Axiom A.I.R. Mini32 HyperControl" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x3e9db3f "HyperControl")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x6a97965c "com.sun.media.sound.MidiInDevice@6a97965c")  :version "Unknown version"))
+
+: '((:description "Axiom A.I.R. Mini32 MIDI"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "MIDI"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x6fc3836b "MIDI")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x5e406927 "com.sun.media.sound.MidiInDevice@5e406927")  :version "Unknown version") (:description "Axiom A.I.R. Mini32 HyperControl"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "HyperControl"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "HyperControl" "Axiom A.I.R. Mini32 HyperControl" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x40d9b724 "HyperControl")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x534c9c7b "com.sun.media.sound.MidiInDevice@534c9c7b")  :version "Unknown version"))
+
+#+BEGIN_SRC clojure
+(sampled-piano)
+
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: overtone.inst.973/sampled-piano 39>
+
+ #+BEGIN_SRC clojure
+(def piano-player (midi-poly-player sampled-piano))
+
+#+END_SRC
+
+#+RESULTS:
+: #'user/piano-player
+* stop all playing sound
+#+BEGIN_SRC clojure
+(stop)
+#+END_SRC
+
+#+RESULTS:
+: nil

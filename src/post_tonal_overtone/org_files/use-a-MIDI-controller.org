@@ -5,7 +5,6 @@
 #+END_SRC
 
 #+RESULTS:
-: nil
 
 Must be captialized?
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
@@ -14,9 +13,12 @@ overtone.version/OVERTONE-VERSION
 
 #+RESULTS:
 | :major | 0 | :minor | 10 | :patch | 1 | :snapshot | false |
+<<<<<<< HEAD
 
 
 | :major | 0 | :minor | 9 | :patch | 1 | :snapshot | false |
+=======
+>>>>>>> 51efe786282772e3493d3f3185d57fdb30cd9612
 ** (midi-connected-devices)
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
 (midi-connected-devices)
@@ -25,6 +27,8 @@ overtone.version/OVERTONE-VERSION
 
 
 #+RESULTS:
+: '((:description "Axiom A.I.R. Mini32 MIDI"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "MIDI"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x5b116300 "MIDI")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x6acafe38 "com.sun.media.sound.MidiInDevice@6acafe38")  :version "Unknown version") (:description "Axiom A.I.R. Mini32 HyperControl"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "HyperControl"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "HyperControl" "Axiom A.I.R. Mini32 HyperControl" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x5e430dfd "HyperControl")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x14a1b320 "com.sun.media.sound.MidiInDevice@14a1b320")  :version "Unknown version"))
+
 : '((:description "Axiom A.I.R. Mini32 MIDI"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "MIDI"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x1142bdd "MIDI")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x117963cc "com.sun.media.sound.MidiInDevice@117963cc")  :version "Unknown version") (:description "Axiom A.I.R. Mini32 HyperControl"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "HyperControl"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "HyperControl" "Axiom A.I.R. Mini32 HyperControl" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x3886ef0a "HyperControl")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x42fac5ea "com.sun.media.sound.MidiInDevice@42fac5ea")  :version "Unknown version"))
 
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
@@ -50,23 +54,9 @@ overtone.version/OVERTONE-VERSION
   :device #object[com.sun.media.sound.MidiInDevice 0x42fac5ea "com.sun.media.sound.MidiInDevice@42fac5ea"],
   :version "Unknown version"})
 #+END_SRC
+* learn more about how overtone processes midi data
 ** (event-debug-on)
-*** turn on event debugging
-#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
-(event-debug-on)
-#+END_SRC
-*** note-on event with the event-debug-on function
-#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
-event:  [:midi :note-on] ({:data2 117, :command :note-on, :channel 0, :msg #object[com.sun.media.sound.FastShortMessage 0x23ec8f33 "com.sun.media.sound.FastShortMessage@23ec8f33"], :note 60, :dev-key [:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0], :status :note-on, :data1 60, :data2-f 0.9212598, :device {:description "Axiom A.I.R. Mini32 MIDI", :vendor "M-Audio", :sinks 0, :sources 2147483647, :name "MIDI", :transmitter #object[com.sun.media.sound.MidiInDevice$MidiInTransmitter 0x17af0adf "com.sun.media.sound.MidiInDevice$MidiInTransmitter@17af0adf"], :overtone.studio.midi/full-device-key [:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0], :info #object[com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x1142bdd "MIDI"], :overtone.studio.midi/dev-num 0, :device #object[com.sun.media.sound.MidiInDevice 0x117963cc "com.sun.media.sound.MidiInDevice@117963cc"], :version "Unknown version"}, :timestamp 18402497323, :velocity 117, :velocity-f 0.9212598}) 
-event:  [:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0] ({:data2 117, :command :note-on, :channel 0, :msg #object[com.sun.media.sound.FastShortMessage 0x23ec8f33 "com.sun.media.sound.FastShortMessage@23ec8f33"], 
-:note 60, :dev-key [:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0], :status :note-on, :data1 60, :data2-f 0.9212598, :device {:description "Axiom A.I.R. Mini32 MIDI", :vendor "M-Audio", :sinks 0, :sources 2147483647, :name "MIDI", :transmitter #object[com.sun.media.sound.MidiInDevice$MidiInTransmitter 0x17af0adf "com.sun.media.sound.MidiInDevice$MidiInTransmitter@17af0adf"], :overtone.studio.midi/full-device-key [:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0], :info #object[com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x1142bdd "MIDI"], :overtone.studio.midi/dev-num 0, :device #object[com.sun.media.sound.MidiInDevice 0x117963cc "com.sun.media.sound.MidiInDevice@117963cc"], :version "Unknown version"}, :timestamp 18402497323, :velocity 117, :velocity-f 0.9212598})
- 
-event:  (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0 :note-on 60) ({:data2 117, :command :note-on, :channel 0, :msg #object[com.sun.media.sound.FastShortMessage 0x23ec8f33 "com.sun.media.sound.FastShortMessage@23ec8f33"], 
-:note 60, :dev-key [:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0], :status :note-on, :data1 60, :data2-f 0.9212598, :device {:description "Axiom A.I.R. Mini32 MIDI", :vendor "M-Audio", :sinks 0, :sources 2147483647, :name "MIDI", :transmitter #object[com.sun.media.sound.MidiInDevice$MidiInTransmitter 0x17af0adf "com.sun.media.sound.MidiInDevice$MidiInTransmitter@17af0adf"], :overtone.studio.midi/full-device-key [:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0], :info #object[com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x1142bdd "MIDI"], :overtone.studio.midi/dev-num 0, :device #object[com.sun.media.sound.MidiInDevice 0x117963cc "com.sun.media.sound.MidiInDevice@117963cc"], :version "Unknown version"}, :timestamp 18402497323, :velocity 117, :velocity-f 0.9212598})
- 
-event:  (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0 :note-on) ({:data2 117, :command :note-on, :channel 0, :msg #object[com.sun.media.sound.FastShortMessage 0x23ec8f33 "com.sun.media.sound.FastShortMessage@23ec8f33"], 
-:note 60, :dev-key [:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0], :status :note-on, :data1 60, :data2-f 0.9212598, :device {:description "Axiom A.I.R. Mini32 MIDI", :vendor "M-Audio", :sinks 0, :sources 2147483647, :name "MIDI", :transmitter #object[com.sun.media.sound.MidiInDevice$MidiInTransmitter 0x17af0adf "com.sun.media.sound.MidiInDevice$MidiInTransmitter@17af0adf"], :overtone.studio.midi/full-device-key [:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0], :info #object[com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x1142bdd "MIDI"], :overtone.studio.midi/dev-num 0, :device #object[com.sun.media.sound.MidiInDevice 0x117963cc "com.sun.media.sound.MidiInDevice@117963cc"], :version "Unknown version"}, :timestamp 18402497323, :velocity 117, :velocity-f 0.9212598})
-#+END_SRC
+** note-on event with the event-debug-on function
 *** note-off event
 
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
@@ -127,7 +117,6 @@ event:  (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0 :control-cha
 #+END_SRC
 
 #+RESULTS:
-: #<instrument: steel-drum>
 ** make a player to use midi-poly-player and defined instrument
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
 (def player (midi-poly-player steel-drum))
@@ -170,14 +159,6 @@ event:  (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0 :control-cha
 #+END_SRC
 
 #+RESULTS:
-: #<instrument: boop>
-** demonstrate use of defined instrument with defaults
-#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
-(boop)
-#+END_SRC
-
-#+RESULTS:
-: #<synth-node[loading]: user/boop 64>
 ** kill all instances of running instrument--contrast with killing with ID-specific number
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
 (kill boop)
