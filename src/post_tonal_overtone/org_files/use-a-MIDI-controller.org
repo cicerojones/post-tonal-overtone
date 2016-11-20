@@ -56,6 +56,13 @@ overtone.version/OVERTONE-VERSION
 #+END_SRC
 * learn more about how overtone processes midi data
 ** (event-debug-on)
+#+BEGIN_SRC clojure
+(event-debug-on)
+#+END_SRC
+
+#+RESULTS:
+: true
+
 ** note-on event with the event-debug-on function
 *** note-off event
 
@@ -106,6 +113,7 @@ event:  (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0 :control-cha
 
 #+END_SRC
 *** knob2
+* make an 'instrument'
 ** create a basic instrument for use with midi-poly-player
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
 (definst steel-drum [note 60 amp 0.8]
@@ -150,6 +158,8 @@ event:  (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0 :control-cha
 
 #+RESULTS:
 : :handler-removed
+
+* make a beeping instrument
 ** create a very simple instrument 
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
 (definst boop [note 60 amp 0.3]
@@ -159,6 +169,7 @@ event:  (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0 :control-cha
 #+END_SRC
 
 #+RESULTS:
+: #<instrument: boop>
 ** kill all instances of running instrument--contrast with killing with ID-specific number
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
 (kill boop)
@@ -172,18 +183,22 @@ event:  (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0 :control-cha
 #+END_SRC
 
 #+RESULTS:
-: #'user/booper
+: #'overtone.examples.midi.keyboard/booper
 ** stop the player--doesn't do what you hope?
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
 (midi-player-stop)
 #+END_SRC
+
+#+RESULTS:
+: :handler-removed
+
 ** stop the player by redefining with 'nil'
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
-(def booper (midi-poly-player nil))p
+(def booper (midi-poly-player nil))
 #+END_SRC
 
 #+RESULTS:
-: #'user/booper
+: #'overtone.examples.midi.keyboard/booper
 ** stop all sounds
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
 (stop)
@@ -210,6 +225,7 @@ event:  (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0 :control-cha
 
 #+RESULTS:
 : :handler-removed
+* make sounds (noise)
 ** create an event handler with on-event and use control-change??
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
 (definst anoise [vol 0.5]
@@ -226,7 +242,7 @@ event:  (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0 :control-cha
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: user/anoise 1294>
+: #<synth-node[loading]: overtone.examples.mid82a/anoise 289>
 
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
 (kill anoise)
@@ -235,6 +251,7 @@ event:  (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0 :control-cha
 #+RESULTS:
 : nil
 ** basically works, but gets loud fast (vel vs. val error)
+'anoise' (see above) must be running
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
 (on-event [:midi :control-change]
           (fn [e]
@@ -268,6 +285,10 @@ event:  (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0 :control-cha
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
 (remove-event-handler ::ctldata-handler)
 #+END_SRC
+
+#+RESULTS:
+: :handler-removed
+
 ** println note-on and velocity message
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
 (on-event [:midi :note-on] (fn [{note :note velocity :velocity}]
@@ -316,13 +337,16 @@ event:  (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0 :control-cha
 
 #+RESULTS:
 : :handler-removed
-** us control change with noise filter?
+** use control change with noise filter?
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
-(on-event [:midi :control-change] (fn [{cc-channel :note velocity :velocity}]
-                                    (lpf (ctl anoise :vol (scale-range velocity 1 127 0 1))
-                                         10)
-          ::cc-filterplayer)
+  (on-event [:midi :control-change]
+            (fn [{cc-channel :note velocity :velocity}]
+              (lpf (ctl anoise :vol (scale-range velocity 1 127 0 1))
+                   10)
+              ::cc-filterplayer))
 #+END_SRC
+
+#+RESULTS:
 
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
 (demo 10
@@ -331,7 +355,7 @@ event:  (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0 :control-cha
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: user/audition-synth 1573>
+: #<synth-node[loading]: overtone.exam82a/audition-synth 291>
 ** use 'ctl' to make a real-time change
 
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
@@ -351,7 +375,7 @@ event:  (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0 :control-cha
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: user/an-fnoise 1578>
+: #<synth-node[loading]: user/an-fnoise 64>
 
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
 (kill an-fnoise)
@@ -361,11 +385,11 @@ event:  (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0 :control-cha
 : nil
 
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
-(ctl an-fnoise :ffreq 4000)
+(ctl an-fnoise :vol 0.5 :ffreq 4000)
 #+END_SRC
 
 #+RESULTS:
-: #overtone.studio.inst.Inst{:name "an-fnoise", :params ({:name "vol", :default 0.1, :rate :kr, :value #atom[0.1 0xff2d9c4]} {:name "ffreq", :default 1000.0, :rate :kr, :value #atom[1000.0 0x10b6db0a]}), :args ("vol" "ffreq"), :sdef {:name "user/an-fnoise", :constants [21.0], :params (0.1 1000.0), :pnames ({:name "vol", :index 0} {:name "ffreq", :index 1}), :ugens ({:args nil, :special 0, :name "Control", :rate 1, :inputs (), :rate-name :kr, :n-outputs 2, :id 352, :outputs ({:rate 1} {:rate 1}), :n-inputs 0} #<sc-ugen: pink-noise:ar [0]> #<sc-ugen: binary-op-u-gen:ar [2]> #<sc-ugen: lpf:ar [4]> #<sc-ugen: out:ar [5]>)}, :group #<synth-group[live]: Inst an-fnoise Container 1574>, :instance-group #<synth-group[live]: Inst an-fnoise 1575>, :fx-group #<synth-group[live]: Inst an-fnoise FX 1576>, :mixer #<synth-node[live]: overtone.stu547/mono-inst-mixer 1577>, :bus #<audio-bus: No Name, mono, id 21>, :fx-chain [], :volume #atom[1.0 0x66534d33], :pan #atom[0.0 0x66f183c0], :n-chans 1}
+: #overtone.studio.inst.Inst{:name "an-fnoise", :params ({:name "vol", :default 0.1, :rate :kr, :value #atom[0.1 0x49c59e05]} {:name "ffreq", :default 1000.0, :rate :kr, :value #atom[1000.0 0x17557743]}), :args ("vol" "ffreq"), :sdef {:name "user/an-fnoise", :constants [20.0], :params (0.1 1000.0), :pnames ({:name "vol", :index 0} {:name "ffreq", :index 1}), :ugens ({:args nil, :special 0, :name "Control", :rate 1, :inputs (), :rate-name :kr, :n-outputs 2, :id 324, :outputs ({:rate 1} {:rate 1}), :n-inputs 0} #<sc-ugen: pink-noise:ar [0]> #<sc-ugen: binary-op-u-gen:ar [2]> #<sc-ugen: lpf:ar [4]> #<sc-ugen: out:ar [5]>)}, :group #<synth-group[live]: Inst an-fnoise Container 59>, :instance-group #<synth-group[live]: Inst an-fnoise 60>, :fx-group #<synth-group[live]: Inst an-fnoise FX 61>, :mixer #<synth-node[live]: overtone.stu547/mono-inst-mixer 62>, :bus #<audio-bus: No Name, mono, id 20>, :fx-chain [], :volume #atom[1.0 0x213195e5], :pan #atom[0.0 0x4604b0a3], :n-chans 1}
 
 ** actively filter noise with CC (remember, to use ctl, must have an active instance)
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
@@ -373,7 +397,7 @@ event:  (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0 :control-cha
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: user/an-fnoise 1579>
+: #<synth-node[loading]: overtone.examples.82a/an-fnoise 297>
 
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
 (on-event [:midi :control-change] (fn [{cc-channel :note velocity :velocity}]
@@ -395,6 +419,8 @@ event:  (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0 :control-cha
                        :cutoff-freq 1000)))
           ::prophet-midi)
 #+END_SRC
+
+#+RESULTS:
 
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
 (on-event [:midi :note-on]

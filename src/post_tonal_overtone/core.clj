@@ -253,7 +253,7 @@
         set-voicing-group {:set set :voiced-set voiced-set :tn-level tn-level :transposed-set transposed-set})]
     (do
       (println set-voicing-group)
-      (last set-voicing-group))))
+      (last set-voicing-group)))
 
 (write-chord-history post-tonal-overtone.core/little-db {:pcs (0 3 5 7) :midis-normalized (60 51 65 43) :tn-level 2 :midis-transposed(62 53 67 45)))
 
