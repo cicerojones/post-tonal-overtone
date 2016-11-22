@@ -1,4 +1,4 @@
-* 
+* overtone session
 ** 
 #+BEGIN_SRC clojure
 (def junk 1)
@@ -190,8 +190,7 @@ Why does the handler function take a "10" as an argument
 #+RESULTS:
 : :handler-removed
 
-
-** 
+* supercollider
 #+BEGIN_SRC sclang
   { SinOsc.ar() }.play
 #+END_SRC
