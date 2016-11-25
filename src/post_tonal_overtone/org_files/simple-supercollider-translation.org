@@ -1,9 +1,23 @@
 * 
-** start some where--demon a sin-osc
+** boot an internal server or connect to an external one?
+#+BEGIN_SRC clojure
+(use 'overtone.live)
+#+END_SRC
+ 
+vs.
+
+#+BEGIN_SRC clojure
+(use 'overtone.core)
+#+END_SRC
+
+#+BEGIN_SRC clojure
+(connect-external-server 57110)
+#+END_SRC
+** start some where--demo a sin-osc
 #+BEGIN_SRC clojure
 (demo (sin-osc))
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: post-tonal-ov915/audition-synth 33>
-** 
+: #<synth-node[loading]: user/audition-synth 33>
+** define an inst or define a synth?
