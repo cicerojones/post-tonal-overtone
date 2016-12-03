@@ -303,10 +303,6 @@ select * from hexachord_events;
 |----------+-------+-------+-------|
 |        1 |    59 |    62 |    65 |
 
-#+BEGIN_SRC 
-
-#+END_SRC
-
 #+BEGIN_SRC sql :engine postgresql :database heroku_psql_tutorial
 select * from monochord_events
 #+END_SRC

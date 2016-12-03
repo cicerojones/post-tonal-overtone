@@ -29,51 +29,51 @@ things - we'll love you forever.
 
 *** Contents
 **** Installation
--  [[Installing Overtone]]
--  [[Starting a REPL]]
--  [[Connecting scsynth]]
--  [[Installing and Starting Jack]] (for Linux users)
--  [[Overtone on the Edge!]]
--  [[Overtone in emacs]]
--  [[Overtone in vim]]
+-  [[Installing Overtone]
+-  [[Starting a REPL]
+-  [[Connecting scsynth]
+-  [[Installing and Starting Jack] (for Linux users)
+-  [[Overtone on the Edge!]
+-  [[Overtone in emacs]
+-  [[Overtone in vim]
 
 **** First steps
 -  [Overtone Cheat Sheet](https://github.com/overtone/overtone/raw/master/docs/cheatsheet/overtone-cheat-sheet.pdf)
--  [[Getting Started]]
+-  [[Getting Started]
 
 **** Synthesis:
--  [[oscillators]]
--  [[filters]]
--  [[delays]] [empty]
--  [[envelopes and controls]] [empty]
--  [[multi-channel expansion, stereo and panning]]
--  [[fx chains]] [fx chains]
+-  [[oscillators]
+-  [[filters]
+-  [[delays] [empty]
+-  [[envelopes and controls] [empty]
+-  [[multi-channel expansion, stereo and panning]
+-  [[fx chain] [fx chains]
 
 **** Instruments and I/O:
--  [[buffers and audio files]]
--  [[midi]]
--  [[recording]]
--  [[screencasting]]
+-  [[buffers and audio files]
+-  [[midi]
+-  [[recording]
+-  [[screencasting]
 
 **** Making music:
--  [[Pitches and Chords]]
--  [[Scales and Scale Degrees]]
--  [[Metronome and Sequencing]]
--  [[Arpeggiators and Note Generators]] [empty]
--  [[live-coding]]
--  [[swing]]
+-  [[Pitches and Chords]
+-  [[Scales and Scale Degrees]
+-  [[Metronome and Sequencing]
+-  [[Arpeggiators and Note Generators][empty]
+-  [[live-coding]
+-  [[swing]
 
 **** Interacting with External Devices:
--  [[Monome]] [empty]
--  [[TouchOSC]]
+-  [[Monome][empty]
+-  [[TouchOSC]
 
 **** In progress:
--  [[sessions and instruments]] [empty]
+-  [[sessions and instruments][empty]
 
 **** Development:
--  [[Bug Reports]]
--  [[Hacking Overtone]]
--  [[Comparing sclang and Overtone synthdefs]]
+-  [[Bug Reports]
+-  [[Hacking Overtone]
+-  [[Comparing sclang and Overtone synthdefs]
 
 * start with some basics of getting-started github wiki
 ** define, start and kill a definst
@@ -2035,7 +2035,7 @@ Or not. Mysterious.
  Use Overtone to bring the song to life.
 
  Before starting, add [overtone "0.8.1"] to your project’s dependencies
- or start a REPL using lein-try:[10]
+ or start a REPL using lein-try: footnote 10 here
 
 
  $ lein try overtone

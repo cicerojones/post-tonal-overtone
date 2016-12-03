@@ -199,9 +199,6 @@ Why does the handler function take a "10" as an argument
   { SinOsc.ar([440, 442], 0, 0.4) }.play;
 #+END_SRC
 
-#+BEGIN_SRC 
-
-#+END_SRC
 * stop all overtone sound
 :PROPERTIES:
 :ID:       9A833656-B947-48F7-8118-E522F04F2860

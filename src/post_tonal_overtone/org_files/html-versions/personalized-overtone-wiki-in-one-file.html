@@ -1,0 +1,2883 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2016-12-02 Fri 16:35 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title></title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="b" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline13">1. outline of the overtone wiki page&#x2013;no code</a>
+<ul>
+<li><a href="#orgheadline12">1.1. Welcome to the Overtone Wiki</a>
+<ul>
+<li><a href="#orgheadline1">1.1.1. Technical Summary</a></li>
+<li><a href="#orgheadline2">1.1.2. About this Documentation</a></li>
+<li><a href="#orgheadline11">1.1.3. Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline33">2. start with some basics of getting-started github wiki</a>
+<ul>
+<li><a href="#orgheadline14">2.1. define, start and kill a definst</a></li>
+<li><a href="#orgheadline15">2.2. overtone documenation (odoc)</a></li>
+<li><a href="#orgheadline16">2.3. providing arguments when defining synths with definst</a></li>
+<li><a href="#orgheadline17">2.4. triggering multiple synths</a></li>
+<li><a href="#orgheadline20">2.5. changing audio output levels on the fly</a>
+<ul>
+<li><a href="#orgheadline18">2.5.1. (doc ctl)</a></li>
+<li><a href="#orgheadline19">2.5.2. my silly mod&#x2013;use <code>rand-nth</code> to change pitches using babel</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline32">2.6. ugens as input values to other ugens</a>
+<ul>
+<li><a href="#orgheadline21">2.6.1. line:kr for crescendo; sin-osc:kr for hz modulation</a></li>
+<li><a href="#orgheadline30">2.6.2. white-noise:kr as hz modulator</a></li>
+<li><a href="#orgheadline31">2.6.3. using <code>linen</code> for envelope generation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline123">3. actual code contents: sections</a>
+<ul>
+<li><a href="#orgheadline61">3.1. synthesis</a>
+<ul>
+<li><a href="#orgheadline47">3.1.1. oscillators</a></li>
+<li><a href="#orgheadline52">3.1.2. filtering</a></li>
+<li><a href="#orgheadline60">3.1.3. multi-channel, stereo, panning</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline85">3.2. instruments and io</a>
+<ul>
+<li><a href="#orgheadline62">3.2.1. midi</a></li>
+<li><a href="#orgheadline78">3.2.2. buffers and audio files</a></li>
+<li><a href="#orgheadline84">3.2.3. recording</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline122">3.3. making 'music'</a>
+<ul>
+<li><a href="#orgheadline99">3.3.1. pitches and chords</a></li>
+<li><a href="#orgheadline103">3.3.2. scales and scale degrees</a></li>
+<li><a href="#orgheadline114">3.3.3. metronome and sequencing</a></li>
+<li><a href="#orgheadline120">3.3.4. live coding</a></li>
+<li><a href="#orgheadline121">3.3.5. swing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline133">4. other misc</a>
+<ul>
+<li><a href="#orgheadline124">4.1. interupt output</a></li>
+<li><a href="#orgheadline125">4.2. local audio files</a></li>
+<li><a href="#orgheadline126">4.3. misc, non-wiki tutorials</a></li>
+<li><a href="#orgheadline129">4.4. loading</a>
+<ul>
+<li><a href="#orgheadline127">4.4.1. loading 'external' resources</a></li>
+<li><a href="#orgheadline128">4.4.2. loading files in CIDER</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline131">4.5. hacking overtone&#x2013;where do functions come from?</a>
+<ul>
+<li><a href="#orgheadline130">4.5.1. md</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline132">4.6. chris ford&#x2013;clojure cookbook example</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgheadline13" class="outline-2">
+<h2 id="orgheadline13"><span class="section-number-2">1</span> outline of the overtone wiki page&#x2013;no code</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12"><span class="section-number-3">1.1</span> Welcome to the Overtone Wiki</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Our goal is to create a top notch live-coding environment and audio
+collaboration platform that's free for everyone to download, hack on
+and make crazy-cool sounds either individually or in groups. We've
+come a long way towards achieving this vision and hope you'll join in
+and help take things even further&#x2026;
+</p>
+</div>
+
+<div id="outline-container-orgheadline1" class="outline-4">
+<h4 id="orgheadline1"><span class="section-number-4">1.1.1</span> Technical Summary</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+Overtone is a musical programming library written in
+[Clojure](<a href="http://clojure.org">http://clojure.org</a>) which uses the
+[SuperCollider](<a href="http://supercollider.sourceforge.net/">http://supercollider.sourceforge.net/</a>) audio engine
+and synthesis server under the covers. We're essentially marrying an
+awesome live-synthesis server with an insanely cool state-of-the-art
+lisp to create a glorious union that only the Gods can dream about.
+Seriously though, we're building on existing and proven open source
+technologies to create something we're truly excited about.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-4">
+<h4 id="orgheadline2"><span class="section-number-4">1.1.2</span> About this Documentation</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+We will try to maintain documentation for all aspects of the system
+here, but beyond the basics feel free to pick and choose the topics
+that interest you. Some people might want to focus on synthesizing new
+sounds from scratch, while for others it might be more interesting to
+focus on live-coding or generating musical scores on the fly.
+</p>
+
+<p>
+If you see any errors/issues/omissions, please feel free to fix/add
+things - we'll love you forever.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11"><span class="section-number-4">1.1.3</span> Contents</h4>
+<div class="outline-text-4" id="text-1-1-3">
+</div><ol class="org-ol"><li><a id="orgheadline3"></a>Installation<br  /><div class="outline-text-5" id="text-1-1-3-1">
+<ul class="org-ul">
+<li>[[Installing Overtone]</li>
+<li>[[Starting a REPL]</li>
+<li>[[Connecting scsynth]</li>
+<li>[[Installing and Starting Jack] (for Linux users)</li>
+<li>[[Overtone on the Edge!]</li>
+<li>[[Overtone in emacs]</li>
+<li>[[Overtone in vim]</li>
+</ul>
+</div></li>
+
+<li><a id="orgheadline4"></a>First steps<br  /><div class="outline-text-5" id="text-1-1-3-2">
+<ul class="org-ul">
+<li>[Overtone Cheat Sheet](<a href="https://github.com/overtone/overtone/raw/master/docs/cheatsheet/overtone-cheat-sheet.pdf">https://github.com/overtone/overtone/raw/master/docs/cheatsheet/overtone-cheat-sheet.pdf</a>)</li>
+<li>[[Getting Started]</li>
+</ul>
+</div></li>
+
+<li><a id="orgheadline5"></a>Synthesis:<br  /><div class="outline-text-5" id="text-1-1-3-3">
+<ul class="org-ul">
+<li>[[oscillators]</li>
+<li>[[filters]</li>
+<li>[[delays] [empty]</li>
+<li>[[envelopes and controls] [empty]</li>
+<li>[[multi-channel expansion, stereo and panning]</li>
+<li>[[fx chain] [fx chains]</li>
+</ul>
+</div></li>
+
+<li><a id="orgheadline6"></a>Instruments and I/O:<br  /><div class="outline-text-5" id="text-1-1-3-4">
+<ul class="org-ul">
+<li>[[buffers and audio files]</li>
+<li>[[midi]</li>
+<li>[[recording]</li>
+<li>[[screencasting]</li>
+</ul>
+</div></li>
+
+<li><a id="orgheadline7"></a>Making music:<br  /><div class="outline-text-5" id="text-1-1-3-5">
+<ul class="org-ul">
+<li>[[Pitches and Chords]</li>
+<li>[[Scales and Scale Degrees]</li>
+<li>[[Metronome and Sequencing]</li>
+<li>[[Arpeggiators and Note Generators][empty]</li>
+<li>[[live-coding]</li>
+<li>[[swing]</li>
+</ul>
+</div></li>
+
+<li><a id="orgheadline8"></a>Interacting with External Devices:<br  /><div class="outline-text-5" id="text-1-1-3-6">
+<ul class="org-ul">
+<li>[[Monome][empty]</li>
+<li>[[TouchOSC]</li>
+</ul>
+</div></li>
+
+<li><a id="orgheadline9"></a>In progress:<br  /><div class="outline-text-5" id="text-1-1-3-7">
+<ul class="org-ul">
+<li>[[sessions and instruments][empty]</li>
+</ul>
+</div></li>
+
+<li><a id="orgheadline10"></a>Development:<br  /><div class="outline-text-5" id="text-1-1-3-8">
+<ul class="org-ul">
+<li>[[Bug Reports]</li>
+<li>[[Hacking Overtone]</li>
+<li>[[Comparing sclang and Overtone synthdefs]</li>
+</ul>
+</div></li></ol>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline33" class="outline-2">
+<h2 id="orgheadline33"><span class="section-number-2">2</span> start with some basics of getting-started github wiki</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="orgheadline14"><span class="section-number-3">2.1</span> define, start and kill a definst</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+first, maybe set a name-space
+</p>
+
+<p>
+reconsider evaluating this as is. More reliable to have already taken
+care of the namespace using a single method that I have talked about
+in my other files. [Uh, see "other files"]
+</p>
+
+<p>
+However, you will likely want to switch into the post<sub>tonal</sub> namespace
+to run things here. Additionally, you will want to call this in the
+repl as well (why did things just automatically sorta happen in the repl?)
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">in-ns</span> '<span style="color: #7CB8BB;">post_tonal_overtone.core</span>)
+</pre>
+</div>
+
+
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">foo</span> [] (saw 220))
+
+(demo (foo))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(stop)
+</pre>
+</div>
+
+<p>
+Kill by ID number, as returned above
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure">(kill 74)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(kill foo)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline15" class="outline-3">
+<h3 id="orgheadline15"><span class="section-number-3">2.2</span> overtone documenation (odoc)</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+must be called from the REPL; in babel it simply prints its return
+value, which is nil
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure">(odoc saw)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16"><span class="section-number-3">2.3</span> providing arguments when defining synths with definst</h3>
+<div class="outline-text-3" id="text-2-3">
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">rather loud!</span>
+(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">bar</span> [freq 220] (saw freq))
+
+(bar 110)
+</pre>
+</div>
+
+<p>
+Kill all versions of one type of synth
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure">(kill bar)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(stop)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17"><span class="section-number-3">2.4</span> triggering multiple synths</h3>
+<div class="outline-text-3" id="text-2-4">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">baz</span> [freq 440] (* 0.3 (saw freq)))
+(baz 220)
+(baz 825)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(kill baz)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline20" class="outline-3">
+<h3 id="orgheadline20"><span class="section-number-3">2.5</span> changing audio output levels on the fly</h3>
+<div class="outline-text-3" id="text-2-5">
+</div><div id="outline-container-orgheadline18" class="outline-4">
+<h4 id="orgheadline18"><span class="section-number-4">2.5.1</span> (doc ctl)</h4>
+<div class="outline-text-4" id="text-2-5-1">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">quux</span> [freq 440] (* 0.3 (saw freq)))
+(quux)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(ctl quux <span style="color: #BFEBBF;">:freq</span> 660)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline19" class="outline-4">
+<h4 id="orgheadline19"><span class="section-number-4">2.5.2</span> my silly mod&#x2013;use <code>rand-nth</code> to change pitches using babel</h4>
+<div class="outline-text-4" id="text-2-5-2">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">quux</span> [freq 440] (* 0.3 (saw freq)))
+(quux)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(ctl quux <span style="color: #BFEBBF;">:freq</span> (rand-nth '(330 550 660 825 910)))
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline32" class="outline-3">
+<h3 id="orgheadline32"><span class="section-number-3">2.6</span> ugens as input values to other ugens</h3>
+<div class="outline-text-3" id="text-2-6">
+</div><div id="outline-container-orgheadline21" class="outline-4">
+<h4 id="orgheadline21"><span class="section-number-4">2.6.1</span> line:kr for crescendo; sin-osc:kr for hz modulation</h4>
+<div class="outline-text-4" id="text-2-6-1">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">trem</span> [freq 440 depth 10 rate 6 length 5]
+  (* 0.3
+     (line:kr 0 1 length <span style="color: #BFEBBF;">FREE</span>)
+     (saw (+ freq (* depth (sin-osc:kr rate))))))
+
+(trem)
+</pre>
+</div>
+
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(trem 200 60 0.8)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(trem 60 30 0.2)
+</pre>
+</div>
+
+<p>
+doesn't expand??
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure">(trem <span style="color: #BFEBBF;">:freq</span> [60 64])
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline30" class="outline-4">
+<h4 id="orgheadline30"><span class="section-number-4">2.6.2</span> white-noise:kr as hz modulator</h4>
+<div class="outline-text-4" id="text-2-6-2">
+</div><ol class="org-ol"><li><a id="orgheadline22"></a>simple version, beautiful<br  /><div class="outline-text-5" id="text-2-6-2-1">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">sin-noise</span> [freq 440 depth 50 length 10]
+  (* 0.3
+     (line:kr 0 1 length <span style="color: #BFEBBF;">FREE</span>)
+     (sin-osc (+ freq (* depth (white-noise:kr))))))
+
+<span style="color: #5F7F5F;">;;</span><span style="color: #7F9F7F;">(doseq [note [200 300 400 500 600 700 800]] (sin-noise note))</span>
+(<span style="color: #F0DFAF; font-weight: bold;">doseq</span> [note [440 810]] (sin-noise note))
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline23"></a>60 second version, depth of 100&#x2013;pitch fully obscured<br  /><div class="outline-text-5" id="text-2-6-2-2">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">sin-noise</span> [freq 440 depth 100 length 60]
+  (* 0.1
+     (line:kr 0 1 length <span style="color: #BFEBBF;">FREE</span>)
+     (sin-osc (+ freq (* depth (white-noise:kr))))))
+
+<span style="color: #5F7F5F;">;;</span><span style="color: #7F9F7F;">(doseq [note [200 300 400 500 600 700 800]] (sin-noise note))</span>
+(<span style="color: #F0DFAF; font-weight: bold;">doseq</span> [note (map #(+ <span style="color: #DFAF8F;">%</span> 400 ) (repeatedly 10 (partial rand-int 100)))] (sin-noise note))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">sin-noise</span> [freq 440 depth 100 length 60]
+  (* 0.05
+     (line:kr 0 1 length <span style="color: #BFEBBF;">FREE</span>)
+     (sin-osc (+ freq (* depth (white-noise:kr))))))
+
+<span style="color: #5F7F5F;">;;</span><span style="color: #7F9F7F;">(doseq [note [200 300 400 500 600 700 800]] (sin-noise note))</span>
+(<span style="color: #F0DFAF; font-weight: bold;">doseq</span> [note (map #(+ <span style="color: #DFAF8F;">%</span> 400 ) (repeatedly 10 (partial rand-int 100)))] (sin-noise note))
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline24"></a>call sin-noise in a noise-cloud, takes a central pitch<br  /><div class="outline-text-5" id="text-2-6-2-3">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">sin-noise</span> [freq 440 depth 100 length 60]
+  (* 0.3
+     (line:kr 0 1 length <span style="color: #BFEBBF;">FREE</span>)
+     (sin-osc (+ freq (* depth (white-noise:kr))))))
+
+
+(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">sin-noise-cloud1</span> [hz-level hz-span pitches]
+  (<span style="color: #F0DFAF; font-weight: bold;">doseq</span> [note (map #(+ <span style="color: #DFAF8F;">%</span> hz-level) (repeatedly pitches (partial rand-int hz-span)))]
+    (sin-noise note)))
+
+(sin-noise-cloud1 400 1000 5)
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline25"></a>(sin-noise-cloud1 400 10 5)<br  /><div class="outline-text-5" id="text-2-6-2-4">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(sin-noise-cloud1 400 10 5)
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline26"></a>longer quieter version<br  /><div class="outline-text-5" id="text-2-6-2-5">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">sin-noise</span> [freq 440 depth 100 length 
+  (* 0.1
+     (line:kr 0 1 length <span style="color: #BFEBBF;">FREE</span>)
+     (sin-osc (+ freq (* depth (white-noise:kr))))))
+
+
+(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">sin-noise-cloud1</span> [hz-level hz-span pitches]
+  (<span style="color: #F0DFAF; font-weight: bold;">doseq</span> [note (map #(+ <span style="color: #DFAF8F;">%</span> hz-level) (repeatedly pitches (partial rand-int hz-span)))]
+    (sin-noise note)))
+
+(sin-noise-cloud1 400 1000 5)
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline27"></a>give noise-cloud a proper envelope with env-gen (which takes a lin)<br  /><div class="outline-text-5" id="text-2-6-2-6">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">sin-noise-env</span> [freq 440 depth 10 length 60]
+  (* 0.3
+     (env-gen (lin 0 0.8 0.2) 1 1 0 10 <span style="color: #BFEBBF;">FREE</span>)
+     (sin-osc (+ freq (* depth (white-noise:kr))))))
+
+
+(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">sin-noise-cloud2</span> [hz-level hz-span pitches]
+  (<span style="color: #F0DFAF; font-weight: bold;">doseq</span> [note (map #(+ <span style="color: #DFAF8F;">%</span> hz-level) (repeatedly pitches (partial rand-int hz-span)))]
+    (sin-noise-env note)))
+
+(sin-noise-cloud2 400 1000 5)
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline28"></a>(sin-noise-cloud2 400 100 3)<br  /><div class="outline-text-5" id="text-2-6-2-7">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(sin-noise-cloud2 400 100 3)
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">sin-noise-env</span> [freq 440 depth 10 length 60]
+  (* 0.3
+     (env-gen (lin 0 0.8 0.2) 1 1 0 10 <span style="color: #BFEBBF;">FREE</span>)
+     (sin-osc (+ freq (* depth (white-noise:kr))))))
+
+
+(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">sin-noise-cloud3</span> [hz-level hz-span pitches]
+  (<span style="color: #F0DFAF; font-weight: bold;">doseq</span> [note (map #(+ <span style="color: #DFAF8F;">%</span> hz-level) (repeatedly pitches (partial rand-int hz-span)))]
+    (sin-noise-env note <span style="color: #BFEBBF;">:length</span> 10)))
+
+(sin-noise-cloud3 400 1000 5)
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline29"></a>(sin-noise-cloud3 400 50 3)<br  /><div class="outline-text-5" id="text-2-6-2-8">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(sin-noise-cloud3 400 50 3)
+</pre>
+</div>
+</div></li></ol>
+</div>
+<div id="outline-container-orgheadline31" class="outline-4">
+<h4 id="orgheadline31"><span class="section-number-4">2.6.3</span> using <code>linen</code> for envelope generation</h4>
+<div class="outline-text-4" id="text-2-6-3">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(linen 1.0 0.01 1.0 1.0 0)
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline123" class="outline-2">
+<h2 id="orgheadline123"><span class="section-number-2">3</span> actual code contents: sections</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-orgheadline61" class="outline-3">
+<h3 id="orgheadline61"><span class="section-number-3">3.1</span> synthesis</h3>
+<div class="outline-text-3" id="text-3-1">
+</div><div id="outline-container-orgheadline47" class="outline-4">
+<h4 id="orgheadline47"><span class="section-number-4">3.1.1</span> oscillators</h4>
+<div class="outline-text-4" id="text-3-1-1">
+</div><ol class="org-ol"><li><a id="orgheadline39"></a>half-second examples of various wave types<br  /><div class="outline-text-5" id="text-3-1-1-1">
+<p>
+These are all very short examples of these sounds. Why so short? Or
+how would you experiment with different lengths?
+</p>
+
+<p>
+You'll have to dig more deeply into <code>env-gen</code> which is used to scale
+the output of <code>sin-osc</code> and <code>vol</code>
+</p>
+
+<p>
+We'll look at this in a dedicated 'envelopes' section.
+</p>
+</div>
+<ol class="org-ol"><li><a id="orgheadline34"></a>sin wave<br  /><div class="outline-text-6" id="text-3-1-1-1-1">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">sin-wave</span> [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
+  (* (env-gen (lin attack sustain release) 1 1 0 1 <span style="color: #BFEBBF;">FREE</span>)
+     (sin-osc freq)
+     vol))
+
+(sin-wave)
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline35"></a>saw wave<br  /><div class="outline-text-6" id="text-3-1-1-1-2">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">saw-wave</span> [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
+  (* (env-gen (lin attack sustain release) 1 1 0 1 <span style="color: #BFEBBF;">FREE</span>)
+     (saw freq)
+     vol))
+
+(saw-wave)
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline36"></a>square-wave<br  /><div class="outline-text-6" id="text-3-1-1-1-3">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">square-wave</span> [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
+  (* (env-gen (lin attack sustain release) 1 1 0 1 <span style="color: #BFEBBF;">FREE</span>)
+     (lf-pulse:ar freq)
+     vol))
+
+(square-wave)
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline37"></a>pink noise<br  /><div class="outline-text-6" id="text-3-1-1-1-4">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">noisey</span> [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
+  (* (env-gen (lin attack sustain release) 1 1 0 1 <span style="color: #BFEBBF;">FREE</span>)
+     (pink-noise) <span style="color: #7F9F7F;">; also have (white-noise) and others...</span>
+     vol))
+
+(noisey)
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline38"></a>triangle-wave<br  /><div class="outline-text-6" id="text-3-1-1-1-5">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">triangle-wave</span> [freq 440 attack 0.01 sustain 0.1 release 0.4 vol 0.4] 
+  (* (env-gen (lin attack sustain release) 1 1 0 1 <span style="color: #BFEBBF;">FREE</span>)
+     (lf-tri freq)
+     vol))
+
+(triangle-wave)
+</pre>
+</div>
+</div></li></ol></li>
+
+<li><a id="orgheadline46"></a>using the output of ugens as the arguments<br  /><ol class="org-ol"><li><a id="orgheadline40"></a>understanding uses for ugens<br  /><div class="outline-text-6" id="text-3-1-1-2-1">
+<p>
+Aside from giving static numeric values as arguments for frequency,
+amplitude and the other parameters you typically control, you might
+also choose to use dynamic values, i.e. values that change according
+to some pattern or system.
+</p>
+
+<p>
+<code>Spooky house</code> below is one such example.
+</p>
+</div></li>
+<li><a id="orgheadline41"></a>ugens as control signals<br  /><div class="outline-text-6" id="text-3-1-1-2-2">
+<p>
+Here is an adjustable width pulse wave shifting the frequency of the
+main oscillator
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">spooky-house</span> [freq 440 width 0.2
+                       attack 0.3 sustain 4
+                       release 0.3 vol 0.4]
+  (* (env-gen (lin attack sustain release) 1 1 0 1 <span style="color: #BFEBBF;">FREE</span>)
+     (sin-osc (+ freq (* 20 (lf-pulse:kr 0.5 0 width))))
+     vol))
+
+(spooky-house)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(spooky-house <span style="color: #BFEBBF;">:width</span> 0.1)
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline45"></a>wavetable synthesis<br  /><ol class="org-ol"><li><a id="orgheadline42"></a>No examples of this<br  /><div class="outline-text-7" id="text-3-1-1-2-3-1">
+<p>
+"In wavetable synthesis, a single period waveform is stored in a
+buffer and used as a lookup table for the osc osciallator."
+</p>
+
+<p>
+Great, thanks.
+</p>
+</div></li>
+<li><a id="orgheadline44"></a>experiments<br  /><ol class="org-ol"><li><a id="orgheadline43"></a>my lf-noise<br  /><div class="outline-text-8" id="text-3-1-1-2-3-2-1">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">my-dynamic</span> [freq 440 width 0.2
+                       attack 0.3 sustain 4
+                       release 0.3 vol 0.4]
+  (* (env-gen (lin attack sustain release) 1 1 0 1 <span style="color: #BFEBBF;">FREE</span>)
+     (sin-osc (+ freq (* 20 (lf-noise1:kr 100))))
+     vol))
+
+(my-dynamic)
+</pre>
+</div>
+
+<p>
+Note, approximately 14 second long, as suggested by the integers used
+as arguments for the env-gen
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure">(my-dynamic <span style="color: #BFEBBF;">:attack</span> 2 <span style="color: #BFEBBF;">:sustain</span> 10 <span style="color: #BFEBBF;">:release</span> 4)
+</pre>
+</div>
+</div></li></ol></li></ol></li></ol></li></ol>
+</div>
+
+<div id="outline-container-orgheadline52" class="outline-4">
+<h4 id="orgheadline52"><span class="section-number-4">3.1.2</span> filtering</h4>
+<div class="outline-text-4" id="text-3-1-2">
+</div><ol class="org-ol"><li><a id="orgheadline50"></a>linear filters<br  /><div class="outline-text-5" id="text-3-1-2-1">
+<p>
+Overtone comes with a number of standard linear filters: lpf, hpf, and
+bpf are low-pass, high-pass and band-pass filters respectively.
+</p>
+</div>
+<ol class="org-ol"><li><a id="orgheadline48"></a>use mouse-x interactively<br  /><div class="outline-text-6" id="text-3-1-2-1-1">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(demo 10 (lpf (saw 100) (mouse-x 40 5000 <span style="color: #BFEBBF;">EXP</span>)))
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">low-pass; move the mouse left and right to change the threshold frequency</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(demo 10 (hpf (saw 100) (mouse-x 40 5000 <span style="color: #BFEBBF;">EXP</span>)))
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">high-pass; move the mouse left and right to change the threshold frequency</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(demo 30 
+      (bpf (saw 100)
+           (mouse-x 40 5000 <span style="color: #BFEBBF;">EXP</span>)
+           (mouse-y 0.01 1 <span style="color: #BFEBBF;">LIN</span>)))
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">band-pass; move mouse left/right to change threshold frequency; up/down to change bandwidth (top is narrowest)</span>
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline49"></a>(demo 30 (bpf (pink-noise) (mouse-x 40 5000 EXP) (mouse-y 0.01 1 LIN)))<br  /><div class="outline-text-6" id="text-3-1-2-1-2">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(demo 30 (bpf (pink-noise) (mouse-x 40 5000 <span style="color: #BFEBBF;">EXP</span>) (mouse-y 0.01 1 <span style="color: #BFEBBF;">LIN</span>)))
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">band-pass; move mouse left/right to change threshold frequency; up/down to change bandwidth (top is narrowest)</span>
+</pre>
+</div>
+
+<p>
+poses the question, what are the standard x-left x-right and y-top
+y-bottom values which these functions are mapping?
+</p>
+</div></li></ol></li>
+<li><a id="orgheadline51"></a>non-linear filters<br  /><div class="outline-text-5" id="text-3-1-2-2">
+<p>
+You can do Karplus-Strong string synthesis with the pluck filter.
+Karplus-Strong works by taking a signal, filtering it and feeding it
+back into itself after a delay, so that the output eventually becomes
+periodic.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">here we generate a pulse of white noise, and pass it through a pluck filter</span>
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">with a delay based on the given frequency</span>
+(<span style="color: #F0DFAF; font-weight: bold;">let</span> [freq (rand-nth '(440 550 660 770 880 990 1100 1210 1320))]
+   (demo (pluck (* (white-noise) (env-gen (perc 0.001 2) <span style="color: #BFEBBF;">:action</span> <span style="color: #BFEBBF;">FREE</span>)) 1 3 (/ 1 freq))))
+</pre>
+</div>
+</div></li></ol>
+</div>
+<div id="outline-container-orgheadline60" class="outline-4">
+<h4 id="orgheadline60"><span class="section-number-4">3.1.3</span> multi-channel, stereo, panning</h4>
+<div class="outline-text-4" id="text-3-1-3">
+</div><ol class="org-ol"><li><a id="orgheadline56"></a>mono defsynth<br  /><ol class="org-ol"><li><a id="orgheadline53"></a>left = 0<br  /><div class="outline-text-6" id="text-3-1-3-1-1">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(demo (out 0 (sin-osc)))
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline54"></a>right = 1<br  /><div class="outline-text-6" id="text-3-1-3-1-2">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(demo (out 1 (sin-osc)))
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline55"></a>sin0 and sin1<br  /><div class="outline-text-6" id="text-3-1-3-1-3">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">defsynth</span> <span style="color: #93E0E3;">sin0</span> [freq 660]
+  (out 0 (sin-osc freq)))
+
+(sin0)
+</pre>
+</div>
+
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">defsynth</span> <span style="color: #93E0E3;">sin1</span> [freq 660]
+  (out 1 (sin-osc freq)))
+
+(demo (sin1))
+</pre>
+</div>
+</div></li></ol></li>
+
+<li><a id="orgheadline57"></a>stereo defsynth&#x2013;takes 'two &amp; body' parameters<br  /><div class="outline-text-5" id="text-3-1-3-2">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">defsynth</span> <span style="color: #93E0E3;">sin2</span> [freq1 440 freq2 441]
+  (out 0 (sin-osc freq1))
+  (out 1 (sin-osc freq2)))
+
+(demo (sin2))
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline58"></a>"adding" waveforms requires scaling<br  /><div class="outline-text-5" id="text-3-1-3-3">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">defsynth</span> <span style="color: #93E0E3;">sin-square</span> [freq 440] 
+  (out 0 (* 0.5
+            (+ (square (* 0.5 freq))
+               (sin-osc freq))))
+  (out 1 (* 0.5
+            (+ (square (* 0.5 freq))
+               (sin-osc freq)))))
+
+(sin-square)
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline59"></a>MULTICHANNEL EXPANSION&#x2013;passing collections<br  /><div class="outline-text-5" id="text-3-1-3-4">
+<p>
+Passing a collection to a ugen where a single argument is expected.
+The following returns a "seq of two osciallators." It's as if the single
+channel of input has been "automatically expanded" to process multiple channels.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure">(demo (sin-osc [440 443]))
+</pre>
+</div>
+
+
+<p>
+Passing this seq to another ugen, it will also be expanded (in this case
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure">(demo 10 (lpf (saw:ar [440 443]) (mouse-x 100 5000 <span style="color: #BFEBBF;">LIN</span>)))
+</pre>
+</div>
+
+<p>
+Now, compare with the above synth; the output is same, but there's
+less repeated code.
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">defsynth</span> <span style="color: #93E0E3;">sin-square2</span> [freq 440] 
+  (out 0 (* [0.5 0.5] (+ (square (* 0.5 freq))
+                         (sin-osc freq)))))
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">can't demo a defsynth?</span>
+(demo (sin-square2))
+</pre>
+</div>
+
+<p>
+Now, the two waveforms are distribued across the channels (um, are
+they? In what sense?) 
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">defsynth</span> <span style="color: #93E0E3;">sin-square3</span> [freq 440] 
+  (out 0 (* 0.5
+            [(square (* 0.5 freq))
+             (sin-osc freq)])))
+
+(sin-square3)
+</pre>
+</div>
+</div></li></ol>
+</div>
+</div>
+<div id="outline-container-orgheadline85" class="outline-3">
+<h3 id="orgheadline85"><span class="section-number-3">3.2</span> instruments and io</h3>
+<div class="outline-text-3" id="text-3-2">
+</div><div id="outline-container-orgheadline62" class="outline-4">
+<h4 id="orgheadline62"><span class="section-number-4">3.2.1</span> midi</h4>
+<div class="outline-text-4" id="text-3-2-1">
+<p>
+See [the end of the midi/keyboard example](<a href="https://github.com/overtone/overtone/blob/master/src/overtone/examples/midi/keyboard.clj#L49-L64">https://github.com/overtone/overtone/blob/master/src/overtone/examples/midi/keyboard.clj#L49-L64</a>).
+</p>
+
+
+<p>
+## Using the event stream
+</p>
+
+<p>
+Overtone 0.7.1 automatically detects all connected MIDI devices on
+boot and registers the appropriate handlers for you. To see a list of
+MIDI devices detected by Overtone, use:
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(midi-connected-devices)
+</pre>
+</div>
+
+<p>
+The MIDI device should be connected and powered on before starting
+Overtone. When you bash the keys on the keyboard, Overtone receives
+internal events in its event stream. To see them use:
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(event-debug-on)
+</pre>
+</div>
+
+<p>
+To stop:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(event-debug-off)
+</pre>
+</div>
+
+<p>
+You should see that for each key press, there are two events. A
+general midi control change event:
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">[<span style="color: #BFEBBF;">:midi</span> <span style="color: #BFEBBF;">:note-on</span>]
+</pre>
+</div>
+
+<p>
+and a device-specific event i.e.:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">[<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #7CB8BB;">Evolution</span> <span style="color: #7CB8BB;">Electronics</span> <span style="color: #7CB8BB;">Ltd.</span> <span style="color: #7CB8BB;">Keystation</span> 61e <span style="color: #7CB8BB;">Keystation</span> 61e <span style="color: #BFEBBF;">:note-on</span>]
+</pre>
+</div>
+
+<p>
+For simplicity use the general event type:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(on-event [<span style="color: #BFEBBF;">:midi</span> <span style="color: #BFEBBF;">:note-on</span>]
+          (<span style="color: #F0DFAF; font-weight: bold;">fn</span> [e]
+            (<span style="color: #F0DFAF; font-weight: bold;">let</span> [note (<span style="color: #BFEBBF;">:note</span> e)
+                  vel  (<span style="color: #BFEBBF;">:velocity</span> e)]
+              (your-instr note vel)))
+          <span style="color: #BFEBBF;">::keyboard-handler</span>)
+</pre>
+</div>
+
+<p>
+The last argument is a keyword which can be used to refer to this
+handler, so you can later do:
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(remove-event-handler <span style="color: #BFEBBF;">::keyboard-handler</span>)
+</pre>
+</div>
+
+<p>
+## Simple Midi Keyboard Control
+</p>
+
+<p>
+Use `midi-poly-player` for simple control of Overtone instruments.
+</p>
+
+<p>
+Define an inst to play with the midi keyboard
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">steel-drum</span> [note 60 amp 0.8]
+  (<span style="color: #F0DFAF; font-weight: bold;">let</span> [freq (midicps note)]
+    (* amp
+       (env-gen (perc 0.01 0.2) 1 1 0 1 <span style="color: #BFEBBF;">:action</span> <span style="color: #BFEBBF;">FREE</span>)
+       (+ (sin-osc (/ freq 2))
+          (rlpf (saw freq) (* 1.1 freq) 0.4)))))
+</pre>
+</div>
+
+<p>
+Define a player that connects midi input to that instrument.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">player</span> (midi-poly-player steel-drum))
+</pre>
+</div>
+
+<p>
+When you want to stop or change sounds, use `midi-player-stop`.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(midi-player-stop)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline78" class="outline-4">
+<h4 id="orgheadline78"><span class="section-number-4">3.2.2</span> buffers and audio files</h4>
+<div class="outline-text-4" id="text-3-2-2">
+</div><ol class="org-ol"><li><a id="orgheadline71"></a>playing samples and songs<br  /><ol class="org-ol"><li><a id="orgheadline63"></a>playing samples from local files<br  /><div class="outline-text-6" id="text-3-2-2-1-1">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">CERN-noise</span> (sample <span style="color: #CC9393;">"/Applications/SuperCollider/SuperCollider.app/Contents/Resources/sounds/CERN-noisepad8.aiff"</span>))
+
+(CERN-noise)
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline64"></a>playing arbitrary files as a playlist<br  /><div class="outline-text-6" id="text-3-2-2-1-2">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">spirit</span> (sample (str <span style="color: #CC9393;">"/Users/a/Music/audio/"</span> <span style="color: #CC9393;">"Spiritualized/"</span> <span style="color: #CC9393;">"06 Spiritualized - Step Into The Breeze.aiff"</span>)))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(spirit)
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline70"></a>building files for song-player<br  /><ol class="org-ol"><li><a id="orgheadline65"></a>does not play mp3s<br  /><div class="outline-text-7" id="text-3-2-2-1-3-1">
+<p>
+template for string concatentation
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure">(str <span style="color: #CC9393;">"/Users/a/Music/audio/"</span> <span style="color: #CC9393;">"QC listening list/pre-1600/"</span>)
+</pre>
+</div>
+
+
+<p>
+#+TITLE pre1600-list
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">pre1600-list</span> '(<span style="color: #CC9393;">"008_Barbara_Strozzi_L'Eraclito.mp3"</span>                 
+<span style="color: #CC9393;">"008_Belle_Doette.mp3"</span>                               
+<span style="color: #CC9393;">"008_Bernard_de_Ventadorn_Quan_veh_la_lauzeta_mover.mp3"</span>
+<span style="color: #CC9393;">"008_Byrd_John_Come_Kiss_me_Now.mp3"</span>
+<span style="color: #CC9393;">"008_Byrd_Mass_for_4_voices_Agnus_Dei.mp3"</span>           
+<span style="color: #CC9393;">"008_Byrd_Mass_for_4_voices_Credo.mp3"</span>               
+<span style="color: #CC9393;">"008_Byrd_Mass_for_4_voices_Kyrie.mp3"</span>               
+<span style="color: #CC9393;">"008_Ciconia_O_Padua_sidus_preclarum.mp3"</span>            
+<span style="color: #CC9393;">"008_Dufay_Ave_regina_caelorum.mp3"</span>                  
+<span style="color: #CC9393;">"008_Frescobaldi_Capriccio_sopra_ut_re_me_fa_sol_la.mp3"</span>
+<span style="color: #CC9393;">"008_Gabrieli_Canzon_in_echo_duodecimi_toni.mp3"</span>
+<span style="color: #CC9393;">"008_Giaches_de_Wert_Giunto_alla_Tomba.mp3"</span>          
+<span style="color: #CC9393;">"008_Hildegard_von_Bingen_O_virga_ac_diadema.mp3"</span>    
+<span style="color: #CC9393;">"008_Hodie_Christus_natus_est.mp3"</span>                   
+<span style="color: #CC9393;">"008_Josquin_Inviolata_integra_et_casta_est_Maria.mp"</span>
+<span style="color: #CC9393;">"008_Josquin_Milles_Regretz.mp3"</span>                     
+<span style="color: #CC9393;">"008_Josquin_Missa_Pange_lingua_Agnus_Dei.mp3"</span>       
+<span style="color: #CC9393;">"008_Josquin_Missa_Pange_lingua_Kyrie.mp3"</span>           
+<span style="color: #CC9393;">"008_Josquin_sexti_toni_1.mp3"</span>                       
+<span style="color: #CC9393;">"008_Josquin_sexti_toni_5.mp3"</span>                       
+<span style="color: #CC9393;">"008_Landini_Ochi_dolente_mie.mp3"</span>                   
+<span style="color: #CC9393;">"008_Machaut_De_Fortune.mp3"</span>                         
+<span style="color: #CC9393;">"008_Pange_lingua.mp3"</span>                               
+<span style="color: #CC9393;">"008_Perotin_Viderunt_omnes.mp3"</span>                     
+<span style="color: #CC9393;">"008_Purcell_Dido_and_Aeneas_Act_III_1_Scene_1_1.mp3"</span>
+<span style="color: #CC9393;">"008_Purcell_Dido_and_Aeneas_Act_III_2_Scene_1_2.mp3"</span>
+<span style="color: #CC9393;">"008_Purcell_Dido_and_Aeneas_Act_III_3_Scene_2_1.mp3"</span>
+<span style="color: #CC9393;">"008_Purcell_Dido_and_Aeneas_Act_III_4_Scene_2_2.mp3"</span>
+<span style="color: #CC9393;">"008_Purcell_Dido_and_Aeneas_Act_III_5_Scene_2_3.mp3"</span>))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(rand-nth pre1600-list)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(str <span style="color: #CC9393;">"/Users/a/Music/audio/"</span> <span style="color: #CC9393;">"QC listening list/pre-1600/"</span> (rand-nth pre1600-list))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">play-1600s-tune</span> (sample (str <span style="color: #CC9393;">"/Users/a/Music/audio/"</span> <span style="color: #CC9393;">"QC listening list/pre-1600/"</span> (rand-nth pre1600-list))))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">play-1600s-tune</span> (sample <span style="color: #CC9393;">"/Users/a/Music/audio/QC listening list/pre-1600/008_Pange_Lingua.wav"</span>))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(play-1600s-tune)
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline66"></a>spiritualized aiff&#x2013;working example<br  /><div class="outline-text-7" id="text-3-2-2-1-3-2">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">spirit-list</span> '(<span style="color: #CC9393;">"06 Spiritualized - Step Into The Breeze.aiff"</span>
+<span style="color: #CC9393;">"07 Spiritualized - Symphony Space.aiff"</span>
+<span style="color: #CC9393;">"08 Spiritualized - Take Your Time.aiff"</span>
+<span style="color: #CC9393;">"09 Spiritualized - Shine A Light.aiff"</span>
+<span style="color: #CC9393;">"10 Spiritualized - Angel Sigh.aiff"</span>
+<span style="color: #CC9393;">"11 Spiritualized - Sway.aiff"</span>
+<span style="color: #CC9393;">"12 Spiritualized - 200 Bars.aiff"</span>))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">requires spirit-list to be defined as above</span>
+(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">spirit</span> (sample (str <span style="color: #CC9393;">"/Users/a/Music/audio/"</span> <span style="color: #CC9393;">"Spiritualized/"</span> (rand-nth spirit-list))))
+(spirit)
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline67"></a>template<br  /><div class="outline-text-7" id="text-3-2-2-1-3-3">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">let</span> [spirit-song (rand-nth spirit-list)
+      audio-dir <span style="color: #CC9393;">"/Users/a/Music/audio/"</span>
+      subdir-folder <span style="color: #CC9393;">"Spiritualized/"</span>]
+  (str audio-dir subdir-folder spirit-song))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">let</span> [spirit-song (rand-nth spirit-list)
+            audio-dir <span style="color: #CC9393;">"/Users/a/Music/audio/"</span>
+            subdir-folder <span style="color: #CC9393;">"/"</span>]
+        (str audio-dir subdir-folder spirit-song))
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline68"></a>various directories<br  /><div class="outline-text-7" id="text-3-2-2-1-3-4">
+<p>
+<i>Users/a/Music/audio</i>
+</p>
+
+<p>
+Mouse\ On\ Mars\ -\ Autoditacker\ \(FLAC\)/
+</p>
+
+<p>
+01\ -\ Mouse\ On\ Mars\ -\ Sui\ Shop.flac
+</p>
+
+<p>
+Kin
+</p>
+
+<p>
+<i>Users/a/Music/audio</i>
+</p>
+
+<p>
+King\ Sunny\ Ade\ Best\ of\ Island\ Years/
+</p>
+
+
+
+<p>
+01\ -\ 01Ja\ Fummi.flac
+</p>
+
+<p>
+<i>Users/a/Music/audio</i>
+</p>
+
+<p>
+Miles\ Davis/
+</p>
+
+<p>
+01\ Miles\ Davis\ -\ Compulsion.flac
+</p>
+
+
+<p>
+<i>Users/a/Music/audio</i>
+</p>
+
+<p>
+Mouse\ On\ Mars\ -\ Autoditacker\ \(FLAC\)/
+</p>
+
+<p>
+01\ -\ Mouse\ On\ Mars\ -\ Sui\ Shop.flac
+</p>
+
+
+<p>
+<i>Users/a/Music/audio</i>
+</p>
+
+<p>
+Mouse\ On\ Mars\ -\ Parastrophics\ \(2012\)\ \[FLAC\]\ politux/
+</p>
+
+<p>
+01\ The\ Beach\ Stop.flac
+</p>
+</div></li>
+<li><a id="orgheadline69"></a>conversions folder<br  /><div class="outline-text-7" id="text-3-2-2-1-3-5">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">conv-dir</span> (<span style="color: #7CB8BB;">clojure.java.io</span><span style="color: #DCDCCC; background-color: #3F3F3F;">/</span>file <span style="color: #CC9393;">"/Users/a/Music/conversions"</span>))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">conv-files</span> (file-seq conv-dir))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">conv-files
+</pre>
+</div>
+
+<p>
+"/Users/a/Music/conversions/008<sub>Barbara</sub><sub>Strozzi</sub><sub>L</sub>'Eraclito.mp3.wav"
+</p>
+</div></li></ol></li></ol></li>
+<li><a id="orgheadline72"></a>random samples from my machine<br  /><div class="outline-text-5" id="text-3-2-2-2">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">sampled-sounds</span> (sample
+                     (str <span style="color: #CC9393;">"/Applications/SuperCollider/SuperCollider.app/Contents/Resources/sounds/"</span>
+                          (rand-nth '(<span style="color: #CC9393;">"strings-and-clicks.wav"</span> <span style="color: #CC9393;">"CERN-noisepad8.aiff"</span> <span style="color: #CC9393;">"amp-mono.wav"</span> <span style="color: #CC9393;">"susp-mono.wav"</span>)))))
+(sampled-sounds)
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline73"></a>loading a sample into a buffer<br  /><div class="outline-text-5" id="text-3-2-2-3">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">buff-random</span> (load-sample
+                  (str <span style="color: #CC9393;">"/Applications/SuperCollider/SuperCollider.app/Contents/Resources/sounds/"</span>
+                       (rand-nth '(<span style="color: #CC9393;">"strings-and-clicks.wav"</span>
+                                   <span style="color: #CC9393;">"CERN-noisepad8.aiff"</span>
+                                   <span style="color: #CC9393;">"amp-mono.wav"</span>
+                                   <span style="color: #CC9393;">"susp-mono.wav"</span>)))))
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline74"></a>scope not available?<br  /><div class="outline-text-5" id="text-3-2-2-4">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(scope <span style="color: #BFEBBF;">:buf</span> buff-random)
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline75"></a>play a sample from a buffer<br  /><div class="outline-text-5" id="text-3-2-2-5">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">sample-buf</span> (load-sample
+(str <span style="color: #CC9393;">"/Applications/SuperCollider/SuperCollider.app/Contents/Resources/sounds/"</span> 
+<span style="color: #CC9393;">"strings-and-clicks.wav"</span>
+<span style="color: #5F7F5F;">;;</span><span style="color: #7F9F7F;">"amp-mono.wav"</span>
+)))
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline76"></a>play a sample with reverb<br  /><div class="outline-text-5" id="text-3-2-2-6">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">defsynth</span> <span style="color: #93E0E3;">reverb-on-left</span> []
+  (<span style="color: #F0DFAF; font-weight: bold;">let</span> [dry (play-buf 1 sample-buf)
+    wet (free-verb dry 1)]
+    (out 0 [wet dry])))
+
+(reverb-on-left)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">defsynth</span> <span style="color: #93E0E3;">all-big-reverb</span> []
+  (<span style="color: #F0DFAF; font-weight: bold;">let</span> [dry (play-buf 1 sample-buf)
+    wet (free-verb dry 1 <span style="color: #BFEBBF;">:room</span> 0.9 <span style="color: #BFEBBF;">:damp</span> 0.1)]
+    (out 0 [wet wet])))
+
+(big-reverb-on-left)
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline77"></a>loading sample from freesound<br  /><div class="outline-text-5" id="text-3-2-2-7">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">snare</span> (freesound 26903))
+(snare)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(snare)
+</pre>
+</div>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-right">406</td>
+<td class="org-left">click</td>
+<td class="org-right">436</td>
+<td class="org-left">ride</td>
+<td class="org-right">777</td>
+<td class="org-left">kick</td>
+<td class="org-right">802</td>
+<td class="org-left">close-hat</td>
+</tr>
+
+<tr>
+<td class="org-right">2086</td>
+<td class="org-left">kick2</td>
+<td class="org-right">8323</td>
+<td class="org-left">powerwords</td>
+<td class="org-right">9088</td>
+<td class="org-left">jetbike</td>
+<td class="org-right">13254</td>
+<td class="org-left">cymbal</td>
+</tr>
+
+<tr>
+<td class="org-right">16309</td>
+<td class="org-left">open-snare</td>
+<td class="org-right">16568</td>
+<td class="org-left">two-cows</td>
+<td class="org-right">25649</td>
+<td class="org-left">subby</td>
+<td class="org-right">26657</td>
+<td class="org-left">open-hat</td>
+</tr>
+
+<tr>
+<td class="org-right">26903</td>
+<td class="org-left">snare</td>
+<td class="org-right">30628</td>
+<td class="org-left">steam-whistles</td>
+<td class="org-right">33637</td>
+<td class="org-left">boom</td>
+<td class="org-right">44293</td>
+<td class="org-left">sleigh-bells</td>
+</tr>
+
+<tr>
+<td class="org-right">48310</td>
+<td class="org-left">clap</td>
+<td class="org-right">50623</td>
+<td class="org-left">water-drops</td>
+<td class="org-right">80187</td>
+<td class="org-left">witch-cackle</td>
+<td class="org-right">80401</td>
+<td class="org-left">explosion</td>
+</tr>
+
+<tr>
+<td class="org-right">87731</td>
+<td class="org-left">snap</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-right">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div></li></ol>
+</div>
+<div id="outline-container-orgheadline84" class="outline-4">
+<h4 id="orgheadline84"><span class="section-number-4">3.2.3</span> recording</h4>
+<div class="outline-text-4" id="text-3-2-3">
+</div><ol class="org-ol"><li><a id="orgheadline79"></a>create a file<br  /><div class="outline-text-5" id="text-3-2-3-1">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(recording-start <span style="color: #CC9393;">"~/Desktop/foo.wav"</span>)
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">make some noise. i.e.</span>
+(demo (pan2 (sin-osc)))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">stop recording</span>
+(recording-stop)
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline80"></a>play back file<br  /><div class="outline-text-5" id="text-3-2-3-2">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">desktop-foo</span> (sample <span style="color: #CC9393;">"~/Desktop/foo.wav"</span>))
+
+(desktop-foo)
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline81"></a>save audio from a buffer to disk<br  /><div class="outline-text-5" id="text-3-2-3-3">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(buffer-save b <span style="color: #CC9393;">"~/Desktop/bong.wav"</span>)
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline82"></a>available audio formats for buffer-stream<br  /><div class="outline-text-5" id="text-3-2-3-4">
+<p>
+See documentation below
+</p>
+<hr  />
+<p>
+overtone.live/buffer-stream
+([path &amp; args])
+  Returns a buffer-stream which is similar to a regular buffer but may
+  be used with the disk-out ugen to stream to a specific file on disk.
+  Use #'buffer-stream-close to close the stream to finish recording to
+  disk.
+</p>
+
+<p>
+Options:
+</p>
+
+<p>
+:n-chans     - Number of channels for the buffer
+               Default 2
+:size        - Buffer size
+               Default 65536
+:header      - Header format: "aiff", "next", "wav", "ircam", "raw"
+               Default "wav"
+:samples     - Sample format: "int8", "int16", "int24", "int32",
+                              "float", "double", "mulaw", "alaw"
+               Default "int16"
+</p>
+
+<p>
+Example usage:
+(buffer-stream "~/Desktop/foo.wav" :n-chans 1 :header "aiff"
+                                     :samples "int32")
+</p>
+</div></li>
+<li><a id="orgheadline83"></a>save as flac?<br  /><div class="outline-text-5" id="text-3-2-3-5">
+<p>
+(recording-start "path/to/audio.flac" :header "flac")
+;make-noise
+(recording-stop)
+</p>
+
+<p>
+AND
+</p>
+
+<p>
+(recording-start "/path/to/audio.flac")
+;make-noise
+(recording-stop)
+</p>
+</div></li></ol>
+</div>
+</div>
+<div id="outline-container-orgheadline122" class="outline-3">
+<h3 id="orgheadline122"><span class="section-number-3">3.3</span> making 'music'</h3>
+<div class="outline-text-3" id="text-3-3">
+</div><div id="outline-container-orgheadline99" class="outline-4">
+<h4 id="orgheadline99"><span class="section-number-4">3.3.1</span> pitches and chords</h4>
+<div class="outline-text-4" id="text-3-3-1">
+</div><ol class="org-ol"><li><a id="orgheadline93"></a>playing chords and scale<br  /><div class="outline-text-5" id="text-3-3-1-1">
+<p>
+Much of this can be seen in 
+[the code]
+(<a href="https://github.com/overtone/overtone/blob/master/src/overtone/examples/getting_started/video.clj">https://github.com/overtone/overtone/blob/master/src/overtone/examples/getting_started/video.clj</a>)
+that corresponds with the 
+[Overtone Live Coding video overview](<a href="http://vimeo.com/22798433">http://vimeo.com/22798433</a>).
+</p>
+</div>
+
+
+
+<ol class="org-ol"><li><a id="orgheadline86"></a>;; We use a saw-wave that we defined in the oscillators tutorial<br  /><div class="outline-text-6" id="text-3-3-1-1-1">
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">We use a saw-wave that we defined in the oscillators tutorial</span>
+(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">saw-wave</span> [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4] 
+  (* (env-gen (env-lin attack sustain release) 1 1 0 1 <span style="color: #BFEBBF;">FREE</span>)
+     (saw freq)
+     vol))
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline87"></a>;; We can play notes using frequency in Hz<br  /><div class="outline-text-6" id="text-3-3-1-1-2">
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">We can play notes using frequency in Hz</span>
+(saw-wave 440)
+(saw-wave 523.25)
+(saw-wave 261.62) <span style="color: #7F9F7F;">; This is C4</span>
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline88"></a>;; We can also play notes using MIDI note values<br  /><div class="outline-text-6" id="text-3-3-1-1-3">
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">We can also play notes using MIDI note values</span>
+(saw-wave (midi-&gt;hz 69))
+(saw-wave (midi-&gt;hz 72))
+(saw-wave (midi-&gt;hz 60)) <span style="color: #7F9F7F;">; This is C4</span>
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline89"></a>;; We can play notes using standard music notes as well<br  /><div class="outline-text-6" id="text-3-3-1-1-4">
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">We can play notes using standard music notes as well</span>
+(saw-wave (midi-&gt;hz (note <span style="color: #BFEBBF;">:A4</span>)))
+(saw-wave (midi-&gt;hz (note <span style="color: #BFEBBF;">:C5</span>)))
+(saw-wave (midi-&gt;hz (note <span style="color: #BFEBBF;">:C4</span>))) <span style="color: #7F9F7F;">; This is C4! Surprised?</span>
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline90"></a>;; Define a function for convenience<br  /><div class="outline-text-6" id="text-3-3-1-1-5">
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">Define a function for convenience</span>
+(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">note-&gt;hz</span> [music-note]
+        (midi-&gt;hz (note music-note)))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">; </span><span style="color: #7F9F7F;">Slightly less to type </span>
+(saw-wave (note-&gt;hz <span style="color: #BFEBBF;">:C5</span>))
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline91"></a>;; Let's make it even easier<br  /><div class="outline-text-6" id="text-3-3-1-1-6">
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">Let's make it even easier</span>
+(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">saw2</span> [music-note]
+        (saw-wave (midi-&gt;hz (note music-note))))
+</pre>
+</div>
+
+
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">Great!</span>
+(saw2 <span style="color: #BFEBBF;">:A4</span>)
+(saw2 <span style="color: #BFEBBF;">:C5</span>)
+(saw2 <span style="color: #BFEBBF;">:C4</span>)
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline92"></a>;; Let's play some chords<br  /><div class="outline-text-6" id="text-3-3-1-1-7">
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">this is one possible implementation of play-chord</span>
+(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">play-chord</span> [a-chord]
+  (<span style="color: #F0DFAF; font-weight: bold;">doseq</span> [note a-chord] (saw2 note)))
+
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">We can play many types of chords.</span>
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">For the complete list, visit </span>
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">https://github.com/overtone/overtone/blob/master/src/overtone/music/pitch.clj </span>
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">and search for "def CHORD"</span>
+(play-chord (chord <span style="color: #BFEBBF;">:C4</span> <span style="color: #BFEBBF;">:major</span>))
+</pre>
+</div>
+</div></li></ol></li>
+
+<li><a id="orgheadline98"></a>note: these involve timings, thus really belong in metro<br  /><ol class="org-ol"><li><a id="orgheadline94"></a>;; We can play a chord progression on the synth using times:<br  /><div class="outline-text-6" id="text-3-3-1-2-1">
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">We can play a chord progression on the synth</span>
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">using times:</span>
+(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">chord-progression-time</span> []
+  (<span style="color: #F0DFAF; font-weight: bold;">let</span> [time (now)]
+    (at time (play-piano-chord (chord <span style="color: #BFEBBF;">:C4</span> <span style="color: #BFEBBF;">:m7+9</span>)))
+    (at (+ 2000 time) (play-piano-chord (chord <span style="color: #BFEBBF;">:G3</span> <span style="color: #BFEBBF;">:m11</span>)))
+    (at (+ 3000 time) (play-piano-chord (chord <span style="color: #BFEBBF;">:F3</span> <span style="color: #BFEBBF;">:m7+9</span>)))
+    (at (+ 4300 time) (play-piano-chord (chord <span style="color: #BFEBBF;">:F3</span> <span style="color: #BFEBBF;">:maj11</span>)))
+    (at (+ 5000 time) (play-piano-chord (chord <span style="color: #BFEBBF;">:G3</span> <span style="color: #BFEBBF;">:7+5-9</span>)))))
+
+(chord-progression-time)
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline95"></a>;; or beats:<br  /><div class="outline-text-6" id="text-3-3-1-2-2">
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">or beats:</span>
+(<span style="color: #F0DFAF; font-weight: bold;">defonce</span> <span style="color: #DFAF8F;">metro</span> (metronome 120))
+(metro)
+(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">chord-progression-beat</span> [m beat-num]
+  (at (m (+ 0 beat-num)) (play-piano-chord (chord <span style="color: #BFEBBF;">:C4</span> <span style="color: #BFEBBF;">:major</span>)))
+  (at (m (+ 4 beat-num)) (play-piano-chord (chord <span style="color: #BFEBBF;">:G3</span> <span style="color: #BFEBBF;">:major</span>)))
+  (at (m (+ 8 beat-num)) (play-piano-chord (chord <span style="color: #BFEBBF;">:A3</span> <span style="color: #BFEBBF;">:minor</span>)))
+  (at (m (+ 14 beat-num)) (play-piano-chord (chord <span style="color: #BFEBBF;">:F3</span> <span style="color: #BFEBBF;">:major</span>)))  
+)
+
+(chord-progression-beat metro (metro))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">or beats:</span>
+(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">my-metro</span> (metronome 480))
+(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">chord-progression-beat</span> [m beat-num]
+  (at (m (+ 0 beat-num)) (play-piano-chord (chord <span style="color: #BFEBBF;">:C4</span> <span style="color: #BFEBBF;">:major</span>)))
+  (at (m (+ 4 beat-num)) (play-piano-chord (chord <span style="color: #BFEBBF;">:G3</span> <span style="color: #BFEBBF;">:major</span>)))
+  (at (m (+ 8 beat-num)) (play-piano-chord (chord <span style="color: #BFEBBF;">:A3</span> <span style="color: #BFEBBF;">:minor</span>)))
+  (at (m (+ 14 beat-num)) (play-piano-chord (chord <span style="color: #BFEBBF;">:F3</span> <span style="color: #BFEBBF;">:major</span>)))  
+)
+
+(chord-progression-beat my-metro (my-metro))
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline96"></a>;; We can use recursion to keep playing the chord progression&#x2013;apply at<br  /><div class="outline-text-6" id="text-3-3-1-2-3">
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">We can use recursion to keep playing the chord progression</span>
+(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">my-slow-metro</span> (metronome 40))
+(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">chord-progression-beat</span> [m beat-num]
+  (at (m (+ 0 beat-num)) (play-piano-chord (chord <span style="color: #BFEBBF;">:C4</span> <span style="color: #BFEBBF;">:m7+9</span>)))
+  (at (m (+ 4 beat-num)) (play-piano-chord (chord <span style="color: #BFEBBF;">:G3</span> <span style="color: #BFEBBF;">:11</span>)))
+  (at (m (+ 8 beat-num)) (play-piano-chord (chord <span style="color: #BFEBBF;">:A3</span> <span style="color: #BFEBBF;">:m13</span>)))
+  (at (m (+ 12 beat-num)) (play-piano-chord (chord <span style="color: #BFEBBF;">:F3</span> <span style="color: #BFEBBF;">:7+5-9</span>)))
+  (apply-at (m (+ 16 beat-num)) chord-progression-beat m (+ 16 beat-num) [])
+)
+(chord-progression-beat my-slow-metro (my-slow-metro))
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline97"></a>recursion with random selections of chord type and roots<br  /><div class="outline-text-6" id="text-3-3-1-2-4">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(apply chord (list (rand-nth [<span style="color: #BFEBBF;">:A4</span> <span style="color: #BFEBBF;">:B4</span> <span style="color: #BFEBBF;">:C4</span> <span style="color: #BFEBBF;">:D4</span> <span style="color: #BFEBBF;">:E4</span> <span style="color: #BFEBBF;">:F4</span> <span style="color: #BFEBBF;">:G4</span>])
+(rand-nth [<span style="color: #BFEBBF;">:7sus2</span> <span style="color: #BFEBBF;">:7-5</span> <span style="color: #BFEBBF;">:m7-5</span> <span style="color: #BFEBBF;">:7+5</span> <span style="color: #BFEBBF;">:9</span> <span style="color: #BFEBBF;">:7-9</span> <span style="color: #BFEBBF;">:m7+5-9</span> <span style="color: #BFEBBF;">:13</span> <span style="color: #BFEBBF;">:m11+</span> <span style="color: #BFEBBF;">:6*9</span>])))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">We can use recursion to keep playing the chord progression</span>
+(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">my-slow-metro</span> (metronome 60))
+(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">random-chord-progression-beat</span> [m beat-num]
+  (at (m (+ 0 beat-num))
+      (play-piano-chord (apply chord (list (rand-nth [<span style="color: #BFEBBF;">:D3</span> <span style="color: #BFEBBF;">:E3</span> <span style="color: #BFEBBF;">:F3</span> <span style="color: #BFEBBF;">:G3</span> <span style="color: #BFEBBF;">:A4</span> <span style="color: #BFEBBF;">:B4</span> <span style="color: #BFEBBF;">:C4</span>])
+                                           (rand-nth [<span style="color: #BFEBBF;">:7sus2</span> <span style="color: #BFEBBF;">:7-5</span> <span style="color: #BFEBBF;">:7+5</span> <span style="color: #BFEBBF;">:9</span> <span style="color: #BFEBBF;">:7-9</span> <span style="color: #BFEBBF;">:13</span> <span style="color: #BFEBBF;">:7-10</span> ])))))
+  (at (m (+ 4 beat-num))
+      (play-piano-chord (apply chord (list (rand-nth [<span style="color: #BFEBBF;">:A4</span> <span style="color: #BFEBBF;">:B4</span> <span style="color: #BFEBBF;">:C4</span> <span style="color: #BFEBBF;">:D4</span> <span style="color: #BFEBBF;">:E4</span> <span style="color: #BFEBBF;">:F4</span> <span style="color: #BFEBBF;">:G4</span>])
+                                           (rand-nth [<span style="color: #BFEBBF;">:m7-5</span> <span style="color: #BFEBBF;">:m7+5</span> <span style="color: #BFEBBF;">:m9</span> <span style="color: #BFEBBF;">:m9+5</span> <span style="color: #BFEBBF;">:m7-9</span> <span style="color: #BFEBBF;">:m11</span> <span style="color: #BFEBBF;">:m7+5-9</span> <span style="color: #BFEBBF;">:m13</span> <span style="color: #BFEBBF;">:m11+</span> <span style="color: #BFEBBF;">:m6*9</span>])))))
+  (at (m (+ 8 beat-num))
+      (play-piano-chord (apply chord (list (rand-nth [<span style="color: #BFEBBF;">:A3</span> <span style="color: #BFEBBF;">:B3</span> <span style="color: #BFEBBF;">:C3</span> <span style="color: #BFEBBF;">:D3</span> <span style="color: #BFEBBF;">:E3</span> <span style="color: #BFEBBF;">:F3</span> <span style="color: #BFEBBF;">:G3</span>])
+                                           (rand-nth [<span style="color: #BFEBBF;">:sus2</span> <span style="color: #BFEBBF;">:6</span> <span style="color: #BFEBBF;">:maj9</span> <span style="color: #BFEBBF;">:maj11</span> <span style="color: #BFEBBF;">:6*9</span> <span style="color: #BFEBBF;">:+5</span>])))))
+  (at (m (+ 12 beat-num))
+      (play-piano-chord (chord (rand-nth [<span style="color: #BFEBBF;">:A3</span> <span style="color: #BFEBBF;">:B3</span> <span style="color: #BFEBBF;">:G3</span>]) <span style="color: #BFEBBF;">:7+5-9</span>)))
+  (apply-at (m (+ 16 beat-num)) random-chord-progression-beat m (+ 16 beat-num) [])
+)
+(random-chord-progression-beat my-slow-metro (my-slow-metro))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(stop)
+</pre>
+</div>
+</div></li></ol></li></ol>
+</div>
+<div id="outline-container-orgheadline103" class="outline-4">
+<h4 id="orgheadline103"><span class="section-number-4">3.3.2</span> scales and scale degrees</h4>
+<div class="outline-text-4" id="text-3-3-2">
+</div><ol class="org-ol"><li><a id="orgheadline100"></a>notation issues<br  /><div class="outline-text-5" id="text-3-3-2-1">
+<p>
+[Scales](<a href="https://en.wikipedia.org/wiki/Scale_(music)">https://en.wikipedia.org/wiki/Scale_(music)</a>) can be
+quickly generated using the `scale` function, which takes a root note
+and the type of scale as arguments.
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(scale <span style="color: #BFEBBF;">:C3</span> <span style="color: #BFEBBF;">:major</span>)
+<span style="color: #5F7F5F;">; </span><span style="color: #7F9F7F;">=&gt; (48 50 52 53 55 57 59 60)</span>
+</pre>
+</div>
+
+<p>
+The available scales are quite large, which includes the common
+major/minor, modes (dorian, mixolydian, etc.), and more exotic scales.
+You can see the full list by running the following command in your
+REPL:
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">uses println of course</span>
+(source <span style="color: #BFEBBF;">SCALE</span>)
+</pre>
+</div>
+
+<p>
+or they are all produced here.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">SCALE</span>
+  (<span style="color: #F0DFAF; font-weight: bold;">let</span> [ionian-sequence     [2 2 1 2 2 2 1]
+        hex-sequence        [2 2 1 2 2 3]
+        pentatonic-sequence [3 2 2 3 2]
+        rotate (<span style="color: #F0DFAF; font-weight: bold;">fn</span> [scale-sequence offset]
+                 (take (count scale-sequence)
+                       (drop offset (cycle scale-sequence))))]
+    {<span style="color: #BFEBBF;">:diatonic</span>           ionian-sequence
+     <span style="color: #BFEBBF;">:ionian</span>             (rotate ionian-sequence 0)
+     <span style="color: #BFEBBF;">:major</span>              (rotate ionian-sequence 0)
+     <span style="color: #BFEBBF;">:dorian</span>             (rotate ionian-sequence 1)
+     <span style="color: #BFEBBF;">:phrygian</span>           (rotate ionian-sequence 2)
+     <span style="color: #BFEBBF;">:lydian</span>             (rotate ionian-sequence 3)
+     <span style="color: #BFEBBF;">:mixolydian</span>         (rotate ionian-sequence 4)
+     <span style="color: #BFEBBF;">:aeolian</span>            (rotate ionian-sequence 5)
+     <span style="color: #BFEBBF;">:minor</span>              (rotate ionian-sequence 5)
+     <span style="color: #BFEBBF;">:locrian</span>            (rotate ionian-sequence 6)
+     <span style="color: #BFEBBF;">:hex-major6</span>         (rotate hex-sequence 0)
+     <span style="color: #BFEBBF;">:hex-dorian</span>         (rotate hex-sequence 1)
+     <span style="color: #BFEBBF;">:hex-phrygian</span>       (rotate hex-sequence 2)
+     <span style="color: #BFEBBF;">:hex-major7</span>         (rotate hex-sequence 3)
+     <span style="color: #BFEBBF;">:hex-sus</span>            (rotate hex-sequence 4)
+     <span style="color: #BFEBBF;">:hex-aeolian</span>        (rotate hex-sequence 5)
+     <span style="color: #BFEBBF;">:minor-pentatonic</span>   (rotate pentatonic-sequence 0)
+     <span style="color: #BFEBBF;">:yu</span>                 (rotate pentatonic-sequence 0)
+     <span style="color: #BFEBBF;">:major-pentatonic</span>   (rotate pentatonic-sequence 1)
+     <span style="color: #BFEBBF;">:gong</span>               (rotate pentatonic-sequence 1)
+     <span style="color: #BFEBBF;">:egyptian</span>           (rotate pentatonic-sequence 2)
+     <span style="color: #BFEBBF;">:shang</span>              (rotate pentatonic-sequence 2)
+     <span style="color: #BFEBBF;">:jiao</span>               (rotate pentatonic-sequence 3)
+     <span style="color: #BFEBBF;">:pentatonic</span>         (rotate pentatonic-sequence 4) <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">historical match</span>
+     <span style="color: #BFEBBF;">:zhi</span>                (rotate pentatonic-sequence 4)
+     <span style="color: #BFEBBF;">:ritusen</span>            (rotate pentatonic-sequence 4)
+     <span style="color: #BFEBBF;">:whole-tone</span>         [2 2 2 2 2 2]
+     <span style="color: #BFEBBF;">:whole</span>              [2 2 2 2 2 2]
+     <span style="color: #BFEBBF;">:chromatic</span>          [1 1 1 1 1 1 1 1 1 1 1 1]
+     <span style="color: #BFEBBF;">:harmonic-minor</span>     [2 1 2 2 1 3 1]
+     <span style="color: #BFEBBF;">:melodic-minor-asc</span>  [2 1 2 2 2 2 1]
+     <span style="color: #BFEBBF;">:hungarian-minor</span>    [2 1 3 1 1 3 1]
+     <span style="color: #BFEBBF;">:octatonic</span>          [2 1 2 1 2 1 2 1]
+     <span style="color: #BFEBBF;">:messiaen1</span>          [2 2 2 2 2 2]
+     <span style="color: #BFEBBF;">:messiaen2</span>          [1 2 1 2 1 2 1 2]
+     <span style="color: #BFEBBF;">:messiaen3</span>          [2 1 1 2 1 1 2 1 1]
+     <span style="color: #BFEBBF;">:messiaen4</span>          [1 1 3 1 1 1 3 1]
+     <span style="color: #BFEBBF;">:messiaen5</span>          [1 4 1 1 4 1]
+     <span style="color: #BFEBBF;">:messiaen6</span>          [2 2 1 1 2 2 1 1]
+     <span style="color: #BFEBBF;">:messiaen7</span>          [1 1 1 2 1 1 1 1 2 1]
+     <span style="color: #BFEBBF;">:super-locrian</span>      [1 2 1 2 2 2 2]
+     <span style="color: #BFEBBF;">:hirajoshi</span>          [2 1 4 1 4]
+     <span style="color: #BFEBBF;">:kumoi</span>              [2 1 4 2 3]
+     <span style="color: #BFEBBF;">:neapolitan-major</span>   [1 2 2 2 2 2 1]
+     <span style="color: #BFEBBF;">:bartok</span>             [2 2 1 2 1 2 2]
+     <span style="color: #BFEBBF;">:bhairav</span>            [1 3 1 2 1 3 1]
+     <span style="color: #BFEBBF;">:locrian-major</span>      [2 2 1 1 2 2 2]
+     <span style="color: #BFEBBF;">:ahirbhairav</span>        [1 3 1 2 2 1 2]
+     <span style="color: #BFEBBF;">:enigmatic</span>          [1 3 2 2 2 1 1]
+     <span style="color: #BFEBBF;">:neapolitan-minor</span>   [1 2 2 2 1 3 1]
+     <span style="color: #BFEBBF;">:pelog</span>              [1 2 4 1 4]
+     <span style="color: #BFEBBF;">:augmented2</span>         [1 3 1 3 1 3]
+     <span style="color: #BFEBBF;">:scriabin</span>           [1 3 3 2 3]
+     <span style="color: #BFEBBF;">:harmonic-major</span>     [2 2 1 2 1 3 1]
+     <span style="color: #BFEBBF;">:melodic-minor-desc</span> [2 1 2 2 1 2 2]
+     <span style="color: #BFEBBF;">:romanian-minor</span>     [2 1 3 1 2 1 2]
+     <span style="color: #BFEBBF;">:hindu</span>              [2 2 1 2 1 2 2]
+     <span style="color: #BFEBBF;">:iwato</span>              [1 4 1 4 2]
+     <span style="color: #BFEBBF;">:melodic-minor</span>      [2 1 2 2 2 2 1]
+     <span style="color: #BFEBBF;">:diminished2</span>        [2 1 2 1 2 1 2 1]
+     <span style="color: #BFEBBF;">:marva</span>              [1 3 2 1 2 2 1]
+     <span style="color: #BFEBBF;">:melodic-major</span>      [2 2 1 2 1 2 2]
+     <span style="color: #BFEBBF;">:indian</span>             [4 1 2 3 2]
+     <span style="color: #BFEBBF;">:spanish</span>            [1 3 1 2 1 2 2]
+     <span style="color: #BFEBBF;">:prometheus</span>         [2 2 2 5 1]
+     <span style="color: #BFEBBF;">:diminished</span>         [1 2 1 2 1 2 1 2]
+     <span style="color: #BFEBBF;">:todi</span>               [1 2 3 1 1 3 1]
+     <span style="color: #BFEBBF;">:leading-whole</span>      [2 2 2 2 2 1 1]
+     <span style="color: #BFEBBF;">:augmented</span>          [3 1 3 1 3 1]
+     <span style="color: #BFEBBF;">:purvi</span>              [1 3 2 1 1 3 1]
+     <span style="color: #BFEBBF;">:chinese</span>            [4 2 1 4 1]
+     <span style="color: #BFEBBF;">:lydian-minor</span>       [2 2 2 1 1 2 2]}))
+</pre>
+</div>
+
+
+
+<p>
+Overtone is also capable further abstraction of pitches through [scale
+degrees](<a href="https://en.wikipedia.org/wiki/Degree_(music)">https://en.wikipedia.org/wiki/Degree_(music)</a>), which is a
+way of referring to pitches within a scale. Scale degrees are commonly
+notated using roman numerals (I, IV, vii, etc.), so in Clojure scale
+degrees are referenced with keywords as shown below:
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">scale-degrees</span> [<span style="color: #BFEBBF;">:i</span> <span style="color: #BFEBBF;">:ii</span> <span style="color: #BFEBBF;">:iii</span> <span style="color: #BFEBBF;">:iv</span> <span style="color: #BFEBBF;">:v</span> <span style="color: #BFEBBF;">:vi</span> <span style="color: #BFEBBF;">:vii</span>])
+</pre>
+</div>
+
+<p>
+Notice that each of the scale degrees is lowercase; Overtone does not
+change the quality of the scale degree based on capitalization.
+Capitalized degrees will throw an `IllegalArgumentException`.
+</p>
+
+
+<p>
+You can resolve scale degrees into absolute pitches using
+`degrees-&gt;pitches`:
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(degrees-&gt;pitches scale-degrees <span style="color: #BFEBBF;">:dorian</span> <span style="color: #BFEBBF;">:E3</span>)
+<span style="color: #5F7F5F;">; </span><span style="color: #7F9F7F;">=&gt; (52 54 55 57 59 61 62)</span>
+</pre>
+</div>
+
+<p>
+Scale degrees can be augmented by either `+` or `-` to denote the
+octave above or below the root of the scale, and can be sharped or
+flatted using `#` or `b`. For example in a major scale starting from
+C3 (MIDI pitch number 48), the scale degree `:ib+` would be resolved
+to a Cb4 (MIDI pitch number 59).
+</p>
+
+
+<p>
+Another useful feature of scale degrees in Overtone is the `:_`
+keyword, which you can use to denote rests. Below is an example that
+uses both note ornament and the `:_` nil value:
+</p>
+</div></li>
+<li><a id="orgheadline101"></a>modification to player so that it plays!<br  /><div class="outline-text-5" id="text-3-3-2-2">
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">this is a peculiar way to notate a melody</span>
+(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">scale-degrees</span> [<span style="color: #BFEBBF;">:vi</span> <span style="color: #BFEBBF;">:vii</span> <span style="color: #BFEBBF;">:i+</span> <span style="color: #BFEBBF;">:_</span> <span style="color: #BFEBBF;">:vii</span> <span style="color: #BFEBBF;">:_</span> <span style="color: #BFEBBF;">:i+</span> <span style="color: #BFEBBF;">:vii</span> <span style="color: #BFEBBF;">:vi</span> <span style="color: #BFEBBF;">:_</span> <span style="color: #BFEBBF;">:vii</span> <span style="color: #BFEBBF;">:_</span>])
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">pitches</span> (degrees-&gt;pitches scale-degrees <span style="color: #BFEBBF;">:dorian</span> <span style="color: #BFEBBF;">:C4</span>))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">play</span> [time notes sep]
+  (<span style="color: #F0DFAF; font-weight: bold;">let</span> [note (first notes)]
+    (<span style="color: #F0DFAF; font-weight: bold;">when</span> note
+      (at time (saw1 (midi-&gt;hz note))))
+    (<span style="color: #F0DFAF; font-weight: bold;">let</span> [next-time (+ time sep)]
+      (apply-at next-time play [next-time (rest notes) sep]))))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(play (now) pitches 1200)
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline102"></a>play an arpeggio with piano<br  /><div class="outline-text-5" id="text-3-3-2-3">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">play</span> [time notes sep]
+  (<span style="color: #F0DFAF; font-weight: bold;">let</span> [note (first notes)]
+    (<span style="color: #F0DFAF; font-weight: bold;">when</span> note
+      (at time (sampled-piano note)))
+    (<span style="color: #F0DFAF; font-weight: bold;">let</span> [next-time (+ time sep)]
+      (apply-at next-time play [next-time (rest notes) sep]))))
+
+(play (now) [60 64 71] 200)
+</pre>
+</div>
+</div></li></ol>
+</div>
+
+
+<div id="outline-container-orgheadline114" class="outline-4">
+<h4 id="orgheadline114"><span class="section-number-4">3.3.3</span> metronome and sequencing</h4>
+<div class="outline-text-4" id="text-3-3-3">
+</div><ol class="org-ol"><li><a id="orgheadline104"></a>md of wiki&#x2013;kick drum intensive recursive player<br  /><div class="outline-text-5" id="text-3-3-3-1">
+<p>
+Here's an example of how to set up a simple metronome sound, for
+musical practice. Note that once you define a metronome
+(one-twenty-bpm in the example below), it will start counting beats.
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">; </span><span style="color: #7F9F7F;">setup a sound for our metronome to use</span>
+(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">kick</span> (sample (freesound-path 2086)))
+
+<span style="color: #5F7F5F;">; </span><span style="color: #7F9F7F;">setup a tempo for our metronome to use</span>
+(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">one-twenty-bpm</span> (metronome 120))
+
+<span style="color: #5F7F5F;">; </span><span style="color: #7F9F7F;">this function will play our sound at whatever tempo we've set our metronome to </span>
+(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">looper</span> [nome sound]    
+    (<span style="color: #F0DFAF; font-weight: bold;">let</span> [beat (nome)]
+        (at (nome beat) (sound))
+        (apply-by (nome (inc beat)) looper nome sound [])))
+
+<span style="color: #5F7F5F;">; </span><span style="color: #7F9F7F;">turn on the metronome</span>
+(looper one-twenty-bpm kick)
+(stop)
+
+<span style="color: #5F7F5F;">; </span><span style="color: #7F9F7F;">to get a feel for how the metronome works, try defining one at the REPL</span>
+(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">nome</span> (metronome 200))
+(nome)
+<span style="color: #5F7F5F;">; </span><span style="color: #7F9F7F;">8 </span>
+<span style="color: #5F7F5F;">; </span><span style="color: #7F9F7F;">why is this 8? shouldn't it be 1? let's try it again</span>
+(nome)
+<span style="color: #5F7F5F;">;</span><span style="color: #7F9F7F;">140</span>
+<span style="color: #5F7F5F;">; </span><span style="color: #7F9F7F;">whoah, it's almost like it's ticking in the background. </span>
+<span style="color: #5F7F5F;">; </span><span style="color: #7F9F7F;">it is, in fact, ticking in the background. a "beat" is just convenient way to represent a timestamp.</span>
+<span style="color: #5F7F5F;">; </span><span style="color: #7F9F7F;">leave your metronome defined at the REPL, and the beat number will steadily increase, even if you aren't</span>
+<span style="color: #5F7F5F;">; </span><span style="color: #7F9F7F;">using the object for anything.</span>
+</pre>
+</div>
+<p>
+#+END<sub>SRC</sub>
+</p>
+</div></li>
+
+<li><a id="orgheadline105"></a>get a sample of a kick drum<br  /><div class="outline-text-5" id="text-3-3-3-2">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">kick</span> (sample (freesound-path 2086)))
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline106"></a>create a metronome (set to a given bpm)<br  /><div class="outline-text-5" id="text-3-3-3-3">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">march-tempo</span> (metronome 120))
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline110"></a>create a function that will, for a given a metro, play a sound<br  /><ol class="org-ol"><li><a id="orgheadline107"></a>looping template<br  /><div class="outline-text-6" id="text-3-3-3-4-1">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">looper</span> [nome sound]
+  (<span style="color: #F0DFAF; font-weight: bold;">let</span> [beat (nome)]
+    (at (nome beat) (sound))
+    (apply-at (nome (inc beat)) looper nome sound [])))
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline108"></a>note: uses "temporal recursion" pattern&#x2013;via 'apply-at'<br  /><div class="outline-text-6" id="text-3-3-3-4-2">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">foo</span>
+     [t val]
+     (println val)
+     (<span style="color: #F0DFAF; font-weight: bold;">let</span> [next-t (+ t 10000)]
+       (apply-at next-t #'foo [next-t (inc val)])))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(foo (now) 0)
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline109"></a>call the looper to play kick drum<br  /><div class="outline-text-6" id="text-3-3-3-4-3">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(looper march-tempo kick)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">some-nome</span> (metronome 60))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(some-nome)
+</pre>
+</div>
+</div></li></ol></li>
+<li><a id="orgheadline113"></a>understanding 'at' and 'apply-at' source code<br  /><div class="outline-text-5" id="text-3-3-3-5">
+<p>
+from <code>overtone/sc/server.clj</code> and <code>overtone/music/time</code>, respectively
+</p>
+</div>
+<ol class="org-ol"><li><a id="orgheadline111"></a>at<br  /><div class="outline-text-6" id="text-3-3-3-5-1">
+<p>
+overtone.live/at
+([time-ms &amp; body])
+Macro
+  Schedule server communication - specify that communication messages
+   execute on the server at a specific time in the future:
+</p>
+
+<p>
+;; control synth foo to change :freq to 150
+;; one second from now:
+(at (+ (now) 1000) (ctl foo :freq 150))
+</p>
+
+<p>
+Only affects code that communicates with the server using OSC
+messaging i.e. synth triggering and control. All code in the body of
+the at macro is executed immediately. Any OSC messages which are
+triggered as a result of executing the body are not immediately sent
+but are instead captured and then sent in a single OSC bundle with
+the specified timestamp once the body has completed. The server then
+stores these bundles and executes them at the specified time. This
+allows you to schedule the triggering and control of synths for
+specific times.
+</p>
+
+<p>
+The bundling is thread-local, so you don't have to worry about
+accidentally scheduling packets into a bundle started on another
+thread.
+</p>
+
+<p>
+Be careful not to confuse at with apply-at and apply-by which
+directly affect Clojure code.
+</p>
+
+<p>
+Warning, all liveness and 'node blocking when not ready' checks are
+disabled within the context of this macro. This means that it will
+fail silently if a server node you wish to control either has been
+since terminated or not had time to be initialised.
+</p>
+</div></li>
+<li><a id="orgheadline112"></a>apply-at<br  /><div class="outline-text-6" id="text-3-3-3-5-2">
+<p>
+overtone.live/apply-at
+([ms-time f args* argseq])
+  Scheduled function appliction. Works identically to apply, except
+   that it takes an additional initial argument: ms-time. If ms-time is
+   in the future, function application is delayed until that time, if
+   ms-time is in the past function application is immediate.
+</p>
+
+<p>
+If you wish to apply slightly before specific time rather than
+exactly at it, see apply-by.
+</p>
+
+<p>
+Can be used to implement the 'temporal recursion' pattern. This is
+where a function has a call to apply-at at its tail:
+</p>
+
+<p>
+(defn foo
+  [t val]
+  (println val)
+  (let [next-t (+ t 200)]
+    (apply-at next-t #'foo [next-t (inc val)])))
+</p>
+
+<p>
+(foo (now) 0) ;=&gt; 0, 1, 2, 3&#x2026;
+</p>
+
+<p>
+The fn foo is written in a recursive style, yet the recursion is
+scheduled for application 200ms in the future. By passing a function
+using #'foo syntax instead of the symbole foo, when later called by
+the scheduler it will lookup based on the symbol rather than using
+the instance of the function defined earlier. This allows us to
+redefine foo whilst the temporal recursion is continuing to execute.
+</p>
+
+<p>
+To stop an executing temporal recursion pattern, either redefine the
+function to not call itself, or use (stop).
+</p>
+</div></li></ol></li></ol>
+</div>
+<div id="outline-container-orgheadline120" class="outline-4">
+<h4 id="orgheadline120"><span class="section-number-4">3.3.4</span> live coding</h4>
+<div class="outline-text-4" id="text-3-3-4">
+</div><ol class="org-ol"><li><a id="orgheadline119"></a>md&#x2013;work through time as events-in-time<br  /><ol class="org-ol"><li><a id="orgheadline115"></a>First define some instruments:<br  /><div class="outline-text-6" id="text-3-3-4-1-1">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">kick</span> [freq 120 dur 0.3 width 0.5]
+  (<span style="color: #F0DFAF; font-weight: bold;">let</span> [freq-env (* freq (env-gen (perc 0 (* 0.99 dur))))
+        env (env-gen (perc 0.01 dur) 1 1 0 1 <span style="color: #BFEBBF;">FREE</span>)
+        sqr (* (env-gen (perc 0 0.01)) (pulse (* 2 freq) width))
+        src (sin-osc freq-env)
+        drum (+ sqr (* env src))]
+    (compander drum drum 0.2 1 0.1 0.01 0.01)))
+
+<span style="color: #5F7F5F;">;</span><span style="color: #7F9F7F;">(kick)</span>
+
+(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">c-hat</span> [amp 0.8 t 0.04]
+  (<span style="color: #F0DFAF; font-weight: bold;">let</span> [env (env-gen (perc 0.001 t) 1 1 0 1 <span style="color: #BFEBBF;">FREE</span>)
+        noise (white-noise)
+        sqr (* (env-gen (perc 0.01 0.04)) (pulse 880 0.2))
+        filt (bpf (+ sqr noise) 9000 0.5)]
+    (* amp env filt)))
+
+<span style="color: #5F7F5F;">;</span><span style="color: #7F9F7F;">(c-hat)</span>
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline116"></a>define the proper "metro" "timing-object" for use by a player<br  /><div class="outline-text-6" id="text-3-3-4-1-2">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">metro</span> (metronome 60))
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline117"></a>define a player<br  /><div class="outline-text-6" id="text-3-3-4-1-3">
+<p>
+Now that we have everything ready, we can define a function that will
+recurse through time, each iteration triggering the next beat.  By
+passing the function to itself using the ```#'player``` type notation
+we are passing the var `player` rather than the current value of that
+var.  In this way the new value will be looked up every iteration,
+which allows us to continually redefine the function as it's playing.
+Try commenting out the hi-hat line, or adjusting when it gets
+triggered, and then re-evaluate the function while it is still
+playing.
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">player</span> [beat]
+  (at (metro beat) (kick))
+  (at (metro (+ 0.5 beat)) (c-hat))
+  (apply-by (metro (inc beat)) #'player (inc beat) []))
+
+(player (metro))
+</pre>
+</div>
+
+<p>
+Change the playback speed by sending a message to metro like this:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(metro-bpm metro 120)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(metro-bpm metro 40)
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline118"></a>understanding how metronome objects represent the temporal aspect of a sound environment<br  /><div class="outline-text-6" id="text-3-3-4-1-4">
+<p>
+Create a metronome with a specific BPM (beats per minute).
+</p>
+
+<p>
+The <code>(metronome &lt;bpm&gt;)</code> returns a function that can be used to
+synchronize multiple instruments to the same rhythm. The metronome
+remembers the time at which it was started and then when called with
+no arguments it will return the current beat count, (as in Pd/Max, a
+"bang" except with a current value) (i.e. # of beats since the start)
+If called with one argument, a beat number, then a metronome function
+will return the absolute timestamp in milliseconds that that beat will
+occur. This timestamp can be used to schedule events at a specific
+beat.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">metro</span> (metronome 60))
+(-  (metro 10) (now))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(metro) <span style="color: #7F9F7F;">; =&gt; current beat number</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(-  (metro 100) (now))
+</pre>
+</div>
+
+<p>
+#+END<sub>SRC</sub>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure"></pre>
+</div>
+</div></li></ol></li></ol>
+</div>
+
+<div id="outline-container-orgheadline121" class="outline-4">
+<h4 id="orgheadline121"><span class="section-number-4">3.3.5</span> swing</h4>
+<div class="outline-text-4" id="text-3-3-5">
+<p>
+(The rhythm, not the Java GUI toolkit. Sheesh.)
+</p>
+
+<p>
+Someone asked at the Clojure West Unjam whether it was possible to
+have a swing beat instead of the relentless techno OONTZ OONTZ OONTZ.
+</p>
+
+
+<p>
+Why yes, yes it is:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">c-hat</span> [amp 0.8 t 0.04]
+  (<span style="color: #F0DFAF; font-weight: bold;">let</span> [env (env-gen (perc 0.001 t) 1 1 0 1 <span style="color: #BFEBBF;">FREE</span>)
+        noise (white-noise)
+        sqr (* (env-gen (perc 0.01 0.04)) (pulse 880 0.2))
+        filt (bpf (+ sqr noise) 9000 0.5)]
+    (* amp env filt)))
+
+(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">o-hat</span> [amp 0.8 t 0.5]
+  (<span style="color: #F0DFAF; font-weight: bold;">let</span> [env (env-gen (perc 0.001 t) 1 1 0 1 <span style="color: #BFEBBF;">FREE</span>)
+        noise (white-noise)
+        sqr (* (env-gen (perc 0.01 0.04)) (pulse 880 0.2))
+        filt (bpf (+ sqr noise) 9000 0.5)]
+    (* amp env filt)))
+
+(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">swinger</span> [beat]
+  (at (metro beat) (o-hat))
+  (at (metro (inc beat)) (c-hat))
+  (at (metro (+ 1.65 beat)) (c-hat))
+  (apply-at (metro (+ 2 beat)) #'swinger (+ 2 beat) []))
+
+<span style="color: #5F7F5F;">; </span><span style="color: #7F9F7F;">define a metronome at a given tempo, expressed in beats per minute.</span>
+(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">metro</span> (metronome 120))
+
+(swinger (metro))
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline133" class="outline-2">
+<h2 id="orgheadline133"><span class="section-number-2">4</span> other misc</h2>
+<div class="outline-text-2" id="text-4">
+</div><div id="outline-container-orgheadline124" class="outline-3">
+<h3 id="orgheadline124"><span class="section-number-3">4.1</span> interupt output</h3>
+<div class="outline-text-3" id="text-4-1">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(stop)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline125" class="outline-3">
+<h3 id="orgheadline125"><span class="section-number-3">4.2</span> local audio files</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+500 Country songs
+Beth Orton
+Compilations
+</p>
+
+<p>
+Don Cherry - mu first part-mu second part                          
+Don Cherry Complete Communion(jazz) (mp3@320kbps)[rogercc][h33t]
+King Sunny Ade Best of Island Years                                
+King Sunny Ade – Best of the Classic Years (1969-74)               
+Miles Davis                                                        
+Mouse On Mars - Autoditacker (FLAC)                                
+Mouse On Mars - Parastrophics (2012) [FLAC] politux                
+Pussy galore.m4a                                                   
+</p>
+
+<p>
+"QC listening list"                                                  
+</p>
+
+<p>
+1600-1750         
+1830-1900         
+20th              
+Haydn-to-Beethoven
+"pre-1600"
+</p>
+
+
+
+
+
+<p>
+("008<sub>Barbara</sub><sub>Strozzi</sub><sub>L</sub>'Eraclito.mp3"                 
+"008<sub>Belle</sub><sub>Doette.mp3</sub>"                               
+"008<sub>Bernard</sub><sub>de</sub><sub>Ventadorn</sub><sub>Quan</sub><sub>veh</sub><sub>la</sub><sub>lauzeta</sub><sub>mover.mp3</sub>"
+"008<sub>Byrd</sub><sub>John</sub><sub>Come</sub><sub>Kiss</sub><sub>me</sub><sub>Now.mp3</sub>"
+"008<sub>Byrd</sub><sub>Mass</sub><sub>for</sub><sub>4</sub><sub>voices</sub><sub>Agnus</sub><sub>Dei.mp3</sub>"           
+"008<sub>Byrd</sub><sub>Mass</sub><sub>for</sub><sub>4</sub><sub>voices</sub><sub>Credo.mp3</sub>"               
+"008<sub>Byrd</sub><sub>Mass</sub><sub>for</sub><sub>4</sub><sub>voices</sub><sub>Kyrie.mp3</sub>"               
+"008<sub>Ciconia</sub><sub>O</sub><sub>Padua</sub><sub>sidus</sub><sub>preclarum.mp3</sub>"            
+"008<sub>Dufay</sub><sub>Ave</sub><sub>regina</sub><sub>caelorum.mp3</sub>"                  
+"008<sub>Frescobaldi</sub><sub>Capriccio</sub><sub>sopra</sub><sub>ut</sub><sub>re</sub><sub>me</sub><sub>fa</sub><sub>sol</sub><sub>la.mp3</sub>"
+"008<sub>Gabrieli</sub><sub>Canzon</sub><sub>in</sub><sub>echo</sub><sub>duodecimi</sub><sub>toni.mp3</sub>"
+"008<sub>Giaches</sub><sub>de</sub><sub>Wert</sub><sub>Giunto</sub><sub>alla</sub><sub>Tomba.mp3</sub>"          
+"008<sub>Hildegard</sub><sub>von</sub><sub>Bingen</sub><sub>O</sub><sub>virga</sub><sub>ac</sub><sub>diadema.mp3</sub>"    
+"008<sub>Hodie</sub><sub>Christus</sub><sub>natus</sub><sub>est.mp3</sub>"                   
+"008<sub>Josquin</sub><sub>Inviolata</sub><sub>integra</sub><sub>et</sub><sub>casta</sub><sub>est</sub><sub>Maria.mp</sub>"
+"008<sub>Josquin</sub><sub>Milles</sub><sub>Regretz.mp3</sub>"                     
+"008<sub>Josquin</sub><sub>Missa</sub><sub>Pange</sub><sub>lingua</sub><sub>Agnus</sub><sub>Dei.mp3</sub>"       
+"008<sub>Josquin</sub><sub>Missa</sub><sub>Pange</sub><sub>lingua</sub><sub>Kyrie.mp3</sub>"           
+"008<sub>Josquin</sub><sub>sexti</sub><sub>toni</sub><sub>1.mp3</sub>"                       
+"008<sub>Josquin</sub><sub>sexti</sub><sub>toni</sub><sub>5.mp3</sub>"                       
+"008<sub>Landini</sub><sub>Ochi</sub><sub>dolente</sub><sub>mie.mp3</sub>"                   
+"008<sub>Machaut</sub><sub>De</sub><sub>Fortune.mp3</sub>"                         
+"008<sub>Pange</sub><sub>lingua.mp3</sub>"                               
+"008<sub>Perotin</sub><sub>Viderunt</sub><sub>omnes.mp3</sub>"                     
+"008<sub>Purcell</sub><sub>Dido</sub><sub>and</sub><sub>Aeneas</sub><sub>Act</sub><sub>III</sub><sub>1</sub><sub>Scene</sub><sub>1</sub><sub>1.mp3</sub>"
+"008<sub>Purcell</sub><sub>Dido</sub><sub>and</sub><sub>Aeneas</sub><sub>Act</sub><sub>III</sub><sub>2</sub><sub>Scene</sub><sub>1</sub><sub>2.mp3</sub>"
+"008<sub>Purcell</sub><sub>Dido</sub><sub>and</sub><sub>Aeneas</sub><sub>Act</sub><sub>III</sub><sub>3</sub><sub>Scene</sub><sub>2</sub><sub>1.mp3</sub>"
+"008<sub>Purcell</sub><sub>Dido</sub><sub>and</sub><sub>Aeneas</sub><sub>Act</sub><sub>III</sub><sub>4</sub><sub>Scene</sub><sub>2</sub><sub>2.mp3</sub>"
+"008<sub>Purcell</sub><sub>Dido</sub><sub>and</sub><sub>Aeneas</sub><sub>Act</sub><sub>III</sub><sub>5</sub><sub>Scene</sub><sub>2</sub><sub>3.mp3</sub>")
+</p>
+
+
+<p>
+Robert Wyatt                                                       
+Robin Aigner's Con Tender                                          
+</p>
+
+<p>
+Rollerskate Skinny                                                 
+Saint Etienne-12 albums                                            
+SaintEtienne-WordsMusiDeluxeEdition2012                            
+Sarah Singles                                                      
+Spiritualized                                                      
+The Clean                                                          
+The Fall - Early Fall [lossless]                                   
+The Wedding Present - Seamonsters                                  
+Treepeople                                                         
+</p>
+
+<p>
+Ultramarine - This Time Last Year 2013 320kbps CBR MP3 [VX] [P2PDL]
+</p>
+
+<p>
+06 Spiritualized - Step Into The Breeze.aiff
+07 Spiritualized - Symphony Space.aiff
+08 Spiritualized - Take Your Time.aiff
+09 Spiritualized - Shine A Light.aiff
+10 Spiritualized - Angel Sigh.aiff
+11 Spiritualized - Sway.aiff            
+12 Spiritualized - 200 Bars.aiff
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline126" class="outline-3">
+<h3 id="orgheadline126"><span class="section-number-3">4.3</span> misc, non-wiki tutorials</h3>
+<div class="outline-text-3" id="text-4-3">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(doc <span style="color: #7CB8BB;">overtone.core</span><span style="color: #DCDCCC; background-color: #3F3F3F;">/</span>)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline129" class="outline-3">
+<h3 id="orgheadline129"><span class="section-number-3">4.4</span> loading</h3>
+<div class="outline-text-3" id="text-4-4">
+</div><div id="outline-container-orgheadline127" class="outline-4">
+<h4 id="orgheadline127"><span class="section-number-4">4.4.1</span> loading 'external' resources</h4>
+<div class="outline-text-4" id="text-4-4-1">
+<p>
+absolute path doesn't work. Must be a file in the current project
+directory?
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(load <span style="color: #CC9393;">"/Users/a/git-projects/post_tonal_overtone/src/post_tonal_overtone/set-class-data.clj"</span>)
+</pre>
+</div>
+
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(load <span style="color: #CC9393;">"set-class-data"</span>)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline128" class="outline-4">
+<h4 id="orgheadline128"><span class="section-number-4">4.4.2</span> loading files in CIDER</h4>
+<div class="outline-text-4" id="text-4-4-2">
+<p>
+if you choose to work through an example and evaluate a buffer, the
+code in that buffer (if it is from, say, one of the overtone repo
+source files in the examples folder) will be loaded with respect to
+the namespace. Trying to use any of that code without switching to
+that namespace won't work.
+</p>
+
+<p>
+Or not. Mysterious.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline131" class="outline-3">
+<h3 id="orgheadline131"><span class="section-number-3">4.5</span> hacking overtone&#x2013;where do functions come from?</h3>
+<div class="outline-text-3" id="text-4-5">
+</div><div id="outline-container-orgheadline130" class="outline-4">
+<h4 id="orgheadline130"><span class="section-number-4">4.5.1</span> md</h4>
+<div class="outline-text-4" id="text-4-5-1">
+<p>
+## Hacking Overtone
+</p>
+
+<p>
+This page includes tips and tricks for getting around the Overtone code base.
+</p>
+
+<p>
+### Where the eff is X defined?!
+</p>
+
+<p>
+`overtone.core` and `overtone.live` use a function (`overtone.util.ns/immigrate`) to suck all the Overtone vars into one namespace. This is great for using Overtone, but might leave you scratching your head about where the actual code is. Luckily, all the vars have the originating namespace in their metadata:
+</p>
+
+<p>
+```clj
+user=&gt; (meta #'overtone.core/metronome)
+{:arglists ([bpm]),
+:ns #&lt;Namespace overtone.core&gt;,
+:name metronome,
+:orig-ns overtone.music.rhythm,
+:doc
+"A metronome is a beat management function. &#x2026;",
+:line 73,
+:file "overtone/music/rhythm.clj"}
+```
+</p>
+
+<p>
+or you could just grep for it.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline132" class="outline-3">
+<h3 id="orgheadline132"><span class="section-number-3">4.6</span> chris ford&#x2013;clojure cookbook example</h3>
+<div class="outline-text-3" id="text-4-6">
+<p>
+Use Overtone to bring the song to life.
+</p>
+
+<p>
+Before starting, add [overtone "0.8.1"] to your project’s dependencies
+or start a REPL using lein-try: footnote 10 here
+</p>
+
+
+<p>
+$ lein try overtone
+</p>
+
+<p>
+To start, define the melody for an old children’s song:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(require '[<span style="color: #7CB8BB;">overtone.live</span> <span style="color: #BFEBBF;">:as</span> overtone])
+
+(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">note</span> [timing pitch] {<span style="color: #BFEBBF;">:time</span> timing <span style="color: #BFEBBF;">:pitch</span> pitch})
+
+(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">melody</span> (<span style="color: #F0DFAF; font-weight: bold;">let</span> [pitches
+                  [0 0 0 1 2 <span style="color: #7F9F7F;">; Row, row, row your boat,</span>
+                   2 1 2 3 4 <span style="color: #7F9F7F;">; Gently down the stream,</span>
+                   7 7 7 4 4 4 2 2 2 0 0 0 <span style="color: #7F9F7F;">; (take 4 (repeat "merrily"))</span>
+                   4 3 2 1 0] <span style="color: #7F9F7F;">; Life is but a dream!</span>
+                  durations
+                  [1 1 2/3 1/3 1
+                   2/3 1/3 2/3 1/3 2
+                   1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3 1/3
+                   2/3 1/3 2/3 1/3 2]
+                  times (reductions + 0 durations)]
+              (map note times pitches)))
+
+melody
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">-&gt; ({</span><span style="color: #BFEBBF;">:time</span><span style="color: #7F9F7F;"> 0, </span><span style="color: #BFEBBF;">:pitch</span><span style="color: #7F9F7F;"> 0} ; Row,</span>
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">{</span><span style="color: #BFEBBF;">:time</span><span style="color: #7F9F7F;"> 1, </span><span style="color: #BFEBBF;">:pitch</span><span style="color: #7F9F7F;"> 0} ; row,</span>
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">{</span><span style="color: #BFEBBF;">:time</span><span style="color: #7F9F7F;"> 2, </span><span style="color: #BFEBBF;">:pitch</span><span style="color: #7F9F7F;"> 0} ; row</span>
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">{</span><span style="color: #BFEBBF;">:time</span><span style="color: #7F9F7F;"> 8/3, </span><span style="color: #BFEBBF;">:pitch</span><span style="color: #7F9F7F;"> 1} ; your</span>
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">{</span><span style="color: #BFEBBF;">:time</span><span style="color: #7F9F7F;"> 3N, </span><span style="color: #BFEBBF;">:pitch</span><span style="color: #7F9F7F;"> 2} ; boat ;; ...)</span>
+</pre>
+</div>
+
+<p>
+Convert the piece into a specific key by transforming each note’s
+pitch using a function that represents the key:
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">where</span> [k f notes]
+  (map #(update-in <span style="color: #DFAF8F;">%</span> [k] f) notes))
+
+(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">scale</span> [intervals] (<span style="color: #F0DFAF; font-weight: bold;">fn</span> [degree] (apply + (take degree intervals))))
+
+(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">major</span> (scale [2 2 1 2 2 2 1]))
+
+(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">from</span> [n] (partial + n))
+
+(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">A</span> (from 69))
+
+(<span style="color: #F0DFAF; font-weight: bold;">-&gt;&gt;</span> melody (where <span style="color: #BFEBBF;">:pitch</span> (comp <span style="color: #BFEBBF;">A</span> major)))
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">-&gt; ({</span><span style="color: #BFEBBF;">:time</span><span style="color: #7F9F7F;"> 0, </span><span style="color: #BFEBBF;">:pitch</span><span style="color: #7F9F7F;"> 69} ; Row, ;; {</span><span style="color: #BFEBBF;">:time</span><span style="color: #7F9F7F;"> 1, </span><span style="color: #BFEBBF;">:pitch</span><span style="color: #7F9F7F;"> 69} ; row, ;; ...)</span>
+</pre>
+</div>
+
+<p>
+Convert the piece into a specific tempo by transforming each note’s
+time using a function that represents the tempo:
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">bpm</span> [beats] (<span style="color: #F0DFAF; font-weight: bold;">fn</span> [beat] (/ (* beat 60 1000) beats)))
+
+(<span style="color: #F0DFAF; font-weight: bold;">-&gt;&gt;</span> melody
+     (where <span style="color: #BFEBBF;">:time</span> (comp (from (<span style="color: #7CB8BB;">overtone</span><span style="color: #DCDCCC; background-color: #3F3F3F;">/</span>now)) (bpm 90))))
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">-&gt; ({</span><span style="color: #BFEBBF;">:time</span><span style="color: #7F9F7F;"> 1383316072169, </span><span style="color: #BFEBBF;">:pitch</span><span style="color: #7F9F7F;"> 0} ;; {</span><span style="color: #BFEBBF;">:time</span><span style="color: #7F9F7F;"> 4149948218507/3, </span><span style="color: #BFEBBF;">:pitch</span><span style="color: #7F9F7F;"> 0} ;; ...)</span>
+</pre>
+</div>
+
+<p>
+Now, define an instrument and use it to play the melody. The
+following example synthesized instrument is a simple sine wave, whose
+amplitude and duration are controlled by an envelope:
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(require '[<span style="color: #7CB8BB;">overtone.live</span> <span style="color: #BFEBBF;">:refer</span> [definst line sin-osc <span style="color: #BFEBBF;">FREE</span> midi-&gt;hz at]])
+
+(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">beep</span> [freq 440] (<span style="color: #F0DFAF; font-weight: bold;">let</span> [envelope (line 1 0 0.5 <span style="color: #BFEBBF;">:action</span> <span style="color: #BFEBBF;">FREE</span>)] (* envelope (sin-osc freq))))
+
+(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">play</span> [notes] (<span style="color: #F0DFAF; font-weight: bold;">doseq</span> [{ms <span style="color: #BFEBBF;">:time</span> midi <span style="color: #BFEBBF;">:pitch</span>} notes] (at ms (beep (midi-&gt;hz midi)))))
+
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">Make sure your speakers are on...</span>
+(<span style="color: #F0DFAF; font-weight: bold;">-&gt;&gt;</span> melody (where <span style="color: #BFEBBF;">:pitch</span> (comp <span style="color: #BFEBBF;">A</span> major)) (where <span style="color: #BFEBBF;">:time</span> (comp (from (<span style="color: #7CB8BB;">overtone</span><span style="color: #DCDCCC; background-color: #3F3F3F;">/</span>now)) (bpm 90))) play)
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">-&gt; &lt;music playing on your speakers&gt;</span>
+</pre>
+</div>
+
+<p>
+If your nursery rhyme is a round, like “Row, Row, Row Your Boat,” you
+can use it to accompany itself:
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">round</span> [beats notes]
+  (concat notes (<span style="color: #F0DFAF; font-weight: bold;">-&gt;&gt;</span> notes (where <span style="color: #BFEBBF;">:time</span> (from beats)))))
+
+(<span style="color: #F0DFAF; font-weight: bold;">-&gt;&gt;</span> melody
+     (round 4)
+     (where <span style="color: #BFEBBF;">:pitch</span> (comp <span style="color: #BFEBBF;">A</span> major))
+     (where <span style="color: #BFEBBF;">:time</span> (comp (from (<span style="color: #7CB8BB;">overtone</span><span style="color: #DCDCCC; background-color: #3F3F3F;">/</span>now)) (bpm 90)))
+     play)
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: b</p>
+<p class="date">Created: 2016-12-02 Fri 16:35</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

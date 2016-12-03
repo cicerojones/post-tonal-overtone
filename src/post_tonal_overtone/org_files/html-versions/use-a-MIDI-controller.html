@@ -1,0 +1,834 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2016-12-02 Fri 15:25 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title></title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="b" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline3">1. session with midi device in overtone</a>
+<ul>
+<li><a href="#orgheadline1">1.1. start up and find info about overtone and midi devices</a></li>
+<li><a href="#orgheadline2">1.2. (midi-connected-devices)</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline12">2. learn more about how overtone processes midi data</a>
+<ul>
+<li><a href="#orgheadline4">2.1. (event-debug-on)</a></li>
+<li><a href="#orgheadline6">2.2. note-on event with the event-debug-on function</a>
+<ul>
+<li><a href="#orgheadline5">2.2.1. note-off event</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline7">2.3. debug off</a></li>
+<li><a href="#orgheadline9">2.4. control-change starting point</a>
+<ul>
+<li><a href="#orgheadline8">2.4.1. knob 1</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline11">2.5. control-change ending point</a>
+<ul>
+<li><a href="#orgheadline10">2.5.1. knob2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline18">3. make an 'instrument'</a>
+<ul>
+<li><a href="#orgheadline13">3.1. create a basic instrument for use with midi-poly-player</a></li>
+<li><a href="#orgheadline14">3.2. make a player to use midi-poly-player and defined instrument</a></li>
+<li><a href="#orgheadline15">3.3. stop the defined player&#x2013;doesn't do what you hope?</a></li>
+<li><a href="#orgheadline16">3.4. create an event handler with on-event&#x2013;needs a real instrument for demo</a></li>
+<li><a href="#orgheadline17">3.5. remove event handler</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline27">4. make a beeping instrument</a>
+<ul>
+<li><a href="#orgheadline19">4.1. create a very simple instrument</a></li>
+<li><a href="#orgheadline20">4.2. kill all instances of running instrument&#x2013;contrast with killing with ID-specific number</a></li>
+<li><a href="#orgheadline21">4.3. create a player using midi-poly-player to play the simple instrument</a></li>
+<li><a href="#orgheadline22">4.4. stop the player&#x2013;doesn't do what you hope?</a></li>
+<li><a href="#orgheadline23">4.5. stop the player by redefining with 'nil'</a></li>
+<li><a href="#orgheadline24">4.6. stop all sounds</a></li>
+<li><a href="#orgheadline25">4.7. create an event handler using on-event for using with simple-sine instrument</a></li>
+<li><a href="#orgheadline26">4.8. stop player using remove-event-handler</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline37">5. make sounds (noise)</a>
+<ul>
+<li><a href="#orgheadline28">5.1. create an event handler with on-event and use control-change??</a></li>
+<li><a href="#orgheadline29">5.2. basically works, but gets loud fast (vel vs. val error)</a></li>
+<li><a href="#orgheadline30">5.3. println note-on and velocity message</a></li>
+<li><a href="#orgheadline31">5.4. correctly grab and print out the cc-chanel and velocity (use :note and :velocity)</a></li>
+<li><a href="#orgheadline32">5.5. correctly grab and use as vol the cc-chanel and velocity (use :note and :velocity)</a></li>
+<li><a href="#orgheadline33">5.6. use control change with noise filter?</a></li>
+<li><a href="#orgheadline34">5.7. use 'ctl' to make a real-time change</a></li>
+<li><a href="#orgheadline35">5.8. actively filter noise with CC (remember, to use ctl, must have an active instance)</a></li>
+<li><a href="#orgheadline36">5.9. make a recording</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3"><span class="section-number-2">1</span> session with midi device in overtone</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-orgheadline1" class="outline-3">
+<h3 id="orgheadline1"><span class="section-number-3">1.1</span> start up and find info about overtone and midi devices</h3>
+<div class="outline-text-3" id="text-1-1">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(use '<span style="color: #7CB8BB;">overtone.core</span>)
+</pre>
+</div>
+
+<p>
+Must be captialized?
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #7CB8BB;">overtone.version</span><span style="color: #DCDCCC; background-color: #3F3F3F;">/</span>OVERTONE-VERSION
+</pre>
+</div>
+<p>
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+</p>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">:major</td>
+<td class="org-right">0</td>
+<td class="org-left">:minor</td>
+<td class="org-right">9</td>
+<td class="org-left">:patch</td>
+<td class="org-right">1</td>
+<td class="org-left">:snapshot</td>
+<td class="org-left">false</td>
+</tr>
+</tbody>
+</table>
+<p>
+<code>=====</code>
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; 51efe786282772e3493d3f3185d57fdb30cd9612
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2"><span class="section-number-3">1.2</span> (midi-connected-devices)</h3>
+<div class="outline-text-3" id="text-1-2">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(midi-connected-devices)
+</pre>
+</div>
+
+
+
+<pre class="example">
+'((:description "Axiom A.I.R. Mini32 MIDI"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "MIDI"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x1142bdd "MIDI")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x117963cc "com.sun.media.sound.MidiInDevice@117963cc")  :version "Unknown version") (:description "Axiom A.I.R. Mini32 HyperControl"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "HyperControl"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "HyperControl" "Axiom A.I.R. Mini32 HyperControl" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x3886ef0a "HyperControl")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x42fac5ea "com.sun.media.sound.MidiInDevice@42fac5ea")  :version "Unknown version"))
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">({<span style="color: #BFEBBF;">:description</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span>,
+  <span style="color: #BFEBBF;">:vendor</span> <span style="color: #CC9393;">"M-Audio"</span>,
+  <span style="color: #BFEBBF;">:sinks</span> 0,
+  <span style="color: #BFEBBF;">:sources</span> 2147483647,
+  <span style="color: #BFEBBF;">:name</span> <span style="color: #CC9393;">"MIDI"</span>,
+  <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">full-device-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0],
+  <span style="color: #BFEBBF;">:info</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo</span> 0x1142bdd <span style="color: #CC9393;">"MIDI"</span>],
+  <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">dev-num</span> 0,
+  <span style="color: #BFEBBF;">:device</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice</span> 0x117963cc <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice@117963cc"</span>],
+  <span style="color: #BFEBBF;">:version</span> <span style="color: #CC9393;">"Unknown version"</span>}
+
+ {<span style="color: #BFEBBF;">:description</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 HyperControl"</span>,
+  <span style="color: #BFEBBF;">:vendor</span> <span style="color: #CC9393;">"M-Audio"</span>,
+  <span style="color: #BFEBBF;">:sinks</span> 0,
+  <span style="color: #BFEBBF;">:sources</span> 2147483647,
+  <span style="color: #BFEBBF;">:name</span> <span style="color: #CC9393;">"HyperControl"</span>,
+  <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">full-device-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"HyperControl"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 HyperControl"</span> 0],
+  <span style="color: #BFEBBF;">:info</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo</span> 0x3886ef0a <span style="color: #CC9393;">"HyperControl"</span>],
+  <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">dev-num</span> 0,
+  <span style="color: #BFEBBF;">:device</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice</span> 0x42fac5ea <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice@42fac5ea"</span>],
+  <span style="color: #BFEBBF;">:version</span> <span style="color: #CC9393;">"Unknown version"</span>})
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline12" class="outline-2">
+<h2 id="orgheadline12"><span class="section-number-2">2</span> learn more about how overtone processes midi data</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4"><span class="section-number-3">2.1</span> (event-debug-on)</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(event-debug-on)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6"><span class="section-number-3">2.2</span> note-on event with the event-debug-on function</h3>
+<div class="outline-text-3" id="text-2-2">
+</div><div id="outline-container-orgheadline5" class="outline-4">
+<h4 id="orgheadline5"><span class="section-number-4">2.2.1</span> note-off event</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<div class="org-src-container">
+
+<pre class="src src-clojure">event:  [<span style="color: #BFEBBF;">:midi</span> <span style="color: #BFEBBF;">:note-off</span>] ({<span style="color: #BFEBBF;">:data2</span> 0, <span style="color: #BFEBBF;">:command</span> <span style="color: #BFEBBF;">:note-off</span>, <span style="color: #BFEBBF;">:channel</span> 0, <span style="color: #BFEBBF;">:msg</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.FastShortMessage</span> 0x535e9cfb <span style="color: #CC9393;">"com.sun.media.sound.FastShortMessage@535e9cfb"</span>], <span style="color: #BFEBBF;">:note</span> 60, <span style="color: #BFEBBF;">:dev-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:status</span> <span style="color: #BFEBBF;">:note-on</span>, <span style="color: #BFEBBF;">:data1</span> 60, <span style="color: #BFEBBF;">:data2-f</span> 0.0, <span style="color: #BFEBBF;">:device</span> {<span style="color: #BFEBBF;">:description</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span>, <span style="color: #BFEBBF;">:vendor</span> <span style="color: #CC9393;">"M-Audio"</span>, <span style="color: #BFEBBF;">:sinks</span> 0, <span style="color: #BFEBBF;">:sources</span> 2147483647, <span style="color: #BFEBBF;">:name</span> <span style="color: #CC9393;">"MIDI"</span>, <span style="color: #BFEBBF;">:transmitter</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice$MidiInTransmitter</span> 0x17af0adf <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice$MidiInTransmitter@17af0adf"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">full-device-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:info</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo</span> 0x1142bdd <span style="color: #CC9393;">"MIDI"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">dev-num</span> 0, <span style="color: #BFEBBF;">:device</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice</span> 0x117963cc <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice@117963cc"</span>], <span style="color: #BFEBBF;">:version</span> <span style="color: #CC9393;">"Unknown version"</span>}, <span style="color: #BFEBBF;">:timestamp</span> 18410464271, <span style="color: #BFEBBF;">:velocity</span> 0, <span style="color: #BFEBBF;">:velocity-f</span> 0.0}) 
+event:  [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0] ({<span style="color: #BFEBBF;">:data2</span> 0, <span style="color: #BFEBBF;">:command</span> <span style="color: #BFEBBF;">:note-off</span>, <span style="color: #BFEBBF;">:channel</span> 0, <span style="color: #BFEBBF;">:msg</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.FastShortMessage</span> 0x535e9cfb <span style="color: #CC9393;">"com.sun.media.sound.FastShortMessage@535e9cfb"</span>], <span style="color: #BFEBBF;">:note</span> 60, <span style="color: #BFEBBF;">:dev-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:status</span> <span style="color: #BFEBBF;">:note-on</span>, <span style="color: #BFEBBF;">:data1</span> 60, <span style="color: #BFEBBF;">:data2-f</span> 0.0, <span style="color: #BFEBBF;">:device</span> {<span style="color: #BFEBBF;">:description</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span>, <span style="color: #BFEBBF;">:vendor</span> <span style="color: #CC9393;">"M-Audio"</span>, <span style="color: #BFEBBF;">:sinks</span> 0, <span style="color: #BFEBBF;">:sources</span> 2147483647, <span style="color: #BFEBBF;">:name</span> <span style="color: #CC9393;">"MIDI"</span>, <span style="color: #BFEBBF;">:transmitter</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice$MidiInTransmitter</span> 0x17af0adf <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice$MidiInTransmitter@17af0adf"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">full-device-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:info</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo</span> 0x1142bdd <span style="color: #CC9393;">"MIDI"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">dev-num</span> 0, <span style="color: #BFEBBF;">:device</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice</span> 0x117963cc <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice@117963cc"</span>], <span style="color: #BFEBBF;">:version</span> <span style="color: #CC9393;">"Unknown version"</span>}, <span style="color: #BFEBBF;">:timestamp</span> 18410464271, <span style="color: #BFEBBF;">:velocity</span> 0, <span style="color: #BFEBBF;">:velocity-f</span> 0.0}) 
+event:  (<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0 <span style="color: #BFEBBF;">:note-off</span> 60) ({<span style="color: #BFEBBF;">:data2</span> 0, <span style="color: #BFEBBF;">:command</span> <span style="color: #BFEBBF;">:note-off</span>, <span style="color: #BFEBBF;">:channel</span> 0, <span style="color: #BFEBBF;">:msg</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.FastShortMessage</span> 0x535e9cfb <span style="color: #CC9393;">"com.sun.media.sound.FastShortMessage@535e9cfb"</span>], <span style="color: #BFEBBF;">:note</span> 60, <span style="color: #BFEBBF;">:dev-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:status</span> <span style="color: #BFEBBF;">:note-on</span>, <span style="color: #BFEBBF;">:data1</span> 60, <span style="color: #BFEBBF;">:data2-f</span> 0.0, <span style="color: #BFEBBF;">:device</span> {<span style="color: #BFEBBF;">:description</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span>, <span style="color: #BFEBBF;">:vendor</span> <span style="color: #CC9393;">"M-Audio"</span>, <span style="color: #BFEBBF;">:sinks</span> 0, <span style="color: #BFEBBF;">:sources</span> 2147483647, <span style="color: #BFEBBF;">:name</span> <span style="color: #CC9393;">"MIDI"</span>, <span style="color: #BFEBBF;">:transmitter</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice$MidiInTransmitter</span> 0x17af0adf <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice$MidiInTransmitter@17af0adf"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">full-device-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:info</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo</span> 0x1142bdd <span style="color: #CC9393;">"MIDI"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">dev-num</span> 0, <span style="color: #BFEBBF;">:device</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice</span> 0x117963cc <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice@117963cc"</span>], <span style="color: #BFEBBF;">:version</span> <span style="color: #CC9393;">"Unknown version"</span>}, <span style="color: #BFEBBF;">:timestamp</span> 18410464271, <span style="color: #BFEBBF;">:velocity</span> 0, <span style="color: #BFEBBF;">:velocity-f</span> 0.0})
+
+event:  (<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0 <span style="color: #BFEBBF;">:note-off</span>) ({<span style="color: #BFEBBF;">:data2</span> 0, <span style="color: #BFEBBF;">:command</span> <span style="color: #BFEBBF;">:note-off</span>, <span style="color: #BFEBBF;">:channel</span> 0, <span style="color: #BFEBBF;">:msg</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.FastShortMessage</span> 0x535e9cfb <span style="color: #CC9393;">"com.sun.media.sound.FastShortMessage@535e9cfb"</span>], <span style="color: #BFEBBF;">:note</span> 60, <span style="color: #BFEBBF;">:dev-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:status</span> <span style="color: #BFEBBF;">:note-on</span>, <span style="color: #BFEBBF;">:data1</span> 60, <span style="color: #BFEBBF;">:data2-f</span> 0.0, <span style="color: #BFEBBF;">:device</span> {<span style="color: #BFEBBF;">:description</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span>, <span style="color: #BFEBBF;">:vendor</span> <span style="color: #CC9393;">"M-Audio"</span>, <span style="color: #BFEBBF;">:sinks</span> 0, <span style="color: #BFEBBF;">:sources</span> 2147483647, <span style="color: #BFEBBF;">:name</span> <span style="color: #CC9393;">"MIDI"</span>, <span style="color: #BFEBBF;">:transmitter</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice$MidiInTransmitter</span> 0x17af0adf <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice$MidiInTransmitter@17af0adf"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">full-device-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:info</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo</span> 0x1142bdd <span style="color: #CC9393;">"MIDI"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">dev-num</span> 0, <span style="color: #BFEBBF;">:device</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice</span> 0x117963cc <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice@117963cc"</span>], <span style="color: #BFEBBF;">:version</span> <span style="color: #CC9393;">"Unknown version"</span>}, <span style="color: #BFEBBF;">:timestamp</span> 18410464271, <span style="color: #BFEBBF;">:velocity</span> 0, <span style="color: #BFEBBF;">:velocity-f</span> 0.0})
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7"><span class="section-number-3">2.3</span> debug off</h3>
+<div class="outline-text-3" id="text-2-3">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(event-debug-off)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9"><span class="section-number-3">2.4</span> control-change starting point</h3>
+<div class="outline-text-3" id="text-2-4">
+</div><div id="outline-container-orgheadline8" class="outline-4">
+<h4 id="orgheadline8"><span class="section-number-4">2.4.1</span> knob 1</h4>
+<div class="outline-text-4" id="text-2-4-1">
+<div class="org-src-container">
+
+<pre class="src src-clojure">event:  [<span style="color: #BFEBBF;">:midi</span> <span style="color: #BFEBBF;">:control-change</span>] ({<span style="color: #BFEBBF;">:data2</span> 1, <span style="color: #BFEBBF;">:command</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:channel</span> 0, <span style="color: #BFEBBF;">:msg</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.FastShortMessage</span> 0x18025326 <span style="color: #CC9393;">"com.sun.media.sound.FastShortMessage@18025326"</span>], <span style="color: #BFEBBF;">:note</span> 2, <span style="color: #BFEBBF;">:dev-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:status</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:data1</span> 2, <span style="color: #BFEBBF;">:data2-f</span> 0.007874016, <span style="color: #BFEBBF;">:device</span> {<span style="color: #BFEBBF;">:description</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span>, <span style="color: #BFEBBF;">:vendor</span> <span style="color: #CC9393;">"M-Audio"</span>, <span style="color: #BFEBBF;">:sinks</span> 0, <span style="color: #BFEBBF;">:sources</span> 2147483647, <span style="color: #BFEBBF;">:name</span> <span style="color: #CC9393;">"MIDI"</span>, <span style="color: #BFEBBF;">:transmitter</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice$MidiInTransmitter</span> 0x17af0adf <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice$MidiInTransmitter@17af0adf"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">full-device-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:info</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo</span> 0x1142bdd <span style="color: #CC9393;">"MIDI"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">dev-num</span> 0, <span style="color: #BFEBBF;">:device</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice</span> 0x117963cc <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice@117963cc"</span>], <span style="color: #BFEBBF;">:version</span> <span style="color: #CC9393;">"Unknown version"</span>}, <span style="color: #BFEBBF;">:timestamp</span> 18651991003, <span style="color: #BFEBBF;">:velocity</span> 1, <span style="color: #BFEBBF;">:velocity-f</span> 0.007874016}) 
+event:  [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0] ({<span style="color: #BFEBBF;">:data2</span> 1, <span style="color: #BFEBBF;">:command</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:channel</span> 0, <span style="color: #BFEBBF;">:msg</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.FastShortMessage</span> 0x18025326 <span style="color: #CC9393;">"com.sun.media.sound.FastShortMessage@18025326"</span>], <span style="color: #BFEBBF;">:note</span> 2, <span style="color: #BFEBBF;">:dev-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:status</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:data1</span> 2, <span style="color: #BFEBBF;">:data2-f</span> 0.007874016, <span style="color: #BFEBBF;">:device</span> {<span style="color: #BFEBBF;">:description</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span>, <span style="color: #BFEBBF;">:vendor</span> <span style="color: #CC9393;">"M-Audio"</span>, <span style="color: #BFEBBF;">:sinks</span> 0, <span style="color: #BFEBBF;">:sources</span> 2147483647, <span style="color: #BFEBBF;">:name</span> <span style="color: #CC9393;">"MIDI"</span>, <span style="color: #BFEBBF;">:transmitter</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice$MidiInTransmitter</span> 0x17af0adf <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice$MidiInTransmitter@17af0adf"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">full-device-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:info</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo</span> 0x1142bdd <span style="color: #CC9393;">"MIDI"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">dev-num</span> 0, <span style="color: #BFEBBF;">:device</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice</span> 0x117963cc <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice@117963cc"</span>], <span style="color: #BFEBBF;">:version</span> <span style="color: #CC9393;">"Unknown version"</span>}, <span style="color: #BFEBBF;">:timestamp</span> 18651991003, <span style="color: #BFEBBF;">:velocity</span> 1, <span style="color: #BFEBBF;">:velocity-f</span> 0.007874016})
+
+event:  (<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0 <span style="color: #BFEBBF;">:control-change</span> 2) ({<span style="color: #BFEBBF;">:data2</span> 1, <span style="color: #BFEBBF;">:command</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:channel</span> 0, <span style="color: #BFEBBF;">:msg</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.FastShortMessage</span> 0x18025326 <span style="color: #CC9393;">"com.sun.media.sound.FastShortMessage@18025326"</span>], <span style="color: #BFEBBF;">:note</span> 2, <span style="color: #BFEBBF;">:dev-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:status</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:data1</span> 2, <span style="color: #BFEBBF;">:data2-f</span> 0.007874016, <span style="color: #BFEBBF;">:device</span> {<span style="color: #BFEBBF;">:description</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span>, <span style="color: #BFEBBF;">:vendor</span> <span style="color: #CC9393;">"M-Audio"</span>, <span style="color: #BFEBBF;">:sinks</span> 0, <span style="color: #BFEBBF;">:sources</span> 2147483647, <span style="color: #BFEBBF;">:name</span> <span style="color: #CC9393;">"MIDI"</span>, <span style="color: #BFEBBF;">:transmitter</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice$MidiInTransmitter</span> 0x17af0adf <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice$MidiInTransmitter@17af0adf"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">full-device-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:info</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo</span> 0x1142bdd <span style="color: #CC9393;">"MIDI"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">dev-num</span> 0, <span style="color: #BFEBBF;">:device</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice</span> 0x117963cc <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice@117963cc"</span>], <span style="color: #BFEBBF;">:version</span> <span style="color: #CC9393;">"Unknown version"</span>}, <span style="color: #BFEBBF;">:timestamp</span> 18651991003, <span style="color: #BFEBBF;">:velocity</span> 1, <span style="color: #BFEBBF;">:velocity-f</span> 0.007874016})
+
+event:  (<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0 <span style="color: #BFEBBF;">:control-change</span>) ({<span style="color: #BFEBBF;">:data2</span> 1, <span style="color: #BFEBBF;">:command</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:channel</span> 0, <span style="color: #BFEBBF;">:msg</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.FastShortMessage</span> 0x18025326 <span style="color: #CC9393;">"com.sun.media.sound.FastShortMessage@18025326"</span>], <span style="color: #BFEBBF;">:note</span> 2, <span style="color: #BFEBBF;">:dev-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:status</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:data1</span> 2, <span style="color: #BFEBBF;">:data2-f</span> 0.007874016, <span style="color: #BFEBBF;">:device</span> {<span style="color: #BFEBBF;">:description</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span>, <span style="color: #BFEBBF;">:vendor</span> <span style="color: #CC9393;">"M-Audio"</span>, <span style="color: #BFEBBF;">:sinks</span> 0, <span style="color: #BFEBBF;">:sources</span> 2147483647, <span style="color: #BFEBBF;">:name</span> <span style="color: #CC9393;">"MIDI"</span>, <span style="color: #BFEBBF;">:transmitter</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice$MidiInTransmitter</span> 0x17af0adf <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice$MidiInTransmitter@17af0adf"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">full-device-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:info</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo</span> 0x1142bdd <span style="color: #CC9393;">"MIDI"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">dev-num</span> 0, <span style="color: #BFEBBF;">:device</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice</span> 0x117963cc <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice@117963cc"</span>], <span style="color: #BFEBBF;">:version</span> <span style="color: #CC9393;">"Unknown version"</span>}, <span style="color: #BFEBBF;">:timestamp</span> 18651991003, <span style="color: #BFEBBF;">:velocity</span> 1, <span style="color: #BFEBBF;">:velocity-f</span> 0.007874016})
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="orgheadline11"><span class="section-number-3">2.5</span> control-change ending point</h3>
+<div class="outline-text-3" id="text-2-5">
+<div class="org-src-container">
+
+<pre class="src src-clojure">event:  [<span style="color: #BFEBBF;">:midi</span> <span style="color: #BFEBBF;">:control-change</span>] ({<span style="color: #BFEBBF;">:data2</span> 127, <span style="color: #BFEBBF;">:command</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:channel</span> 0, <span style="color: #BFEBBF;">:msg</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.FastShortMessage</span> 0x42926a68 <span style="color: #CC9393;">"com.sun.media.sound.FastShortMessage@42926a68"</span>], <span style="color: #BFEBBF;">:note</span> 2, <span style="color: #BFEBBF;">:dev-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:status</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:data1</span> 2, <span style="color: #BFEBBF;">:data2-f</span> 1.0, <span style="color: #BFEBBF;">:device</span> {<span style="color: #BFEBBF;">:description</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span>, <span style="color: #BFEBBF;">:vendor</span> <span style="color: #CC9393;">"M-Audio"</span>, <span style="color: #BFEBBF;">:sinks</span> 0, <span style="color: #BFEBBF;">:sources</span> 2147483647, <span style="color: #BFEBBF;">:name</span> <span style="color: #CC9393;">"MIDI"</span>, <span style="color: #BFEBBF;">:transmitter</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice$MidiInTransmitter</span> 0x17af0adf <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice$MidiInTransmitter@17af0adf"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">full-device-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:info</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo</span> 0x1142bdd <span style="color: #CC9393;">"MIDI"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">dev-num</span> 0, <span style="color: #BFEBBF;">:device</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice</span> 0x117963cc <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice@117963cc"</span>], <span style="color: #BFEBBF;">:version</span> <span style="color: #CC9393;">"Unknown version"</span>}, <span style="color: #BFEBBF;">:timestamp</span> 18652583742, <span style="color: #BFEBBF;">:velocity</span> 127, <span style="color: #BFEBBF;">:velocity-f</span> 1.0}) 
+event:  [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0] ({<span style="color: #BFEBBF;">:data2</span> 127, <span style="color: #BFEBBF;">:command</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:channel</span> 0, <span style="color: #BFEBBF;">:msg</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.FastShortMessage</span> 0x42926a68 <span style="color: #CC9393;">"com.sun.media.sound.FastShortMessage@42926a68"</span>], <span style="color: #BFEBBF;">:note</span> 2, <span style="color: #BFEBBF;">:dev-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:status</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:data1</span> 2, <span style="color: #BFEBBF;">:data2-f</span> 1.0, <span style="color: #BFEBBF;">:device</span> {<span style="color: #BFEBBF;">:description</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span>, <span style="color: #BFEBBF;">:vendor</span> <span style="color: #CC9393;">"M-Audio"</span>, <span style="color: #BFEBBF;">:sinks</span> 0, <span style="color: #BFEBBF;">:sources</span> 2147483647, <span style="color: #BFEBBF;">:name</span> <span style="color: #CC9393;">"MIDI"</span>, <span style="color: #BFEBBF;">:transmitter</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice$MidiInTransmitter</span> 0x17af0adf <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice$MidiInTransmitter@17af0adf"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">full-device-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:info</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo</span> 0x1142bdd <span style="color: #CC9393;">"MIDI"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">dev-num</span> 0, <span style="color: #BFEBBF;">:device</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice</span> 0x117963cc <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice@117963cc"</span>], <span style="color: #BFEBBF;">:version</span> <span style="color: #CC9393;">"Unknown version"</span>}, <span style="color: #BFEBBF;">:timestamp</span> 18652583742, <span style="color: #BFEBBF;">:velocity</span> 127, <span style="color: #BFEBBF;">:velocity-f</span> 1.0})
+
+event:  (<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0 <span style="color: #BFEBBF;">:control-change</span> 2) ({<span style="color: #BFEBBF;">:data2</span> 127, <span style="color: #BFEBBF;">:command</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:channel</span> 0, <span style="color: #BFEBBF;">:msg</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.FastShortMessage</span> 0x42926a68 <span style="color: #CC9393;">"com.sun.media.sound.FastShortMessage@42926a68"</span>], <span style="color: #BFEBBF;">:note</span> 2, <span style="color: #BFEBBF;">:dev-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:status</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:data1</span> 2, <span style="color: #BFEBBF;">:data2-f</span> 1.0, <span style="color: #BFEBBF;">:device</span> {<span style="color: #BFEBBF;">:description</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span>, <span style="color: #BFEBBF;">:vendor</span> <span style="color: #CC9393;">"M-Audio"</span>, <span style="color: #BFEBBF;">:sinks</span> 0, <span style="color: #BFEBBF;">:sources</span> 2147483647, <span style="color: #BFEBBF;">:name</span> <span style="color: #CC9393;">"MIDI"</span>, <span style="color: #BFEBBF;">:transmitter</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice$MidiInTransmitter</span> 0x17af0adf <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice$MidiInTransmitter@17af0adf"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">full-device-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:info</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo</span> 0x1142bdd <span style="color: #CC9393;">"MIDI"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">dev-num</span> 0, <span style="color: #BFEBBF;">:device</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice</span> 0x117963cc <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice@117963cc"</span>], <span style="color: #BFEBBF;">:version</span> <span style="color: #CC9393;">"Unknown version"</span>}, <span style="color: #BFEBBF;">:timestamp</span> 18652583742, <span style="color: #BFEBBF;">:velocity</span> 127, <span style="color: #BFEBBF;">:velocity-f</span> 1.0})
+
+event:  (<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0 <span style="color: #BFEBBF;">:control-change</span>) ({<span style="color: #BFEBBF;">:data2</span> 127, <span style="color: #BFEBBF;">:command</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:channel</span> 0, <span style="color: #BFEBBF;">:msg</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.FastShortMessage</span> 0x42926a68 <span style="color: #CC9393;">"com.sun.media.sound.FastShortMessage@42926a68"</span>], <span style="color: #BFEBBF;">:note</span> 2, <span style="color: #BFEBBF;">:dev-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:status</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:data1</span> 2, <span style="color: #BFEBBF;">:data2-f</span> 1.0, <span style="color: #BFEBBF;">:device</span> {<span style="color: #BFEBBF;">:description</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span>, <span style="color: #BFEBBF;">:vendor</span> <span style="color: #CC9393;">"M-Audio"</span>, <span style="color: #BFEBBF;">:sinks</span> 0, <span style="color: #BFEBBF;">:sources</span> 2147483647, <span style="color: #BFEBBF;">:name</span> <span style="color: #CC9393;">"MIDI"</span>, <span style="color: #BFEBBF;">:transmitter</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice$MidiInTransmitter</span> 0x17af0adf <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice$MidiInTransmitter@17af0adf"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">full-device-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:info</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo</span> 0x1142bdd <span style="color: #CC9393;">"MIDI"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">dev-num</span> 0, <span style="color: #BFEBBF;">:device</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice</span> 0x117963cc <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice@117963cc"</span>], <span style="color: #BFEBBF;">:version</span> <span style="color: #CC9393;">"Unknown version"</span>}, <span style="color: #BFEBBF;">:timestamp</span> 18652583742, <span style="color: #BFEBBF;">:velocity</span> 127, <span style="color: #BFEBBF;">:velocity-f</span> 1.0})
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">event:  [<span style="color: #BFEBBF;">:midi</span> <span style="color: #BFEBBF;">:control-change</span>] ({<span style="color: #BFEBBF;">:data2</span> 28, <span style="color: #BFEBBF;">:command</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:channel</span> 0, <span style="color: #BFEBBF;">:msg</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.FastShortMessage</span> 0x77f7f70a <span style="color: #CC9393;">"com.sun.media.sound.FastShortMessage@77f7f70a"</span>], <span style="color: #BFEBBF;">:note</span> 1, <span style="color: #BFEBBF;">:dev-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:status</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:data1</span> 1, <span style="color: #BFEBBF;">:data2-f</span> 0.22047244, <span style="color: #BFEBBF;">:device</span> {<span style="color: #BFEBBF;">:description</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span>, <span style="color: #BFEBBF;">:vendor</span> <span style="color: #CC9393;">"M-Audio"</span>, <span style="color: #BFEBBF;">:sinks</span> 0, <span style="color: #BFEBBF;">:sources</span> 2147483647, <span style="color: #BFEBBF;">:name</span> <span style="color: #CC9393;">"MIDI"</span>, <span style="color: #BFEBBF;">:transmitter</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice$MidiInTransmitter</span> 0x17af0adf <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice$MidiInTransmitter@17af0adf"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">full-device-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:info</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo</span> 0x1142bdd <span style="color: #CC9393;">"MIDI"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">dev-num</span> 0, <span style="color: #BFEBBF;">:device</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice</span> 0x117963cc <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice@117963cc"</span>], <span style="color: #BFEBBF;">:version</span> <span style="color: #CC9393;">"Unknown version"</span>}, <span style="color: #BFEBBF;">:timestamp</span> 25614776293, <span style="color: #BFEBBF;">:velocity</span> 28, <span style="color: #BFEBBF;">:velocity-f</span> 0.22047244}) 
+event:  [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0] ({<span style="color: #BFEBBF;">:data2</span> 28, <span style="color: #BFEBBF;">:command</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:channel</span> 0, <span style="color: #BFEBBF;">:msg</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.FastShortMessage</span> 0x77f7f70a <span style="color: #CC9393;">"com.sun.media.sound.FastShortMessage@77f7f70a"</span>], <span style="color: #BFEBBF;">:note</span> 1, <span style="color: #BFEBBF;">:dev-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:status</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:data1</span> 1, <span style="color: #BFEBBF;">:data2-f</span> 0.22047244, <span style="color: #BFEBBF;">:device</span> {<span style="color: #BFEBBF;">:description</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span>, <span style="color: #BFEBBF;">:vendor</span> <span style="color: #CC9393;">"M-Audio"</span>, <span style="color: #BFEBBF;">:sinks</span> 0, <span style="color: #BFEBBF;">:sources</span> 2147483647, <span style="color: #BFEBBF;">:name</span> <span style="color: #CC9393;">"MIDI"</span>, <span style="color: #BFEBBF;">:transmitter</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice$MidiInTransmitter</span> 0x17af0adf <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice$MidiInTransmitter@17af0adf"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">full-device-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:info</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo</span> 0x1142bdd <span style="color: #CC9393;">"MIDI"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">dev-num</span> 0, <span style="color: #BFEBBF;">:device</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice</span> 0x117963cc <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice@117963cc"</span>], <span style="color: #BFEBBF;">:version</span> <span style="color: #CC9393;">"Unknown version"</span>}, <span style="color: #BFEBBF;">:timestamp</span> 25614776293, <span style="color: #BFEBBF;">:velocity</span> 28, <span style="color: #BFEBBF;">:velocity-f</span> 0.22047244})
+
+event:  (<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0 <span style="color: #BFEBBF;">:control-change</span> 1) ({<span style="color: #BFEBBF;">:data2</span> 28, <span style="color: #BFEBBF;">:command</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:channel</span> 0, <span style="color: #BFEBBF;">:msg</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.FastShortMessage</span> 0x77f7f70a <span style="color: #CC9393;">"com.sun.media.sound.FastShortMessage@77f7f70a"</span>], <span style="color: #BFEBBF;">:note</span> 1, <span style="color: #BFEBBF;">:dev-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:status</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:data1</span> 1, <span style="color: #BFEBBF;">:data2-f</span> 0.22047244, <span style="color: #BFEBBF;">:device</span> {<span style="color: #BFEBBF;">:description</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span>, <span style="color: #BFEBBF;">:vendor</span> <span style="color: #CC9393;">"M-Audio"</span>, <span style="color: #BFEBBF;">:sinks</span> 0, <span style="color: #BFEBBF;">:sources</span> 2147483647, <span style="color: #BFEBBF;">:name</span> <span style="color: #CC9393;">"MIDI"</span>, <span style="color: #BFEBBF;">:transmitter</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice$MidiInTransmitter</span> 0x17af0adf <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice$MidiInTransmitter@17af0adf"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">full-device-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:info</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo</span> 0x1142bdd <span style="color: #CC9393;">"MIDI"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">dev-num</span> 0, <span style="color: #BFEBBF;">:device</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice</span> 0x117963cc <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice@117963cc"</span>], <span style="color: #BFEBBF;">:version</span> <span style="color: #CC9393;">"Unknown version"</span>}, <span style="color: #BFEBBF;">:timestamp</span> 25614776293, <span style="color: #BFEBBF;">:velocity</span> 28, <span style="color: #BFEBBF;">:velocity-f</span> 0.22047244})
+
+event:  (<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0 <span style="color: #BFEBBF;">:control-change</span>) ({<span style="color: #BFEBBF;">:data2</span> 28, <span style="color: #BFEBBF;">:command</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:channel</span> 0, <span style="color: #BFEBBF;">:msg</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.FastShortMessage</span> 0x77f7f70a <span style="color: #CC9393;">"com.sun.media.sound.FastShortMessage@77f7f70a"</span>], <span style="color: #BFEBBF;">:note</span> 1, <span style="color: #BFEBBF;">:dev-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:status</span> <span style="color: #BFEBBF;">:control-change</span>, <span style="color: #BFEBBF;">:data1</span> 1, <span style="color: #BFEBBF;">:data2-f</span> 0.22047244, <span style="color: #BFEBBF;">:device</span> {<span style="color: #BFEBBF;">:description</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span>, <span style="color: #BFEBBF;">:vendor</span> <span style="color: #CC9393;">"M-Audio"</span>, <span style="color: #BFEBBF;">:sinks</span> 0, <span style="color: #BFEBBF;">:sources</span> 2147483647, <span style="color: #BFEBBF;">:name</span> <span style="color: #CC9393;">"MIDI"</span>, <span style="color: #BFEBBF;">:transmitter</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice$MidiInTransmitter</span> 0x17af0adf <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice$MidiInTransmitter@17af0adf"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">full-device-key</span> [<span style="color: #BFEBBF;">:midi-device</span> <span style="color: #CC9393;">"M-Audio"</span> <span style="color: #CC9393;">"MIDI"</span> <span style="color: #CC9393;">"Axiom A.I.R. Mini32 MIDI"</span> 0], <span style="color: #BFEBBF;">:info</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo</span> 0x1142bdd <span style="color: #CC9393;">"MIDI"</span>], <span style="color: #BFEBBF;">:</span><span style="color: #BFEBBF;">overtone.studio.midi</span><span style="color: #BFEBBF; background-color: #3F3F3F;">/</span><span style="color: #BFEBBF;">dev-num</span> 0, <span style="color: #BFEBBF;">:device</span> #object[<span style="color: #7CB8BB;">com.sun.media.sound.MidiInDevice</span> 0x117963cc <span style="color: #CC9393;">"com.sun.media.sound.MidiInDevice@117963cc"</span>], <span style="color: #BFEBBF;">:version</span> <span style="color: #CC9393;">"Unknown version"</span>}, <span style="color: #BFEBBF;">:timestamp</span> 25614776293, <span style="color: #BFEBBF;">:velocity</span> 28, <span style="color: #BFEBBF;">:velocity-f</span> 0.22047244})
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline10" class="outline-4">
+<h4 id="orgheadline10"><span class="section-number-4">2.5.1</span> knob2</h4>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline18" class="outline-2">
+<h2 id="orgheadline18"><span class="section-number-2">3</span> make an 'instrument'</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13"><span class="section-number-3">3.1</span> create a basic instrument for use with midi-poly-player</h3>
+<div class="outline-text-3" id="text-3-1">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">steel-drum</span> [note 60 amp 0.8]
+  (<span style="color: #F0DFAF; font-weight: bold;">let</span> [freq (midicps note)]
+    (* amp
+       (env-gen (perc 0.01 0.2) 1 1 0 1 <span style="color: #BFEBBF;">:action</span> <span style="color: #BFEBBF;">FREE</span>)
+       (+ (sin-osc (/ freq 2))
+          (rlpf (saw freq) (* 1.1 freq) 0.4)))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="orgheadline14"><span class="section-number-3">3.2</span> make a player to use midi-poly-player and defined instrument</h3>
+<div class="outline-text-3" id="text-3-2">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">player</span> (midi-poly-player steel-drum))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline15" class="outline-3">
+<h3 id="orgheadline15"><span class="section-number-3">3.3</span> stop the defined player&#x2013;doesn't do what you hope?</h3>
+<div class="outline-text-3" id="text-3-3">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(midi-player-stop)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16"><span class="section-number-3">3.4</span> create an event handler with on-event&#x2013;needs a real instrument for demo</h3>
+<div class="outline-text-3" id="text-3-4">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(on-event [<span style="color: #BFEBBF;">:midi</span> <span style="color: #BFEBBF;">:note-on</span>]
+          (<span style="color: #F0DFAF; font-weight: bold;">fn</span> [e]
+            (<span style="color: #F0DFAF; font-weight: bold;">let</span> [note (<span style="color: #BFEBBF;">:note</span> e)
+                  vel  (<span style="color: #BFEBBF;">:velocity</span> e)]
+              (your-instr note vel)))
+          <span style="color: #BFEBBF;">::keyboard-handler</span>)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17"><span class="section-number-3">3.5</span> remove event handler</h3>
+<div class="outline-text-3" id="text-3-5">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(remove-event-handler <span style="color: #BFEBBF;">::keyboard-handler</span>)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline27" class="outline-2">
+<h2 id="orgheadline27"><span class="section-number-2">4</span> make a beeping instrument</h2>
+<div class="outline-text-2" id="text-4">
+</div><div id="outline-container-orgheadline19" class="outline-3">
+<h3 id="orgheadline19"><span class="section-number-3">4.1</span> create a very simple instrument</h3>
+<div class="outline-text-3" id="text-4-1">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">boop</span> [note 60 amp 0.3]
+  (<span style="color: #F0DFAF; font-weight: bold;">let</span> [freq (midicps note)]
+    (* amp (sin-osc freq))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline20" class="outline-3">
+<h3 id="orgheadline20"><span class="section-number-3">4.2</span> kill all instances of running instrument&#x2013;contrast with killing with ID-specific number</h3>
+<div class="outline-text-3" id="text-4-2">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(kill boop)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline21" class="outline-3">
+<h3 id="orgheadline21"><span class="section-number-3">4.3</span> create a player using midi-poly-player to play the simple instrument</h3>
+<div class="outline-text-3" id="text-4-3">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">booper</span> (midi-poly-player boop))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline22" class="outline-3">
+<h3 id="orgheadline22"><span class="section-number-3">4.4</span> stop the player&#x2013;doesn't do what you hope?</h3>
+<div class="outline-text-3" id="text-4-4">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(midi-player-stop)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline23" class="outline-3">
+<h3 id="orgheadline23"><span class="section-number-3">4.5</span> stop the player by redefining with 'nil'</h3>
+<div class="outline-text-3" id="text-4-5">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">booper</span> (midi-poly-player <span style="color: #BFEBBF;">nil</span>))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline24" class="outline-3">
+<h3 id="orgheadline24"><span class="section-number-3">4.6</span> stop all sounds</h3>
+<div class="outline-text-3" id="text-4-6">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(stop)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline25" class="outline-3">
+<h3 id="orgheadline25"><span class="section-number-3">4.7</span> create an event handler using on-event for using with simple-sine instrument</h3>
+<div class="outline-text-3" id="text-4-7">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(on-event [<span style="color: #BFEBBF;">:midi</span> <span style="color: #BFEBBF;">:note-on</span>]
+          (<span style="color: #F0DFAF; font-weight: bold;">fn</span> [e]
+            (<span style="color: #F0DFAF; font-weight: bold;">let</span> [note (<span style="color: #BFEBBF;">:note</span> e)
+                  vel  (<span style="color: #BFEBBF;">:velocity</span> e)]
+              (boop note (* 0.1 vel))))
+          <span style="color: #BFEBBF;">::boop-handler</span>)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline26" class="outline-3">
+<h3 id="orgheadline26"><span class="section-number-3">4.8</span> stop player using remove-event-handler</h3>
+<div class="outline-text-3" id="text-4-8">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(remove-event-handler <span style="color: #BFEBBF;">::boop-handler</span>)
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline37" class="outline-2">
+<h2 id="orgheadline37"><span class="section-number-2">5</span> make sounds (noise)</h2>
+<div class="outline-text-2" id="text-5">
+</div><div id="outline-container-orgheadline28" class="outline-3">
+<h3 id="orgheadline28"><span class="section-number-3">5.1</span> create an event handler with on-event and use control-change??</h3>
+<div class="outline-text-3" id="text-5-1">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">anoise</span> [vol 0.5]
+  (* (pink-noise)
+     vol))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(anoise)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(kill anoise)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline29" class="outline-3">
+<h3 id="orgheadline29"><span class="section-number-3">5.2</span> basically works, but gets loud fast (vel vs. val error)</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+'anoise' (see above) must be running
+</p>
+<div class="org-src-container">
+
+<pre class="src src-clojure">(on-event [<span style="color: #BFEBBF;">:midi</span> <span style="color: #BFEBBF;">:control-change</span>]
+          (<span style="color: #F0DFAF; font-weight: bold;">fn</span> [e]
+            (<span style="color: #F0DFAF; font-weight: bold;">let</span> [val (<span style="color: #BFEBBF;">:data2</span> e)
+                  vel  (<span style="color: #BFEBBF;">:velocity</span> e)]
+              (anoise vel)))
+          <span style="color: #BFEBBF;">::data-handler</span>)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(remove-event-handler <span style="color: #BFEBBF;">::data-handler</span>)
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-clojure">(on-event [<span style="color: #BFEBBF;">:midi</span> <span style="color: #BFEBBF;">:control-change</span>]
+          (<span style="color: #F0DFAF; font-weight: bold;">fn</span> [e]
+            (<span style="color: #F0DFAF; font-weight: bold;">let</span> [val (<span style="color: #BFEBBF;">:data2</span> e)
+                  vel  (<span style="color: #BFEBBF;">:velocity</span> e)]
+              (ctl anoise val)))
+          <span style="color: #BFEBBF;">::ctldata-handler</span>)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(remove-event-handler <span style="color: #BFEBBF;">::ctldata-handler</span>)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline30" class="outline-3">
+<h3 id="orgheadline30"><span class="section-number-3">5.3</span> println note-on and velocity message</h3>
+<div class="outline-text-3" id="text-5-3">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(on-event [<span style="color: #BFEBBF;">:midi</span> <span style="color: #BFEBBF;">:note-on</span>] (<span style="color: #F0DFAF; font-weight: bold;">fn</span> [{note <span style="color: #BFEBBF;">:note</span> velocity <span style="color: #BFEBBF;">:velocity</span>}]
+                             (println <span style="color: #CC9393;">"Note: "</span> note <span style="color: #CC9393;">", Velocity: "</span> velocity))
+          <span style="color: #BFEBBF;">::note-printer</span>)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(remove-event-handler <span style="color: #BFEBBF;">::note-printer</span>)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline31" class="outline-3">
+<h3 id="orgheadline31"><span class="section-number-3">5.4</span> correctly grab and print out the cc-chanel and velocity (use :note and :velocity)</h3>
+<div class="outline-text-3" id="text-5-4">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(on-event [<span style="color: #BFEBBF;">:midi</span> <span style="color: #BFEBBF;">:control-change</span>] (<span style="color: #F0DFAF; font-weight: bold;">fn</span> [{cc-channel <span style="color: #BFEBBF;">:note</span> velocity <span style="color: #BFEBBF;">:velocity</span>}]
+                             (println <span style="color: #CC9393;">"channel: "</span> cc-channel <span style="color: #CC9393;">", Velocity: "</span> velocity))
+          <span style="color: #BFEBBF;">::cc-printer</span>)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(remove-event-handler <span style="color: #BFEBBF;">::cc-printer</span>)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline32" class="outline-3">
+<h3 id="orgheadline32"><span class="section-number-3">5.5</span> correctly grab and use as vol the cc-chanel and velocity (use :note and :velocity)</h3>
+<div class="outline-text-3" id="text-5-5">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(on-event [<span style="color: #BFEBBF;">:midi</span> <span style="color: #BFEBBF;">:control-change</span>] (<span style="color: #F0DFAF; font-weight: bold;">fn</span> [{cc-channel <span style="color: #BFEBBF;">:note</span> velocity <span style="color: #BFEBBF;">:velocity</span>}]
+                                    (ctl anoise <span style="color: #BFEBBF;">:vol</span> (scale-range velocity 1 127 0 1)))
+          <span style="color: #BFEBBF;">::cc-player</span>)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(remove-event-handler <span style="color: #BFEBBF;">::cc-player</span>)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline33" class="outline-3">
+<h3 id="orgheadline33"><span class="section-number-3">5.6</span> use control change with noise filter?</h3>
+<div class="outline-text-3" id="text-5-6">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(on-event [<span style="color: #BFEBBF;">:midi</span> <span style="color: #BFEBBF;">:control-change</span>]
+          (<span style="color: #F0DFAF; font-weight: bold;">fn</span> [{cc-channel <span style="color: #BFEBBF;">:note</span> velocity <span style="color: #BFEBBF;">:velocity</span>}]
+            (lpf (ctl anoise <span style="color: #BFEBBF;">:vol</span> (scale-range velocity 1 127 0 1))
+                 10)
+            <span style="color: #BFEBBF;">::cc-filterplayer</span>))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(demo 10
+  (lpf (* 0.5 (saw [339 440]))
+       (mouse-x 10 10000)))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline34" class="outline-3">
+<h3 id="orgheadline34"><span class="section-number-3">5.7</span> use 'ctl' to make a real-time change</h3>
+<div class="outline-text-3" id="text-5-7">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(<span style="color: #F0DFAF; font-weight: bold;">definst</span> <span style="color: #93E0E3;">an-fnoise</span> [vol 0.1 ffreq 1000]
+  (lpf (* (pink-noise)
+          vol)
+       ffreq))
+</pre>
+</div>
+
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(an-fnoise)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(kill an-fnoise)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(ctl an-fnoise <span style="color: #BFEBBF;">:vol</span> 0.5 <span style="color: #BFEBBF;">:ffreq</span> 4000)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline35" class="outline-3">
+<h3 id="orgheadline35"><span class="section-number-3">5.8</span> actively filter noise with CC (remember, to use ctl, must have an active instance)</h3>
+<div class="outline-text-3" id="text-5-8">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(an-fnoise)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(on-event [<span style="color: #BFEBBF;">:midi</span> <span style="color: #BFEBBF;">:control-change</span>] (<span style="color: #F0DFAF; font-weight: bold;">fn</span> [{cc-channel <span style="color: #BFEBBF;">:note</span> velocity <span style="color: #BFEBBF;">:velocity</span>}]
+                                     (ctl an-fnoise <span style="color: #BFEBBF;">:ffreq</span> (scale-range velocity 1 127 100 8000))
+                                         10)
+          <span style="color: #BFEBBF;">::cc-filterplayer</span>)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(on-event [<span style="color: #BFEBBF;">:midi</span> <span style="color: #BFEBBF;">:note-on</span>]
+          (<span style="color: #F0DFAF; font-weight: bold;">fn</span> [m]
+            (<span style="color: #F0DFAF; font-weight: bold;">let</span> [note (<span style="color: #BFEBBF;">:note</span> m)]
+              (prophet <span style="color: #BFEBBF;">:freq</span> (midi-&gt;hz note)
+                       <span style="color: #BFEBBF;">:decay</span> 5
+                       <span style="color: #BFEBBF;">:rq</span> 0.6
+                       <span style="color: #BFEBBF;">:cutoff-freq</span> 1000)))
+          <span style="color: #BFEBBF;">::prophet-midi</span>)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(on-event [<span style="color: #BFEBBF;">:midi</span> <span style="color: #BFEBBF;">:note-on</span>]
+          (<span style="color: #F0DFAF; font-weight: bold;">fn</span> [m]
+            (<span style="color: #F0DFAF; font-weight: bold;">let</span> [note (<span style="color: #BFEBBF;">:note</span> m)]
+              (prophet <span style="color: #BFEBBF;">:freq</span> (midi-&gt;hz note)
+                       <span style="color: #BFEBBF;">:decay</span> 5
+                       <span style="color: #BFEBBF;">:rq</span> 0.6
+                       <span style="color: #BFEBBF;">:cutoff-freq</span> 1000
+                       <span style="color: #BFEBBF;">:amp</span> (<span style="color: #BFEBBF;">:velocity-f</span> m))))
+          <span style="color: #BFEBBF;">::prophet-midi</span>)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure">(on-event [<span style="color: #BFEBBF;">:midi</span> <span style="color: #BFEBBF;">:control-change</span>] (<span style="color: #F0DFAF; font-weight: bold;">fn</span> [{cc-channel <span style="color: #BFEBBF;">:note</span> velocity <span style="color: #BFEBBF;">:velocity</span>}]
+                                    (ctl anoise <span style="color: #BFEBBF;">:vol</span> (scale-range velocity 1 127 0 1)))
+          <span style="color: #BFEBBF;">::cc-player</span>)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline36" class="outline-3">
+<h3 id="orgheadline36"><span class="section-number-3">5.9</span> make a recording</h3>
+<div class="outline-text-3" id="text-5-9">
+<div class="org-src-container">
+
+<pre class="src src-clojure">(recording-start <span style="color: #CC9393;">"/Users/a/Google Drive/wav-file-uploads/brown-noise-test.wav"</span>)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">make some noise. i.e.</span>
+(demo (pan2 (sin-osc)))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-clojure"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">stop recording</span>
+(recording-stop)
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: b</p>
+<p class="date">Created: 2016-12-02 Fri 15:25</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
