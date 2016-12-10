@@ -62,7 +62,7 @@ subtle and obvious?
 If you want to get a sense of what you have been bringing in, and want
 to begin to get a sense of how namespaces really work, take a look at
 what may be defined in a given namespace.
-**** post_tonal_overtone.core
+**** (dir post_tonal_overtone.core)
 Note, this will not necessarily produce the same results as below.
 Why? What has to happen for all my nice handiwork to be loaded?
 #+BEGIN_SRC clojure :results output
@@ -122,7 +122,7 @@ voice-and-transpose-rand-set
 voice-rand-set
 where
 #+END_EXAMPLE
-**** 
+**** (dir post_tonal_overtone.data.set_class_data)
 #+BEGIN_SRC clojure :results output
 (dir post_tonal_overtone.data.set_class_data)
 #+END_SRC
@@ -142,7 +142,7 @@ tetrachords-tn
 trichords
 trichords-tn
 #+end_example
-**** 
+**** (dir post_tonal_overtone.probability_functions.finite-distributions)
 #+BEGIN_SRC clojure :results output
 (dir post_tonal_overtone.probability_functions.finite-distributions)
 #+END_SRC
