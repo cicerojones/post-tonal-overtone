@@ -427,7 +427,6 @@ A basic reverb player
 (slow-grain-reverb)
 #+END_SRC
 
-
 * after a bit of work, a need for building "artist-specific" abstractions arises
 ** understanding workflow, tools, and idiomatic patterns for your domain.
 
