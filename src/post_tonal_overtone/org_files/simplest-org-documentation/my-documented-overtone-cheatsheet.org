@@ -1,0 +1,92 @@
+* 
+** lf-cub
+#+BEGIN_SRC clojure :results output
+(doc lf-cub)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.core/lf-cub
+([freq iphase])
+  
+  [freq 440.0, iphase 0.0]
+
+  freq   - Frequency in Hertz 
+  iphase - Initial phase offset. For efficiency 
+           reasons this is a value ranging from 0 
+           to 2. 
+
+  An oscillator outputting a sine like shape made of two 
+  cubic pieces 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+#+BEGIN_SRC clojure :results silent
+;; loud and unpleasant!
+(demo (lf-pulse:ar 800 0))
+#+END_SRC
+* notes
+** scope
+
+  "Throws an exception if the server isn't internal - scope relies on
+  fast access to shared buffers with the server which is currently only
+  available with the internal server. Also ensures server is
+  connected."
+* [#A] Tour of UGen examples translated
+:PROPERTIES:
+:ID:       5D5E462C-92EE-4896-82A5-E0B6DE501BEF
+:END:
+
+** LF (Low Frequency UGens)
+:PROPERTIES:
+:ID:       E8F1B9F7-E3AC-4784-9784-691D2C3C23FE
+:END:
+#+BEGIN_SRC clojure :results silent
+(demo 10 (lf-par:ar (+ 800 (* 400 (lf-par:kr 0.2 0))) 0))
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(demo 10 (lf-par:ar (+ 800 (* 400 (lf-par:kr (+ 10 (* 8 (lf-par:kr 0.2 0))) 0)))))
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(demo 10 (lf-cub:ar (+ 800 (* 400 (lf-cub:kr (+ 10 (* 8 (lf-cub:kr 0.2 0)))))) 0))
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(demo 10 (lf-tri:ar (+ 800 (* 400 (lf-tri:kr (+ 10 (* 8 (lf-tri:kr 0.2 0)))))) 0))
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(demo 10 (lf-saw:ar (+ 800 (* 400 (lf-saw:kr (+ 10 (* 8 (lf-saw:kr 0.2 0)))))) 0))
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(demo 10 (impulse:ar (+ 800 (* 400 (lf-saw:kr (+ 10 (* 8 (lf-saw:kr 0.2 0)))))) 0))
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(demo (lf-pulse:ar 800 0))
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(demo 7 (lf-pulse:ar (* 0.1 (x-line:kr 100 15000 6)) 0 0.5 ))
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(demo 8 (lf-pulse:ar (+ 0.1 (* 0.5 (x-line:kr 100 15000 6)))))
+#+END_SRC
+
+
+
+#+BEGIN_SRC clojure :results silent
+(demo 10 (lf-pulse:ar (* 0.1 (+ 200 (* 200 (lf-pulse:kr 3 0 0.3)))) 0 0.2)))
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(demo 10 (lf-pulse:ar (+ 800 (* 400 (lf-pulse:kr (+ 10 (* 8 (lf-pulse:kr 0.2 0)))))) 0))
+#+END_SRC

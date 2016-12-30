@@ -1,0 +1,437 @@
+* Building up more sophisticated Controller abstractions
+:PROPERTIES:
+:ID:       62D39834-5A93-49BB-80CD-6475FD7C1D6D
+:END:
+** Abstraction for using CC messages while exploring UGens and documentation
+*** can you remember how to make an event handler to modify two parameters?
+Here's you "synth:"
+
+#+BEGIN_SRC clojure :results silent
+(definst an-fnoise [vol 0.1 ffreq 1000]
+  (lpf (* (pink-noise)
+          vol)
+       ffreq))
+
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(an-fnoise 0.7)
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(on-event [:midi :control-change]
+          (fn [{cc-channel :note vel :velocity}]
+            (cond (= cc-channel 1) (ctl an-fnoise :vol (scale-range vel 1 127 0 1))
+                  (= cc-channel 2) (ctl an-fnoise :ffreq (scale-range vel 1 127 200 8000))))
+          ::pooper)
+
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(remove-event-handler ::pooper)
+#+END_SRC
+*** Putatative "expanded" version of an-fnoise with CC control
+**** code in process
+
+#+BEGIN_SRC clojure :results silent
+(definst someother-fnoise [vol 0.1 ffreq 1000]
+  (lpf (* (pink-noise)
+          vol)
+       ffreq))
+
+(someother-fnoise 0.7)
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(someother-fnoise :vol 0.6)
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(ctl someother-fnoise :ffreq 500)
+#+END_SRC
+
+Use atoms for "hot-swapping" values??!!
+
+#+BEGIN_SRC clojure :results silent
+  (def ffl (atom 200))
+  (def ffh (atom 8000))
+
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+
+  (on-event [:midi :control-change]
+            (fn [{cc-channel :note vel :velocity}]
+              (cond (= cc-channel 1) (ctl someother-fnoise :vol   (scale-range vel 1 127 0 1))
+                    (= cc-channel 2) (ctl someother-fnoise :ffreq (scale-range vel 1 127 @ffl @ffh))
+                    (= cc-channel 3) (reset! ffl (* vel 100))
+                    (= cc-channel 4) (reset! ffh (* vel 100))
+                    ))
+            ::someother-pooper)
+
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+
+    (on-event [:midi :control-change]
+              (fn [{cc-channel :note vel :velocity}]
+                (cond (= cc-channel 1) (do (reset! ffl (/ vel 127 )) 
+                                           (ctl someother-fnoise :vol   (scale-range vel 1 127 0 1)))
+                      (= cc-channel 2) (do (reset! ffh (* vel 10))
+                                           (ctl someother-fnoise :ffreq (scale-range vel 1 127 @ffl @ffh)))
+                      ))
+              ::someother-pooper-do)
+
+#+END_SRC
+
+
+#+BEGIN_SRC clojure
+(list @ffl @ffh)
+#+END_SRC
+
+#+RESULTS:
+| 113/127 | 1500 |
+
+#+BEGIN_SRC clojure :results silent
+(remove-event-handler ::someother-pooper)
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+;;; Note this presents problems; why?
+(on-event [:midi :control-change]
+          (fn [{cc-channel :note vel :velocity}]
+            (cond (= cc-channel 1) (ctl someother-fnoise :vol   (scale-range vel 1 127 0 1))
+                  (= cc-channel 2) (ctl someother-fnoise :ffreq (scale-range vel 1 127 200 8000))
+                  (= cc-channel 3) (ctl someother-fnoise :vol   (scale-range vel 1 127 0 1))
+                  (= cc-channel 4) (ctl someother-fnoise :ffreq (scale-range vel 1 127 (* 200))
+                  (= cc-channel 5) (ctl someother-fnoise :vol   (scale-range vel 1 127 0 1))
+                  (= cc-channel 6) (ctl someother-fnoise :vol   (scale-range vel 1 127 0 1))
+                  (= cc-channel 7) (ctl someother-fnoise :vol   (scale-range vel 1 127 0 1))
+                  (= cc-channel 8) (ctl someother-fnoise :vol   (scale-range vel 1 127 0 1))
+                  (= cc-channel 40) (ctl someother-fnoise :vol   (scale-range vel 1 127 0 1))
+                  (= cc-channel 41) (ctl someother-fnoise :ffreq   (scale-range vel 1 127 100 1000))
+                  ))
+          ::someother-pooper)
+
+#+END_SRC
+**** explanation of what's going on in the above code
+
+So, what does this have? 
+
+- =on-event= as function has 1.arguments, 2. a body that is a function, and
+  1. name (with double colon)
+
+- the cond in the function body is necessary to direct the messages to
+  the proper cc-channel
+
+- the velocity reported for each channel is used with a =ctl= message,
+  making some modification of an existing, "playing" synth on the
+  server?
+
+
+
+the value being passed to the relevant argument of the synth (in this
+case, the synth is someother-fnoise, and the argument is either 'vol' or
+'ffreq') is the result of being scaled by the "scale-range" function.
+
+We need this function to always take three determined arguments: 
+
+1. the input value (in all these CC cases, this is "vel" or the reported
+velocity of the given knob), 
+
+2. the input min and max, which as MIDI messages is constrained to
+   1-127
+
+3. an output min and max.
+
+We want to be able to manipulate these on the fly. Let's use another
+button to report back a channel and a "velocity"
+** reusable atoms of CC values
+#+BEGIN_SRC clojure :results silent
+  (def cc1 (atom 0))
+  (def cc2 (atom 0))
+  (def cc3 (atom 0))
+  (def cc4 (atom 0))
+  (def cc5 (atom 0))
+  (def cc6 (atom 0))
+  (def cc7 (atom 0))
+  (def cc8 (atom 0))
+
+  (on-event [:midi :control-change]
+            (fn [{cc-channel :note val :velocity}]
+              (cond (= cc-channel 1) (reset! cc1 val)
+                    (= cc-channel 2) (reset! cc2 val)
+                    (= cc-channel 3) (reset! cc3 val)
+                    (= cc-channel 4) (reset! cc4 val)
+                    (= cc-channel 5) (reset! cc5 val)
+                    (= cc-channel 6) (reset! cc6 val)
+                    (= cc-channel 7) (reset! cc7 val)
+                    (= cc-channel 8) (reset! cc8 val)
+))
+::cc-state)
+                  
+                  
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(list @cc1 @cc2 @cc3 @cc4 @cc5 @cc6 @cc7 @cc8)
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(remove-event-handler ::cc-state)
+#+END_SRC
+** receive and respond to channel change messages
+Print out
+
+#+BEGIN_SRC clojure :results silent
+  (on-event [:midi :control-change]
+            (fn [{cc-channel :note vel :velocity chan :channel}]
+              (println (list cc-channel vel chan)))
+              ::list-all)
+
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(remove-event-handler ::list-all)
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+  (on-event [:midi :control-change]
+            (fn [{cc-channel :note val :velocity chan :channel}]
+            (if (= chan 1) (println chan) (println chan))
+             )
+::cc-state-if)
+#+END_SRC
+** print out CC knob, value and channel for all CC-change messages
+#+BEGIN_SRC clojure :results silent
+  (on-event [:midi :control-change]
+            (fn [{cc-channel :note val :velocity chan :channel}]
+              (println (list cc-channel val chan)))
+              ::list-all)
+
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(remove-event-handler ::list-all)
+#+END_SRC
+
+* Exploring UGens
+** where do you find your UGens, brah?
+[[id:CF18101A-0997-454B-875B-206651F0FF17][Overtone Cheat Sheet 0.9.1]]
+
+Oh, of course. Maybe a better question is how to do you systematically
+explore UGens, finding interesting and useful things?
+
+First it will help to understand some basic parts of your building
+blocks, such as triggering things and reading out values that various
+UGens are producing. See polling and running
+** Polling and running 
+#+BEGIN_SRC clojure 
+(run (poll:kr (impulse:kr 10) (abs  (* 1000 (pink-noise:kr))) "polled-val:"))
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: user/audition-synth 105>
+** give oscillators UGens arguments meaningful in Hz (i.e. be aware of 'mul' and 'add')
+#+BEGIN_SRC clojure
+(demo 10 (sin-osc (abs  (* 10000 (brown-noise:kr)))))
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: user/audition-synth 103>
+
+#+BEGIN_SRC clojure
+(demo 10 (sin-osc (abs  (+ 300 (* 1000 (pink-noise:kr))))))
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: user/audition-synth 104>
+** read existing SC docs and tutorials and consider patterns
+Compare with ugens-tour.org in
+
+[[file:~/Dropbox/AB-local/Documents-new-home/supercollider-files/sc-misc/][file:~/Dropbox/AB-local/Documents-new-home/supercollider-files/sc-misc/]]
+
+[[id:03FDC781-8605-442B-AF5C-1AA04BAF2306][title:: Tour of UGens]]
+** develop demo-ing macro (or something)
+
+* Mastering Granular Synthesis
+** t-grains documentation
+#+BEGIN_SRC clojure 
+overtone.core/t-grains
+([num-channels trigger bufnum rate center-pos dur pan amp interp])
+  
+  [num-channels 2, trigger 0, bufnum 0, rate 1, center-pos 0, dur 0.1, pan 0.0, amp 0.1, interp 4]
+
+  num-channels - Number of output channels 
+  trigger      - At each trigger, the following 
+                 arguments are sampled and used as 
+                 the arguments of a new grain. A 
+                 trigger occurs when a signal 
+                 changes from <= 0 to > 0. If the 
+                 trigger is audio rate then the 
+                 grains will start with sample 
+                 accuracy. 
+  bufnum       - The index of the buffer to use. 
+                 It must be a one channel (mono) 
+                 buffer. 
+  rate         - 1.0 is normal, 2.0 is one octave 
+                 up, 0.5 is one octave down -1.0 
+                 is backwards normal rate. Unlike 
+                 PlayBuf, the rate is multiplied 
+                 by BufRate, so you needn't do 
+                 that yourself. 
+  center-pos   - The position in the buffer in 
+                 seconds at which the grain 
+                 envelope will reach maximum 
+                 amplitude. 
+  dur          - Duration of the grain in seconds 
+  pan          - A value from -1 to 1. Determines 
+                 where to pan the output in the 
+                 same manner as PanAz. 
+  amp          - Amplitude of the grain. 
+  interp       - 1,2,or 4. Determines whether the 
+                 grain uses (1) no interpolation, 
+                 (2) linear interpolation, or (4) 
+                 cubic interpolation. 
+
+  Sample playback from a buffer with fine control for doing 
+  granular synthesis. Triggers generate grains from a single 
+  channel (mono) buffer. Each grain has a Hann envelope 
+  (sin^2(x) for x from 0 to pi) and is panned between two 
+  channels of multiple outputs. 
+#+END_SRC
+** SLOW-GRAIN-REVERB: dedicated instrument abstraction for t-grains synths
+:PROPERTIES:
+:ID:       F109AE32-4289-4A8B-8637-B68D7B4FA5B6
+:END:
+
+#+BEGIN_SRC clojure :results silent
+;; defaults to buffer 0 (slow-goldberg, in this project)
+  ;; #<buffer-info: 184.540590s mono 0>
+
+  (definst slow-grain-reverb [b 0 trigger-rate 1 centerpos 1 grain-dur 0.5] 
+(let [trigger-rate (impulse:ar trigger-rate)]
+    (free-verb
+           (t-grains:ar 1 ;; num-channel
+                        trigger-rate
+                        b ;; bufnum
+                        1 ;; rate
+                        centerpos
+                        grain-dur
+                        0 ;; pan
+                        1 ;; amp
+                        2 ;; interp
+                        )
+           :mix 0.2
+           :damp 0.1
+           :room 0.9)))
+
+      (slow-grain-reverb)
+
+#+END_SRC
+
+
+
+#+BEGIN_SRC clojure
+(ctl slow-grain-reverb :trigger-rate 0.5 :centerpos 4 :grain-dur 1)
+#+END_SRC
+
+#+RESULTS:
+: #overtone.studio.inst.Inst{:name "slow-grain-reverb", :params ({:name "b", :default 0.0, :rate :kr, :value #atom[0.0 0x67ef0a06]} {:name "trigger-rate", :default 1.0, :rate :kr, :value #atom[1.0 0x38a4d81d]} {:name "centerpos", :default 1.0, :rate :kr, :value #atom[1.0 0x60e21590]} {:name "grain-dur", :default 0.5, :rate :kr, :value #atom[0.5 0x1702c902]}), :args ("b" "trigger-rate" "centerpos" "grain-dur"), :sdef {:name "user/slow-grain-reverb", :constants [0.0 2.0 1.0 17.0 0.9 0.2 0.1], :params (0.0 1.0 1.0 0.5), :pnames ({:name "b", :index 0} {:name "trigger-rate", :index 1} {:name "centerpos", :index 2} {:name "grain-dur", :index 3}), :ugens ({:args nil, :special 0, :name "Control", :rate 1, :inputs (), :rate-name :kr, :n-outputs 4, :id 306, :outputs ({:rate 1} {:rate 1} {:rate 1} {:rate 1}), :n-inputs 0} #<sc-ugen: impulse:ar [1]> #<sc-ugen: t-grains:ar [5]> #<sc-ugen: free-verb:ar [6]> #<sc-ugen: out:ar [7]>)}, :group #<synth-group[live]: Inst slow-grain-reverb Container 40>, :instance-group #<synth-group[live]: Inst slow-grain-reverb 41>, :fx-group #<synth-group[live]: Inst slow-grain-reverb FX 42>, :mixer #<synth-node[live]: overtone.stu547/mono-inst-mixer 43>, :bus #<audio-bus: No Name, mono, id 17>, :fx-chain [], :volume #atom[1.0 0x16d81be7], :pan #atom[0.0 0x6666c239], :n-chans 1}
+
+#+BEGIN_SRC clojure :results silent
+(ctl slow-grain-reverb :trigger-rate 0.3 :centerpos (tenth-inc 0.4) :grain-dur 2)
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(def nome (metronome 60))
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(ctl slow-grain-reverb :trigger-rate 0.3 :centerpos (* (nome) 0.5) :grain-dur 2)
+#+END_SRC
+
+
+#+BEGIN_SRC clojure :results silent
+(slow-grain-reverb)
+#+END_SRC
+* systematize use of knob and pad abstractions
+** explain use of functions passed to ON-EVENT event-handlers
+any key on your MIDI controller has basically two piece of data
+associated with it:
+
+- "note" :: a value or name that stays constant
+- "velocity" :: a value that typically changes, but can be more
+     complicated depeding on what kind of "note" event it is
+     associated with
+
+A function that responds to a given key has to do a few things.
+
+First of all, it needs to be included as part of an event-handler,
+which is created with "on-event," and will be given a keyword name.
+
+The function that drives the event-handling can do a variety of
+things, and should in most cases have several parameters.
+
+- synth :: we can control any of a variety of synths/instruments
+- synth-param :: we want to specify which parameter to control
+- controller (pad/knob) number :: which MIDI button to respond to
+- place :: the "ref" or "atom" to use for "dereferencing"
+- channel :: MIDI messages can be sent via different channels
+     (typically 0 or 1 will be default)
+
+Now, depending on what kind of behavior we want out of our controller
+button, we will need at least one more parameter.
+
+In the case of a knob, which will be turned and will run through a
+continuous stream of numbers, we will seek to continually set the
+"place" which stores the value for that knob. That is, we will
+"reset!" the ref.
+
+In the case of a pad, we might choose to ignore the "velocity" (that
+is, how "hard" we strike the pad, which can be hard to execute
+precisely each time and is thus subject to some randomness) and
+simply use it as "bang." That is, we just tell it to "activate"
+something.
+
+It can "activate" anything you can imagine that will respond to being
+"hit." I've used it to "increment/decrement" some value. While a knob
+ostensibly does the same thing, "banging" a value up or down allows
+for more precise, fine-grain control. Additionally, it is not subject
+to the 0-127 values associated with a knob.
+
+So, in the case of using a pad as part of a "counter," we need to pass
+a "swap!" function, that is, a function to use with =swap!= to adjust
+the value associated with the current state of the pad. The simplest
+thing is to just =inc= or =dec= the value. 
+
+Whatever particular operation we use the controller to perform, we
+will always be setting and resetting some value, and it is ideal to be
+able to know what that value is, as we update it. So, we will want to
+print out the value everytime it changes.
+
+Of course, all this will appear to happen simultaneously, but this
+illusion is actually created by wrapping all of these actions into a
+=do= block, which carries out each action sequentially. Setting the
+value of "a piece of state" has to happen before we can use that
+value, so the "setter" will always precede the =ctl= that actually
+does something with those values. 
+
+The "getting" of the value (note the "set/get" binary, which is just
+one conceptually straightforward way to break down change within this
+system) happens with =deref= which always returns the current value of
+a "piece of state." This value will be used with some parameter as
+named by a /keyword/ that comes from what keywords were given to
+whichever synth we originally defined.
+
+Now, when it comes time to refactor, we might want to think about what
+kind of (and how much) work the function used by the event handler is
+doing. The following questions might arise:
+
+- Can we print out a more helpful name than the clojure reference?
+- How many event handlers is it reasonable to instantiate? 
+- Does it make sense to always use =if= and =cond= logic?
+- Are there any drawbacks to performing many actions in a =do= block?
+- How well do we understand concurrency? Should we be using a =dosync=
+  block?
+- 
