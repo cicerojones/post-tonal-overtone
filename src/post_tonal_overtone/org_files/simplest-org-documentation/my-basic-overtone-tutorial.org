@@ -18,6 +18,10 @@
 ;; seems necessary to 'use' the scope specifically?
 (use 'overtone.studio.scope)
 #+END_SRC
+
+#+RESULTS:
+: nil
+
 ** basic overtone startup and test from org-mode--use external server
 Don't boot an internal server, but connect to an already started instance.
 
@@ -348,15 +352,18 @@ links
   (let [[s-name params ugen-form] (synth-form s-name s-form)]
     `(def ~s-name (synth ~s-name ~params ~ugen-form))))
 #+END_SRC
-* control sound in real time
+* control sound in real time with a MIDI controller
 ** are you connected to a controller?
+:PROPERTIES:
+:ID:       2A392B91-CD13-41A8-ADA1-00891B6B072F
+:END:
 
-#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
+#+BEGIN_SRC clojure
 (midi-connected-devices)
 #+END_SRC
 
 #+RESULTS:
-: '((:description "Axiom A.I.R. Mini32 MIDI"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "MIDI"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x1a34557a "MIDI")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x44fe4ed4 "com.sun.media.sound.MidiInDevice@44fe4ed4")  :version "Unknown version") (:description "Axiom A.I.R. Mini32 HyperControl"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "HyperControl"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "HyperControl" "Axiom A.I.R. Mini32 HyperControl" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x7f06c7fe "HyperControl")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x6e2d40c9 "com.sun.media.sound.MidiInDevice@6e2d40c9")  :version "Unknown version"))
+: '((:description "Axiom A.I.R. Mini32 MIDI"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "MIDI"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x782d6ab4 "MIDI")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x736dc80c "com.sun.media.sound.MidiInDevice@736dc80c")  :version "Unknown version") (:description "Axiom A.I.R. Mini32 HyperControl"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "HyperControl"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "HyperControl" "Axiom A.I.R. Mini32 HyperControl" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0xb86bfdb "HyperControl")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x6a9de3c3 "com.sun.media.sound.MidiInDevice@6a9de3c3")  :version "Unknown version"))
 
 quickly check the output dump: 
 
@@ -557,6 +564,7 @@ directory, and evaluating the following blocks places the vars in the
 (def yancey (load-sample "/Applications/SuperCollider/SuperCollider.app/Contents/Resources/sounds/all-mono/how-long-slowest-mono.wav"))
 #+END_SRC
 
+
 ** granular synthesis
 #+BEGIN_SRC clojure
 (def gran-buf (load-sample "/Users/b/Google Drive/Audio_uploads/wav-file-uploads/goldberg-slow-mono.wav"))
@@ -692,7 +700,7 @@ But, because this is just a function definition...what will happen?
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: user/slow-grain 85>
+: #<synth-node[loading]: user/slow-grain 111>
 
 
 #+BEGIN_SRC clojure :results silent

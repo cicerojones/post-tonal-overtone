@@ -3,6 +3,9 @@
 
 See large workshop project file
 [[file:~/Github-repos/overtone-source/src/overtone/examples/workshops/resonate2013/][file:~/Github-repos/overtone-source/src/overtone/examples/workshops/resonate2013/]]
+
+Understand busses and groups!
+[[file:~/Github-repos/overtone-source/src/overtone/examples/buses/getonthebus.clj][file:~/Github-repos/overtone-source/src/overtone/examples/buses/getonthebus.clj]]
 * document your documentation work
 ** recent documentation
 *** more advanced
