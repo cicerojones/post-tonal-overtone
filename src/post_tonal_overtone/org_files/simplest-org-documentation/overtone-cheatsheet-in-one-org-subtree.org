@@ -1,0 +1,602 @@
+* Overtone Cheat Sheet 0.9.1 in one subtree
+** Instruments (need to be manually referred)
+*** overtone.inst.drum
+   Drums
+kick
+kick2
+kick3
+kick4
+dub-kick
+dry-kick
+small-hat
+closed-hat
+close-hat2
+open-hat
+hat3
+soft-hat
+noise-hat
+round-kick
+snare
+snare2
+noise-snare
+tone-snare
+tom
+clap
+bing
+dance-kick
+quick-kick
+haziti-clap
+*** overtone.inst.piano
+   Piano piano
+*** overtone.inst.sampled-piano
+   Sampled Piano
+ sampled-piano
+*** overtone.inst.sampler
+   Sampler
+ granular
+*** overtone.inst.bass
+   Bass
+ bass grunge-bass vintage-bass daf-bass
+*** overtone.inst.synth
+   Synth
+
+ ticker ping tb303 mooger rise-fall-pad pad overpad buzz ks1 ks-stringer fm-demo harmonic-swimming whoahaha bubbles supersaw cs80lead simple-flute overtone.inst.io IO mic
+
+** Synths (need to be manually referred)
+*** overtone.synth.sampled-piano)
+   Sampled Piano
+
+ sampled-piano
+
+*** overtone.synth.stringed
+   Stringed
+ s guitar
+
+*** overtone.synth.ixi
+   Ixi impulser kick kick2 kick3
+
+*** overtone.synth.retro
+   Retro tb-303
+
+*** overtone.synth.sts
+   STS prophet
+
+** REPL helpers
+
+*** Documentation
+odoc ugen-doc find-ugen find-ugen-doc
+
+*** Examples
+examples example get-example
+
+*** Shell
+ls grep
+
+*** Synths
+unify-synthdef
+
+*** Pretty Printing
+opp pp-synth pp-unified-synth
+  pp-sc-synth pp-unified-sc-synth
+
+** Timing
+  Scheduling
+  Function Application now after-delay periodic
+  interspaced apply-by apply-at
+  OSC at
+  Stopping stop-player kill-player
+  Feedback show-schedule
+  Metronome
+  Create metronome
+  Manipulate metro-start metro-tick metro-beat
+  metro-bpm metro-tock metro-bar metro-bpb
+  bps beat-ms
+
+** Studio
+  Mixer
+  Control volume input-gain
+  MIDI
+  Connected Controllers midi-connected-devices
+  midi-connected-receivers
+  midi-find-connected-devices
+  midi-find-connected-device
+  midi-find-connected-receivers
+  midi-find-connected-receiver
+  Info midi-device-num
+  midi-full-device-key
+  Player midi-poly-player midi-player-stop
+  midi-inst-controller
+  Discovery midi-capture-next-controller-control-key
+  midi-capture-next-controller-key
+  Keys midi-device-keys
+  midi-mk-control-key-keyword
+  State midi-agent-for-control
+  Scope
+  Create & Reset scope pscope spectrogram
+  Recording
+  Stop & Start recording-start recording-stop
+  Query recording?
+  Inst Effects
+  Instrument inst-volume inst-out-bus inst-fx! clear-fx
+  FX fx-noise-gate fx-compressor fx-limiter
+  fx-sustainer fx-freeverb fx-reverb
+  fx-echo fx-chorus fx-distortion
+  fx-distortion2 fx-distortion-tubescreamer
+  fx-bitcrusher fx-rlpf fx-rhpf fx-feedback
+  fx-feedback-distortion
+
+** Synth Design
+  Design definst defsynth
+  Examples defexamples
+  CGens defcgen
+  Auditioning demo run
+  Checking with-no-ugen-checks with-ugen-debugging
+  Arguments synth-args synth-arg-index
+
+** Synth Control
+  Live Control ctl kill
+  Node Liveness inactive-node-modification-error
+  inactive-buffer-modification-error
+  block-node-until-ready?
+  without-node-blocking
+  with-inactive-node-modification-error
+  with-inactive-buffer-modification-error
+  with-inactive-modification-error
+
+** Event Handling
+  Add on-event on-sync-event on-latest-event
+  oneshot-event oneshot-sync-event
+  Fire event sync-event
+  Remove remove-event-handler
+  Debug event-debug-on event-debug-off
+  event-monitor-on event-monitor-off
+  event-monitor-timer event-monitor
+  event-monitor-keys
+  Ugen Triggers trig-id on-trigger on-latest-trigger
+  on-sync-trigger
+
+** Nodes & Groups
+  Create & Free node group node-free group-free
+  group-clear group-deep-clear
+  Manipulate node-start node-pause node-place
+  node-control node-control-range
+  node-map-controls
+  node-map-n-controls
+  group-prepend-node
+  group-append-node
+  Info node? node-live? node-loading?
+  node-active? node-tree
+  pp-node-tree node-get-control
+  node-get-controls
+  Foundation Groups foundation-overtone-group
+  foundation-output-group
+  foundation-monitor-group
+  foundation-input-group
+  foundation-user-group
+  foundation-default-group
+  foundation-safe-group
+  foundation-safe-pre-default-group
+  foundation-safe-post-default-group
+  Manipulation Handlers on-node-destroyed on-node-created
+  on-node-paused on-node-started
+  Event Keys node-destroyed-event-key
+  node-created-event-key
+  node-paused-event-key
+  node-started-event-key
+
+** Server
+  Startup boot-server boot-internal-server
+  boot-external-server
+  connect-external-server
+  Shutdown kill-server
+  Control stop clear stop-all clear-all
+  OSC Communication snd recv clear-msg-queue at
+  snd-immediately
+  Diagnostic server-status server-info
+  server-opts server-connected?
+  server-disconnected?
+  server-connecting?
+  internal-server? external-server?
+  connection-info server-sample-rate
+  server-num-output-buses
+  server-num-input-buses
+  server-num-audio-buses
+  server-num-buffers
+  ensure-connected!
+  Debug sc-osc-log-on sc-osc-log-off
+  sc-osc-log sc-debug-on
+  sc-debug-off external-server-log
+  sc-osc-debug-on sc-osc-debug-off
+
+** Visualisation
+  Graphviz
+  Dot Notation graphviz
+  Show PDF show-graphviz-synth
+
+** External Assets
+  Generic URLs
+  Auto cache & Return Path asset-path asset-seq
+  asset-bundle-path
+  asset-bundle-dir
+  Freesound.org
+  Playable Function freesound
+  Auto cache & Query freesound-info freesound-path
+  freesound-pack-info
+  freesound-pack-dir
+  freesound-search freesound-searchm
+  freesound-search-paths
+
+** Algorithmic Composition
+*** Chance
+**** Choice
+***** choose
+ choose-n weighted-choose
+****** documentation examples
+#+BEGIN_SRC clojure :results output
+(doc choose-n)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/choose-n
+: ([n col])
+:   Choose n random elements from col.
+
+#+BEGIN_SRC clojure :results output
+(doc weighted-choose)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/weighted-choose
+([val-prob-map] [vals probabilities])
+  Returns an element from list vals based on the corresponding
+  probabilities list. The length of vals and probabilities should be
+  similar and the sum of all the probabilities should be 1. It is also
+  possible to pass a map of val -> prob pairs as a param.
+
+  The following will return one of the following vals with the
+  corresponding probabilities:
+  1 -> 50%
+  2 -> 30%
+  3 -> 12.5%
+  4 -> 7.5%
+  (weighted-choose [1 2 3 4] [0.5 0.3 0.125 0.075])
+  (weighted-choose {1 0.5, 2 0.3, 3 0.125, 4 0.075})
+#+end_example
+
+***** Dice
+ weighted-coin ranged-rand
+**** Scaling
+***** Range
+ scale-range
+***** Rounding
+ closest-to round-to
+**** Trig
+***** Scaled
+ cosr sinr tanr
+**** Functions
+***** Cycling
+ cycle-fn
+**** List
+***** Rotation
+ rotate
+***** Creation
+ fill
+
+** Music
+  Pitch
+  Ratios unison octave fifth sixth third fourth
+  min-third min-sixth
+  Note Shifting shift flat sharp invert inc-first
+  dec-last
+  Notes note octave-note nth-octave
+  nth-equal-tempered-freq
+  canonical-pitch-class-name note-info
+  mk-midi-string match-note
+  Scales scale resolve-scale scale-field
+  nth-interval resolve-degree degree->int
+  degree->interval degrees->pitches
+  resolve-degree resolve-degrees
+  interval-freq
+  Chords chord resolve-chord rand-chord
+  invert-chord chord-degree
+  Discovery find-scale-name find-note-name
+  find-pitch-class-name find-chord
+  Frequencies cents midi->hz hz->midi
+  Amplitude db->amp
+
+** Sound Data
+*** Buffers
+**** Create & Free
+ buffer buffer-free
+  buffer-alloc-read
+**** Generate Buffer Data
+data->wavetable
+  create-buffer-data
+**** Read & Write To Server
+ buffer-read buffer-write!
+  buffer-write-relay! buffer-fill!
+  buffer-set! buffer-get
+  buffer-save buffer-data
+  buffer-read
+**** Write To Filesystem
+ write-wav
+**** Streaming In & Out
+
+buffer-stream buffer-stream?
+  buffer-stream-close buffer-cue
+  buffer-cue? buffer-cue-pos
+  buffer-stream-close
+**** Query
+buffer? buffer-info?
+  file-buffer? buffer-out-stream?
+  buffer-in-stream?
+
+  Info
+ buffer-info num-frames buffer-id
+
+  Samples
+  Create
+ load-sample load-samples sample defsample
+  Playback
+ mono-player stereo-player
+  Busses
+  Create & Free
+ control-bus audio-bus free-bus
+  Modify & Read
+ control-bus-set! control-bus-set-range!
+  control-bus-get control-bus-get-range
+  Query
+ bus? control-bus? audio-bus?
+  Info
+ bus-id
+  Monitor
+ bus-monitor control-bus-monitor
+  audio-bus-monitor
+
+** Persistence
+  Local Store
+  Access store-get store-set! store
+
+** CGens
+  Audio In sound-in
+  Buffer Playback scaled-play-buf scaled-v-disk
+  Control hold
+  Oscillators pm-osc square
+  Mix mix splay sum
+  Pitch add-cents
+  Tapping tap
+  Range range-lin
+
+** ugens
+*** UGen Helper Constants
+   Done Actions NO-ACTION PAUSE FREE FREE-AND-BEFORE
+   FREE-AND-AFTER FREE-AND-GROUP-BEFORE
+   FREE-AND-GROUP-AFTER
+   FREE-UPTO-THIS FREE-FROM-THIS-ON
+   FREE-PAUSE-BEFORE FREE-PAUSE-AFTER
+   FREE-AND-GROUP-BEFORE-DEEP
+   FREE-AND-GROUP-AFTER-DEEP FREE-CHILDREN
+   FREE-GROUP
+   FFT Windows SINE HANN RECT
+   Lines LINEAR LIN EXPONENTIAL EXP
+   Onset Analysis POWER MAGSUM COMPLEX RCOMPLEX PHASE
+   WPHASE MKL
+   Infinity INFINITE INF
+   UGen Envelope Helper Functions
+   env-perc env-triangle env-sine env-lin env-cutoff
+   env-dadsr env-adsr env-asr
+
+*** Unary UGens
+   neg not-pos? abs ceil floor frac sign squared cubed
+   sqrt exp reciprocal midicps cpsmidi midiratio
+   ratiomidi dbamp ampdb octcps cpsoct log log2
+   log10 sin cos tan asin acos atan sinh cosh tanh
+   distort softclip rect-window han-window wel-window
+   tri-window
+
+*** Binary UGens
+   + - * / mod = not= < > <= >= min max and or xor
+   round round-up round-down atan2 hypot hypot-aprox
+   pow ring1 ring2 ring3 ring4 difsqr sumsqr sqrsum
+   sqrdif absdif thresh amclip scale-neg clip2 excess
+   fold2 wrap2
+   B Equalization Suit UGens
+   b-low-pass b-hi-pass b-all-pass b-band-pass
+   b-band-stop b-peak-eq b-low-shelf b-hi-shelf
+   Buffer IO UGens
+   play-buf t-grains buf-rd buf-wr record-buf
+   scope-out local-buf max-local-bufs set-buf
+   clear-buf
+
+*** Chaos UGens
+   quad-n quad-l quad-c cusp-n cusp-l gbman-n
+   gbman-l henon-n henon-l henon-c latoocarfian-n
+   latoocarfian-l latoocarfian-c lin-cong-n lin-cong-l
+   lin-cong-c standard-n standard-l fb-sine-n
+   fb-sine-l fb-sine-c lorenz-l
+
+*** Compander
+   amplitude compander normalizer limiter
+
+*** Delay UGens
+   delay1 delay-n delay-l delay-c comb-n comb-l
+   comb-c allpass-n allpass-l allpass-c buf-delay-n
+   buf-delay-l buf-delay-c buf-comb-n buf-comb-l
+   buf-comb-c buf-allpass-n buf-allpass-l
+   buf-allpass-c
+
+*** Demand UGens
+   demand duty t-duty demand-env-gen dseries dgeom
+   dbufrd dbufwr dseq dser dshuf drand dxrand dswitch1
+   dswitch dwhite dbrown dibrown dstutter donce dpoll
+
+*** Envelope Ugens
+   done free-self pause-self free-self-when-done
+   pause-self-when-done pause free env-gen linen
+   i-env-gen
+
+*** Fixed Frequency Oscillator UGens
+   f-sin-osc klang klank blip saw pulse p-sin-grain
+
+*** FFT UGens
+   fft ifft pv-mag-above pv-mag-below pv-mag-clip
+   pv-local-max pv-mag-smear pv-bin-shift pv-mag-shift
+   pv-mag-squared pv-mag-noise pv-phase-shift90
+   pv-phase-shift270 pv-conj pv-phase-shift
+   pv-brick-wall pv-bin-wipe pv-mag-mul pv-copy-phase
+   pv-copy pv-max pv-min pv-mul pv-div pv-add
+   pv-mag-div pv-rand-comb pv-rect-comb pv-rect-comb2
+   pv-rand-wipe pv-diffuser pv-mag-freeze
+   pv-bin-scramble fft-trigger
+   Extra FFT UGens
+   pv-conformal-map convolution convolution2
+   convolution2-l stereo-convolution2-l convolution3
+   pv-jenson-andersen pv-hainsworth-foote running-sum
+
+*** Filter UGens
+   resonz one-pole one-zero two-pole two-zero apf
+   integrator decay decay2 lag lag2 lag3 ramp lag-ud
+   lag2-ud lag3-ud leak-dc rlpf rhpf hpf bpf brf
+   mid-eq lpz1 lpz2 hpz1 hpz2 slope bpz2 median slew
+   sos ringz formlet detect-silence
+
+*** Grain UGens
+   grain-sin grain-in warp1
+
+*** Information UGens
+   sample-rate sample-dur radians-per-sample
+   control-rate control-dur subsample-offset
+   num-output-busses num-input-busses num-audio-busses
+   num-control-busses num-buffers num-running-synths
+   buf-sample-rate buf-rate-scale buf-frames
+   buf-samples buf-dur buf-channels check-bad-values
+   poll
+   Input UGens
+   mouse-x mouse-y mouse-button key-state
+   IO UGens
+   disk-out disk-in v-disk-in in local-in lag-in
+   in-feedback in-trig shared-in out replace-out
+   offset-out local-out x-out shared-out
+
+*** Line Ugens
+   line x-line lin-exp lin-lin amp-comp amp-comp-a k2a
+   a2k t2k t2a dc silent
+
+*** Machine Listening UGens
+   beat-track loudness onsets key-track mfcc
+   beat-track2 spec-flatness spec-pcile spec-centroid
+
+*** Miscellaneous UGens
+   pitch-shift pluck part-conv hilbert freq-shift
+   g-verb free-verb free-verb2 moog-ff spring ball
+   t-ball check-bad-values gendy1 gendy2 gendy3
+
+*** Noise UGens
+   white-noise brown-noise pink-noise clip-noise
+   gray-noise crackle logistic lf-noise0 lf-noise1
+   lf-noise2 lf-clip-noise lfd-noise0 lfd-noise1
+   lfd-noise3 ldf-clip-noise hasher mantissa-mask dust
+   dust2
+
+*** Oscillator UGens
+   osc sin-osc sin-osc-fb osc-n v-osc v-osc3 c-osc
+   formant lf-saw lf-par lf-cub lf-tri lf-gauss
+   lf-pulse var-saw impulse sync-saw wrap-index
+   index-in-between detect-index shaper degree-to-key
+   select vibrato index
+
+*** Pan UGens
+   pan2 lin-pan2 pan4 balance2 rotate2 pan-b pan-b2
+   bi-pan-b2 decode-b2 pan-az x-fade2 lin-x-fade2
+
+*** Random UGens
+   rand-seed rand-id i-rand t-rand ti-rand n-rand
+   exp-rand t-exp-rand coin-gate lin-rand
+
+*** STK UGens
+   stk-pluck stk-flute stk-bowed stk-mandolin
+   stk-saxofony stk-shakers stk-banded-wg
+   stk-voic-form stk-modal-bar stk-clarinet
+   stk-blow-hole stk-moog stk-bee-three
+
+*** Trig UGens
+   tw-index trig1 trig t-delay send-trig send-reply
+   latch gate pulse-count set-reset-ff peak
+   running-min running-max stepper pulse-divider
+   toggle-ff zero-crossing timer sweep phasor
+   peak-follower pitch in-range fold clip wrap
+   schmidt in-rect trapezoid most-changed least-change
+   last-value
+
+*** AY Extra UGens
+   ay
+
+*** BBCut2 Extra UGens
+   analyse-events2
+
+*** Bat Extra UGens
+   coyote trig-avg w-amp markov-synth frame-compare
+   needle-rect skip-needle
+
+*** Berlach Extra UGens
+   lpf1 lpfvs6 lpf18 bl-buf-rd clipper4 clipper8
+   clipper32 soft-clipper4 soft-clipper8
+   soft-clip-amp4 soft-clip-amp8 os-wrap4 os-wrap8
+   os-fold4 os-fold8 os-trunc4 os-trunc8 drive-noise
+   peak-eq2 peak-eq4
+
+*** Bhob Extra UGens
+   henon2-dn henon2-dl henon2-dc henon-trig
+   gbman2-dn gbman2-dl gbman2-dc gbman-trig
+   standard2-dn standard2-dl standard2-dc
+   standard-trig latoocarfian2-dn latoocarfian2-dl
+   latoocarfian2-dc latoocarfian-trig lorenz2-dn
+   lorenz2-dl lorenz2-dc lorenz-trig fhn2-dn fhn2-dl
+   fhn2-dc fhn-trig pv-common-mag pv-common-mul
+   pv-mag-minus pv-mag-gate pv-compander pv-mag-scale
+   pv-morph pv-x-fade pv-soft-wipe pv-cutoff
+   nested-allpass-n nested-allpass-l nested-allpass-c
+   double-nested-allpass-n double-nested-allpass-l
+   double-nested-allpass-c moog-ladder rlpfd
+   streson nl-filt-n nl-filt-l nl-filt-c gauss-trig
+   lf-brown-noise0 lf-brown-noise1 lf-brown-noise2
+   t-brown-rand dbrown2 d-gauss t-gauss-rand
+   t-beta-rand gendy4 gendy5 t-grains2 t-grains3
+
+*** Blackrain Extra UGens
+   amplitude-mod b-moog iir-filter svf
+
+*** Distortion Extra UGens
+   crossover-distortion smooth-decimator sine-shaper
+   decimator disintegrator
+
+*** Glitch Extra UGens
+   glitch-rhpf glitch-hpf
+
+*** Mda Extra UGens
+   mda-piano
+
+*** Membrane Extra UGens
+   membrane-circle membrane-hexagon
+
+*** RFW Extra UGens
+   switch-delay average-output
+
+*** SLU Extra UGens
+   breakcore brusselator double-well double-well2
+   double-well3 gravity-grid gravity-grid2
+
+*** Stk Extra UGens
+   stk-pluck stk-flute stk-bowed stk-mandolin
+   stk-saxofony stk-shakers stk-banded-wg
+   stk-voic-form stk-modal-bar stk-clarinet
+   stk-blow-hole stk-moog stk-bee-three
+
+*** VOSIM Extra UGens
+   vosim
+   Revision: 0.9.1.2, Date: 17th December, 2013
+   Sam Aaron (sam.aaron gmail com)
+   
