@@ -3,6 +3,7 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [overtone "0.10.1"]
                  [org.clojure/math.combinatorics "0.1.1"]
+                 [org.clojure/math.numeric-tower "0.0.4"]
                  [org.clojure/algo.monads "0.1.5"]
                  [org.clojure/clojure-contrib "1.2.0"]
                  [org.clojure/java.jdbc "0.5.0"]
