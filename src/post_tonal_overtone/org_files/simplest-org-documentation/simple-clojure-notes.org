@@ -1,0 +1,18 @@
+* clojure topics arising while using overtone
+** doing midi->hz conversion
+#+BEGIN_SRC clojure
+;; have to include the following library as a dependency
+(require '[clojure.math.numeric-tower :as math])
+
+(defn my-midihz [d] (* (math/expt 2 (/ (- d 69) 12)) 440))
+
+#+END_SRC
+
+#+RESULTS:
+: nil#'user/my-midihz
+
+Note that exponentiation is provided by Java, else use library
+
+#+BEGIN_SRC clojure
+(Math/pow 2 10)
+#+END_SRC
