@@ -965,8 +965,7 @@ Uses my-ugen-demo as defined above:
 #+END_SRC
 
 * persisting overtone values
-
-** conj
+** conj 
 #+BEGIN_SRC clojure :results silent
 (def liked-values (atom []))
 #+END_SRC
@@ -1055,4 +1054,13 @@ Uses my-ugen-demo as defined above:
 
 #+BEGIN_SRC clojure :results silent
 (remove-event-handler ::test-range-high)
+#+END_SRC
+
+** 
+#+BEGIN_SRC clojure :results silent
+(def trate-ref (atom 1))
+#+END_SRC
+
+#+BEGIN_SRC clojure
+(def durnumerator-ref (atom 8))
 #+END_SRC

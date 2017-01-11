@@ -1,4 +1,5 @@
-(ns post-tonal-overtone.core)
+(ns post-tonal-overtone.core
+  (:require [me.raynes/fs :as fs]))
 
 *ns*
 
