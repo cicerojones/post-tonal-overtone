@@ -307,6 +307,10 @@ overtone.live/ring4
 #+END_SRC
 
 #+BEGIN_SRC clojure :results silent
+(demo 10  (+ (sin-osc) (* 5 (pink-noise:kr))))
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
 (demo 10  (ring2 (sin-osc) (pink-noise:kr)))
 #+END_SRC
 
@@ -348,6 +352,10 @@ Ring3
 (run (poll:kr (impulse:kr 10) (+ 0 (sin-osc:kr))))
 #+END_SRC
 
+* use =run= with poll
+#+BEGIN_SRC clojure
+(run (poll:kr (impulse:kr 10) (+ 0 (sin-osc:kr))))
+#+END_SRC
 * notes
 ** scope
 
@@ -475,7 +483,6 @@ so of basic arguments
 * UGens Category Broswer from Supercollider Tutorial
 ** UGens
 ** for examples, see: [[id:03FDC781-8605-442B-AF5C-1AA04BAF2306][title:: Tour of UGens]] 
-
 * name space (if gets messed up looking at .clj files
 #+BEGIN_SRC clojure
 (in-ns 'user)

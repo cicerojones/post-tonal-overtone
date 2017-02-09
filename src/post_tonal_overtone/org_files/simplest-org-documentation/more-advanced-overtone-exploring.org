@@ -280,6 +280,23 @@ UGens are producing. See polling and running
 #+BEGIN_SRC clojure :results silent
 (run 20 (poll:kr (impulse:kr 5) (line:kr 0.0 10.0 20)) "polled-val:"))
 #+END_SRC
+** [#A] make a polling and running macro to read ugen values
+:PROPERTIES:
+:ID:       FAE2CB90-90F5-4D5E-897F-22419F70FCF0
+:END:
+#+BEGIN_SRC clojure
+(defmacro read-ugen [dur ugen]
+`(run ~dur (poll:kr (impulse:kr 2) ~ugen)))
+#+END_SRC
+
+#+RESULTS:
+: #'user/read-ugen
+
+#+BEGIN_SRC clojure :results output
+
+#+END_SRC
+
+#+RESULTS:
 
 ** give oscillator UGens arguments meaningful in Hz (i.e. be aware of 'mul' and 'add')
 #+BEGIN_SRC clojure
@@ -1056,7 +1073,7 @@ Uses my-ugen-demo as defined above:
 (remove-event-handler ::test-range-high)
 #+END_SRC
 
-** 
+** some refs
 #+BEGIN_SRC clojure :results silent
 (def trate-ref (atom 1))
 #+END_SRC
@@ -1064,3 +1081,5 @@ Uses my-ugen-demo as defined above:
 #+BEGIN_SRC clojure
 (def durnumerator-ref (atom 8))
 #+END_SRC
+* counter atom for non-ugen lines
+** experiment with sleeping

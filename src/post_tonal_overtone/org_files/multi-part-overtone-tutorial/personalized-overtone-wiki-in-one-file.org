@@ -38,8 +38,201 @@ things - we'll love you forever.
 -  [[Overtone in vim]
 
 **** First steps
--  [Overtone Cheat Sheet](https://github.com/overtone/overtone/raw/master/docs/cheatsheet/overtone-cheat-sheet.pdf)
--  [[Getting Started]
+***** [Overtone Cheat Sheet](https://github.com/overtone/overtone/raw/master/docs/cheatsheet/overtone-cheat-sheet.pdf)
+***** [[Getting Started]
+****** assessment
+Important for its intial presentation of dealing with sc "synths"
+
+See this part of the current document for more:
+[[id:51BA5E52-D1FB-4C62-AA7C-E83825E001C0][start with some basics of getting-started github wiki]]
+***** [[Running Examples]
+****** Orzo assessment
+[[file:~/Github-repos/overtone-source/src/overtone/sc/examples/][file:~/Github-repos/overtone-source/src/overtone/sc/examples/]]
+
+useful for simple demonstration of 
+
+#+BEGIN_SRC clojure
+(demo 10 (example dbrown :rand-walk))
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: user/audition-synth 160>
+****** output of (examples)
+******* raw output
+#+BEGIN_SRC clojure :results output
+(examples)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+svf
+  :state-filter    (:ar) - Create a state variable 
+                           filter 
+
+sound-in
+  :mono-patch      (:ar) - World's most expensive 
+                           patchcord 
+  :stereo-patch    (:ar) - World's most expensive 
+                           stereo patchcord 
+
+impulse
+  :poll            (:kr) - Poll an impulse to view 
+                           its output 
+
+send-reply
+  :count           (:kr) - Send back an OSC 
+                           message containing a 
+                           rolling count 
+
+amplitude
+  :saw-vol         (:ar) - Use input amplitude to 
+                           control saw amplitude 
+  :sin-freq        (:ar) - Use input amplitude to 
+                           control saw frequency 
+
+dibrown
+  :rand-walk       (:ar) - Random whole number 
+                           walk through freqs with 
+                           rate determined by 
+                           mouse-x 
+
+membrane-hexagon
+  :mouse           (:kr) - Use mouse button, X and 
+                           Y locations to play a 
+                           drum. 
+
+vosim
+  :mouse1          (:ar) - Use mouse X location to 
+                           control the frequency 
+                           of the vosim. 
+  :mouse2          (:ar) - Use the mouse X & Y 
+                           location to modify some 
+                           random vosim noises. 
+
+membrane-circle
+  :mouse           (:kr) - Use mouse button, X and 
+                           Y locations to play a 
+                           drum. 
+
+dbrown
+  :rand-walk       (:ar) - Random floating point 
+                           number walk through 
+                           freqs with rate 
+                           determined by mouse-x 
+
+dyn-klang
+  :sin-osc         (:ar) - Use a sin-osc to change 
+                           3 running sine 
+                           oscillators 
+
+dwhite
+  :rand-seq        (:ar) - Play a random sequence 
+                           of floats mapped to 
+                           freqs with rate 
+                           determined by mouse-x 
+
+dyn-klank
+  :mouse           (:ar) - Use mouse to change 3 
+                           running frequency 
+                           resonators 
+
+compander
+  :noise-gate      (:ar) - Use compander to create 
+                           a noise gate 
+  :data            (:ar) - View data coming out of 
+                           a compander 
+
+diwhite
+  :rand-seq        (:ar) - Play a random sequence 
+                           of integers mapped to 
+                           freqs with rate 
+                           determined by mouse-x 
+
+b-moog
+  :compare-filters (:ar) - Compare low, high, and 
+                           bandpass 
+
+iir-filter
+  :low-pass        (:ar) - Create a low pass 
+                           filter 
+
+#+end_example
+******* org-mode output
+******** svf
+  :state-filter    (:ar) - Create a state variable 
+                           filter 
+******** sound-in
+[[file:~/Github-repos/overtone-source/src/overtone/sc/examples/audio_in.clj::(defexamples%20sound-in]]
+  :mono-patch      (:ar) - World's most expensive 
+                           patchcord 
+  :stereo-patch    (:ar) - World's most expensive 
+                           stereo patchcord 
+******** impulse
+  :poll            (:kr) - Poll an impulse to view 
+                           its output 
+******** send-reply
+  :count           (:kr) - Send back an OSC 
+                           message containing a 
+                           rolling count 
+******** amplitude
+  :saw-vol         (:ar) - Use input amplitude to 
+                           control saw amplitude 
+  :sin-freq        (:ar) - Use input amplitude to 
+                           control saw frequency 
+******** dibrown
+  :rand-walk       (:ar) - Random whole number 
+                           walk through freqs with 
+                           rate determined by 
+                           mouse-x 
+******** membrane-hexagon
+  :mouse           (:kr) - Use mouse button, X and 
+                           Y locations to play a 
+                           drum. 
+******** vosim
+  :mouse1          (:ar) - Use mouse X location to 
+                           control the frequency 
+                           of the vosim. 
+  :mouse2          (:ar) - Use the mouse X & Y 
+                           location to modify some 
+                           random vosim noises. 
+******** membrane-circle
+  :mouse           (:kr) - Use mouse button, X and 
+                           Y locations to play a 
+                           drum. 
+******** dbrown
+  :rand-walk       (:ar) - Random floating point 
+                           number walk through 
+                           freqs with rate 
+                           determined by mouse-x 
+******** dyn-klang
+  :sin-osc         (:ar) - Use a sin-osc to change 
+                           3 running sine 
+                           oscillators 
+******** dwhite
+  :rand-seq        (:ar) - Play a random sequence 
+                           of floats mapped to 
+                           freqs with rate 
+                           determined by mouse-x 
+******** dyn-klank
+  :mouse           (:ar) - Use mouse to change 3 
+                           running frequency 
+                           resonators 
+******** compander
+  :noise-gate      (:ar) - Use compander to create 
+                           a noise gate 
+  :data            (:ar) - View data coming out of 
+                           a compander 
+******** diwhite
+  :rand-seq        (:ar) - Play a random sequence 
+                           of integers mapped to 
+                           freqs with rate 
+                           determined by mouse-x 
+******** b-moog
+  :compare-filters (:ar) - Compare low, high, and 
+                           bandpass 
+******** iir-filter
+  :low-pass        (:ar) - Create a low pass 
+                           filter 
 
 **** Synthesis:
 -  [[oscillators]
@@ -56,12 +249,15 @@ things - we'll love you forever.
 -  [[screencasting]
 
 **** Making music:
--  [[Pitches and Chords]
--  [[Scales and Scale Degrees]
--  [[Metronome and Sequencing]
--  [[Arpeggiators and Note Generators][empty]
--  [[live-coding]
--  [[swing]
+***** [[Pitches and Chords]
+Contains the template for creating "timed" chord progressions
+***** [[Scales and Scale Degrees]
+Examples of using (a horrible) "scale degree" keyword notation with a
+"rest" notation for presumably playing melodies
+***** [[Metronome and Sequencing]
+***** [[Arpeggiators and Note Generators][empty]
+***** [[live-coding]
+***** [[swing]
 
 **** Interacting with External Devices:
 -  [[Monome][empty]
@@ -75,7 +271,10 @@ things - we'll love you forever.
 -  [[Hacking Overtone]
 -  [[Comparing sclang and Overtone synthdefs]
 
-* start with some basics of getting-started github wiki
+* getting-started page contents
+:PROPERTIES:
+:ID:       51BA5E52-D1FB-4C62-AA7C-E83825E001C0
+:END:
 ** define, start and kill a definst
 first, maybe set a name-space
 
@@ -95,14 +294,29 @@ repl as well (why did things just automatically sorta happen in the repl?)
 
 
 
-#+BEGIN_SRC clojure :session getting-started
-(definst foo [] (saw 220))
+#+BEGIN_SRC clojure :results silent
+(definst foo [] (saw 110))
+(definst foo2 [] (square 300))
+#+END_SRC
 
+#+BEGIN_SRC clojure
 (demo (foo))
 #+END_SRC
 
 #+RESULTS:
-: #<instrument: foo>#<synth-node[loading]: post_tonal_ov485/audition-synth 41>
+: #<synth-node[loading]: user/audition-synth 229>
+
+#+BEGIN_SRC clojure :results output
+(demo (foo2))
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC clojure
+*demo-time*
+#+END_SRC
+#+RESULTS:
+: 2000
 
 #+BEGIN_SRC clojure :session getting-started
 (stop)
@@ -116,12 +330,13 @@ Kill by ID number, as returned above
 (kill 74)
 #+END_SRC
 
-#+BEGIN_SRC clojure :session getting-started
+#+BEGIN_SRC clojure
 (kill foo)
+(kill foo2)
 #+END_SRC
 
 #+RESULTS:
-: nil
+: nilnil
 ** overtone documenation (odoc)
 must be called from the REPL; in babel it simply prints its return
 value, which is nil
@@ -373,7 +588,7 @@ doesn't expand??
 
 #+RESULTS:
 : #<sc-ugen: linen:kr [0]>
-* actual code contents: sections
+* additional sections
 ** synthesis
 *** oscillators
 **** half-second examples of various wave types
@@ -485,28 +700,26 @@ doesn't expand??
     Great, thanks.
 ****** experiments
 ******* [#A] my lf-noise
-   #+BEGIN_SRC clojure :session getting-started
-(definst my-dynamic [freq 440 width 0.2
+   #+BEGIN_SRC clojure :results silent
+(definst my-dynamic-spooky-house [freq 440 width 0.2
                        attack 0.3 sustain 4
                        release 0.3 vol 0.4]
   (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
      (sin-osc (+ freq (* 20 (lf-noise1:kr 100))))
      vol))
 
-(my-dynamic)
+(my-dynamic-spooky-house)
    #+END_SRC
-
-   #+RESULTS:
-   : #<instrument: my-dynamic>#<synth-node[loading]: post_tonal_overto485/my-dynamic 9753>
 
 Note, approximately 14 second long, as suggested by the integers used
 as arguments for the env-gen
-  #+BEGIN_SRC  clojure :session getting-started
+
+  #+BEGIN_SRC  clojure
 (my-dynamic :attack 2 :sustain 10 :release 4)
   #+END_SRC
 
   #+RESULTS:
-  : #<synth-node[loading]: post_tonal_overto485/my-dynamic 9754>
+  : #<synth-node[loading]: user/my-dynamic 173>
 
 *** filtering
 **** linear filters
@@ -541,14 +754,15 @@ as arguments for the env-gen
 
   #+RESULTS:
   : #<synth-node[loading]: post_tonal_ov485/audition-synth 2268>
-***** (demo 30 (bpf (pink-noise) (mouse-x 40 5000 EXP) (mouse-y 0.01 1 LIN)))
-  #+BEGIN_SRC clojure :session getting-started
+***** band-pass
+move mouse left/right to change threshold frequency; up/down to change bandwidth (top is narrowest)
+
+  #+BEGIN_SRC clojure
 (demo 30 (bpf (pink-noise) (mouse-x 40 5000 EXP) (mouse-y 0.01 1 LIN)))
-;; band-pass; move mouse left/right to change threshold frequency; up/down to change bandwidth (top is narrowest)
   #+END_SRC
 
   #+RESULTS:
-  : #<synth-node[loading]: post_tonal_ov485/audition-synth 9759>
+  : #<synth-node[loading]: user/audition-synth 174>
 
 poses the question, what are the standard x-left x-right and y-top
 y-bottom values which these functions are mapping?
@@ -558,15 +772,17 @@ y-bottom values which these functions are mapping?
   back into itself after a delay, so that the output eventually becomes
   periodic.
 
-  #+BEGIN_SRC clojure :session getting-started
-;; here we generate a pulse of white noise, and pass it through a pluck filter
-;; with a delay based on the given frequency
+here we generate a pulse of white noise, and pass it through a pluck
+filter with a delay based on the given frequency
+
+ #+BEGIN_SRC clojure
+
 (let [freq (rand-nth '(440 550 660 770 880 990 1100 1210 1320))]
    (demo (pluck (* (white-noise) (env-gen (perc 0.001 2) :action FREE)) 1 3 (/ 1 freq))))
   #+END_SRC
 
   #+RESULTS:
-  : #<synth-node[loading]: post_tonal_ov485/audition-synth 203>
+  : #<synth-node[loading]: user/audition-synth 205>
 *** multi-channel, stereo, panning
 **** mono defsynth
 ***** left = 0
@@ -682,107 +898,6 @@ y-bottom values which these functions are mapping?
   #+RESULTS:
   : #<synth: sin-square3>#<synth-node[loading]: post_tonal_overt485/sin-square3 9767>
 ** instruments and io
-*** midi
-# Overtone 0.9.1
-
-See [the end of the midi/keyboard example](https://github.com/overtone/overtone/blob/master/src/overtone/examples/midi/keyboard.clj#L49-L64).
-
-
-# Overtone 0.7.1
-
-## Using the event stream
-
-Overtone 0.7.1 automatically detects all connected MIDI devices on
-boot and registers the appropriate handlers for you. To see a list of
-MIDI devices detected by Overtone, use:
-
-
-#+BEGIN_SRC clojure :session getting-started
-(midi-connected-devices)
-#+END_SRC
-
-#+RESULTS:
-
-The MIDI device should be connected and powered on before starting
-Overtone. When you bash the keys on the keyboard, Overtone receives
-internal events in its event stream. To see them use:
-
-
-#+BEGIN_SRC clojure :session getting-started
-(event-debug-on)
-#+END_SRC
-
-#+RESULTS:
-: true
-
-To stop:
-
-#+BEGIN_SRC clojure :session getting-started
-(event-debug-off)
-#+END_SRC
-
-#+RESULTS:
-: false
-
-You should see that for each key press, there are two events. A
-general midi control change event:
-
-
-#+BEGIN_SRC clojure :session getting-started
-[:midi :note-on]
-#+END_SRC
-
-and a device-specific event i.e.:
-
-#+BEGIN_SRC clojure :session getting-started
-[:midi-device Evolution Electronics Ltd. Keystation 61e Keystation 61e :note-on]
-#+END_SRC
-
-For simplicity use the general event type:
-
-#+BEGIN_SRC clojure :session getting-started
-(on-event [:midi :note-on]
-          (fn [e]
-            (let [note (:note e)
-                  vel  (:velocity e)]
-              (your-instr note vel)))
-          ::keyboard-handler)
-#+END_SRC
-
-The last argument is a keyword which can be used to refer to this
-handler, so you can later do:
-
-
-#+BEGIN_SRC clojure :session getting-started
-(remove-event-handler ::keyboard-handler)
-#+END_SRC
-
-## Simple Midi Keyboard Control
-
-Use `midi-poly-player` for simple control of Overtone instruments.
-
-Define an inst to play with the midi keyboard
-
-#+BEGIN_SRC clojure :session getting-started
-(definst steel-drum [note 60 amp 0.8]
-  (let [freq (midicps note)]
-    (* amp
-       (env-gen (perc 0.01 0.2) 1 1 0 1 :action FREE)
-       (+ (sin-osc (/ freq 2))
-          (rlpf (saw freq) (* 1.1 freq) 0.4)))))
-#+END_SRC
-
-Define a player that connects midi input to that instrument.
-
-#+BEGIN_SRC clojure :session getting-started
-(def player (midi-poly-player steel-drum))
-#+END_SRC
-
-When you want to stop or change sounds, use `midi-player-stop`.
-
-#+BEGIN_SRC clojure :session getting-started
-(midi-player-stop)
-#+END_SRC
 *** buffers and audio files
 **** playing samples and songs
 ***** playing samples from local files
@@ -1063,6 +1178,107 @@ conv-files
   | 48310 | clap       | 50623 | water-drops    | 80187 | witch-cackle | 80401 | explosion    |
   | 87731 | snap       |       |                |       |              |       |              |
   |       |            |       |                |       |              |       |              |
+*** midi--should be replaced with updated Markdown text!
+# Overtone 0.9.1
+
+See [the end of the midi/keyboard example](https://github.com/overtone/overtone/blob/master/src/overtone/examples/midi/keyboard.clj#L49-L64).
+
+
+# Overtone 0.7.1
+
+## Using the event stream
+
+Overtone 0.7.1 automatically detects all connected MIDI devices on
+boot and registers the appropriate handlers for you. To see a list of
+MIDI devices detected by Overtone, use:
+
+
+#+BEGIN_SRC clojure :session getting-started
+(midi-connected-devices)
+#+END_SRC
+
+#+RESULTS:
+
+The MIDI device should be connected and powered on before starting
+Overtone. When you bash the keys on the keyboard, Overtone receives
+internal events in its event stream. To see them use:
+
+
+#+BEGIN_SRC clojure :session getting-started
+(event-debug-on)
+#+END_SRC
+
+#+RESULTS:
+: true
+
+To stop:
+
+#+BEGIN_SRC clojure :session getting-started
+(event-debug-off)
+#+END_SRC
+
+#+RESULTS:
+: false
+
+You should see that for each key press, there are two events. A
+general midi control change event:
+
+
+#+BEGIN_SRC clojure :session getting-started
+[:midi :note-on]
+#+END_SRC
+
+and a device-specific event i.e.:
+
+#+BEGIN_SRC clojure :session getting-started
+[:midi-device Evolution Electronics Ltd. Keystation 61e Keystation 61e :note-on]
+#+END_SRC
+
+For simplicity use the general event type:
+
+#+BEGIN_SRC clojure :session getting-started
+(on-event [:midi :note-on]
+          (fn [e]
+            (let [note (:note e)
+                  vel  (:velocity e)]
+              (your-instr note vel)))
+          ::keyboard-handler)
+#+END_SRC
+
+The last argument is a keyword which can be used to refer to this
+handler, so you can later do:
+
+
+#+BEGIN_SRC clojure :session getting-started
+(remove-event-handler ::keyboard-handler)
+#+END_SRC
+
+## Simple Midi Keyboard Control
+
+Use `midi-poly-player` for simple control of Overtone instruments.
+
+Define an inst to play with the midi keyboard
+
+#+BEGIN_SRC clojure :session getting-started
+(definst steel-drum [note 60 amp 0.8]
+  (let [freq (midicps note)]
+    (* amp
+       (env-gen (perc 0.01 0.2) 1 1 0 1 :action FREE)
+       (+ (sin-osc (/ freq 2))
+          (rlpf (saw freq) (* 1.1 freq) 0.4)))))
+#+END_SRC
+
+Define a player that connects midi input to that instrument.
+
+#+BEGIN_SRC clojure :session getting-started
+(def player (midi-poly-player steel-drum))
+#+END_SRC
+
+When you want to stop or change sounds, use `midi-player-stop`.
+
+#+BEGIN_SRC clojure :session getting-started
+(midi-player-stop)
+#+END_SRC
 *** recording
 **** create a file
 
@@ -1885,101 +2101,6 @@ Why yes, yes it is:
 : #<instrument: c-hat>#<instrument: o-hat>#'post_tonal_overtone.core/swinger#'post_tonal_overtone.core/metro#<ScheduledJob id: 29726, created-at: Thu 01:01:31s, initial-delay: 1495, desc: "Overtone delayed fn", scheduled? true>
 
 * other misc
-** interupt output
- #+BEGIN_SRC clojure :session getting-started
-(stop)
- #+END_SRC
-
- #+RESULTS:
- : nil
-
-** local audio files
- 500 Country songs
- Beth Orton
- Compilations
-
- Don Cherry - mu first part-mu second part                          
- Don Cherry Complete Communion(jazz) (mp3@320kbps)[rogercc][h33t]
- King Sunny Ade Best of Island Years                                
- King Sunny Ade – Best of the Classic Years (1969-74)               
- Miles Davis                                                        
- Mouse On Mars - Autoditacker (FLAC)                                
- Mouse On Mars - Parastrophics (2012) [FLAC] politux                
- Pussy galore.m4a                                                   
-
- "QC listening list"                                                  
-
- 1600-1750         
- 1830-1900         
- 20th              
- Haydn-to-Beethoven
- "pre-1600"
-
-
-
-
-
- ("008_Barbara_Strozzi_L'Eraclito.mp3"                 
- "008_Belle_Doette.mp3"                               
- "008_Bernard_de_Ventadorn_Quan_veh_la_lauzeta_mover.mp3"
- "008_Byrd_John_Come_Kiss_me_Now.mp3"
- "008_Byrd_Mass_for_4_voices_Agnus_Dei.mp3"           
- "008_Byrd_Mass_for_4_voices_Credo.mp3"               
- "008_Byrd_Mass_for_4_voices_Kyrie.mp3"               
- "008_Ciconia_O_Padua_sidus_preclarum.mp3"            
- "008_Dufay_Ave_regina_caelorum.mp3"                  
- "008_Frescobaldi_Capriccio_sopra_ut_re_me_fa_sol_la.mp3"
- "008_Gabrieli_Canzon_in_echo_duodecimi_toni.mp3"
- "008_Giaches_de_Wert_Giunto_alla_Tomba.mp3"          
- "008_Hildegard_von_Bingen_O_virga_ac_diadema.mp3"    
- "008_Hodie_Christus_natus_est.mp3"                   
- "008_Josquin_Inviolata_integra_et_casta_est_Maria.mp"
- "008_Josquin_Milles_Regretz.mp3"                     
- "008_Josquin_Missa_Pange_lingua_Agnus_Dei.mp3"       
- "008_Josquin_Missa_Pange_lingua_Kyrie.mp3"           
- "008_Josquin_sexti_toni_1.mp3"                       
- "008_Josquin_sexti_toni_5.mp3"                       
- "008_Landini_Ochi_dolente_mie.mp3"                   
- "008_Machaut_De_Fortune.mp3"                         
- "008_Pange_lingua.mp3"                               
- "008_Perotin_Viderunt_omnes.mp3"                     
- "008_Purcell_Dido_and_Aeneas_Act_III_1_Scene_1_1.mp3"
- "008_Purcell_Dido_and_Aeneas_Act_III_2_Scene_1_2.mp3"
- "008_Purcell_Dido_and_Aeneas_Act_III_3_Scene_2_1.mp3"
- "008_Purcell_Dido_and_Aeneas_Act_III_4_Scene_2_2.mp3"
- "008_Purcell_Dido_and_Aeneas_Act_III_5_Scene_2_3.mp3")
-
-
- Robert Wyatt                                                       
- Robin Aigner's Con Tender                                          
-
- Rollerskate Skinny                                                 
- Saint Etienne-12 albums                                            
- SaintEtienne-WordsMusiDeluxeEdition2012                            
- Sarah Singles                                                      
- Spiritualized                                                      
- The Clean                                                          
- The Fall - Early Fall [lossless]                                   
- The Wedding Present - Seamonsters                                  
- Treepeople                                                         
-
- Ultramarine - This Time Last Year 2013 320kbps CBR MP3 [VX] [P2PDL]
-
- 06 Spiritualized - Step Into The Breeze.aiff
- 07 Spiritualized - Symphony Space.aiff
- 08 Spiritualized - Take Your Time.aiff
- 09 Spiritualized - Shine A Light.aiff
- 10 Spiritualized - Angel Sigh.aiff
- 11 Spiritualized - Sway.aiff            
- 12 Spiritualized - 200 Bars.aiff
-
-** misc, non-wiki tutorials
-  #+BEGIN_SRC clojure :session getting-started
-(doc overtone.core/)
-  #+END_SRC
-
-  #+RESULTS:
-
 ** loading
 *** loading 'external' resources
 absolute path doesn't work. Must be a file in the current project
@@ -2030,7 +2151,6 @@ Or not. Mysterious.
  ```
 
  or you could just grep for it.
-
 ** chris ford--clojure cookbook example
  Use Overtone to bring the song to life.
 
@@ -2131,4 +2251,11 @@ melody
      (where :time (comp (from (overtone/now)) (bpm 90)))
      play)
  #+END_SRC
+** interupt output
+ #+BEGIN_SRC clojure :session getting-started
+(stop)
+ #+END_SRC
+
+ #+RESULTS:
+ : nil
   

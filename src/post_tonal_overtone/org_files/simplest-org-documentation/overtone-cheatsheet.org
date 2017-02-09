@@ -40,73 +40,109 @@ Retro tb-303
 ** overtone.synth.sts
 STS prophet
 * REPL helpers
-Documentation odoc ugen-doc find-ugen find-ugen-doc
-Examples examples example get-example
-Shell ls grep
-Synths unify-synthdef
-Pretty Printing opp pp-synth pp-unified-synth
+Documentation
+odoc ugen-doc find-ugen find-ugen-doc
+Examples
+examples example get-example
+Shell
+ls grep
+Synths
+unify-synthdef
+Pretty Printing
+opp pp-synth pp-unified-synth
 pp-sc-synth pp-unified-sc-synth
 * Timing
 Scheduling
-Function Application now after-delay periodic
+
+Function Application 
+now after-delay periodic
 interspaced apply-by apply-at
-OSC at
-Stopping stop-player kill-player
-Feedback show-schedule
+
+OSC
+at
+
+Stopping
+stop-player kill-player
+
+Feedback
+show-schedule
 Metronome
-Create metronome
-Manipulate metro-start metro-tick metro-beat
+
+Create
+metronome
+
+Manipulate
+metro-start metro-tick metro-beat
 metro-bpm metro-tock metro-bar metro-bpb
 bps beat-ms
 * Studio
-Mixer
-Control volume input-gain
-MIDI
-Connected Controllers midi-connected-devices
+** Mixer  
+*** Control
+volume input-gain
+** MIDI
+*** Connected Controllers
+midi-connected-devices
 midi-connected-receivers
 midi-find-connected-devices
 midi-find-connected-device
 midi-find-connected-receivers
 midi-find-connected-receiver
-Info midi-device-num
+
+Info 
+midi-device-num
 midi-full-device-key
-Player midi-poly-player midi-player-stop
+
+Player
+midi-poly-player midi-player-stop
 midi-inst-controller
-Discovery midi-capture-next-controller-control-key
+
+Discovery
+midi-capture-next-controller-control-key
 midi-capture-next-controller-key
-Keys midi-device-keys
+
+Keys
+midi-device-keys
 midi-mk-control-key-keyword
-State midi-agent-for-control
+
+State
+midi-agent-for-control
+
 Scope
 Create & Reset scope pscope spectrogram
+
 Recording
 Stop & Start recording-start recording-stop
 Query recording?
+
 Inst Effects
-Instrument inst-volume inst-out-bus inst-fx! clear-fx
-FX fx-noise-gate fx-compressor fx-limiter
+Instrument 
+
+inst-volume inst-out-bus inst-fx! clear-fx
+
+FX
+fx-noise-gate fx-compressor fx-limiter
 fx-sustainer fx-freeverb fx-reverb
 fx-echo fx-chorus fx-distortion
 fx-distortion2 fx-distortion-tubescreamer
 fx-bitcrusher fx-rlpf fx-rhpf fx-feedback
 fx-feedback-distortion
 * Synth Design
-Design
+** Design
  definst defsynth
-Examples
+** Examples
  defexamples
-CGens
+** CGens
  defcgen
-Auditioning
+** Auditioning
  demo run
-Checking
+** Checking
  with-no-ugen-checks with-ugen-debugging
-Arguments
+** Arguments
  synth-args synth-arg-index
 * Synth Control
-Live Control
+** Live Control
  ctl kill
-Node Liveness
+** Node Liveness
  inactive-node-modification-error
 inactive-buffer-modification-error
 block-node-until-ready?
@@ -115,38 +151,38 @@ with-inactive-node-modification-error
 with-inactive-buffer-modification-error
 with-inactive-modification-error
 * Event Handling
-Add
+** Add
  on-event on-sync-event on-latest-event
 oneshot-event oneshot-sync-event
-Fire
+** Fire
  event sync-event
-Remove
+** Remove
  remove-event-handler
-Debug
+** Debug
  event-debug-on event-debug-off
 event-monitor-on event-monitor-off
 event-monitor-timer event-monitor
 event-monitor-keys
-Ugen Triggers
+** Ugen Triggers
  trig-id on-trigger on-latest-trigger
 on-sync-trigger
 * Nodes & Groups
-Create & Free 
+** Create & Free 
 node group node-free group-free
 group-clear group-deep-clear
-Manipulate
+** Manipulate
  node-start node-pause node-place
 node-control node-control-range
 node-map-controls
 node-map-n-controls
 group-prepend-node
 group-append-node
-Info
+** Info
  node? node-live? node-loading?
 node-active? node-tree
 pp-node-tree node-get-control
 node-get-controls
-Foundation Groups
+** Foundation Groups
  foundation-overtone-group
 foundation-output-group
 foundation-monitor-group
@@ -156,27 +192,27 @@ foundation-default-group
 foundation-safe-group
 foundation-safe-pre-default-group
 foundation-safe-post-default-group
-Manipulation Handlers
+** Manipulation Handlers
  on-node-destroyed on-node-created
 on-node-paused on-node-started
-Event Keys
+** Event Keys
  node-destroyed-event-key
 node-created-event-key
 node-paused-event-key
 node-started-event-key
 * Server
-Startup
+** Startup
  boot-server boot-internal-server
 boot-external-server
 connect-external-server
-Shutdown
+** Shutdown
  kill-server
-Control
+** Control
  stop clear stop-all clear-all
-OSC Communication
+** OSC Communication
  snd recv clear-msg-queue at
 snd-immediately
-Diagnostic
+** Diagnostic
  server-status server-info
 server-opts server-connected?
 server-disconnected?
@@ -188,7 +224,7 @@ server-num-input-buses
 server-num-audio-buses
 server-num-buffers
 ensure-connected!
-Debug
+** Debug
  sc-osc-log-on sc-osc-log-off
 sc-osc-log sc-debug-on
 sc-debug-off external-server-log
@@ -214,69 +250,89 @@ freesound-pack-dir
 freesound-search freesound-searchm
 freesound-search-paths
 * Algorithmic Composition
-Chance
+** Chance
 Choice choose choose-n weighted-choose
 Dice weighted-coin ranged-rand
-Scaling
+** Scaling
 Range scale-range
 Rounding closest-to round-to
-Trig
+** Trig
 Scaled cosr sinr tanr
-Functions
+** Functions
 Cycling cycle-fn
-List
+** List
 Rotation rotate
 Creation fill
 * Music
-Pitch
+** Pitch
 Ratios unison octave fifth sixth third fourth
 min-third min-sixth
-Note Shifting shift flat sharp invert inc-first
+** Note Shifting
+shift flat sharp invert inc-first
 dec-last
-Notes note octave-note nth-octave
+** Notes
+note octave-note nth-octave
 nth-equal-tempered-freq
 canonical-pitch-class-name note-info
 mk-midi-string match-note
-Scales scale resolve-scale scale-field
+** Scales
+scale resolve-scale scale-field
 nth-interval resolve-degree degree->int
 degree->interval degrees->pitches
 resolve-degree resolve-degrees
 interval-freq
-Chords chord resolve-chord rand-chord
+** Chords
+chord resolve-chord rand-chord
 invert-chord chord-degree
-Discovery find-scale-name find-note-name
+** Discovery
+find-scale-name find-note-name
 find-pitch-class-name find-chord
-Frequencies cents midi->hz hz->midi
-Amplitude db->amp
+** Frequencies
+cents midi->hz hz->midi
+** Amplitude
+db->amp
 * Sound Data
-Buffers
-Create & Free buffer buffer-free
+** Buffers
+Create & Free 
+buffer buffer-free
 buffer-alloc-read
-Generate Buffer Data data->wavetable
+Generate Buffer Data
+data->wavetable
 create-buffer-data
-Read & Write To Server buffer-read buffer-write!
+Read & Write To Server
+buffer-read buffer-write!
 buffer-write-relay! buffer-fill!
 buffer-set! buffer-get
 buffer-save buffer-data
 buffer-read
-Write To Filesystem write-wav
-Streaming In & Out buffer-stream buffer-stream?
+Write To Filesystem
+write-wav
+Streaming In & Out
+buffer-stream buffer-stream?
 buffer-stream-close buffer-cue
 buffer-cue? buffer-cue-pos
 buffer-stream-close
-Query buffer? buffer-info?
+Query
+buffer? buffer-info?
 file-buffer? buffer-out-stream?
 buffer-in-stream?
-Info buffer-info num-frames buffer-id
-Samples
-Create load-sample load-samples sample defsample
-Playback mono-player stereo-player
+Info
+buffer-info num-frames buffer-id
+** Samples
+Create
+load-sample load-samples sample defsample
+Playback
+mono-player stereo-player
 Busses
-Create & Free control-bus audio-bus free-bus
-Modify & Read control-bus-set! control-bus-set-range!
+Create & Free
+control-bus audio-bus free-bus
+Modify & Read
+control-bus-set! control-bus-set-range!
 control-bus-get control-bus-get-range
-Query bus? control-bus? audio-bus?
-Info bus-id
+Query
+bus? control-bus? audio-bus?
+Info
+bus-id
 Monitor bus-monitor control-bus-monitor
 audio-bus-monitor
 * Persistence
@@ -284,21 +340,21 @@ Local Store
 Access
  store-get store-set! store
 * CGens
-Audio In
+** Audio In
  sound-in
-Buffer Playback
+** Buffer Playback
  scaled-play-buf scaled-v-disk
-Control
+** Control
  hold
-Oscillators
+** Oscillators
  pm-osc square
-Mix
+** Mix
  mix splay sum
-Pitch
+** Pitch
  add-cents
-Tapping
+** Tapping
  tap
-Range
+** Range
  range-lin
 * UGen Helper Constants
 Done Actions

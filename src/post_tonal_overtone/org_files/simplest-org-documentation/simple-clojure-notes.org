@@ -16,3 +16,208 @@ Note that exponentiation is provided by Java, else use library
 #+BEGIN_SRC clojure
 (Math/pow 2 10)
 #+END_SRC
+* clojure topics arising from using quil
+** require vs. refer vs. use
+For example
+
+#+BEGIN_SRC clojure
+(require '[clojure.set :as ra])
+#+END_SRC
+
+See Halloway: 
+[[id:AE7F811E-8C76-436D-823A-1DA2A122CA96][1.3 Exploring Clojure Libraries]]
+
+Practical Clojure (Sierra/Vanderhart)
+[[id:B69673E6-A2C9-4B73-B021-29AE7EE1C20C][Declaring Namespaces]]
+** run quil sketch from the cider repl
+*** code blocks
+:PROPERTIES:
+:ID:       6A12023E-F68D-4FB0-96B4-A3550717F057
+:END:
+**** namespace declaration with dependencies
+#+BEGIN_SRC clojure
+(ns my-sketch
+  (:require [quil.core :as q]
+            [quil.middleware :as m]))
+#+END_SRC
+**** definition of 'setup' function
+#+BEGIN_SRC clojure
+;; (in-ns 'my-sketch)
+
+(defn setup []
+  (q/smooth)
+  (q/background 230 230 230)
+  (q/stroke 130, 0 0)
+  (q/stroke-weight 4)
+  (let [cross-size      70
+        circ-size       50
+        canvas-x-center (/ (q/width) 2)
+        canvas-y-center (/ (q/height) 2)
+        left            (- canvas-x-center cross-size)
+        right           (+ canvas-x-center cross-size)
+        top             (+ canvas-y-center cross-size)
+        bottom          (- canvas-y-center cross-size)]
+    (q/line left bottom right top)
+    (q/line right bottom left top)
+
+    (q/fill 255 150)
+    (q/ellipse canvas-x-center canvas-y-center circ-size circ-size)))
+
+#+END_SRC
+
+#+RESULTS:
+: #'my-sketch/setup
+**** run sketch with defsketch
+#+BEGIN_SRC clojure
+(in-ns 'my-sketch)
+
+(q/defsketch gen-art-1
+  :title "Cross with circle"
+  :setup setup
+  :size [500 300]
+  :middleware [m/fun-mode])
+#+END_SRC
+
+#+RESULTS:
+: #namespace[my-sketch]#'my-sketch/gen-art-1
+
+#+BEGIN_SRC clojure
+*ns*
+#+END_SRC
+
+#+RESULTS:
+: #namespace[my-sketch]
+** more complex and interactive functional mode sketch
+https://github.com/quil/quil/wiki/Functional-mode-(fun-mode)
+#+BEGIN_SRC clojure
+(ns fun-mode-sketch
+  (:require [quil.core :as q]
+            [quil.middleware :as m]))
+#+END_SRC
+
+#+BEGIN_SRC clojure
+(def min-r 10)
+
+(defn setup []
+  ; initial state
+  {:x 0 :y 0 :r min-r})
+
+(defn update [state]
+  ; increase radius of the circle by 1 on each frame
+  (update-in state [:r] inc))
+
+(defn draw [state]
+  (q/background 255)
+  (q/ellipse (:x state) (:y state) (:r state) (:r state)))
+
+; decrease radius by 1 but keeping it not less than min-r
+(defn shrink [r]
+  (max min-r (dec r)))
+
+(defn mouse-moved [state event]
+  (-> state
+      ; set circle position to mouse position
+      (assoc :x (:x event) :y (:y event))
+      ; decrease radius
+      (update-in [:r] shrink)))
+
+(q/defsketch example
+  :size [600 600]
+  :setup setup
+  :draw draw
+  :update update
+  :mouse-moved mouse-moved
+  :middleware [m/fun-mode])
+#+END_SRC
+
+#+RESULTS:
+: #'my-sketch/min-r#'my-sketch/setup#'my-sketch/update#'my-sketch/draw#'my-sketch/shrink#'my-sketch/mouse-moved#'my-sketch/example
+** another more complex (non-interactive) fun mode sketch
+
+#+BEGIN_SRC clojure
+(ns middleware-example 
+  (:require [quil.core :as q]))
+
+#+END_SRC
+
+#+RESULTS:
+: nil
+
+#+BEGIN_SRC clojure
+
+(defn show-frame-rate [options]
+  (let [; retrieve existing draw function or use empty one if not present
+        draw (:draw options (fn []))
+        ; updated-draw will replace draw
+        updated-draw (fn []
+                       (draw) ; call user-provided draw function
+                       (q/fill 0)
+                       (q/text-num (q/current-frame-rate) 10 10))]
+    ; set updated-draw as :draw function
+    (assoc options :draw updated-draw)))
+
+(defn setup []
+  (q/frame-rate 30)
+  (q/color-mode :hsb))
+
+; draw ellipse of random size and random color
+(defn draw []
+  (q/background 240)
+  (let [period 100
+        cur (mod (q/frame-count) period)
+        angle (q/map-range cur
+                           0 period
+                           0 q/PI)]
+    (q/fill (q/map-range cur 0 period 0 255) 255 255)
+    (q/ellipse 100 100
+               (* 150 (q/sin angle))
+               (* 150 (q/cos angle)))))
+
+(q/defsketch my-sketch
+  :size [200 200]
+  :setup setup
+  :draw draw
+  :middleware [show-frame-rate])
+#+END_SRC
+
+#+RESULTS:
+: #'middleware-example/show-frame-rate#'middleware-example/setup#'middleware-example/draw#'middleware-example/my-sketch
+** uses navigation-3d middleware
+#+BEGIN_SRC clojure
+(ns example
+  (:require [quil.core :as q]
+            [quil.middleware :as m]))
+#+END_SRC
+
+
+#+BEGIN_SRC clojure
+; Draws sphere at point [0 0 0] and 6 cubes around it.
+; You can fly around this objects using navigation-3d.
+; This draw function is fun-mode compatible (it takes state),
+; though it's not used here, but we need fun-mode for navigation-3d.
+(defn draw [state]
+  (q/background 255)
+  (q/lights)
+  (q/fill 150 100 150)
+  (q/sphere 75)
+  (doseq [pos [[150 0 0] [-150 0 0]
+               [0 150 0] [0 -150 0]
+               [0 0 150] [0 0 -150]]]
+    (q/with-translation pos
+      (q/box 75))))
+#+END_SRC
+
+#+BEGIN_SRC clojure
+(q/defsketch my-sketch
+  :draw draw
+  :size [500 500]
+  :renderer :p3d
+  ; Enable navigation-3d.
+  ; Note: it should be used together with fun-mode.
+  :middleware [m/fun-mode m/navigation-3d])
+#+END_SRC
+
+#+RESULTS:
+: #'middleware-example/draw
+
+

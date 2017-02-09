@@ -115,17 +115,23 @@ overtone.core/t-grains
            :damp 0.1
            :room 0.9)))
 
-      (slow-grain-reverb)
+
 
 #+END_SRC
+
+
 ** misc. manipulations with slow-grain-reverb
-#+BEGIN_SRC clojure
+
+#+BEGIN_SRC clojure :results silent
+(slow-grain-reverb :b 0)
+#+END_SRC
+
+
+#+BEGIN_SRC clojure :results silent
 (ctl slow-grain-reverb :trigger-rate 0.5 :centerpos 4 :grain-dur 1)
 #+END_SRC
 
-#+RESULTS:
-: #overtone.studio.inst.Inst{:name "slow-grain-reverb", :params ({:name "b", :default 0.0, :rate :kr, :value #atom[0.0 0x67ef0a06]} {:name "trigger-rate", :default 1.0, :rate :kr, :value #atom[1.0 0x38a4d81d]} {:name "centerpos", :default 1.0, :rate :kr, :value #atom[1.0 0x60e21590]} {:name "grain-dur", :default 0.5, :rate :kr, :value #atom[0.5 0x1702c902]}), :args ("b" "trigger-rate" "centerpos" "grain-dur"), :sdef {:name "user/slow-grain-reverb", :constants [0.0 2.0 1.0 17.0 0.9 0.2 0.1], :params (0.0 1.0 1.0 0.5), :pnames ({:name "b", :index 0} {:name "trigger-rate", :index 1} {:name "centerpos", :index 2} {:name "grain-dur", :index 3}), :ugens ({:args nil, :special 0, :name "Control", :rate 1, :inputs (), :rate-name :kr, :n-outputs 4, :id 306, :outputs ({:rate 1} {:rate 1} {:rate 1} {:rate 1}), :n-inputs 0} #<sc-ugen: impulse:ar [1]> #<sc-ugen: t-grains:ar [5]> #<sc-ugen: free-verb:ar [6]> #<sc-ugen: out:ar [7]>)}, :group #<synth-group[live]: Inst slow-grain-reverb Container 40>, :instance-group #<synth-group[live]: Inst slow-grain-reverb 41>, :fx-group #<synth-group[live]: Inst slow-grain-reverb FX 42>, :mixer #<synth-node[live]: overtone.stu547/mono-inst-mixer 43>, :bus #<audio-bus: No Name, mono, id 17>, :fx-chain [], :volume #atom[1.0 0x16d81be7], :pan #atom[0.0 0x6666c239], :n-chans 1}
-
+** following manipulation attempts fail?
 #+BEGIN_SRC clojure :results silent
 (ctl slow-grain-reverb :trigger-rate 0.3 :centerpos (tenth-inc 0.4) :grain-dur 2)
 #+END_SRC
@@ -139,9 +145,6 @@ overtone.core/t-grains
 #+END_SRC
 
 
-#+BEGIN_SRC clojure :results silent
-(slow-grain-reverb)
-#+END_SRC
 ** general-tgrains as a synth
 #+BEGIN_SRC clojure
   (defsynth general-tgrains-synth
@@ -172,6 +175,9 @@ overtone.core/t-grains
 #+END_SRC
 
 ** general-tgrains with t-randomness
+:PROPERTIES:
+:ID:       74504A58-C963-4B11-AEE5-6411D5A37CF4
+:END:
 #+BEGIN_SRC clojure
   (defsynth general-trand-synth
     "stochastic granular synthesis abstraction (in stereo!)"
@@ -204,7 +210,7 @@ overtone.core/t-grains
 : #<synth-node[loading]: user/general-trand-synth 98>
 
 * granular synth examples in sclang
-** examples to overtone
+** translate examples to overtone
 *** supercollider TGrain examples
 #+END_SRC
 
