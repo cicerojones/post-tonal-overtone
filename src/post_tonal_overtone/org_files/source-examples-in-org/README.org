@@ -1,0 +1,71 @@
+* Examples.
+** ./buses
+./buses/getonthebus.clj
+** ./compositions
+./compositions/at_all.clj
+./compositions/auto_dubstep.clj
+./compositions/auto_dubstep_bass.clj
+./compositions/bells.clj
+./compositions/blues.clj
+./compositions/clapping_music.clj
+./compositions/extemp_piano.clj
+./compositions/funk.clj
+./compositions/jazz.clj
+./compositions/piano_phase.clj
+./compositions/rotater.clj
+** ./getting_started
+./getting_started/basic.clj
+./getting_started/intro.clj
+./getting_started/melody.clj
+./getting_started/pragpub-article.clj
+./getting_started/rhythm.clj
+./getting_started/tutorial.clj
+./getting_started/video.clj
+** ./instruments
+./instruments/dubstep.clj
+./instruments/external.clj
+./instruments/guitar_synth.clj
+./instruments/monotron.clj
+./instruments/pitch_controller.clj
+./instruments/space.clj
+./instruments/thx.clj
+./instruments/vocoder.clj
+** ./midi
+./midi/basic.clj
+./midi/keyboard.clj
+** ./monome
+./monome/monomestep.clj
+./monome/sample_looper.clj
+./monome/satie.clj
+./monome/sequencer.clj
+** ./notation
+./notation/mad.clj
+./notation/mad2.clj
+** ./synthesis
+./synthesis/cgen_example.clj
+./synthesis/deci_wobble.clj
+./synthesis/demand.clj
+./synthesis/feedback.clj
+./synthesis/filters.clj
+./synthesis/fm.clj
+./synthesis/fourier.clj
+./synthesis/fx.clj
+./synthesis/local_buffer.clj
+./synthesis/poll.clj
+./synthesis/samples.clj
+** ./timing
+./timing/internal_metro.clj
+./timing/internal_sequencer.clj
+./timing/one_bar_sequencer.clj
+** ./ugens
+./ugens/blowpass4.clj
+./ugens/wobble.clj
+** ./workshops
+./workshops/resonate2013
+./workshops/resonate2013/ex01_phrasestudy.clj
+./workshops/resonate2013/ex02_bday.clj
+./workshops/resonate2013/ex03_graph.clj
+./workshops/resonate2013/ex04_midi.clj
+./workshops/resonate2013/ex05_synthesis.clj
+./workshops/resonate2013/ex06_quilstep.clj
+./workshops/resonate2013/README.md
