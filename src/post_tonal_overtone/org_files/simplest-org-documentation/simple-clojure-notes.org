@@ -16,8 +16,8 @@ Note that exponentiation is provided by Java, else use library
 #+BEGIN_SRC clojure
 (Math/pow 2 10)
 #+END_SRC
-* clojure topics arising from using quil
-** require vs. refer vs. use
+* clojure topics arising from using quil (require!)
+** [#A] require vs. refer vs. use
 For example
 
 #+BEGIN_SRC clojure
@@ -29,6 +29,12 @@ See Halloway:
 
 Practical Clojure (Sierra/Vanderhart)
 [[id:B69673E6-A2C9-4B73-B021-29AE7EE1C20C][Declaring Namespaces]]
+
+#+BEGIN_SRC clojure
+(use '[overtone.core :exclude (->ShellStringList)])
+#+END_SRC
+
+
 ** run quil sketch from the cider repl
 *** code blocks
 :PROPERTIES:

@@ -228,7 +228,13 @@ Print out
 #+END_SRC
 
 * Needed concepts for exploring UGens (polls, scopes)
-** scoping (need to understand bus vs. buffer)
+** scoping (need to understand bus vs. buffer)                      :busses:
+Get on the bus!
+
+Bus example from the overtone source has been copied into a single org
+example along with all the other examples!
+
+[[id:BC1BF72C-E838-4484-B73D-843F0EEAF72F][Buses]]
 
 [[file:~/Github-repos/overtone-source/src/overtone/examples/buses/getonthebus.clj][file:~/Github-repos/overtone-source/src/overtone/examples/buses/getonthebus.clj]]
 

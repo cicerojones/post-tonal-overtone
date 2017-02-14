@@ -25,7 +25,7 @@
 
 Plays almost exactly like regular track
 #+BEGIN_SRC clojure :results silent
-(def gold-line (tgrains-line-synth))
+(def gold-line (tgrains-line-synth :buffer 7))
 #+END_SRC
 
 #+BEGIN_SRC clojure :results silent
@@ -102,7 +102,7 @@ overtone.core/t-grains
 (let [trigger-rate (impulse:ar trigger-rate)]
     (free-verb
            (t-grains:ar 1 ;; num-channel
-                        trigger-rate
+                       trigger-rate
                         b ;; bufnum
                         1 ;; rate
                         centerpos
@@ -203,11 +203,18 @@ overtone.core/t-grains
 : #<synth: general-trand-synth>
 
 #+BEGIN_SRC clojure
-(general-trand-synth 0)
+(def gtrand-synth1 (general-trand-synth 1))
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: user/general-trand-synth 98>
+: #'user/gtrand-synth1
+
+#+BEGIN_SRC clojure 
+(ctl gtrand-synth1 :centerpos 100)
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[live]: user/general-trand-synth 55>
 
 * granular synth examples in sclang
 ** translate examples to overtone
@@ -220,7 +227,7 @@ overtone.core/t-grains
 
 #+BEGIN_SRC sclang 
   //   ~variation1 = Buffer.read(s, Platform.resourceDir +/+ "sounds/all-mono/apollo-variation1-mono.wav");
-    b = Buffer.read(s, Platform.resourceDir +/+ "sounds/all-mono/apollo-variation1-mono.wav");
+b = Buffer.read(s, Platform.resourceDir +/+ "sounds/all-mono/apollo-variation1-mono.wav");
 #+END_SRC
 #+COMMENT change /clk/=Dust, dur= 4 / trate
 *** uses dust!

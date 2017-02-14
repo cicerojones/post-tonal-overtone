@@ -592,10 +592,11 @@ directory, and evaluating the following blocks places the vars in the
 
 
 #+BEGIN_SRC clojure
-(definst grainy [b 0] (let [
-                         trate (mouse-y:kr 1 30)
-                         dur (/ 2 trate)]
-                        (t-grains:ar 1 (impulse:ar trate) b 1 (mouse-x:kr 0 (buf-dur:kr b)) dur 0 0.8 2)))
+  (definst mouse-grainy [b 0]
+    (let [trate (mouse-y:kr 1 30)
+          dur (/ 2 trate)]
+      (t-grains:ar 1 (impulse:ar trate) b 1 (mouse-x:kr 0 (buf-dur:kr b)) dur 0 0.8 2)))
+
 
 #+END_SRC
 
@@ -604,13 +605,15 @@ directory, and evaluating the following blocks places the vars in the
 
 
 #+BEGIN_SRC clojure
-(grainy gran-buf)
+(mouse-grainy gran-buf)
 #+END_SRC
 
 #+RESULTS:
 : #<synth-node[loading]: user/grainy 73>
 
 *** add cc control to t-grains (trate with CC, pos with Mouse-x
+
+**** use mouse-x
 #+BEGIN_SRC clojure
   (definst grainy-ctl [b 0 trate 1 amp 0.8]
     (let [trate trate
@@ -626,11 +629,11 @@ directory, and evaluating the following blocks places the vars in the
 
 
 #+BEGIN_SRC clojure
-(grainy-ctl :trate 2)
+(grainy-ctl :b 1 :trate 0.25)
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: user/grainy-ctl 78>
+: #<synth-node[loading]: user/grainy-ctl 63>
 
 
 
@@ -639,9 +642,9 @@ directory, and evaluating the following blocks places the vars in the
 #+END_SRC
 
 #+RESULTS:
-: #overtone.studio.inst.Inst{:name "grainy-ctl", :params ({:name "b", :default 0.0, :rate :kr, :value #atom[0.0 0x601d6f90]} {:name "trate", :default 1.0, :rate :kr, :value #atom[1.0 0x2d4b27af]} {:name "amp", :default 0.8, :rate :kr, :value #atom[0.8 0x1285136b]}), :args ("b" "trate" "amp"), :sdef {:name "user/grainy-ctl", :constants [0.0 2.0 1.0 21.0 0.2], :params (0.0 1.0 0.8), :pnames ({:name "b", :index 0} {:name "trate", :index 1} {:name "amp", :index 2}), :ugens ({:args nil, :special 0, :name "Control", :rate 1, :inputs (), :rate-name :kr, :n-outputs 3, :id 393, :outputs ({:rate 1} {:rate 1} {:rate 1}), :n-inputs 0} #<sc-ugen: impulse:ar [1]> #<sc-ugen: buf-dur:kr [1]> #<sc-ugen: mouse-x:kr [2]> #<sc-ugen: binary-op-u-gen:kr [1]> #<sc-ugen: t-grains:ar [9]> #<sc-ugen: out:ar [10]>)}, :group #<synth-group[live]: Inst grainy-ctl Container 74>, :instance-group #<synth-group[live]: Inst grainy-ctl 75>, :fx-group #<synth-group[live]: Inst grainy-ctl FX 76>, :mixer #<synth-node[live]: overtone.stu547/mono-inst-mixer 77>, :bus #<audio-bus: No Name, mono, id 21>, :fx-chain [], :volume #atom[1.0 0x730bdc43], :pan #atom[0.0 0x789fbd2], :n-chans 1}
+: #overtone.studio.inst.Inst{:name "grainy-ctl", :params ({:name "b", :default 0.0, :rate :kr, :value #atom[0.0 0x6f835023]} {:name "trate", :default 1.0, :rate :kr, :value #atom[1.0 0x5f3815c6]} {:name "amp", :default 0.8, :rate :kr, :value #atom[0.8 0x3e38119f]}), :args ("b" "trate" "amp"), :sdef {:name "user/grainy-ctl", :constants [0.0 2.0 1.0 18.0 0.2], :params (0.0 1.0 0.8), :pnames ({:name "b", :index 0} {:name "trate", :index 1} {:name "amp", :index 2}), :ugens ({:args nil, :special 0, :name "Control", :rate 1, :inputs (), :rate-name :kr, :n-outputs 3, :id 354, :outputs ({:rate 1} {:rate 1} {:rate 1}), :n-inputs 0} #<sc-ugen: impulse:ar [1]> #<sc-ugen: buf-dur:kr [1]> #<sc-ugen: mouse-x:kr [2]> #<sc-ugen: binary-op-u-gen:kr [1]> #<sc-ugen: t-grains:ar [9]> #<sc-ugen: out:ar [10]>)}, :group #<synth-group[live]: Inst grainy-ctl Container 56>, :instance-group #<synth-group[live]: Inst grainy-ctl 57>, :fx-group #<synth-group[live]: Inst grainy-ctl FX 58>, :mixer #<synth-node[live]: overtone.stu547/mono-inst-mixer 59>, :bus #<audio-bus: No Name, mono, id 18>, :fx-chain [], :volume #atom[1.0 0x3a764b06], :pan #atom[0.0 0x3c331f8], :n-chans 1}
 
-
+**** use midi control-change message
 Why does the handler function take a "10" as an argument
 #+BEGIN_SRC clojure
   (on-event [:midi :control-change]
@@ -711,7 +714,7 @@ But, because this is just a function definition...what will happen?
 (slow-grain2)
 #+END_SRC
 
-*** everything sounds better with some reverb
+*** everything sounds better with some reverb                      :reverb:
 A basic reverb player
 #+BEGIN_SRC clojure :results silent
 (defsynth reverb-on-left []
@@ -733,10 +736,13 @@ A basic reverb player
 #+END_SRC
 
 #+BEGIN_SRC clojure :results silent
-(definst slow-grain-reverb [b 0] 
-(free-verb (t-grains:ar 1 (impulse:ar 0.5) b 1 (line 0 (buf-dur:kr 0) 600) 2 0 1 4) :mix 0.5 :damp 0.1 :room 0.9))
+  (definst slow-grain-reverb [b 0] 
+  (free-verb (t-grains:ar 1 (impulse:ar 0.5) b 1 (line 0 (buf-dur:kr 0) 600) 2 0 1 4)
+             :mix 0.5
+             :damp 0.1
+             :room 0.9))
 
-(slow-grain-reverb)
+  (slow-grain-reverb)
 #+END_SRC
 
 ** after a bit of work, a need for building "artist-specific" abstractions arises

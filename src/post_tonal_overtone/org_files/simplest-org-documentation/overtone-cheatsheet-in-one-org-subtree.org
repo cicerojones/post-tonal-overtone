@@ -1,5 +1,5 @@
 * Overtone Cheat Sheet 0.9.1 in one subtree
-** Instruments (need to be manually referred)
+** Instruments (need to be manually referred)                         :inst:
 *** overtone.inst.drum
    Drums
 kick
@@ -42,8 +42,8 @@ haziti-clap
 
  ticker ping tb303 mooger rise-fall-pad pad overpad buzz ks1 ks-stringer fm-demo harmonic-swimming whoahaha bubbles supersaw cs80lead simple-flute overtone.inst.io IO mic
 
-** Synths (need to be manually referred)
-*** overtone.synth.sampled-piano)
+** Synths (need to be manually referred)                             :synth:
+*** overtone.synth.sampled-piano
    Sampled Piano
 
  sampled-piano
@@ -61,25 +61,127 @@ haziti-clap
 *** overtone.synth.sts
    STS prophet
 
-** REPL helpers
-
+** REPL helpers                                                       :repl:
 *** Documentation
-odoc ugen-doc find-ugen find-ugen-doc
+**** odoc
+#+BEGIN_SRC clojure :results output
+(doc odoc)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/odoc
+: ([name])
+: Macro
+:   Prints Overtone documentation for a var or special form given its name.
+:   Accounts for colliding ugens
+**** ugen-doc
+#+BEGIN_SRC clojure :results output
+(doc ugen-doc)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/ugen-doc
+: ([ug-name])
+: Macro
+:   Print documentation for ugen with name ug-name
+**** find-ugen
+#+BEGIN_SRC clojure :results output
+(doc find-ugen)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/find-ugen
+([& search-terms])
+Macro
+  Find a ugen containing the specified terms which may be either strings or
+  regexp patterns. Will search the ugen's docstrings for occurrances of all the
+  specified terms. Prints out a list of summaries of each matching ugen.
+  If only one matching ugen is found, prints out full docstring.
+
+  (find-ugen foo)         ;=> finds all ugens containing the word foo
+  (find-ugen foo "bar") ;=> finds all ugens containing the words foo AND bar
+  (find-ugen #"foo*")   ;=> finds all ugens matching the regex foo*
+#+end_example
+**** find-ugen-doc
+#+BEGIN_SRC clojure :results output
+(doc find-ugen-doc)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/find-ugen-doc
+([& search-terms])
+Macro
+  Find a ugen containing the specified terms which may be either strings or
+  regexp patterns. Will search the ugen's docstrings for occurrances of all the
+  specified terms. Prints out each ugens full docstring. Similar to find-doc.
+
+  (find-ugen-doc foo)         ;=> finds all ugens containing the word foo
+  (find-ugen-doc "foo" bar) ;=> finds all ugens containing the words foo
+                                    AND bar
+  (find-ugen-doc #"foo*")   ;=> finds all ugens matching the regex foo*
+#+end_example
 
 *** Examples
-examples example get-example
+examples
+ example
+ get-example
 
 *** Shell
-ls grep
+ls
+ grep
 
 *** Synths
 unify-synthdef
 
 *** Pretty Printing
-opp pp-synth pp-unified-synth
-  pp-sc-synth pp-unified-sc-synth
 
-** Timing
+**** opp
+#+BEGIN_SRC clojure :results output
+(doc opp)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/opp
+: ([& args])
+: Macro
+:   Pretty-print x (or *1 if no argument is passed)
+
+**** pp-synth
+#+BEGIN_SRC clojure :results output
+(doc pp-synth)
+#+END_SRC
+
+#+RESULTS:
+
+**** pp-unified-synth
+#+BEGIN_SRC clojure :results output
+(doc pp-unified-synth)
+#+END_SRC
+
+#+RESULTS:
+
+**** pp-sc-synth
+#+BEGIN_SRC clojure :results output
+(doc pp-sc-synth)
+#+END_SRC
+
+#+RESULTS:
+
+**** pp-unified-sc-synth
+#+BEGIN_SRC clojure :results output
+(doc pp-unified-sc-synth)
+#+END_SRC
+
+#+RESULTS:
+
+** Timing                                                           :timing:
 *** Scheduling
 **** Function Application 
 ***** now
@@ -124,164 +226,1964 @@ stop-player kill-player
 show-schedule
 *** Metronome
 **** Create 
- metronome
+****  metronome
+#+BEGIN_SRC clojure :results output
+(doc  metronome)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/metronome
+([bpm])
+  A metronome is a beat management function.  Tell it what BPM you want,
+  and it will output beat timestamps accordingly.  Call the returned function
+  with no arguments to get the next beat number, or pass it a beat number
+  to get the timestamp to play a note at that beat.
+
+  Metronome also works with bars. Set the number of beats per bar using
+  metro-bpb (defaults to 4). metro-bar returns a timestamp that can be used
+  to play a note relative to a specified bar.
+
+  (def m (metronome 128))
+  (m)          ; => <next beat number>
+  (m 200)      ; => <timestamp of beat 200>
+  (m :bpm)     ; => return the current bpm val
+  (m :bpm 140) ; => set bpm to 140
+#+end_example
+
 **** Manipulate
- metro-start
- metro-tick
- metro-beat
- metro-bpm
- metro-tock
- metro-bar
- metro-bpb
-**** bps 
-beat-ms
-***** 
-** Studio
-  Mixer
-  Control volume input-gain
-  MIDI
-  Connected Controllers midi-connected-devices
+
+**** metro-start
+#+BEGIN_SRC clojure :results output
+(doc metro-start)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/metro-start
+: ([metro] [metro start-beat])
+:   Returns the start time of the metronome. Also restarts the metronome at
+:      'start-beat' if given.
+
+**** metro-tick
+#+BEGIN_SRC clojure :results output
+(doc metro-tick)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/metro-tick
+: ([metro])
+:   Returns the duration of one metronome 'tick' in milleseconds.
+
+**** metro-beat
+#+BEGIN_SRC clojure :results output
+(doc metro-beat)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/metro-beat
+: ([metro] [metro beat])
+:   Returns the next beat number or the timestamp (in milliseconds) of the
+:      given beat.
+
+**** metro-bpm
+#+BEGIN_SRC clojure :results output
+(doc metro-bpm)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/metro-bpm
+: ([metro] [metro new-bpm])
+:   Get the current bpm or change the bpm to 'new-bpm'.
+
+**** metro-tock
+#+BEGIN_SRC clojure :results output
+(doc metro-tock)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/metro-tock
+: ([metro])
+:   Returns the duration of one bar in milliseconds.
+
+**** metro-bar
+#+BEGIN_SRC clojure :results output
+(doc metro-bar)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/metro-bar
+: ([metro] [metro bar])
+:   Returns the next bar number or the timestamp (in milliseconds) of the
+:      given bar
+
+**** metro-bpb
+#+BEGIN_SRC clojure :results output
+(doc metro-bpb)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/metro-bpb
+: ([metro] [metro new-bpb])
+:   Get the current beats per bar or change it to new-bpb
+
+*** bps 
+
+**** beat-ms
+#+BEGIN_SRC clojure :results output
+(doc beat-ms)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/beat-ms
+: ([b bpm])
+:   Convert 'b' beats to milliseconds at the given 'bpm'.
+
+** Studio                                                           :studio:
+*** Mixer
+**** Control
+ volume
+ input-gain
+*** MIDI
+**** Connected Controllers
+ midi-connected-devices
   midi-connected-receivers
   midi-find-connected-devices
   midi-find-connected-device
   midi-find-connected-receivers
   midi-find-connected-receiver
-  Info midi-device-num
+**** Info 
+midi-device-num
   midi-full-device-key
-  Player midi-poly-player midi-player-stop
+**** Player 
+midi-poly-player
+ midi-player-stop
   midi-inst-controller
-  Discovery midi-capture-next-controller-control-key
+**** Discovery
+ midi-capture-next-controller-control-key
   midi-capture-next-controller-key
-  Keys midi-device-keys
+**** Keys
+midi-device-keys
   midi-mk-control-key-keyword
-  State midi-agent-for-control
-  Scope
-  Create & Reset scope pscope spectrogram
-  Recording
-  Stop & Start recording-start recording-stop
-  Query recording?
-  Inst Effects
-  Instrument inst-volume inst-out-bus inst-fx! clear-fx
-  FX fx-noise-gate fx-compressor fx-limiter
+**** State
+ midi-agent-for-control
+*** Scope
+**** Create & Reset
+***** scope
+#+BEGIN_SRC clojure :results output
+(doc scope)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.studio.scope/scope
+([] [thing] [kind id] [kind id keep-on-top?])
+  Create a scope for either a bus or a buffer. Defaults to scoping audio-bus 0.
+   Example use:
+
+   (scope a-control-bus)
+   (scope a-buffer)
+   (scope an-audio-bus)
+   (scope :audio-bus 1)
+   (scope :control-bus 10)
+   (scope :buf 10)
+#+end_example
+***** pscope
+#+BEGIN_SRC clojure :results output
+(doc pscope)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.studio.scope/pscope
+: ([] [thing] [kind id])
+:   Creates a 'permanent' scope, where the window is always kept
+:   on top of other OS windows. See scope.
+***** spectrogram
+#+BEGIN_SRC clojure :results output
+(doc spectrogram)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.studio.scope/spectrogram
+: ([& {:keys [bus keep-on-top], :or {bus 0, keep-on-top false}}])
+:   Create frequency scope for a bus.  Defaults to bus 0.
+:    Example use:
+:    (spectrogram :bus 1)
+
+*** Recording
+**** Stop & Start
+ recording-start recording-stop
+**** Query 
+recording?
+*** Inst Effects
+**** Instrument
+ inst-volume inst-out-bus inst-fx! clear-fx
+**** FX
+fx-noise-gate fx-compressor fx-limiter
   fx-sustainer fx-freeverb fx-reverb
   fx-echo fx-chorus fx-distortion
   fx-distortion2 fx-distortion-tubescreamer
   fx-bitcrusher fx-rlpf fx-rhpf fx-feedback
   fx-feedback-distortion
 
-** Synth Design
-  Design definst defsynth
-  Examples defexamples
-  CGens defcgen
-  Auditioning demo run
-  Checking with-no-ugen-checks with-ugen-debugging
-  Arguments synth-args synth-arg-index
+** Synth Design                                                  :syndesign:
 
-** Synth Control
-  Live Control ctl kill
-  Node Liveness inactive-node-modification-error
-  inactive-buffer-modification-error
-  block-node-until-ready?
-  without-node-blocking
-  with-inactive-node-modification-error
-  with-inactive-buffer-modification-error
-  with-inactive-modification-error
+*** Design
 
-** Event Handling
-  Add on-event on-sync-event on-latest-event
-  oneshot-event oneshot-sync-event
-  Fire event sync-event
-  Remove remove-event-handler
-  Debug event-debug-on event-debug-off
-  event-monitor-on event-monitor-off
-  event-monitor-timer event-monitor
-  event-monitor-keys
-  Ugen Triggers trig-id on-trigger on-latest-trigger
-  on-sync-trigger
+**** definst
+#+BEGIN_SRC clojure :results output
+(doc definst)
+#+END_SRC
 
-** Nodes & Groups
-  Create & Free node group node-free group-free
-  group-clear group-deep-clear
-  Manipulate node-start node-pause node-place
-  node-control node-control-range
-  node-map-controls
-  node-map-n-controls
-  group-prepend-node
-  group-append-node
-  Info node? node-live? node-loading?
-  node-active? node-tree
-  pp-node-tree node-get-control
-  node-get-controls
-  Foundation Groups foundation-overtone-group
-  foundation-output-group
-  foundation-monitor-group
-  foundation-input-group
-  foundation-user-group
-  foundation-default-group
-  foundation-safe-group
-  foundation-safe-pre-default-group
-  foundation-safe-post-default-group
-  Manipulation Handlers on-node-destroyed on-node-created
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/definst
+([name doc-string? params ugen-form])
+Macro
+  Define an instrument and return a player function. The instrument
+  definition will be loaded immediately, and a :new-inst event will be
+  emitted. Expects a name, an optional doc-string, a vector of
+  instrument params, and a ugen-form as its arguments.
+
+  Instrument parameters are a vector of name/value pairs, for example:
+
+  (definst inst-name [param0 value0 param1 value1 param2 value2] ...)
+
+  The returned player function takes any number of positional
+  arguments, followed by any number of keyword arguments. For example,
+  all of the following are equivalent:
+
+  (inst-name 0 1 2)
+  (inst-name 0 1 :param2 2)
+  (inst-name :param1 1 :param0 0 :param2 2)
+
+  Omitted parameters are given their default value from the
+  instrument's parameter list.
+
+  A doc string may also be included between the instrument's name and
+  parameter list:
+
+  (definst lucille
+    "What's that Lucille?"
+    [] ...)
+
+  Instruments are similar to basic synths but still differ in a number
+  of notable ways:
+
+  * Instruments will automatically wrap the body of code given in an
+    out ugen. You do not need to include an out ugen yourself. For
+    example:
+
+    (definst foo [freq 440]
+      (sin-osc freq))
+
+    is similar to:
+
+    (defsynth foo [freq 440]
+      (out 0 (sin-osc freq)))
+
+  * Instruments are limited to 1 or 2 channels. Instruments with more
+    than 2 channels are allowed, but additional channels will not be
+    audible. Use the mix and pan2 ugens to combine multiple channels
+    within your inst if needed. For example:
+
+    (definst bar
+      [f1 100 f2 200 f3 300 f4 400]
+      (mix (pan2 (sin-osc [f1 f2 f3 f4]) [-1 1 -1 1])))
+
+  * Each instrument is assigned its own group which all instances will
+    automatically be placed in. This allows you to control all of an
+    instrument's running synths with one command:
+
+    (ctl inst-name :param0 val0 :param1 val1)
+
+    You may also kill all of an instrument's running synths:
+
+    (kill inst-name)
+
+  * A bus and bus-mixer are created for each instrument. This allows
+    you to control the volume or pan of the instrument group with one
+    command:
+
+    (inst-pan! bar -1)     ;pan hard left.
+    (inst-volume! bar 0.5) ;half the volume.
+
+    For a stereo inst, you can control left and right pan or volume
+    separately by passing an additional arg:
+
+    (inst-pan! bar 1 -1)   ;ch1 right, ch2 left.
+    (inst-volume! bar 0 1) ;mute ch1.
+
+  * Each instrument has an fx-chain to which you can add any number of
+    'fx synths' using the inst-fx function.
+  
+#+end_example
+
+**** defsynth
+#+BEGIN_SRC clojure :results output
+(doc defsynth)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/defsynth
+([s-name & s-form])
+Macro
+  Define a synthesizer and return a player function. The synth
+  definition will be loaded immediately, and a :new-synth event will be
+  emitted. Expects a name, an optional doc-string, a vector of synth
+  params, and a ugen-form as its arguments.
+
+  (defsynth foo [freq 440]
+    (out 0 (sin-osc freq)))
+
+  is equivalent to:
+
+  (def foo
+    (synth [freq 440] (out 0 (sin-osc freq))))
+
+  Params can also be given rates. By default, they are :kr, however
+  another rate can be specified by using either a pair of [default rate]
+  or a map with keys :default and rate:
+
+  (defsynth foo [freq [440 :kr] gate [0 :tr]] ...)
+  (defsynth foo [freq {:default 440 :rate :kr}] ...)
+
+  A doc string can also be included:
+  (defsynth bar
+    "The phatest space pad ever!"
+    [] (...))
+
+  The function generated will accept a target vector argument that
+  must come first, containing position and target as elements (see the
+  node function docs).
+
+  ;; call foo player with default args:
+  (foo)
+
+  ;; call foo player specifying node should be at the tail of group 0
+  (foo [:tail 0])
+
+  ;; call foo player with positional arguments
+  (foo 440 0.3)
+
+  ;; target node to be at the tail of group 0 with positional args
+  (foo [:tail 0] 440 0.3)
+
+  ;; or target node to be at the head of group 2
+  (foo [:head 2] 440 0.3)
+
+  ;; you may also use keyword args
+  (foo :freq 440 :amp 0.3)
+
+  ;; which allows you to re-order the args
+  (foo :amp 0.3 :freq 440 )
+
+  ;; you can also combine a target vector with keyword args
+  (foo [:head 2] :amp 0.3 :freq 440)
+
+  ;; finally, you can combine target vector, keywords args and
+  ;; positional args. Positional args must go first.
+  (foo [:head 2] 440 :amp 0.3)
+#+end_example
+
+*** Examples
+ defexamples
+
+*** CGens
+
+**** defcgen
+#+BEGIN_SRC clojure :results output
+(doc defcgen)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/defcgen
+([c-name & c-form])
+Macro
+  Define one or more related cgens (composite generators) with different rates.
+
+  A cgen has a name, docstring and 0 or more params which themselves have names
+  and optional info maps with the keys :default and :doc. Next you need to
+  describe a number of rated bodies which may reference the named params.
+  Finally, an optional :default may be specified which will define the default
+  rate for this cgen, or if ommitted the standard rate precedence is used.
+
+  An example cgen definition is as follows:
+
+  (defcgen pm-osc
+    "phase modulation sine oscillator pair."
+    [car-freq {:default 0.0 :doc "Carrier frequency"}
+     mod-freq {:default 0.0 :doc "Modulation frequency"}
+     pm-index {:default 0.0 :doc "Phase modulation index"}
+     mod-phase {:default 0.0 :doc "Modulation phase"}]
+    "Longer more detailed documentation..."
+    (:ar (sin-osc:ar car-freq (* pm-index (sin-osc:ar mod-freq mod-phase))))
+    (:kr (sin-osc:kr car-freq (* pm-index (sin-osc:kr mod-freq mod-phase))))
+    (:default :ar))
+#+end_example
+
+*** Auditioning
+
+**** demo
+#+BEGIN_SRC clojure :results output
+(doc demo)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/demo
+([& body])
+Macro
+  Listen to an anonymous synth definition for a fixed period of time.
+  Useful for experimentation.  If the root node is not an out ugen, then
+  it will add one automatically.  You can specify a timeout in seconds
+  as the first argument otherwise it defaults to *demo-time* ms. See
+  #'run for a version of demo that does not add an out ugen.
+
+  (demo (sin-osc 440))      ;=> plays a sine wave for *demo-time* ms
+  (demo 0.5 (sin-osc 440))  ;=> plays a sine wave for half a second
+#+end_example
+
+**** run
+#+BEGIN_SRC clojure :results output
+(doc run)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/run
+([& body])
+Macro
+  Run an anonymous synth definition for a fixed period of time.
+  Useful for experimentation. Does NOT add an out ugen - see #'demo for
+  that. You can specify a timeout in seconds as the first argument
+  otherwise it defaults to *demo-time* ms.
+
+  (run (send-reply (impulse 1) "/foo" [1] 43)) ;=> send OSC messages
+#+end_example
+
+*** Checking
+ with-no-ugen-checks with-ugen-debugging
+
+*** Arguments
+ synth-args synth-arg-index
+
+** Synth Control                                                :syncontrol:
+*** Live Control 
+**** ctl 
+#+BEGIN_SRC clojure :results output
+(doc ctl )
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/ctl
+: ([node & args])
+:   Send a node control messages specified in pairs of :arg-name val. It
+:   is possible to pass a sequence of nodes in which case the same control
+:   messages will be sent to all nodes.  i.e.
+:   (ctl 34 :freq 440 :amp 0.2)
+:   (ctl [34 37] :freq 440 :amp 0.2)
+**** kill
+#+BEGIN_SRC clojure :results output
+(doc kill)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/kill
+([& nodes])
+  Multi-purpose killing function.
+
+  * running synths - Stop and removes the node from the node
+                     tree.
+  * groups         - Stops all synths within the group (and
+                     subgroups) but will leave the group structure
+                     intact.
+
+#+end_example
+
+*** Node Liveness
+
+**** inactive-node-modification-error
+#+BEGIN_SRC clojure :results output
+(doc inactive-node-modification-error)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/inactive-node-modification-error
+: ([])
+:   Returns the current value for the dynamic var
+:   *inactive-node-modification-error*
+
+**** inactive-buffer-modification-error
+#+BEGIN_SRC clojure :results output
+(doc inactive-buffer-modification-error)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/inactive-buffer-modification-error
+: ([])
+:   Returns the current value for the dynamic var
+:   *inactive-buffer-modification-error*
+
+**** block-node-until-ready?
+#+BEGIN_SRC clojure :results output
+(doc block-node-until-ready?)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/block-node-until-ready?
+: ([])
+:   Returns the current value for the dynamic var
+:   *block-node-until-ready?*
+
+**** without-node-blocking
+#+BEGIN_SRC clojure :results output
+(doc without-node-blocking)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/without-node-blocking
+: ([& body])
+: Macro
+:   Stops the current thread from being blocked if you send a
+:    modification message to a server node that hasn't completed
+:    loading. This may result in messages sent within the body of this
+:    macro being ignored by the server.
+
+**** with-inactive-node-modification-error
+#+BEGIN_SRC clojure :results output
+(doc with-inactive-node-modification-error)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/with-inactive-node-modification-error
+: ([error-type & body])
+: Macro
+:   Specify the inactive node modification error for the specified
+:    block. Options are: :exception, :warning and :silent
+
+**** with-inactive-buffer-modification-error
+#+BEGIN_SRC clojure :results output
+(doc with-inactive-buffer-modification-error)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/with-inactive-buffer-modification-error
+: ([error-type & body])
+: Macro
+:   Specify the inactive buffer modification error for the specified
+:    block. Options are: :exception, :warning and :silent
+
+**** with-inactive-modification-error
+#+BEGIN_SRC clojure :results output
+(doc with-inactive-modification-error)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/with-inactive-modification-error
+: ([error-type & body])
+: Macro
+:   Specify the inactive modification error for both nodes and buffers
+:    within the specified block. Options are: :exception, :warning
+:    and :silent
+
+** Event Handling                                                   :events:
+*** Add
+**** on-event
+#+BEGIN_SRC clojure :results output
+(doc on-event)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/on-event
+([event-type handler key])
+  Asynchronously runs handler whenever events of event-type are
+  fired. This asynchronous behaviour can be overridden if required - see
+  sync-event for more information. Events may be triggered with the fns
+  event and sync-event.
+
+  Takes an event-type (name of the event), a handler fn and a key (to
+  refer back to this handler in the future). The handler must accept a
+  single event argument, which is a map containing the :event-type
+  property and any other properties specified when it was fired.
+
+  (on-event "/tr" handler ::status-check )
+  (on-event :midi-note-down (fn [event]
+                              (funky-bass (:note event)))
+                            ::midi-note-down-hdlr)
+
+  Handlers can return :overtone/remove-handler to be removed from
+  the handler list after execution.
+#+end_example
+**** on-sync-event
+#+BEGIN_SRC clojure :results output
+(doc on-sync-event)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/on-sync-event
+([event-type handler key])
+  Synchronously runs handler whenever events of type event-type are
+  fired on the thread that generated the event (by calling ether event
+  or event-sync). Note, this causes the event-generating thread to block
+  whilst this handler is being handled. For a non-blocking event handler
+  see on-event.
+
+
+  Takes an event-type (name of the event), a handler fn and a key (to
+  refer back to this handler in the future). The handler must accept a
+  single event argument, which is a map containing the :event-type
+  property and any other properties specified when it was fired.
+
+  (on-event "/tr" handler ::status-check )
+  (on-event :midi-note-down (fn [event]
+                              (funky-bass (:note event)))
+                            ::midi-note-down-hdlr)
+
+  Handlers can return :overtone/remove-handler to be removed from the
+  handler list after execution.
+#+end_example
+**** on-latest-event
+#+BEGIN_SRC clojure :results output
+(doc on-latest-event)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/on-latest-event
+([event-type handler key])
+  Runs handler on a separate thread to the thread that generated the
+  event - however event order is preserved per thread similar to
+  on-sync-event. However, only the last matching event will trigger the
+  handler with all intermediate events being dropped if the handler fn
+  is still busy executing.
+
+  *Warning* - is not guaranteed to be triggered for all matching events.
+
+  Useful for low-latency sequential handling of events despite
+  potentially long-running handler fns where handling the most recent
+  event is all that matters.
+#+end_example
+**** oneshot-event
+#+BEGIN_SRC clojure :results output
+(doc oneshot-event)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/oneshot-event
+: ([event-type handler key])
+:   Add a one-shot handler which will be removed when called. This
+:    handler is guaranteed to be called only once.
+: 
+:   (oneshot-event "/foo" (fn [v] (println v)) ::debug)
+**** oneshot-sync-event
+#+BEGIN_SRC clojure :results output
+(doc oneshot-sync-event)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/oneshot-sync-event
+: ([event-type handler key])
+:   Add a synchronous one-shot handler which will be removed when
+:    called. This handler is guaranteed to be called only once.
+: 
+:   (oneshot-sync-event "/foo" (fn [v] (println v)) ::debug)
+
+*** Fire
+
+**** event
+#+BEGIN_SRC clojure :results output
+(doc event)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/event
+([event-type & args])
+  Fire an event of type event-type with any number of additional
+  properties.
+
+  NOTE: an event requires either a map as a single argument, or
+  key/value pairs which will be poured into an event map.  It will not
+  work if you just pass values.
+
+  (event ::my-event)
+  (event ::filter-sweep-done :instrument :phat-bass)
+#+end_example
+
+**** sync-event
+#+BEGIN_SRC clojure :results output
+(doc sync-event)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/sync-event
+: ([event-type & args])
+:   Runs all event handlers synchronously of type event-tye regardless
+:   of whether they were declared as async or not. If handlers create
+:   new threads which generate events, these will revert back to the
+:   default behaviour of event (i.e. not forced sync). See event.
+
+*** Remove
+
+**** remove-event-handler
+#+BEGIN_SRC clojure :results output
+(doc remove-event-handler)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/remove-event-handler
+([key])
+  Remove an event handler previously registered with specified
+   key. Removes both sync and async handlers with a given key for a
+   particular event type.
+
+  (defn my-foo-handler [event] (do-stuff (:val event)))
+
+  (on-event :foo my-foo-handler ::bar-key)
+  (event :foo :val 200) ; my-foo-handler gets called with:
+                        ; {:event-type :foo :val 200}
+  (remove-event-handler ::bar-key)
+  (event :foo :val 200) ; my-foo-handler no longer called
+#+end_example
+
+*** Debug
+
+**** event-debug-on
+#+BEGIN_SRC clojure :results output
+(doc event-debug-on)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/event-debug-on
+: ([])
+:   Prints out all incoming events to stdout. May slow things down.
+
+**** event-debug-off
+#+BEGIN_SRC clojure :results output
+(doc event-debug-off)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/event-debug-off
+: ([])
+:   Stops debug info from being printed out.
+
+**** event-monitor-on
+#+BEGIN_SRC clojure :results output
+(doc event-monitor-on)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/event-monitor-on
+: ([])
+:   Start recording new incoming events into a map which can be examined
+:   with #'event-monitor
+
+**** event-monitor-off
+#+BEGIN_SRC clojure :results output
+(doc event-monitor-off)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/event-monitor-off
+: ([])
+:   Stop recording new incoming events
+
+**** event-monitor-timer
+#+BEGIN_SRC clojure :results output
+(doc event-monitor-timer)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/event-monitor-timer
+: ([] [seconds])
+:   Record events for a specific period of time in seconds (defaults to
+:   5).
+
+**** event-monitor
+#+BEGIN_SRC clojure :results output
+(doc event-monitor)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/event-monitor
+: ([] [event-key])
+:   Return a map of the most recently seen events. This is reset every
+:   time #'event-monitor-on is called.
+
+**** event-monitor-keys
+#+BEGIN_SRC clojure :results output
+(doc event-monitor-keys)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/event-monitor-keys
+: ([])
+:   Return a set of all the keys of most recently seen events.
+
+*** Ugen Triggers
+
+**** trig-id
+#+BEGIN_SRC clojure :results output
+(doc trig-id)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/trig-id
+: ([])
+:   Returns a new globally unique id useful for feeding into send-trig
+:    and matching on the event stream.
+: 
+:    See on-trigger docstring for usage example.
+
+**** on-trigger
+#+BEGIN_SRC clojure :results output
+(doc on-trigger)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/on-trigger
+([trig-id handler key] [node trig-id handler key])
+  Registers a standard on-event handler with key which will call
+   handler when matching triggers are recieved. Triggers are created
+   with the send-trig ugen. Handler should be a fn which takes one
+   argument - the latest trigger value. Triggers registered with the
+   same key as another trigger or standard handler will remove and
+   replace the old handler.
+
+   Consider using trig-id to create a unique trigger id
+
+    ;; create new id
+    (def uid (trig-id))
+
+    ;; define a synth which uses send-trig
+    (defsynth foo
+              [t-id 0]
+              (send-trig (impulse 10) t-id (sin-osc)))
+
+    ;; register a handler fn
+    (on-trigger uid
+                (fn [val] (println "trig val:" val))
+                ::debug)
+
+    ;; create a new instance of synth foo with trigger id as a
+    ;; param
+    (foo uid)
+
+    ;;Trigger handler can be removed with:
+    (remove-event-handler ::debug)
+#+end_example
+
+**** on-latest-trigger
+#+BEGIN_SRC clojure :results output
+(doc on-latest-trigger)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/on-latest-trigger
+([trig-id handler key] [node trig-id handler key])
+  Registers a standard on-latest-event handler with key which will call
+   handler when matching triggers are recieved. Triggers are created
+   with the send-trig ugen. Handler should be a fn which takes one
+   argument - the latest trigger value. Triggers registered with the
+   same key as another trigger or standard handler will remove and
+   replace the old handler.
+
+   Consider using trig-id to create a unique trigger id. See on-trigger
+   docstring for usage example.
+
+   Trigger handler can be removed with remove-event-handler.
+#+end_example
+
+**** on-sync-trigger
+#+BEGIN_SRC clojure :results output
+(doc on-sync-trigger)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/on-sync-trigger
+([trig-id handler key] [node trig-id handler key])
+  Registers a standard on-sync-event handler with key which will call
+   handler when matching triggers are recieved. Triggers are created
+   with the send-trig ugen. Handler should be a fn which takes one
+   argument - the latest trigger value. Triggers registered with the
+   same key as another trigger or standard handler will remove and
+   replace the old handler.
+
+   Consider using trig-id to create a unique trigger id. See on-trigger
+   docstring for usage example.
+
+   Trigger handler can be removed with remove-event-handler.
+#+end_example
+
+** Nodes & Groups                                           :nodes:groups:
+*** Create & Free 
+**** node
+#+BEGIN_SRC clojure :results output
+(doc node)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/node
+([synth-name] [synth-name arg-map] [synth-name arg-map location] [synth-name arg-map location sdef])
+  Asynchronously instantiate a synth node on the audio server.  Takes
+  the synth name and a map of argument name/value pairs.  Optionally use
+  target <node/group-id> and position <pos> to specify where the node
+  should be located.  The position can be one
+  of :head, :tail :before, :after, or :replace.
+
+  (node "foo")
+  (node "foo" {:pitch 60})
+  (node "foo" {:pitch 60} {:target 0})
+  (node "foo" {:pitch 60} {:position :tail :target 2})
+  
+#+end_example
+**** group
+#+BEGIN_SRC clojure :results output
+(doc group)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/group
+([] [name-or-position] [name-or-position position-or-target] [name position target] [name id position target])
+  Create a new synth group as a child of the target group. By default
+  creates a new group at the tail of the root group.
+
+  The position can be one of :head, :tail :before, :after, or :replace.
+
+  (group)                  ;=> Creates a new group at the tail of the
+                               foundation-default-group
+  (group "foo")            ;=> Creates a group named foo
+  (group :tail my-g)       ;=> Creates a group at the tail of group
+                               my-g
+  (group "bar" :head my-g) ;=> Creates a named group at the head of
+                               group my-g
+#+end_example
+**** node-free
+#+BEGIN_SRC clojure :results output
+(doc node-free)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/node-free
+: ([this])
+:   nil
+**** group-free
+#+BEGIN_SRC clojure :results output
+(doc group-free)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/group-free
+: ([group])
+:   Destroys this group and any containing synths or subgroups.
+**** group-clear
+#+BEGIN_SRC clojure :results output
+(doc group-clear)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/group-clear
+: ([group])
+:   Nukes all nodes in the group. This completely clears out all
+:          subgroups and frees all subsynths.
+**** group-deep-clear
+#+BEGIN_SRC clojure :results output
+(doc group-deep-clear)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/group-deep-clear
+: ([group])
+:   Traverses all groups below this group and frees all the
+:          synths. Group structure is left unaffected.
+
+*** Manipulate
+
+**** node-start
+#+BEGIN_SRC clojure :results output
+(doc node-start)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/node-start
+: ([this])
+:   nil
+
+**** node-pause
+#+BEGIN_SRC clojure :results output
+(doc node-pause)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/node-pause
+: ([this])
+:   nil
+
+**** node-place
+#+BEGIN_SRC clojure :results output
+(doc node-place)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/node-place
+: ([this position dest-node])
+:   nil
+
+**** node-control
+#+BEGIN_SRC clojure :results output
+(doc node-control)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/node-control
+: ([this params])
+:   Modify control parameters of the synth node.
+
+**** node-control-range
+#+BEGIN_SRC clojure :results output
+(doc node-control-range)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/node-control-range
+: ([this ctl-start ctl-vals])
+:   Modify a range of control parameters of the synth node.
+
+**** node-map-controls
+#+BEGIN_SRC clojure :results output
+(doc node-map-controls)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/node-map-controls
+: ([this names-buses])
+:   Connect a node's controls to a control bus.
+
+**** node-map-n-controls
+#+BEGIN_SRC clojure :results output
+(doc node-map-n-controls)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/node-map-n-controls
+: ([this start-control start-bus n])
+:   Connect N controls of a node to a set of sequential control
+:         buses, starting at the given control name.
+
+**** group-prepend-node
+#+BEGIN_SRC clojure :results output
+(doc group-prepend-node)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/group-prepend-node
+: ([group node])
+:   Adds the node to the head (first to be executed) of the group.
+
+**** group-append-node
+#+BEGIN_SRC clojure :results output
+(doc group-append-node)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/group-append-node
+: ([group node])
+:   Adds the node to the tail (last to be executed) of the group.
+
+*** Info
+
+**** node? 
+#+BEGIN_SRC clojure :results output
+(doc node? )
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/node?
+: ([obj])
+:   Returns true if obj is a synth node i.e. a SynthNode or a SynthGroup
+:    object which has a type which derives
+:    from :overtone.sc.node/synth-node
+
+**** node-live? 
+#+BEGIN_SRC clojure :results output
+(doc node-live? )
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/node-live?
+: ([n])
+:   Returns true if n is a running synth node.
+
+**** node-loading?
+#+BEGIN_SRC clojure :results output
+(doc node-loading?)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/node-loading?
+: ([n])
+:   Returns true if n is a loading synth node.
+
+**** node-active?
+#+BEGIN_SRC clojure :results output
+(doc node-active?)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/node-active?
+: ([n])
+:   Returns true if n is an active synth node.
+
+**** node-tree
+#+BEGIN_SRC clojure :results output
+(doc node-tree)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/node-tree
+: ([] [root])
+:   Returns a data representation of the synth node tree starting at
+:   the root group.
+
+**** pp-node-tree 
+#+BEGIN_SRC clojure :results output
+(doc pp-node-tree )
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/pp-node-tree
+: ([] [root])
+:   Pretty print the node tree to *out*
+
+**** node-get-control
+#+BEGIN_SRC clojure :results output
+(doc node-get-control)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/node-get-control
+: ([node control-name])
+:   Get a single synth control value by name.
+
+**** node-get-controls
+#+BEGIN_SRC clojure :results output
+(doc node-get-controls)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/node-get-controls
+: ([node control-names])
+:   Get one or more synth control values by name.  Returns a map of
+:   key/value pairs, for example:
+: 
+:   {:freq 440.0 :attack 0.2}
+
+*** Foundation Groups
+
+**** foundation-overtone-group
+#+BEGIN_SRC clojure :results output
+(doc foundation-overtone-group)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/foundation-overtone-group
+([])
+  Returns the node id for the container group for the whole of the Overtone
+   foundational infrastructure. All of Overtone's groups and nodes will
+   be a child of this node.
+
+   This group should not typically be used. Prefer a group within
+   foundation-user-group such as foundation-default-group or
+   foundation-safe-group.
+#+end_example
+
+**** foundation-output-group
+#+BEGIN_SRC clojure :results output
+(doc foundation-output-group)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/foundation-output-group
+: ([])
+:   Returns the node id for the Overtone output group used for the
+:    default output mixers.
+: 
+:    This group should not typically be used. Prefer a group within
+:    foundation-user-group such as foundation-default-group or
+:    foundation-safe-group.
+
+**** foundation-monitor-group
+#+BEGIN_SRC clojure :results output
+(doc foundation-monitor-group)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/foundation-monitor-group
+: ([])
+:   Returns the node id for the Overtone output group for the default
+:    monitors i.e. the recording synths.
+: 
+:    This group should not typically be used. Prefer a group within
+:    foundation-user-group such as foundation-default-group or
+:    foundation-safe-group.
+
+**** foundation-input-group
+#+BEGIN_SRC clojure :results output
+(doc foundation-input-group)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/foundation-input-group
+: ([])
+:   Returns the node id for the Overtone output group for the default
+:    input mixers.
+: 
+:    This group should not typically be used. Prefer a group within
+:    foundation-user-group such as foundation-default-group or
+:    foundation-safe-group.
+
+**** foundation-user-group
+#+BEGIN_SRC clojure :results output
+(doc foundation-user-group)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/foundation-user-group
+([])
+  Returns the node id for the main Overtone user group. This is where
+   you should place your activity. This group already contains three
+   convenience groups which you should prefer to using this group
+   directly:
+
+  * foundation-safe-pre-default-group
+  * foundation-default-group
+  * foundation-safe-post-default-group
+
+  See the docstrings for these groups for more details.
+#+end_example
+
+**** foundation-default-group
+#+BEGIN_SRC clojure :results output
+(doc foundation-default-group)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/foundation-default-group
+: ([])
+:   Returns the node id for the default Overtone group. This is where the
+:    majority of user activity should take place. This group is the target
+:    of a deep clear when the stop fn is called.
+
+**** foundation-safe-group
+#+BEGIN_SRC clojure :results output
+(doc foundation-safe-group)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/foundation-safe-group
+([])
+  Synonym for foundation-safe-post-default-group.
+
+  Returns the node id for a safe Overtone group. This is similar to
+  the default group only it isn't the target of deep clear when the stop
+  fn is called. Therefore synths in this group will *not* be
+  automatically stopped on execution of the stop fn.
+
+  This returns the safe group which is positioned *after* the default
+  group. For a safe group that is positioned before the default group
+  see foundation-safe-pre-default-group.
+#+end_example
+
+**** foundation-safe-pre-default-group
+#+BEGIN_SRC clojure :results output
+(doc foundation-safe-pre-default-group)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/foundation-safe-pre-default-group
+([])
+  Returns the node id for a safe Overtone group. This is similar to
+  the default group only it isn't the target of deep clear when the stop
+  fn is called. Therefore synths in this group will *not* be
+  automatically stopped on execution of the stop fn.
+
+  This returns the safe group which is positioned *after* the default
+  group. For a safe group that is positioned after the default group
+  see foundation-safe-post-default-group.
+#+end_example
+
+**** foundation-safe-post-default-group
+#+BEGIN_SRC clojure :results output
+(doc foundation-safe-post-default-group)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/foundation-safe-post-default-group
+([])
+  Returns the node id for a safe Overtone group. This is similar to
+  the default group only it isn't the target of deep clear when the stop
+  fn is called. Therefore synths in this group will *not* be
+  automatically stopped on execution of the stop fn.
+
+  This returns the safe group which is positioned *after* the default
+  group. For a safe group that is positioned before the default group
+  see foundation-safe-pre-default-group.
+#+end_example
+
+*** Manipulation Handlers
+ on-node-destroyed on-node-created
   on-node-paused on-node-started
-  Event Keys node-destroyed-event-key
+*** Event Keys
+ node-destroyed-event-key
   node-created-event-key
   node-paused-event-key
   node-started-event-key
 
-** Server
+** Server                                                           :server:
 *** Startup
- boot-server boot-internal-server
-  boot-external-server
-  connect-external-server
+**** boot-server
+#+BEGIN_SRC clojure :results output
+(doc boot-server)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/boot-server
+: ([])
+:   Boot the default server.
+**** boot-internal-server
+#+BEGIN_SRC clojure :results output
+(doc boot-internal-server)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/boot-internal-server
+: ([])
+:   Boot an internal server in the same process as overtone itself. Not
+:   currently available on all platforms
+**** boot-external-server
+#+BEGIN_SRC clojure :results output
+(doc boot-external-server)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/boot-external-server
+: ([] [port] [port opts])
+:   Boot an external server by starting up an external process and connecting to
+:   it. Requires SuperCollider to be installed in the standard location for your
+:   OS.
+**** connect-external-server
+#+BEGIN_SRC clojure :results output
+(doc connect-external-server)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/connect-external-server
+: ([] [port] [host port])
+:   Connect to an externally running SC audio server listening to port
+:   on host.  Host defaults to localhost and port defaults to 57110.
+
 *** Shutdown
- kill-server
+**** kill-server
+#+BEGIN_SRC clojure :results output
+(doc  kill-server)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/kill-server
+: ([])
+:   Shutdown the running server
+
 *** Control
- stop clear stop-all clear-all
+
+**** stop
+#+BEGIN_SRC clojure :results output
+(doc stop)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/stop
+: ([])
+:   Stop all running synths and metronomes. This does not remove any
+:   synths/insts you may have defined, rather it just stops any of them
+:   that are currently playing. Groups are left unaffected.
+
+**** clear
+#+BEGIN_SRC clojure :results output
+(doc clear)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/clear
+: ([])
+:   Stop all running synths and metronomes. This does not remove any
+:   synths/insts you may have defined, rather it just stops any of them
+:   that are currently playing. Subgroups are cleared out and removed.
+
+**** stop-all
+#+BEGIN_SRC clojure :results output
+(doc stop-all)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/stop-all
+: ([])
+:   Stop all running synths and metronomes including those in the safe
+:   pre and post groups. This does not remove any synths/insts you may
+:   have defined, rather it just stops any of them that are currently
+:   playing. Groups are left unaffected
+
+**** clear-all
+#+BEGIN_SRC clojure :results output
+(doc clear-all)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/clear-all
+: ([])
+:   Stop all running synths and metronomes including those in the safe
+:   pre and post groups. This does not remove any synths/insts you may
+:   have defined, rather it just stops any of them that are currently
+:   playing. Subgroups are cleared out and removed.
+
 *** OSC Communication
- snd recv clear-msg-queue at
-  snd-immediately
+
+**** snd
+#+BEGIN_SRC clojure :results output
+(doc snd)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/snd
+: ([path & args])
+:   Sends an OSC message to the server. If the message path is a known
+:   scsynth path, then the types of the arguments will be checked
+:   according to what scsynth is expecting. Automatically converts any
+:   args which are longs to ints.
+: 
+:   (snd "/foo" 1 2.0 "eggs")
+
+**** recv
+#+BEGIN_SRC clojure :results output
+(doc recv)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/recv
+([path] [path matcher-fn])
+  Register your intent to wait for a message associated with given
+  path to be received from the server. Returns a promise that will
+  contain the message once it has been received. Does not block
+  current thread (this only happens once you try and look inside the
+  promise and the reply has not yet been received).
+
+  If an optional matcher-fn is specified, will only deliver the
+  promise when the matcher-fn returns true. The matcher-fn should
+  accept one arg which is the incoming event info.
+#+end_example
+
+**** clear-msg-queue
+#+BEGIN_SRC clojure :results output
+(doc clear-msg-queue)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/clear-msg-queue
+: ([])
+:   Remove any scheduled OSC messages from the run queue.
+
+**** at
+#+BEGIN_SRC clojure :results output
+(doc at)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/at
+([time-ms & body])
+Macro
+  Schedule server communication - specify that communication messages
+   execute on the server at a specific time in the future:
+
+   ;; control synth foo to change :freq to 150
+   ;; one second from now:
+   (at (+ (now) 1000) (ctl foo :freq 150))
+
+   Only affects code that communicates with the server using OSC
+   messaging i.e. synth triggering and control. All code in the body of
+   the at macro is executed immediately. Any OSC messages which are
+   triggered as a result of executing the body are not immediately sent
+   but are instead captured and then sent in a single OSC bundle with
+   the specified timestamp once the body has completed. The server then
+   stores these bundles and executes them at the specified time. This
+   allows you to schedule the triggering and control of synths for
+   specific times.
+
+   The bundling is thread-local, so you don't have to worry about
+   accidentally scheduling packets into a bundle started on another
+   thread.
+
+   Be careful not to confuse at with apply-at and apply-by which
+   directly affect Clojure code.
+
+   Warning, all liveness and 'node blocking when not ready' checks are
+   disabled within the context of this macro. This means that it will
+   fail silently if a server node you wish to control either has been
+   since terminated or not had time to be initialised.
+#+end_example
+
+**** snd-immediately
+#+BEGIN_SRC clojure :results output
+(doc snd-immediately)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/snd-immediately
+: ([& body])
+: Macro
+:   nil
+
 *** Diagnostic
- server-status server-info
-  server-opts server-connected?
-  server-disconnected?
-  server-connecting?
-  internal-server? external-server?
-  connection-info server-sample-rate
-  server-num-output-buses
-  server-num-input-buses
-  server-num-audio-buses
-  server-num-buffers
-  ensure-connected!
+
+**** server-status
+#+BEGIN_SRC clojure :results output
+(doc server-status)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/server-status
+: ([])
+:   Check the status of the audio server.
+
+**** server-info
+#+BEGIN_SRC clojure :results output
+(doc server-info)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/server-info
+([])
+  Fetches a bunch of useful server info. Has to trigger and poll a
+  synth to fetch data. See #'server-num-output-buses,
+  #'server-num-input-buses, #'server-num-audio-buses and
+  #'server-num-buffers #'server-sample-rate, #'server-sample-dur,
+  #'server-control-rate, #'server-control-dur for fast cached versions
+  of the static values in this info map. Note, the number of running
+  synths will also include the synth used to obtain this information.
+#+end_example
+
+**** server-opts
+#+BEGIN_SRC clojure :results output
+(doc server-opts)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/server-opts
+: ([])
+:   Returns options for currently connected server (if available)
+
+**** server-connected?
+#+BEGIN_SRC clojure :results output
+(doc server-connected?)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/server-connected?
+: ([])
+:   Returns true if the server is currently connected
+
+**** server-disconnected?
+#+BEGIN_SRC clojure :results output
+(doc server-disconnected?)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/server-disconnected?
+: ([])
+:   Returns true if the server is currently disconnected
+
+**** server-connecting?
+#+BEGIN_SRC clojure :results output
+(doc server-connecting?)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/server-connecting?
+: ([])
+:   Returns true if the server is connecting
+
+**** internal-server?
+#+BEGIN_SRC clojure :results output
+(doc internal-server?)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/internal-server?
+: ([])
+:   Returns true if the server is internal
+
+**** external-server?
+#+BEGIN_SRC clojure :results output
+(doc external-server?)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/external-server?
+: ([])
+:   Returns true if the server is external
+
+**** connection-info
+#+BEGIN_SRC clojure :results output
+(doc connection-info)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/connection-info
+: ([])
+:   Returns connection information regarding the currently connected
+:   server
+
+**** server-sample-rate
+#+BEGIN_SRC clojure :results output
+(doc server-sample-rate)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/server-sample-rate
+: ([])
+:   Returns the sample rate of the server. This number is cached for a
+:    given running server for the duration of boot
+
+**** server-num-output-buses
+#+BEGIN_SRC clojure :results output
+(doc server-num-output-buses)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/server-num-output-buses
+: ([])
+:   Returns the number of output buses accessible by the server. This number may
+:   change depending on host architecture but is cached for a given running server
+:   for the duration of boot.
+
+**** server-num-input-buses
+#+BEGIN_SRC clojure :results output
+(doc server-num-input-buses)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/server-num-input-buses
+: ([])
+:   Returns the number of input buses accessible by the server. This number may
+:   change depending on host architecture but is cached for a given running
+:   server for the duration of boot.
+
+**** server-num-audio-buses
+#+BEGIN_SRC clojure :results output
+(doc server-num-audio-buses)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/server-num-audio-buses
+: ([])
+:   Returns the number of audio buses accessible by the server. This number may
+:   change depending on host architecture but is cached for a given running server
+:   for the duration of boot.
+
+**** server-num-buffers
+#+BEGIN_SRC clojure :results output
+(doc server-num-buffers)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/server-num-buffers
+: ([])
+:   Returns the number of buffers accessible by the server. This number may
+:   change depending on host architecture but is cached for a given running server
+:   for the duration of boot.
+
+**** ensure-connected!
+#+BEGIN_SRC clojure :results output
+(doc ensure-connected!)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/ensure-connected!
+: ([])
+:   Throws an exception if the server isn't currently connected
+
 *** Debug
- sc-osc-log-on sc-osc-log-off
-  sc-osc-log sc-debug-on
-  sc-debug-off external-server-log
-  sc-osc-debug-on sc-osc-debug-off
+
+**** sc-osc-log-on
+#+BEGIN_SRC clojure :results output
+(doc sc-osc-log-on)
+#+END_SRC
+
+#+RESULTS:
+
+**** sc-osc-log-off
+#+BEGIN_SRC clojure :results output
+(doc sc-osc-log-off)
+#+END_SRC
+
+#+RESULTS:
+
+**** sc-osc-log
+#+BEGIN_SRC clojure :results output
+(doc sc-osc-log)
+#+END_SRC
+
+#+RESULTS:
+
+**** sc-debug-on
+#+BEGIN_SRC clojure :results output
+(doc sc-debug-on)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/sc-debug-on
+: ([])
+:   Turn on output from both the Overtone and the audio server.
+
+**** sc-debug-off
+#+BEGIN_SRC clojure :results output
+(doc sc-debug-off)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/sc-debug-off
+: ([])
+:   Turn off debug output from both the Overtone and the audio server.
+
+**** external-server-log
+#+BEGIN_SRC clojure :results output
+(doc external-server-log)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/external-server-log
+: ([])
+:   Print the external server log.
+
+**** sc-osc-debug-on
+#+BEGIN_SRC clojure :results output
+(doc sc-osc-debug-on)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/sc-osc-debug-on
+: ([])
+:   Log and print out all outgoing OSC messages
+
+**** sc-osc-debug-off
+#+BEGIN_SRC clojure :results output
+(doc sc-osc-debug-off)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/sc-osc-debug-off
+: ([])
+:   Turns off OSC debug messages (see sc-osc-debug-on)
 
 ** Visualisation
-  Graphviz
-  Dot Notation graphviz
-  Show PDF show-graphviz-synth
+*** Graphviz
+**** Dot Notation
+**** graphviz
+#+BEGIN_SRC clojure :results output
+(doc graphviz)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/graphviz
+: ([s])
+:   Generate dot notation for synth design.
+:    (see overtone.repl.debug/unified-sdef)
+
+**** Show PDF
+
+**** show-graphviz-synth
+#+BEGIN_SRC clojure :results output
+(doc show-graphviz-synth)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/show-graphviz-synth
+([s])
+  Generate pdf of design for synth s. This assumes that graphviz has
+   been installed and the dot program is available on the system's PATH.
+
+   On OS X, a simple way to install graphviz is with homebrew: brew
+   install graphviz
+
+   Also opens pdf on Mac OS X (with open) and Linux (with xdg-open).
+#+end_example
 
 ** External Assets
-  Generic URLs
-  Auto cache & Return Path asset-path asset-seq
+*** Generic URLs
+**** Auto cache & Return Path
+ asset-path asset-seq
   asset-bundle-path
   asset-bundle-dir
-  Freesound.org
-  Playable Function freesound
-  Auto cache & Query freesound-info freesound-path
+
+*** Freesound.org
+
+**** Playable Function
+ freesound
+
+**** Auto cache & Query
+ freesound-info
+ freesound-path
   freesound-pack-info
   freesound-pack-dir
   freesound-search freesound-searchm
   freesound-search-paths
 
-** Algorithmic Composition
+** Algorithmic Composition                                            :algo:
 *** Chance
 **** Choice
 ***** choose
- choose-n weighted-choose
-****** documentation examples
+#+BEGIN_SRC clojure :results output
+(doc choose)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/choose
+: ([col])
+:   Choose a random element from col.
+***** choose-n
 #+BEGIN_SRC clojure :results output
 (doc choose-n)
 #+END_SRC
@@ -291,7 +2193,7 @@ beat-ms
 : overtone.live/choose-n
 : ([n col])
 :   Choose n random elements from col.
-
+***** weighted-choose
 #+BEGIN_SRC clojure :results output
 (doc weighted-choose)
 #+END_SRC
@@ -316,55 +2218,269 @@ overtone.live/weighted-choose
   (weighted-choose {1 0.5, 2 0.3, 3 0.125, 4 0.075})
 #+end_example
 
-***** Dice
- weighted-coin ranged-rand
-**** Scaling
-***** Range
- scale-range
-***** Rounding
- closest-to round-to
-**** Trig
-***** Scaled
+****** Dice
+******* weighted-coin
+#+BEGIN_SRC clojure :results output
+(doc weighted-coin)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/weighted-coin
+: ([n])
+:   Returns true or false. Probability of true is weighted by n which
+:    should be within the range 0 - 1. n will be truncated to range 0 - 1
+:    if it isn't
+
+******* ranged-rand
+#+BEGIN_SRC clojure :results output
+(doc ranged-rand)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/ranged-rand
+: ([min max])
+:   Returns a random value within the specified range
+
+*** Scaling
+**** Range
+**** scale-range
+#+BEGIN_SRC clojure :results output
+(doc scale-range)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/scale-range
+([x in-min in-max out-min out-max])
+  Scales a given input value within the specified input range to a
+  corresponding value in the specified output range using the formula:
+
+           (out-max - out-min) (x - in-min)
+   f (x) = --------------------------------  + out-min
+                    in-max - in-min
+
+
+#+end_example
+
+**** Rounding
+
+**** closest-to
+#+BEGIN_SRC clojure :results output
+(doc closest-to)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/closest-to
+: ([n low hi])
+:   Returns either low or hi depending on which is numerically closer
+:   to n.
+:   (closest-to 4.7 4 6) ;=> 4 (4.7 is closer to 4 than 6)
+
+**** round-to
+#+BEGIN_SRC clojure :results output
+(doc round-to)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/round-to
+: ([n div])
+:   Rounds n to the nearest multiple of div
+:   (round-to 4.7 1) ;=> 5
+:   (round-to 4.7 2) ;=> 4 (4.7 is closer to 4 than 6)
+
+*** Trig
+**** Scaled
  cosr sinr tanr
-**** Functions
-***** Cycling
- cycle-fn
-**** List
-***** Rotation
- rotate
-***** Creation
- fill
+*** Functions
+**** Cycling
+***** cycle-fn
+#+BEGIN_SRC clojure :results output
+(doc cycle-fn)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/cycle-fn
+([& fns])
+  Returns a fn which will cycle between each of the fns specified. The
+   first time the fn is called, the first fn in fns will be called, the
+   second time, the second fn in fns etc, cycling around indefinitely.
+
+   The args passed into the returned fn will be passed through to the
+   appropriate inner fn. Additionally, the result of the inner fn will
+   be returned as the result of the outer fn.
+
+   Will catch any exceptions generated by the internal fns and print a
+   stacktrace to stdout.
+
+   (def f (cycle-fn (fn [st] (println "hi" st))
+                    (fn [st] (println "yo" st))
+                    (fn [st] (println "ho ho" st))))
+
+   (f "there") ;=> "hi there"
+   (f "bro")   ;=> "yo bro"
+   (f "santa") ;=> "ho ho santa"
+   (f "again") ;=> "hi again"
+#+end_example
+
+*** List
+**** Rotation
+**** rotate
+#+BEGIN_SRC clojure :results output
+(doc rotate)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/rotate
+([n coll])
+  Treat a list/vector as a circular data structure and rotate it by n
+   places:
+
+   (rotate 0  [1 2 3 4]) ;=> [1 2 3 4]
+   (rotate 2  [1 2 3 4]) ;=> [3 4 1 2]
+   (rotate -1 [1 2 3 4]) ;=> [4 1 2 3]
+
+   Note, coll should be countable.
+#+end_example
+
+**** Creation
+
+**** fill
+#+BEGIN_SRC clojure :results output
+(doc fill)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/fill
+([size coll])
+  Create a new vector with the specified size containing either part of
+   list ls, or ls repeated until size elements have been placed into result
+   vector.
+
+   (fill 5 [1])      ;=> [1 1 1 1 1]
+   (fill 6 [1 2 3])   ;=> [1 2 3 1 2 3]
+   (fill 7 [5 6]   )  ;=> [5 6 5 6 5 6 5]
+   (fill 3 [1 2 3 4]) ;=> [1 2 3]
+
+   Note, coll should be non-empty and countable.
+#+end_example
 
 ** Music
-  Pitch
-  Ratios unison octave fifth sixth third fourth
+*** Pitch
+**** Ratios
+ unison octave fifth sixth third fourth
   min-third min-sixth
-  Note Shifting shift flat sharp invert inc-first
+**** Note Shifting
+ shift flat sharp invert inc-first
   dec-last
-  Notes note octave-note nth-octave
+**** Notes
+note octave-note nth-octave
   nth-equal-tempered-freq
   canonical-pitch-class-name note-info
   mk-midi-string match-note
-  Scales scale resolve-scale scale-field
+  Scales 
+scale resolve-scale scale-field
   nth-interval resolve-degree degree->int
   degree->interval degrees->pitches
   resolve-degree resolve-degrees
   interval-freq
-  Chords chord resolve-chord rand-chord
+  Chords
+ chord resolve-chord rand-chord
   invert-chord chord-degree
-  Discovery find-scale-name find-note-name
+  Discovery
+ find-scale-name find-note-name
   find-pitch-class-name find-chord
-  Frequencies cents midi->hz hz->midi
-  Amplitude db->amp
+  Frequencies
+ cents midi->hz hz->midi
+  Amplitude
+ db->amp
 
 ** Sound Data
-*** Buffers
+*** Buffers                                                       :buffers:
 **** Create & Free
- buffer buffer-free
-  buffer-alloc-read
+***** buffer
+#+BEGIN_SRC clojure :results output
+(doc buffer)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/buffer
+: ([size] [size num-channels-or-name] [size num-channels name])
+:   Synchronously allocate a new zero filled buffer for storing audio
+:   data with the specified size and num-channels. Size will be
+:   automatically floored and converted to a Long - i.e. 2.7 -> 2
+***** buffer-free
+#+BEGIN_SRC clojure :results output
+(doc buffer-free)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/buffer-free
+: ([buf])
+:   Synchronously free an audio buffer and the memory it was consuming.
+***** buffer-alloc-read
+#+BEGIN_SRC clojure :results output
+(doc buffer-alloc-read)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/buffer-alloc-read
+([path] [path start] [path start n-frames])
+  Synchronously allocates a buffer with the same number of channels as
+  the audio file given by 'path'. Reads the number of samples
+  requested ('n-frames') into the buffer, or fewer if the file is
+  smaller than requested. Reads sound file data from the given starting
+  frame ('start') in the file. If 'n-frames' is less than or equal to
+  zero, the entire file is read.
+
+  Ignores OSC scheduling via the at macro; all inner OSC calls are sent
+  immediately.
+#+end_example
+
 **** Generate Buffer Data
 data->wavetable
-  create-buffer-data
+
+**** create-buffer-data
+#+BEGIN_SRC clojure :results output
+(doc create-buffer-data)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/create-buffer-data
+([size f range-min range-max])
+  Create a sequence of floats for use as a buffer.  Result will contain
+   values obtained by calling f with values linearly interpolated
+   between range-min (inclusive) and range-max (exclusive).  For most
+   purposes size must be a power of 2.
+
+   Examples:
+
+   Just a line from -1 to 1:
+    (create-buffer-data 32 identity -1 1)
+
+   Sine-wave for (osc) ugen:
+    (create-buffer-data 512 #(Math/sin %) 0 TWO-PI)
+
+   Chebyshev polynomial for wave-shaping:
+    (create-buffer-data 1024 #(- (* 2 % %) 1) -1 1)
+#+end_example
+
 **** Read & Write To Server
  buffer-read buffer-write!
   buffer-write-relay! buffer-fill!
@@ -380,49 +2496,580 @@ buffer-stream buffer-stream?
   buffer-cue? buffer-cue-pos
   buffer-stream-close
 **** Query
-buffer? buffer-info?
-  file-buffer? buffer-out-stream?
-  buffer-in-stream?
+***** buffer? 
+#+BEGIN_SRC clojure :results output
+(doc buffer?)
+#+END_SRC
 
-  Info
- buffer-info num-frames buffer-id
+#+RESULTS:
+: -------------------------
+: overtone.live/buffer?
+: ([buf])
+:   Returns true if buf is a buffer.
 
-  Samples
-  Create
- load-sample load-samples sample defsample
-  Playback
- mono-player stereo-player
-  Busses
-  Create & Free
+***** buffer-info?
+#+BEGIN_SRC clojure :results output
+(doc buffer-info)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/buffer-info
+([buf-id])
+  Fetch the information for buffer associated with buf-id (either an
+  integer or an associative with an :id key). Synchronous.
+
+  Information returned is as follows:
+
+  :size       - number of frames in the buffer
+  :n-channels - number of audio channels stored in the buffer
+  :rate       - rate of the buffer (typical rate is 44100 samples per
+                second)
+  :n-samples  - total number of samples in the buffer (* size n-channels)
+  :rate-scale - rate to specify in order to play the buffer correctly
+                according
+                to the server's sample rate (/ rate (server-sample-rate))
+  :duration   - duration of the buffer in seconds
+  :id         - unique id for the buffer
+#+end_example
+
+***** file-buffer? 
+#+BEGIN_SRC clojure :results output
+(doc file-buffer?)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/file-buffer?
+: ([buf])
+:   nil
+
+***** buffer-out-stream?
+#+BEGIN_SRC clojure :results output
+(doc buffer-out-stream?)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/buffer-out-stream?
+: ([bs])
+:   nil
+
+***** buffer-in-stream?
+#+BEGIN_SRC clojure :results output
+(doc buffer-in-stream?)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/buffer-in-stream?
+: ([bc])
+:   nil
+
+**** Info
+***** buffer-info
+#+BEGIN_SRC clojure :results output
+(doc buffer-info)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/buffer-info
+([buf-id])
+  Fetch the information for buffer associated with buf-id (either an
+  integer or an associative with an :id key). Synchronous.
+
+  Information returned is as follows:
+
+  :size       - number of frames in the buffer
+  :n-channels - number of audio channels stored in the buffer
+  :rate       - rate of the buffer (typical rate is 44100 samples per
+                second)
+  :n-samples  - total number of samples in the buffer (* size n-channels)
+  :rate-scale - rate to specify in order to play the buffer correctly
+                according
+                to the server's sample rate (/ rate (server-sample-rate))
+  :duration   - duration of the buffer in seconds
+  :id         - unique id for the buffer
+#+end_example
+
+***** num-frames
+#+BEGIN_SRC clojure :results output
+(doc num-frames)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/num-frames
+: ([buf])
+:   Returns the size of the buffer.
+
+***** buffer-id
+#+BEGIN_SRC clojure :results output
+(doc buffer-id)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/buffer-id
+: ([b])
+:   Return the id of buffer b. Simply punts out to to-sc-id
+
+*** Samples
+**** Create
+***** load-sample
+#+BEGIN_SRC clojure :results output
+(doc load-sample)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/load-sample
+([path & args])
+  Synchronously load a .wav or .aiff file into a memory buffer. Returns
+   the buffer.
+
+    ; e.g.
+    (load-sample "~/studio/samples/kit/boom.wav")
+
+  Takes optional params :start and :size. Allocates buffer to number of
+  channels of file and number of samples requested (:size), or fewer if
+  sound file is smaller than requested. Reads sound file data from the
+  given starting frame in the file (:start). If the number of frames
+  argument is less than or equal to zero, the entire file is read.
+
+  If optional param :force is set to true, any previously create cache
+  of the sample will be removed and the sample will be forcibly
+  reloaded.
+#+end_example
+***** load-samples
+#+BEGIN_SRC clojure :results output
+(doc load-samples)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/load-samples
+: ([& path-glob])
+:   Takes a directory path or glob path (see #'overtone.helpers.file/glob)
+:    and loads up all matching samples and returns a seq of maps
+:    representing information for each loaded sample (see
+:    load-sample). Samples should be in .aiff or .wav format.
+***** sample
+#+BEGIN_SRC clojure :results output
+(doc sample)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/sample
+([path & args])
+  Loads a .wav or .aiff file into a memory buffer. Returns a function
+   capable of playing that sample. Memoizes result and returns same
+   sample on subsequent calls.
+
+   ; e.g.
+   (sample "~/music/samples/flibble.wav")
+
+  
+#+end_example
+***** defsample
+#+BEGIN_SRC clojure :results output
+(doc defsample)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/defsample
+: ([s-name path & args])
+: Macro
+:   Define a s-name as a var in the current namespace referencing a
+:    sample with the specified path and args.
+: 
+:    Equivalent to:
+:    (def s-name (sample path args...))
+
+**** Playback
+
+***** mono-player
+#+BEGIN_SRC clojure :results output
+(doc mono-player)
+#+END_SRC
+
+#+RESULTS:
+
+***** stereo-player
+#+BEGIN_SRC clojure :results output
+(doc stereo-player)
+#+END_SRC
+
+#+RESULTS:
+
+*** Busses
+**** Create & Free
  control-bus audio-bus free-bus
-  Modify & Read
+**** Modify & Read
  control-bus-set! control-bus-set-range!
   control-bus-get control-bus-get-range
-  Query
+**** Query
  bus? control-bus? audio-bus?
-  Info
+**** Info
  bus-id
-  Monitor
+**** Monitor
  bus-monitor control-bus-monitor
   audio-bus-monitor
 
 ** Persistence
-  Local Store
-  Access store-get store-set! store
+*** Local Store
+**** Access
+**** store-get
+#+BEGIN_SRC clojure :results output
+(doc store-get)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/store-get
+: ([key] [key not-found])
+:   Get config value. Returns default if specified and the config does
+:   not contain key.
+**** store-set! 
+#+BEGIN_SRC clojure :results output
+(doc store-set! )
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/store-set!
+: ([key val])
+:   Set store key to val
+**** store
+#+BEGIN_SRC clojure :results output
+(doc store)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/store
+: ([])
+:   Get the full user store map
 
 ** CGens
-  Audio In sound-in
-  Buffer Playback scaled-play-buf scaled-v-disk
-  Control hold
-  Oscillators pm-osc square
-  Mix mix splay sum
-  Pitch add-cents
-  Tapping tap
-  Range range-lin
+*** Audio In 
+*** sound-in
+#+BEGIN_SRC clojure :results output
+(doc sound-in)
+#+END_SRC
 
-** ugens
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/sound-in
+([bus])
+  
+  read audio from hardware inputs 
+
+  [bus 0]
+
+  bus - The channel (or array of channels) to read 
+        in. These start at 0, which will 
+        correspond to the first audio input. 
+
+  Reads audio from the input of your computer or soundcard. 
+  It is a wrapper UGen based on In, which offsets the index 
+  such that 0 will always correspond to the first input 
+  regardless of the number of inputs present.
+
+  N.B. On Intel based Macs, reading the built-in microphone 
+  or input may require creating an aggregate device in 
+  AudioMIDI Setup. 
+
+  Categories: Composite Ugen
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+*** Buffer Playback
+scaled-play-buf
+scaled-v-disk
+*** Control
+*** hold
+#+BEGIN_SRC clojure :results output
+(doc hold)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/hold
+([in hold-time release-time done])
+  
+  Hold an input source for a set period of time and then 
+  stop. 
+
+  [in 0.0, hold-time 1.0, release-time 0.01, done ]
+
+  in           - Input source. 
+  hold-time    - Hold time in seconds. 
+  release-time - Release time in seconds 
+  done         - Action to take after release 
+
+  Hold an input source for a set period of time and then 
+  stop by applying a simple envelope. Takes a hold-time, a 
+  release-time, and a done action. 
+
+  Categories: Composite Ugen
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+*** Oscillators
+
+*** pm-osc
+#+BEGIN_SRC clojure :results output
+(doc pm-osc)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/pm-osc
+([car-freq mod-freq pm-index mod-phase])
+  
+  Phase modulation sine oscillator pair. 
+
+  [car-freq 0.0, mod-freq 0.0, pm-index 0.0, mod-phase 0.0]
+
+  car-freq  - Carrier frequency 
+  mod-freq  - Modulation frequency 
+  pm-index  - Phase modulation index 
+  mod-phase - Modulation phase 
+
+  Please add some docs! 
+
+  Categories: Composite Ugen
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+*** square
+#+BEGIN_SRC clojure :results output
+(doc square)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/square
+([freq])
+  
+  A square wave generator 
+
+  [freq 440]
+
+  freq - Signal frequency 
+
+  A square wave only exists in two states: high and low. 
+  This wave produces only odd harmonics resulting in a 
+  mellow, hollow sound. This makes it particularly suitable 
+  for emulating wind instruments, adding width to strings 
+  and pads, or for the creation of deep, wide bass sounds.
+
+  See the pulse ugen if you wish to modulate the width. 
+
+  Categories: Composite Ugen
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+*** Mix
+
+*** mix
+#+BEGIN_SRC clojure :results output
+(doc mix)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/mix
+([ins])
+  
+  Mix a list of input channels into a single channel. 
+
+  [ins []]
+
+  ins - List of input channels to mix 
+
+  Mix the list of input channels by summing them together 
+  and dividing by the number of input signals. See sum if 
+  you wish to just add the signals together. 
+
+  Categories: Composite Ugen
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+*** splay
+#+BEGIN_SRC clojure :results output
+(doc splay)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/splay
+([in-array spread level center level-comp?])
+  
+  Spread input channels across a stereo field 
+
+  [in-array [], spread 1, level 1, center 0, level-comp? true]
+
+  in-array    - List of input channels to splay. 
+  spread      - The audio spread width. 
+  level       - Ampilitude level of each 
+                individual spread channel (only 
+                used if level-comp is false). 
+  center      - Center point of audio spread. 
+  level-comp? - Boolean switch to determine 
+                whether automatic level 
+                compensation should be used. 
+
+  Spread input channels across a stereo field, with control 
+  over the center point and spread width of the target 
+  field, and level compensation that lowers the volume for 
+  each additional input channel. 
+
+  Categories: Composite Ugen
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+*** sum
+#+BEGIN_SRC clojure :results output
+(doc sum)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/sum
+([ins])
+  
+  sum a list of input channels into a single channel. 
+
+  [ins []]
+
+  ins - List of input channels to sum 
+
+  Sum the list of input channels by summing them together. 
+  Be careful about summing too many channels together as the 
+  resulting signal will be progressively amplified. 
+
+  Categories: Composite Ugen
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+*** Pitch
+
+*** add-cents
+#+BEGIN_SRC clojure :results output
+(doc add-cents)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/add-cents
+([freq n-cents])
+  
+  Add n-cents to freq. 
+
+  [freq :none, n-cents 1]
+
+  freq    - Input frequency source 
+  n-cents - Number of cents to add 
+
+  Returns a frequency which is the result of adding n-cents 
+  to the src frequency. A cent is a logarithmic measurement 
+  of pitch, where 1-octave equals 1200 cents. 
+
+  Categories: Composite Ugen
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+*** Tapping
+
+*** tap
+#+BEGIN_SRC clojure :results output
+(doc tap)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/tap
+([label freq src])
+  
+  Tap the hell out of ugens for great win 
+
+  [label :none, freq :none, src :none]
+
+  label - String label for this tap. Must be 
+          unique to a given synth. 
+  freq  - Frequency of tap value updates in Hertz 
+  src   - Ugen to tap 
+
+  Allows you to tap arbitrary ugens within a given synth. 
+  The containing synth then automatically gets atoms for 
+  each ugen you tap which will automagically be populated by 
+  the latest ugen value updated at the specified frequency. 
+
+  Categories: Composite Ugen
+  Rates: [ :kr ]
+  Default rate: :kr
+#+end_example
+
+*** Range
+
+*** range-lin
+#+BEGIN_SRC clojure :results output
+(doc range-lin)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/range-lin
+([in dstlo dsthi])
+  
+  Map ugens with default range linearly to another 
+
+  [in 0.0, dstlo 1.0, dsthi 2.0]
+
+  in    - Input to convert (should have range -1 
+          to 1) 
+  dstlo - Lower limit of output range 
+  dsthi - Upper limit of output range 
+
+  Linearly maps input signal with expected range of -1 to 1 
+  to the specified range from dstlo to dsthi. 
+
+  Categories: Composite Ugen
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+** ugens                                                             :ugens:
 *** UGen Helper Constants
-   Done Actions NO-ACTION PAUSE FREE FREE-AND-BEFORE
+   Done Actions 
+NO-ACTION PAUSE FREE FREE-AND-BEFORE
    FREE-AND-AFTER FREE-AND-GROUP-BEFORE
    FREE-AND-GROUP-AFTER
    FREE-UPTO-THIS FREE-FROM-THIS-ON
@@ -453,13 +3100,366 @@ buffer? buffer-info?
    pow ring1 ring2 ring3 ring4 difsqr sumsqr sqrsum
    sqrdif absdif thresh amclip scale-neg clip2 excess
    fold2 wrap2
-   B Equalization Suit UGens
+
+*** B Equalization Suit UGens
    b-low-pass b-hi-pass b-all-pass b-band-pass
    b-band-stop b-peak-eq b-low-shelf b-hi-shelf
-   Buffer IO UGens
-   play-buf t-grains buf-rd buf-wr record-buf
-   scope-out local-buf max-local-bufs set-buf
-   clear-buf
+
+*** Buffer IO UGens                                             :buffer:io:
+
+**** play-buf
+#+BEGIN_SRC clojure :results output
+(doc play-buf)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/play-buf
+([num-channels bufnum rate trigger start-pos loop action])
+  
+  [num-channels :none, bufnum 0, rate 1.0, trigger 1.0, start-pos 0.0, loop 0.0, action 0]
+
+  num-channels - The number of channels that the 
+                 buffer will be. This must be a 
+                 fixed integer. The architechture 
+                 of the SynthDef cannot change 
+                 after it is compiled. Warning: if 
+                 you supply a bufnum of a buffer 
+                 that has a different numChannels 
+                 then you have specified to the 
+                 play-buf, it will fail silently. 
+  bufnum       - The index of the buffer to use. 
+  rate         - 1.0 is the server's sample rate, 
+                 2.0 is one octave up, 0.5 is one 
+                 octave down -1.0 is backwards 
+                 normal rate ... etc. 
+                 Interpolation is cubic. Note: if 
+                 the buffer's sample rate is 
+                 different from the server's, you 
+                 will need to multiply the desired 
+                 playback rate by (file's rate / 
+                 server's rate). The UGen 
+                 (buf-rate-scale bufnum) returns 
+                 this factor. 
+  trigger      - A trigger causes a jump to the 
+                 startPos. A trigger occurs when a 
+                 signal changes from <= 0 to > 0. 
+  start-pos    - Sample frame to start playback. 
+  loop         - 1 means true, 0 means false. This 
+                 is modulateable. 
+  action       - An integer representing an action 
+                 to be executed when the buffer is 
+                 finished playing. This can be 
+                 used to free the enclosing synth. 
+                 Action is only evaluated if loop 
+                 is 0 
+
+  Plays back a sample resident in a buffer 
+
+  Categories: Buffer
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** t-grains
+#+BEGIN_SRC clojure :results output
+(doc t-grains)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/t-grains
+([num-channels trigger bufnum rate center-pos dur pan amp interp])
+  
+  [num-channels 2, trigger 0, bufnum 0, rate 1, center-pos 0, dur 0.1, pan 0.0, amp 0.1, interp 4]
+
+  num-channels - Number of output channels 
+  trigger      - At each trigger, the following 
+                 arguments are sampled and used as 
+                 the arguments of a new grain. A 
+                 trigger occurs when a signal 
+                 changes from <= 0 to > 0. If the 
+                 trigger is audio rate then the 
+                 grains will start with sample 
+                 accuracy. 
+  bufnum       - The index of the buffer to use. 
+                 It must be a one channel (mono) 
+                 buffer. 
+  rate         - 1.0 is normal, 2.0 is one octave 
+                 up, 0.5 is one octave down -1.0 
+                 is backwards normal rate. Unlike 
+                 PlayBuf, the rate is multiplied 
+                 by BufRate, so you needn't do 
+                 that yourself. 
+  center-pos   - The position in the buffer in 
+                 seconds at which the grain 
+                 envelope will reach maximum 
+                 amplitude. 
+  dur          - Duration of the grain in seconds 
+  pan          - A value from -1 to 1. Determines 
+                 where to pan the output in the 
+                 same manner as PanAz. 
+  amp          - Amplitude of the grain. 
+  interp       - 1,2,or 4. Determines whether the 
+                 grain uses (1) no interpolation, 
+                 (2) linear interpolation, or (4) 
+                 cubic interpolation. 
+
+  Sample playback from a buffer with fine control for doing 
+  granular synthesis. Triggers generate grains from a single 
+  channel (mono) buffer. Each grain has a Hann envelope 
+  (sin^2(x) for x from 0 to pi) and is panned between two 
+  channels of multiple outputs. 
+
+  Categories: Buffer, Generators -> Granular
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** buf-rd
+#+BEGIN_SRC clojure :results output
+(doc buf-rd)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/buf-rd
+([num-channels bufnum phase loop interpolation])
+  
+  Read the contents of a buffer at a specified index 
+
+  [num-channels 1, bufnum 0, phase 0.0, loop 1.0, interpolation 2]
+
+  num-channels  - The number of channels of the 
+                  supplied buffer. This must be a 
+                  fixed integer and not a signal 
+                  or a control proxy. The 
+                  architecture of the synth design 
+                  cannot change after it is 
+                  compiled. (Warning: if you 
+                  supply a bufnum of a buffer that 
+                  has a different number of 
+                  channels than you have specified 
+                  to buf-rd , it will fail 
+                  silently). 
+  bufnum        - The index of the buffer to use 
+  phase         - Audio rate modulatable index 
+                  into the buffer. Warning: The 
+                  phase argument only offers 
+                  precision for addressing 2**24 
+                  samples (about 6.3 minutes at 
+                  44100Hz) 
+  loop          - 1 means true, 0 means false. 
+                  This is modulatable. 
+  interpolation - 1 means no interpolation, 2 is 
+                  linear, 4 is cubic interpolation 
+
+  Reads the contents of a buffer at a given index. 
+
+  Categories: Buffer
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** buf-wr
+#+BEGIN_SRC clojure :results output
+(doc buf-wr)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/buf-wr
+([input-array bufnum phase loop])
+  
+  [input-array :none, bufnum 0, phase 0.0, loop 1.0]
+
+  input-array - Input ugens (channelArray) 
+  bufnum      - The index of the buffer to use 
+  phase       - Modulatable index into the buffer 
+                (has to be audio rate). 
+  loop        - 1 means true, 0 means false. This 
+                is modulatable 
+
+  Writes to a buffer at a given index. Note, buf-wr (in 
+  difference to buf-rd) does not do multichannel expansion, 
+  because input is an array. 
+
+  Categories: Buffer
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** record-buf
+#+BEGIN_SRC clojure :results output
+(doc record-buf)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/record-buf
+([input-array bufnum offset rec-level pre-level run loop trigger action])
+  
+  [input-array :none, bufnum 0, offset 0.0, rec-level 1.0, pre-level 0.0, run 1.0, loop 1.0, trigger 1.0, action 0]
+
+  input-array - An Array of input channels 
+  bufnum      - The index of the buffer to use 
+  offset      - An offset into the buffer in 
+                frames, 
+  rec-level   - Value to multiply by input before 
+                mixing with existing data. 
+  pre-level   - Value to multiply to existing data 
+                in buffer before mixing with input 
+  run         - If zero, then recording stops, 
+                otherwise recording proceeds. 
+  loop        - If zero then don't loop, otherwise 
+                do. This is modulate-able. 
+  trigger     - A trigger causes a jump to the 
+                offset position in the Buffer. A 
+                trigger occurs when a signal 
+                changes from <= 0 to > 0. 
+  action      - An integer representing an action 
+                to be executed when the buffer is 
+                finished playing. This can be used 
+                to free the enclosing synth. 
+                Action is only evaluated if loop 
+                is 0 
+
+  Record a stream of values into a buffer. If recLevel is 
+  1.0 and preLevel is 0.0 then the new input overwrites the 
+  old data. If they are both 1.0 then the new data is added 
+  to the existing data. (Any other settings are also valid.) 
+  Note that the number of channels must be fixed for the 
+  defsynth, it cannot vary depending on which buffer you 
+  use. 
+
+  Categories: Buffer
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** scope-out
+#+BEGIN_SRC clojure :results output
+(doc scope-out)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/scope-out
+([input-array bufnum])
+  
+  [input-array :none, bufnum 0.0]
+
+  input-array - - 
+  bufnum      - A buffer or buffer index value. 
+
+  No documentation has been defined for this ugen. 
+
+  Categories: Buffer
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** local-buf
+#+BEGIN_SRC clojure :results output
+(doc local-buf)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/local-buf
+([num-frames num-channels])
+  
+  Create a synth-local buffer. 
+
+  [num-frames :none, num-channels 1]
+
+  num-frames   - The number of frames the buffer 
+                 should contain. 
+  num-channels - The number of channels for the 
+                 buffer. 
+
+  A given local-buf may only be used within the synth it is 
+  defined in. More efficient than using a standard buffer 
+
+  Categories: Composite Ugen
+  Rates: [ :ir ]
+  Default rate: :ir
+#+end_example
+
+**** max-local-bufs
+#+BEGIN_SRC clojure :results output
+(doc max-local-bufs)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/max-local-bufs
+([num-local-bufs])
+  
+  [num-local-bufs :none]
+
+  num-local-bufs - - 
+
+  No documentation has been defined for this ugen. 
+
+  Categories: 
+  Rates: [ :ir ]
+  Default rate: :auto
+#+end_example
+
+**** set-buf
+#+BEGIN_SRC clojure :results output
+(doc set-buf)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/set-buf
+([buf values offset])
+  
+  [buf :none, values :none, offset 0]
+
+  buf    - - 
+  values - - 
+  offset - - 
+
+  No documentation has been defined for this ugen. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** clear-buf
+#+BEGIN_SRC clojure :results output
+(doc clear-buf)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/clear-buf
+([buf])
+  
+  [buf :none]
+
+  buf - - 
+
+  No documentation has been defined for this ugen. 
+
+  Categories: 
+  Rates: [ :ir ]
+  Default rate: :auto
+#+end_example
 
 *** Chaos UGens
    quad-n quad-l quad-c cusp-n cusp-l gbman-n
@@ -654,19 +3654,532 @@ free
    grain-sin grain-in warp1
 
 *** Information UGens
-   sample-rate sample-dur radians-per-sample
-   control-rate control-dur subsample-offset
-   num-output-busses num-input-busses num-audio-busses
-   num-control-busses num-buffers num-running-synths
-   buf-sample-rate buf-rate-scale buf-frames
-   buf-samples buf-dur buf-channels check-bad-values
-   poll
-   Input UGens
-   mouse-x mouse-y mouse-button key-state
-   IO UGens
-   disk-out disk-in v-disk-in in local-in lag-in
-   in-feedback in-trig shared-in out replace-out
-   offset-out local-out x-out shared-out
+**** sample-rate
+#+BEGIN_SRC clojure :results output
+(doc sample-rate)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/sample-rate
+([])
+  
+  []
+
+
+  Returns the current sample rate 
+
+  Categories: 
+  Rates: [ :ir ]
+  Default rate: :auto
+#+end_example
+
+**** sample-dur
+#+BEGIN_SRC clojure :results output
+(doc sample-dur)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/sample-dur
+([])
+  
+  []
+
+
+  Returns the current sample duration of the server in 
+  seconds 
+
+  Categories: 
+  Rates: [ :ir ]
+  Default rate: :auto
+#+end_example
+
+**** radians-per-sample
+#+BEGIN_SRC clojure :results output
+(doc radians-per-sample)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/radians-per-sample
+([])
+  
+  []
+
+
+   
+
+  Categories: 
+  Rates: [ :ir ]
+  Default rate: :auto
+#+end_example
+
+**** control-rate
+#+BEGIN_SRC clojure :results output
+(doc control-rate)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/control-rate
+([])
+  
+  []
+
+
+  Returns the current control rate of the server 
+
+  Categories: 
+  Rates: [ :ir ]
+  Default rate: :auto
+#+end_example
+
+**** control-dur
+#+BEGIN_SRC clojure :results output
+(doc control-dur)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/control-dur
+([])
+  
+  []
+
+
+  Returns the current control rate block duration of the 
+  server in seconds 
+
+  Categories: 
+  Rates: [ :ir ]
+  Default rate: :auto
+#+end_example
+
+**** subsample-offset
+#+BEGIN_SRC clojure :results output
+(doc subsample-offset)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/subsample-offset
+([])
+  
+  []
+
+
+  Offset from synth start within one sample 
+
+  Categories: 
+  Rates: [ :ir ]
+  Default rate: :auto
+#+end_example
+
+**** [#C] num-output-busses
+#+BEGIN_SRC clojure :results output
+(doc num-output-busses)
+#+END_SRC
+
+#+RESULTS:
+
+**** num-input-busses
+#+BEGIN_SRC clojure :results output
+(doc num-input-busses)
+#+END_SRC
+
+#+RESULTS:
+
+**** num-audio-busses
+#+BEGIN_SRC clojure :results output
+(doc num-audio-busses)
+#+END_SRC
+
+#+RESULTS:
+
+**** num-control-busses
+#+BEGIN_SRC clojure :results output
+(doc num-control-busses)
+#+END_SRC
+
+#+RESULTS:
+
+**** num-buffers
+#+BEGIN_SRC clojure :results output
+(doc num-buffers)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/num-buffers
+([])
+  
+  []
+
+
+  Returns the number of buffers allocated on the server 
+
+  Categories: 
+  Rates: [ :ir ]
+  Default rate: :auto
+#+end_example
+
+**** num-running-synths
+#+BEGIN_SRC clojure :results output
+(doc num-running-synths)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/num-running-synths
+([])
+  
+  []
+
+
+  Returns the number of currently running synths 
+
+  Categories: 
+  Rates: [ :ir, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** buf-sample-rate
+#+BEGIN_SRC clojure :results output
+(doc buf-sample-rate)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/buf-sample-rate
+([buf])
+  
+  [buf 0]
+
+  buf - A buffer 
+
+  Returns the buffers current sample rate 
+
+  Categories: 
+  Rates: [ :ir, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** buf-rate-scale
+#+BEGIN_SRC clojure :results output
+(doc buf-rate-scale)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/buf-rate-scale
+([buf])
+  
+  [buf 0]
+
+  buf - A buffer 
+
+  Returns a ratio by which the playback of a buffer is to be 
+  scaled 
+
+  Categories: 
+  Rates: [ :ir, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** buf-frames
+#+BEGIN_SRC clojure :results output
+(doc buf-frames)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/buf-frames
+([buf])
+  
+  [buf 0]
+
+  buf - A buffer 
+
+  Returns the current number of allocated frames i.e. the 
+  size of the buffer. This is the equivalent of Clojure's 
+  count on a seq. 
+
+  Categories: 
+  Rates: [ :ir, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** buf-samples
+#+BEGIN_SRC clojure :results output
+(doc buf-samples)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/buf-samples
+([buf])
+  
+  [buf 0]
+
+  buf - A buffer 
+
+  Current number of samples allocated in the buffer 
+
+  Categories: 
+  Rates: [ :ir, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** buf-dur
+#+BEGIN_SRC clojure :results output
+(doc buf-dur)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/buf-dur
+([buf])
+  
+  [buf 0]
+
+  buf - A buffer 
+
+  Returns the current duration of a buffer in seconds. 
+
+  Categories: 
+  Rates: [ :ir, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** buf-channels
+#+BEGIN_SRC clojure :results output
+(doc buf-channels)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/buf-channels
+([buf])
+  
+  [buf 0]
+
+  buf - A buffer 
+
+  Current number of channels of soundfile in buffer 
+
+  Categories: 
+  Rates: [ :ir, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** check-bad-values
+#+BEGIN_SRC clojure :results output
+(doc check-bad-values)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/check-bad-values
+([in id post])
+  
+  [in :none, id 0, post 2]
+
+  in   - The UGen whose output is to be tested 
+  id   - An id number to identify this UGen. 
+  post - One of three post modes: 0 = no posting; 
+         1 = post a line for every bad value; 2 = 
+         post a line only when the floating-point 
+         classification changes (e.g., normal -> 
+         NaN and vice versa) 
+
+  Test for infinity, not-a-number, and denormals. If one of 
+  these is found, it posts a warning. Its output is as 
+  follows: 0 = a normal float, 1 = NaN, 2 = infinity, and 3 
+  = a denormal. 
+
+  Categories: Info
+  Rates: [ :ir, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** poll
+#+BEGIN_SRC clojure :results output
+(doc poll)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/poll
+([trig in label])
+  
+  Print current value of ugen 
+
+  [trig :none, in 1, label polled-val]
+
+  trig  - A non-positive to positive transition 
+          telling Poll to return a value 
+  in    - The signal you want to poll 
+  label - A string or symbol to be printed with 
+          the polled value 
+
+  Print the current output value of a ugen. Does this via 
+  OSC communication, therefore there's no need for a trig-id 
+  arg - see send-trig or send-reply for more capable 
+  alternatives. 
+
+  Categories: Composite Ugen
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+*** Input UGens
+**** mouse-x
+#+BEGIN_SRC clojure :results output
+(doc mouse-x)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/mouse-x
+([min max warp lag])
+  
+  [min 0.0, max 1.0, warp 0, lag 0.2]
+
+  min  - Minimum value (when mouse is at the left 
+         of the screen) 
+  max  - Maximum value (when mouse is at the right 
+         of the screen) 
+  warp - Mapping curve - either LINEAR or 
+         EXPONENTIAL (LIN and EXP abbreviations 
+         are allowed). Default is LINEAR. 
+  lag  - Lag factor to dezipper cursor movement. 
+
+  Maps the current mouse X coordinate to a value between min 
+  and max 
+
+  Categories: User interaction
+  Rates: [ :kr ]
+  Default rate: :kr
+#+end_example
+
+**** mouse-y
+#+BEGIN_SRC clojure :results output
+(doc mouse-y)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/mouse-y
+([min max warp lag])
+  
+  [min 0.0, max 1.0, warp 0, lag 0.2]
+
+  min  - Minimum value (when mouse is at the top 
+         of the screen) 
+  max  - Maximum value (when mouse is at the 
+         bottom of the screen) 
+  warp - Mapping curve - either LINEAR or 
+         EXPONENTIAL (LIN and EXP abbreviations 
+         are allowed). Default is LINEAR 
+  lag  - Lag factor to smooth out cursor movement. 
+
+  Maps the current mouse Y coordinate to a value between min 
+  and max 
+
+  Categories: 
+  Rates: [ :kr ]
+  Default rate: :kr
+#+end_example
+
+**** mouse-button
+#+BEGIN_SRC clojure :results output
+(doc mouse-button)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/mouse-button
+([up down lag])
+  
+  [up 0.0, down 1.0, lag 0.2]
+
+  up   - Value when the key is not pressed 
+  down - Value when the key is pressed 
+  lag  - Lag factor 
+
+  Toggles between two values when the left mouse button is 
+  up or down 
+
+  Categories: User interaction
+  Rates: [ :kr ]
+  Default rate: :kr
+#+end_example
+
+**** key-state
+#+BEGIN_SRC clojure :results output
+(doc key-state)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/key-state
+([keycode minval maxval lag])
+  
+  [keycode 0.0, minval 0.0, maxval 1.0, lag 0.2]
+
+  keycode - The keycode value of the key to check. 
+  minval  - The value to output when the key is 
+            not pressed. 
+  maxval  - The value to output when the key is 
+            pressed. 
+  lag     - Lag factor 
+
+  Toggles between two values when a key on the keyboard is 
+  up or down. Note that this ugen does not prevent normal 
+  typing. 
+
+  Categories: User interaction
+  Rates: [ :kr ]
+  Default rate: :kr
+#+end_example
+
+*** IO UGens
+disk-out
+disk-in
+v-disk-in
+in
+local-in
+lag-in
+in-feedback
+in-trig
+shared-in
+out
+replace-out
+offset-out
+local-out
+x-out
+shared-out
 
 *** Line Ugens
    line x-line lin-exp lin-lin amp-comp amp-comp-a k2a
@@ -677,19 +4190,1182 @@ free
    beat-track2 spec-flatness spec-pcile spec-centroid
 
 *** Miscellaneous UGens
-   pitch-shift pluck part-conv hilbert freq-shift
-   g-verb free-verb free-verb2 moog-ff spring ball
-   t-ball check-bad-values gendy1 gendy2 gendy3
 
-*** Noise UGens
-   white-noise brown-noise pink-noise clip-noise
-   gray-noise crackle logistic lf-noise0 lf-noise1
-   lf-noise2 lf-clip-noise lfd-noise0 lfd-noise1
-   lfd-noise3 ldf-clip-noise hasher mantissa-mask dust
-   dust2
+**** pitch-shift
+#+BEGIN_SRC clojure :results output
+(doc pitch-shift)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/pitch-shift
+([in window-size pitch-ratio pitch-dispersion time-dispersion])
+  
+  [in :none, window-size 0.2, pitch-ratio 1.0, pitch-dispersion 0.0, time-dispersion 0.0]
+
+  in               - The input signal. 
+  window-size      - The size of the grain window 
+                     in seconds. This value cannot 
+                     be modulated. 
+  pitch-ratio      - The ratio of the pitch shift. 
+                     Must be from 0.0 to 4.0 
+  pitch-dispersion - The maximum random deviation 
+                     of the pitch from the 
+                     pitchRatio. 
+  time-dispersion  - A random offset of from zero 
+                     to timeDispersion seconds is 
+                     added to the delay of each 
+                     grain. Use of some dispersion 
+                     can alleviate a hard comb 
+                     filter effect due to uniform 
+                     grain placement. It can also 
+                     be an effect in itself. 
+                     timeDispersion can be no 
+                     larger than windowSize. 
+
+  A time domain granular pitch shifter. Grains have a 
+  triangular amplitude envelope and an overlap of 4:1. 
+
+  Categories: Filters -> Pitch
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** pluck
+#+BEGIN_SRC clojure :results output
+(doc pluck)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/pluck
+([in trig maxdelaytime delaytime decaytime coef])
+  
+  [in 0.0, trig 1.0, maxdelaytime 0.2, delaytime 0.2, decaytime 1.0, coef 0.5]
+
+  in           - An excitation signal. 
+  trig         - Upon a negative to positive 
+                 transition, the excitation signal 
+                 will be fed into the delay line. 
+  maxdelaytime - The max delay time in seconds 
+                 (initializes the internal delay 
+                 buffer). 
+  delaytime    - Delay time in seconds. 
+  decaytime    - Time for the echoes to decay by 
+                 60 decibels. Negative times 
+                 emphasize odd partials. 
+  coef         - The coef of the internal OnePole 
+                 filter. Values should be between 
+                 -1 and +1 (larger values will be 
+                 unstable... so be careful!). 
+
+  Implements the Karplus-Strong style of synthesis, where a 
+  delay line (normally starting with noise) is filtered and 
+  fed back on itself so that over time it becomes periodic. 
+
+  Categories: Generators -> Deterministic
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** part-conv
+#+BEGIN_SRC clojure :results output
+(doc part-conv)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/part-conv
+([in fftsize irbufnum])
+  
+  [in :none, fftsize :none, irbufnum :none]
+
+  in       - Processing target. 
+  fftsize  - Spectral convolution partition size 
+             (twice partition size). You must 
+             ensure that the blocksize divides the 
+             partition size and there are at least 
+             two blocks per partition (to allow 
+             for amortisation) 
+  irbufnum - Prepared buffer of spectra for each 
+             partition of the inpulse response 
+
+  Partitioned convolution. Various additional buffers must 
+  be supplied. Mono impulse response only! If inputting 
+  multiple channels, you'll need independent PartConvs, one 
+  for each channel. But the charm is: impulse response can 
+  be as large as you like (CPU load increases with IR size. 
+  Various tradeoffs based on fftsize choice, due to rarer 
+  but larger FFTs. This plug-in uses amortisation to spread 
+  processing and avoid spikes). Normalisation factors 
+  difficult to anticipate; convolution piles up multiple 
+  copies of the input on top of itself, so can easily 
+  overload. 
+
+  Categories: 
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** hilbert
+#+BEGIN_SRC clojure :results output
+(doc hilbert)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/hilbert
+([in])
+  
+  [in :none]
+
+  in - The input signal 
+
+  No documentation has been defined for this ugen. 
+
+  Categories: Filters -> Nonlinear
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** freq-shift
+#+BEGIN_SRC clojure :results output
+(doc freq-shift)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/freq-shift
+([in freq phase])
+  
+  [in :none, freq 0.0, phase 0.0]
+
+  in    - The signal to process 
+  freq  - Amount of shift in cycles per second 
+  phase - Phase of the frequency shift (0 - 2pi) 
+
+  FreqShift implements single sideband amplitude modulation, 
+  also known as frequency shifting, but not to be confused 
+  with pitch shifting. Frequency shifting moves all the 
+  components of a signal by a fixed amount but does not 
+  preserve the original harmonic relationships. 
+
+  Categories: Filters -> Nonlinear, Filters -> Pitch
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** g-verb                                                       :reverb:
+#+BEGIN_SRC clojure :results output
+(doc g-verb)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/g-verb
+([in roomsize revtime damping inputbw spread drylevel earlyreflevel taillevel maxroomsize])
+  
+  [in :none, roomsize 10.0, revtime 3.0, damping 0.5, inputbw 0.5, spread 15.0, drylevel 1.0, earlyreflevel 0.7, taillevel 0.5, maxroomsize 300.0]
+
+  in            - Mono input 
+  roomsize      - In squared meters. 
+  revtime       - In seconds 
+  damping       - 0 to 1, high frequency rolloff, 
+                  0 damps the reverb signal 
+                  completely, 1 not at all 
+  inputbw       - 0 to 1, same as damping control, 
+                  but on the input signal 
+  spread        - A control on the stereo spread 
+                  and diffusion of the reverb 
+                  signal 
+  drylevel      - Amount of dry signal 
+  earlyreflevel - Amount of early reflection level 
+  taillevel     - Amount of tail level 
+  maxroomsize   - To set the size of the delay 
+                  lines. 
+
+  A two-channel reverb UGen, based on the "GVerb" LADSPA 
+  effect by Juhana Sadeharju (kouhia at nic.funet.fi).
+
+  WARNING - in the current version of the server, there are 
+  severe noise issues when you attempt to modify the 
+  roomsize or set it to a value greater than 40. 
+
+  Categories: Reverbs
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** free-verb                                                    :reverb:
+#+BEGIN_SRC clojure :results output
+(doc free-verb)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/free-verb
+([in mix room damp])
+  
+  [in :none, mix 0.33, room 0.5, damp 0.5]
+
+  in   - The input signal 
+  mix  - Dry/wet balance. range 0..1 
+  room - Room size. rage 0..1 
+  damp - Reverb HF damp. range 0..1 
+
+  A reverb coded from experiments with faust. Valid 
+  parameter range from 0 to 1. Values outside this range are 
+  clipped by the UGen. 
+
+  Categories: Reverbs
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** free-verb2                                                   :reverb:
+#+BEGIN_SRC clojure :results output
+(doc free-verb2)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/free-verb2
+([in in2 mix room damp])
+  
+  [in :none, in2 :none, mix 0.33, room 0.5, damp 0.5]
+
+  in   - Input signal channel 1 
+  in2  - Input signal channel 2 
+  mix  - Dry/wet balance. range 0..1 
+  room - Room size. rage 0..1 
+  damp - Reverb HF damp. range 0..1 
+
+  A two-channel reverb coded from experiments with faust. 
+  Valid parameter range from 0 to 1. Values outside this 
+  range are clipped by the UGen. 
+
+  Categories: Reverbs
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** moog-ff
+#+BEGIN_SRC clojure :results output
+(doc moog-ff)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/moog-ff
+([in freq gain reset])
+  
+  [in 0.0, freq 100.0, gain 2.0, reset 0.0]
+
+  in    - The input signal 
+  freq  - The cutoff frequency 
+  gain  - The filter resonance gain, between zero 
+          and 4 
+  reset - When greater than zero, this will reset 
+          the state of the digital filters at the 
+          beginning of a computational block. 
+
+  A digital implementation of the Moog VCF (filter). 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** spring
+#+BEGIN_SRC clojure :results output
+(doc spring)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/spring
+([in spring damp])
+  
+  [in 0.0, spring 0.0, damp 0.0]
+
+  in     - Modulated input force 
+  spring - Spring constant (incl. mass) 
+  damp   - Damping 
+
+  Physical model of resonating spring 
+
+  Categories: Filters -> Nonlinear
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** ball
+#+BEGIN_SRC clojure :results output
+(doc ball)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/ball
+([in g damp friction])
+  
+  [in 0.0, g 1.0, damp 0.0, friction 0.01]
+
+  in       - Modulated surface level 
+  g        - Gravity 
+  damp     - Damping on impact 
+  friction - Proximity from which on attraction to 
+             surface starts 
+
+  Models the path of a bouncing object that is reflected by 
+  a vibrating surface 
+
+  Categories: Filters -> Nonlinear
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** t-ball
+#+BEGIN_SRC clojure :results output
+(doc t-ball)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/t-ball
+([in g damp friction])
+  
+  [in 0.0, g 10.0, damp 0.0, friction 0.01]
+
+  in       - Modulated surface level 
+  g        - Gravity 
+  damp     - Damping on impact 
+  friction - Proximity from which on attraction to 
+             surface starts 
+
+  Models the impacts of a bouncing object that is reflected 
+  by a vibrating surface 
+
+  Categories: Filters -> Nonlinear
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** check-bad-values
+#+BEGIN_SRC clojure :results output
+(doc check-bad-values)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/check-bad-values
+([in id post])
+  
+  [in :none, id 0, post 2]
+
+  in   - The UGen whose output is to be tested 
+  id   - An id number to identify this UGen. 
+  post - One of three post modes: 0 = no posting; 
+         1 = post a line for every bad value; 2 = 
+         post a line only when the floating-point 
+         classification changes (e.g., normal -> 
+         NaN and vice versa) 
+
+  Test for infinity, not-a-number, and denormals. If one of 
+  these is found, it posts a warning. Its output is as 
+  follows: 0 = a normal float, 1 = NaN, 2 = infinity, and 3 
+  = a denormal. 
+
+  Categories: Info
+  Rates: [ :ir, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** gendy1
+#+BEGIN_SRC clojure :results output
+(doc gendy1)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/gendy1
+([ampdist durdist adparam ddparam minfreq maxfreq ampscale durscale init-cps knum])
+  
+  [ampdist 1.0, durdist 1.0, adparam 1.0, ddparam 1.0, minfreq 440.0, maxfreq 660.0, ampscale 0.5, durscale 0.5, init-cps 12, knum 12]
+
+  ampdist  - Choice of probability distribution 
+             for the next perturbation of the 
+             amplitude of a control point. The 
+             distributions are (adapted from the 
+             GENDYN program in Formalized Music): 
+             0- LINEAR,1- CAUCHY, 2- LOGIST, 3- 
+             HYPERBCOS, 4- ARCSINE, 5- EXPON, 6- 
+             SINUS, Where the sinus (Xenakis' 
+             name) is in this implementation taken 
+             as sampling from a third party 
+             oscillator. See example below. 
+  durdist  - Choice of distribution for the 
+             perturbation of the current inter 
+             control point duration. 
+  adparam  - A parameter for the shape of the 
+             amplitude probability distribution, 
+             requires values in the range 0.0001 
+             to 1 (there are safety checks in the 
+             code so don't worry too much if you 
+             want to modulate!) 
+  ddparam  - A parameter for the shape of the 
+             duration probability distribution, 
+             requires values in the range 0.0001 
+             to 1 
+  minfreq  - Minimum allowed frequency of 
+             oscillation for the Gendy1 
+             oscillator, so gives the largest 
+             period the duration is allowed to 
+             take on. 
+  maxfreq  - Maximum allowed frequency of 
+             oscillation for the Gendy1 
+             oscillator, so gives the smallest 
+             period the duration is allowed to 
+             take on. 
+  ampscale - Normally 0.0 to 1.0, multiplier for 
+             the distribution's delta value for 
+             amplitude. An ampscale of 1.0 allows 
+             the full range of -1 to 1 for a 
+             change of amplitude. 
+  durscale - Normally 0.0 to 1.0, multiplier for 
+             the distribution's delta value for 
+             duration. An ampscale of 1.0 allows 
+             the full range of -1 to 1 for a 
+             change of duration. 
+  init-cps - Initialise the number of control 
+             points in the memory. Xenakis 
+             specifies 12. There would be this 
+             number of control points per cycle of 
+             the oscillator, though the 
+             oscillator's period will constantly 
+             change due to the duration 
+             distribution. 
+  knum     - Current number of utilised control 
+             points, allows modulation. 
+
+  An implementation of the dynamic stochastic synthesis 
+  generator conceived by Iannis Xenakis and described in 
+  Formalized Music (1992, Stuyvesant, NY: Pendragon Press) 
+  chapter 9 (pp 246-254) and chapters 13 and 14 (pp 
+  289-322). The BASIC program in the book was written by 
+  Marie-Helene Serra so I think it helpful to credit her 
+  too. The program code has been adapted to avoid infinities 
+  in the probability distribution functions. The 
+  distributions are hard-coded in C but there is an option 
+  to have new amplitude or time breakpoints sampled from a 
+  continuous controller input. 
+
+  Categories: Generators -> Stochastic
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** gendy2
+#+BEGIN_SRC clojure :results output
+(doc gendy2)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/gendy2
+([ampdist durdist adparam ddparam minfreq maxfreq ampscale durscale init-cps knum a c])
+  
+  [ampdist 1.0, durdist 1.0, adparam 1.0, ddparam 1.0, minfreq 440.0, maxfreq 660.0, ampscale 0.5, durscale 0.5, init-cps 12, knum 12, a 1.17, c 0.31]
+
+  ampdist  - Choice of probability distribution 
+             for the next perturbation of the 
+             amplitude of a control point. The 
+             distributions are (adapted from the 
+             GENDYN program in Formalized Music): 
+             0- LINEAR, 1- CAUCHY, 2- LOGIST, 3- 
+             HYPERBCOS, 4- ARCSINE, 5- EXPON, 6- 
+             SINUS, Where the sinus (Xenakis' 
+             name) is in this implementation taken 
+             as sampling from a third party 
+             oscillator. 
+  durdist  - Choice of distribution for the 
+             perturbation of the current inter 
+             control point duration. 
+  adparam  - A parameter for the shape of the 
+             amplitude probability distribution, 
+             requires values in the range 0.0001 
+             to 1 (there are safety checks in the 
+             code so don't worry too much if you 
+             want to modulate!) 
+  ddparam  - A parameter for the shape of the 
+             duration probability distribution, 
+             requires values in the range 0.0001 
+             to 1 
+  minfreq  - Minimum allowed frequency of 
+             oscillation for the Gendy1 
+             oscillator, so gives the largest 
+             period the duration is allowed to 
+             take on. 
+  maxfreq  - Maximum allowed frequency of 
+             oscillation for the Gendy1 
+             oscillator, so gives the smallest 
+             period the duration is allowed to 
+             take on. 
+  ampscale - Normally 0.0 to 1.0, multiplier for 
+             the distribution's delta value for 
+             amplitude. An ampscale of 1.0 allows 
+             the full range of -1 to 1 for a 
+             change of amplitude. 
+  durscale - Normally 0.0 to 1.0, multiplier for 
+             the distribution's delta value for 
+             duration. An ampscale of 1.0 allows 
+             the full range of -1 to 1 for a 
+             change of duration. 
+  init-cps - Initialise the number of control 
+             points in the memory. Xenakis 
+             specifies 12. There would be this 
+             number of control points per cycle of 
+             the oscillator, though the 
+             oscillator's period will constantly 
+             change due to the duration 
+             distribution. 
+  knum     - Current number of utilised control 
+             points, allows modulation. 
+  a        - Parameter for Lehmer random number 
+             generator perturbed by Xenakis as in 
+             ((old*a)+c)%1.0 
+  c        - Parameter for Lehmer random number 
+             generator perturbed by Xenakis 
+
+  See gendy1 help file for background. This variant of 
+  GENDYN is closer to that presented in Hoffmann, Peter. 
+  (2000) The New GENDYN Program. Computer Music Journal 
+  24:2, pp 31-38. 
+
+  Categories: Generators -> Stochastic
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** gendy3
+#+BEGIN_SRC clojure :results output
+(doc gendy3)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/gendy3
+([ampdist durdist adparam ddparam freq ampscale durscale init-cps knum])
+  
+  [ampdist 1.0, durdist 1.0, adparam 1.0, ddparam 1.0, freq 440.0, ampscale 0.5, durscale 0.5, init-cps 12, knum 12]
+
+  ampdist  - Choice of probability distribution 
+             for the next perturbation of the 
+             amplitude of a control point. The 
+             distributions are (adapted from the 
+             GENDYN program in Formalized Music): 
+             0- LINEAR,1- CAUCHY, 2- LOGIST, 3- 
+             HYPERBCOS, 4- ARCSINE, 5- EXPON, 6- 
+             SINUS, Where the sinus (Xenakis' 
+             name) is in this implementation taken 
+             as sampling from a third party 
+             oscillator. 
+  durdist  - Choice of distribution for the 
+             perturbation of the current inter 
+             control point duration. 
+  adparam  - A parameter for the shape of the 
+             amplitude probability distribution, 
+             requires values in the range 0.0001 
+             to 1 (there are safety checks in the 
+             code so don't worry too much if you 
+             want to modulate!) 
+  ddparam  - A parameter for the shape of the 
+             duration probability distribution, 
+             requires values in the range 0.0001 
+             to 1 
+  freq     - Oscillation frquency. 
+  ampscale - Normally 0.0 to 1.0, multiplier for 
+             the distribution's delta value for 
+             amplitude. An ampscale of 1.0 allows 
+             the full range of -1 to 1 for a 
+             change of amplitude. 
+  durscale - Normally 0.0 to 1.0, multiplier for 
+             the distribution's delta value for 
+             duration. An ampscale of 1.0 allows 
+             the full range of -1 to 1 for a 
+             change of duration. 
+  init-cps - Initialise the number of control 
+             points in the memory. Xenakis 
+             specifies 12. There would be this 
+             number of control points per cycle of 
+             the oscillator, though the 
+             oscillator's period will constantly 
+             change due to the duration 
+             distribution. 
+  knum     - Current number of utilised control 
+             points, allows modulation. 
+
+  See Gendy1 help file for background. This variant of 
+  GENDYN normalises the durations in each period to force 
+  oscillation at the desired pitch. The breakpoints still 
+  get perturbed as in Gendy1. There is some glitching in the 
+  oscillator caused by the stochastic effects: control 
+  points as they vary cause big local jumps of amplitude. 
+  Put ampscale and durscale low to minimise this. All 
+  parameters can be modulated at control rate except for 
+  initCPs which is used only at initialisation. 
+
+  Categories: Generators -> Stochastic
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+*** Noise UGens                                                   :noise:
+
+**** white-noise
+#+BEGIN_SRC clojure :results output
+(doc white-noise)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/white-noise
+([])
+  
+  Noise whose spectrum has equal power at all frequencies. 
+
+  []
+
+
+  Noise that contains equal amounts of energy at every 
+  frequency - comparable to radio static.
+
+  Useful for generating percussive sounds such as snares and 
+  hand claps. Also useful for simulating wind or sea 
+  effects, for producing breath effects in wind instrument 
+  timbres or for producing the typical trance leads. 
+
+  Categories: Generators -> Stochastic
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** brown-noise
+#+BEGIN_SRC clojure :results output
+(doc brown-noise)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/brown-noise
+([])
+  
+  Noise whose spectrum falls off in power by 6 dB per 
+  octave. 
+
+  []
+
+
+  Useful for generating percussive sounds such as snares and 
+  hand claps. Also useful for simulating wind or sea 
+  effects, for producing breath effects in wind instrument 
+  timbres or for producing the typical trance leads. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** pink-noise
+#+BEGIN_SRC clojure :results output
+(doc pink-noise)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/pink-noise
+([])
+  
+  Noise whose spectrum falls off in power by 3 dB per 
+  octave. 
+
+  []
+
+
+  Noise that gives equal power over the span of each 
+  octave.
+
+  Useful for generating percussive sounds such as snares and 
+  hand claps. Also useful for simulating wind or sea 
+  effects, for producing breath effects in wind instrument 
+  timbres or for producing the typical trance leads.
+
+  This version gives 8 octaves of pink noise. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** clip-noise
+#+BEGIN_SRC clojure :results output
+(doc clip-noise)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/clip-noise
+([])
+  
+  Noise whose values are either -1 or 1. 
+
+  []
+
+
+  This produces the maximum energy for the least peak to 
+  peak amplitude.
+
+  Useful for generating percussive sounds such as snares and 
+  hand claps. Also useful for simulating wind or sea 
+  effects, for producing breath effects in wind instrument 
+  timbres or for producing the typical trance leads. 
+
+  Categories: 
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** gray-noise
+#+BEGIN_SRC clojure :results output
+(doc gray-noise)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/gray-noise
+([])
+  
+  Random impulses from -1 to +1 given a density 
+
+  []
+
+
+  Given a density (average number of impulses per second) 
+  creates a sequence of random impulses from -1 to +1.
+
+  Useful for generating percussive sounds such as snares and 
+  hand claps. Also useful for simulating wind or sea 
+  effects, for producing breath effects in wind instrument 
+  timbres or for producing the typical trance leads. 
+
+  Categories: 
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** crackle
+#+BEGIN_SRC clojure :results output
+(doc crackle)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/crackle
+([chaos-param])
+  
+  Chaotic noise generator 
+
+  [chaos-param 1.5]
+
+  chaos-param - A parameter of the chaotic 
+                function with useful values from 
+                just below 1.0 to just above 2.0. 
+                Towards 2.0 the sound crackles. 
+
+  A noise generator based on a chaotic function.
+
+  Useful for generating percussive sounds such as snares and 
+  hand claps. Also useful for simulating wind or sea 
+  effects, for producing breath effects in wind instrument 
+  timbres or for producing the typical trance leads. 
+
+  Categories: Generators -> Stochastic
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** logistic
+#+BEGIN_SRC clojure :results output
+(doc logistic)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/logistic
+([chaos-param freq init])
+  
+  [chaos-param 3.0, freq 1000.0, init 0.5]
+
+  chaos-param - A parameter of the chaotic 
+                function with useful values from 
+                0.0 to 4.0. Chaos occurs from 3.57 
+                up. Don't use values outside this 
+                range if you don't want the UGen 
+                to blow up. 
+  freq        - Frequency of calculation; if over 
+                the sampling rate, this is clamped 
+                to the sampling rate 
+  init        - Initial value of y (see equation 
+                below) 
+
+  A noise generator based on the logistic map:
+
+  y = chaos-param * y * (1.0 - y)
+
+  y will stay in the range of 0.0 to 1.0 for normal values 
+  of the chaos-param. This leads to a DC offset and may 
+  cause a pop when you stop the Synth. For output you might 
+  want to combine this UGen with a LeakDC or rescale around 
+  0.0 via mul and add: see example below. 
+
+  Categories: Generators -> Chaotic
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** lf-noise0
+#+BEGIN_SRC clojure :results output
+(doc lf-noise0)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/lf-noise0
+([freq])
+  
+  [freq 500.0]
+
+  freq - Approximate rate at which to generate 
+         random values. 
+
+  Generates random values between -1 and 1 at a rate (the 
+  rate is not guaranteed but approximate) 
+
+  Categories: Generators -> Stochastic
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** lf-noise1
+#+BEGIN_SRC clojure :results output
+(doc lf-noise1)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/lf-noise1
+([freq])
+  
+  [freq 500.0]
+
+  freq - Approximate rate at which to generate 
+         random values. 
+
+  Generates linearly interpolated random values between -1 
+  and 1 at the supplied rate (the rate is not guaranteed but 
+  approximate). 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** lf-noise2
+#+BEGIN_SRC clojure :results output
+(doc lf-noise2)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/lf-noise2
+([freq])
+  
+  [freq 500.0]
+
+  freq - Approximate rate at which to generate 
+         random values. 
+
+  Generates quadratically interpolated random values between 
+  -1 and 1 at the supplied rate (the rate is not guaranteed 
+  but approximate).
+
+  Note: quadratic interpolation means that the noise values 
+  can occasionally extend beyond the normal range of +-1, if 
+  the freq varies in certain ways. If this is undesirable 
+  then you might like to clip2 the values or use a 
+  linearly-interpolating unit instead. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** lf-clip-noise
+#+BEGIN_SRC clojure :results output
+(doc lf-clip-noise)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/lf-clip-noise
+([freq])
+  
+  [freq 500.0]
+
+  freq - Approximate rate at which to generate 
+         random values. 
+
+  Randomly generates the values -1 or +1 at a rate given by 
+  the nearest integer division of the sample rate by the 
+  freq argument. It is probably pretty hard on your 
+  speakers! 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** lfd-noise0
+#+BEGIN_SRC clojure :results output
+(doc lfd-noise0)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/lfd-noise0
+([freq])
+  
+  [freq 500.0]
+
+  freq - Rate at which to generate random values. 
+
+  Like lf-noise0, it generates random values between -1 and 
+  1 at a rate given by the freq argument, with two 
+  differences: p * no time quantization
+
+  * fast recovery from low freq values.
+
+  (lf-noise0,1,2 quantize to the nearest integer division of 
+  the samplerate and they poll the freq argument only when 
+  scheduled, and thus seem to hang when freqs get very 
+  low).
+
+  If you don't need very high or very low freqs, or use 
+  fixed freqs lf-noise0 is more efficient. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** lfd-noise1
+#+BEGIN_SRC clojure :results output
+(doc lfd-noise1)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/lfd-noise1
+([freq])
+  
+  [freq 500.0]
+
+  freq - Rate at which to generate random values. 
+
+  Like lf-noise1, it generates linearly interpolated random 
+  values between -1 and 1 at a rate given by the freq 
+  argument, with two differences:
+
+  * no time quantization
+
+  * fast recovery from low freq values.
+
+  (lf-noise0,1,2 quantize to the nearest integer division of 
+  the samplerate and they poll the freq argument only when 
+  scheduled, and thus seem to hang when freqs get very 
+  low).
+
+  If you don't need very high or very low freqs, or use 
+  fixed freqs lf-noise1 is more efficient. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** lfd-noise3
+#+BEGIN_SRC clojure :results output
+(doc lfd-noise3)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/lfd-noise3
+([freq])
+  
+  [freq 500.0]
+
+  freq - Rate at which to generate random values. 
+
+  Similar to lf-noise2, it generates polynomially 
+  interpolated random values between -1 and 1 at a rate 
+  given by the freq argument, with 3 differences:
+
+  * no time quantization
+
+  * fast recovery from low freq values
+
+  * cubic instead of quadratic interpolation
+
+  (lf-noise0,1,2 quantize to the nearest integer division of 
+  the samplerate and they poll the freq argument only when 
+  scheduled, and thus seem to hang when freqs get very low). 
+  If you don't need very high or very low freqs, or use 
+  fixed freqs lf-noise2 is more efficient. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+ldf-clip-noise
+
+**** hasher
+#+BEGIN_SRC clojure :results output
+(doc hasher)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/hasher
+([in])
+  
+  [in 0.0]
+
+  in - Input signal 
+
+  Returns a unique output value from zero to one for each 
+  input value according to a hash function. The same input 
+  value will always produce the same output value. The input 
+  need not be from zero to one. 
+
+  Categories: Filters -> Nonlinear
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** mantissa-mask
+#+BEGIN_SRC clojure :results output
+(doc mantissa-mask)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/mantissa-mask
+([in bits])
+  
+  [in 0.0, bits 3]
+
+  in   - Input signal 
+  bits - The number of mantissa bits to preserve. 
+         a number from 0 to 23. 
+
+  Masks off bits in the mantissa of the floating point 
+  sample value. This introduces a quantization noise, but is 
+  less severe than linearly quantizing the signal. 
+
+  Categories: Filters -> Nonlinear
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** dust
+#+BEGIN_SRC clojure :results output
+(doc dust)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/dust
+([density])
+  
+  [density 0.0]
+
+  density - Average number of impulses per second 
+
+  Generates random impulses from 0 to +1. 
+
+  Categories: Generators -> Stochastic
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** dust2
+#+BEGIN_SRC clojure :results output
+(doc dust2)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/dust2
+([density])
+  
+  [density 0.0]
+
+  density - Average number of impulses per second. 
+
+  Generates random impulses from -1 to +1. 
+
+  Categories: Generators -> Stochastic
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
 
 *** [#A] Oscillator UGens
- 
 ****  osc
  #+BEGIN_SRC clojure :results output 
 (doc osc)
@@ -795,7 +5471,6 @@ free
    Default rate: :ar
 #+end_example
 
-
 ****  osc-n
  #+BEGIN_SRC clojure :results output 
 (doc osc-n)
@@ -813,7 +5488,7 @@ free
             power of 2. The buffer should NOT be 
             filled using Wavetable format (b_gen 
             commands should set wavetable flag to 
-            false. Raw signals (not converted with 
+            false). Raw signals (not converted with 
             asWavetable) can be saved to disk and 
             loaded into the buffer. 
    freq   - Frequency in Hertz 
@@ -1472,9 +6147,270 @@ free
    pan2 lin-pan2 pan4 balance2 rotate2 pan-b pan-b2
    bi-pan-b2 decode-b2 pan-az x-fade2 lin-x-fade2
 
-*** Random UGens
-   rand-seed rand-id i-rand t-rand ti-rand n-rand
-   exp-rand t-exp-rand coin-gate lin-rand
+*** Random UGens                                                   :random:
+**** rand-seed
+#+BEGIN_SRC clojure :results output
+(doc rand-seed)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/rand-seed
+([trig seed])
+  
+  [trig 0.0, seed 56789]
+
+  trig - Trigger signal 
+  seed - Seed value 
+
+  When the trigger signal changes from nonpositive to 
+  positive, the synth's random generator seed is reset to 
+  the given value. All synths that use the same random 
+  number generator reproduce the same sequence of numbers 
+  again. 
+
+  Categories: Generators -> Stochastic
+  Rates: [ :ir, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** rand-id
+#+BEGIN_SRC clojure :results output
+(doc rand-id)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/rand-id
+([seed])
+  
+  [seed 0]
+
+  seed - Seed id 
+
+  Choose which random number generator to use for this 
+  synth. All synths that use the same generator reproduce 
+  the same sequence of numbers when the same seed is set 
+  again. 
+
+  Categories: Generators -> Stochastic
+  Rates: [ :ir, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** i-rand
+#+BEGIN_SRC clojure :results output
+(doc i-rand)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/i-rand
+([lo hi])
+  
+  [lo 0.0, hi 127.0]
+
+  lo - Minimum value of generated integer 
+  hi - Maximum value of generated integer 
+
+  Generates a single random integer value in uniform 
+  distribution from lo to hi 
+
+  Categories: Generators -> Stochastic, Generators -> Single-value
+  Rates: [ :ir ]
+  Default rate: :auto
+#+end_example
+
+**** t-rand
+#+BEGIN_SRC clojure :results output
+(doc t-rand)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/t-rand
+([lo hi trig])
+  
+  [lo 0.0, hi 1.0, trig 0.0]
+
+  lo   - Minimum value of generated float 
+  hi   - Maximum value of generated float 
+  trig - Trigger signal 
+
+  Generates a random float value in uniform distribution 
+  from lo to hi each time the trig signal changes from 
+  nonpositive to positive values 
+
+  Categories: Generators -> Stochastic
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** ti-rand
+#+BEGIN_SRC clojure :results output
+(doc ti-rand)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/ti-rand
+([lo hi trig])
+  
+  [lo 0, hi 127, trig 0.0]
+
+  lo   - Minimum value of generated integer 
+  hi   - Maximum value of generated integer 
+  trig - Trigger signal 
+
+  Generates a random integer value in uniform distribution 
+  from lo to hi each time the trig signal changes from 
+  nonpositive to positive values 
+
+  Categories: Generators -> Stochastic
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** n-rand
+#+BEGIN_SRC clojure :results output
+(doc n-rand)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/n-rand
+([lo hi n])
+  
+  [lo 0.0, hi 1.0, n 0]
+
+  lo - Minimum value of generated float 
+  hi - Maximum value of generated float 
+  n  - Distribution choice 
+
+  Generates a single random float value in a sum of n 
+  uniform distributions from lo to hi.
+
+  n = 1 : uniform distribution - same as Rand
+
+  n = 2 : triangular distribution
+
+  n = 3 : smooth hump
+
+  As n increases, distribution converges towards gaussian 
+
+  Categories: Generators -> Stochastic, Generators -> Single-value
+  Rates: [ :ir ]
+  Default rate: :auto
+#+end_example
+
+**** exp-rand
+#+BEGIN_SRC clojure :results output
+(doc exp-rand)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/exp-rand
+([lo hi])
+  
+  [lo 0.01, hi 1.0]
+
+  lo - Minimum value of generated float 
+  hi - Maximum value of generated float 
+
+  Generates a single random float value in an exponential 
+  distributions from lo to hi. 
+
+  Categories: Generators -> Stochastic, Generators -> Single-value
+  Rates: [ :ir ]
+  Default rate: :auto
+#+end_example
+
+**** t-exp-rand
+#+BEGIN_SRC clojure :results output
+(doc t-exp-rand)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/t-exp-rand
+([lo hi trig])
+  
+  [lo 0.01, hi 1.0, trig 0.0]
+
+  lo   - Minimum value of generated float 
+  hi   - Maximum value of generated float 
+  trig - Trigger signal 
+
+  Generates a random float value in exponential distribution 
+  from lo to hi each time the trig signal changes from 
+  nonpositive to positive values lo and hi must both have 
+  the same sign and be non-zero. 
+
+  Categories: Generators -> Stochastic
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** coin-gate
+#+BEGIN_SRC clojure :results output
+(doc coin-gate)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/coin-gate
+([prob trig])
+  
+  [prob :none, trig :none]
+
+  prob - Value between 0 and 1 determines 
+         probability of either possibilities 
+  trig - Trigger signal 
+
+  When it receives a trigger, it tosses a coin, and either 
+  passes the trigger or doesn't. 
+
+  Categories: Generators -> Stochastic
+  Rates: [ :ir, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** lin-rand
+#+BEGIN_SRC clojure :results output
+(doc lin-rand)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/lin-rand
+([lo hi minmax])
+  
+  [lo 0.0, hi 1.0, minmax 0]
+
+  lo     - Minimum value of generated float 
+  hi     - Maximum value of generated float 
+  minmax - Skew direction (towards lo if negative 
+           otherwise hi) 
+
+  Generates a single random float value in linear 
+  distribution from lo to hi, skewed towards lo if minmax < 
+  0, otherwise skewed towards hi. 
+
+  Categories: Generators -> Stochastic, Generators -> Single-value
+  Rates: [ :ir ]
+  Default rate: :auto
+#+end_example
 
 *** STK UGens
    stk-pluck stk-flute stk-bowed stk-mandolin

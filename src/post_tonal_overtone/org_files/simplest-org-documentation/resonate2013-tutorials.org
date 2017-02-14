@@ -622,6 +622,9 @@ Distributed under the MIT License, same as Overtone.
 
 #+END_SRC
 *   overtone.examples.workshops.resonate2013.ex05_synthesis
+:PROPERTIES:
+:ID:       FD0EC8F7-91A9-4F05-A795-B3615BC1D204
+:END:
 #+BEGIN_SRC clojure :results silent
 (ns
     ^{:doc "A few examples of more complex audio synthesis,

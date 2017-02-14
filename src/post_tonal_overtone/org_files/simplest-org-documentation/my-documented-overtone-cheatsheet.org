@@ -353,9 +353,18 @@ Ring3
 #+END_SRC
 
 * use =run= with poll
-#+BEGIN_SRC clojure
-(run (poll:kr (impulse:kr 10) (+ 0 (sin-osc:kr))))
+#+BEGIN_SRC clojure :results output
+(run (poll:kr (impulse:kr 5) (+ 0 (sin-osc:kr))))
 #+END_SRC
+
+#+RESULTS:
+
+* or scope!
+Not automatically loaded with .live
+#+BEGIN_SRC clojure
+(use 'overtone.studio.scope)
+#+END_SRC
+
 * notes
 ** scope
 
