@@ -38,28 +38,256 @@ haziti-clap
    Bass
  bass grunge-bass vintage-bass daf-bass
 *** overtone.inst.synth
-   Synth
+**** Synth
+***** ticker
+#+BEGIN_SRC clojure :results output
+(doc ticker)
+#+END_SRC
 
- ticker ping tb303 mooger rise-fall-pad pad overpad buzz ks1 ks-stringer fm-demo harmonic-swimming whoahaha bubbles supersaw cs80lead simple-flute overtone.inst.io IO mic
+#+RESULTS:
+: -------------------------
+: overtone.inst.synth/ticker
+: ([freq])
+:   nil
+***** ping
+#+BEGIN_SRC clojure :results output
+(doc ping)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.inst.synth/ping
+: ([note attack decay])
+:   nil
+***** tb303
+#+BEGIN_SRC clojure :results output
+(doc tb303)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.inst.synth/tb303
+: ([note wave r attack decay sustain release cutoff env-amount amp])
+:   nil
+***** mooger
+#+BEGIN_SRC clojure :results output
+(doc mooger)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.inst.synth/mooger
+: ([note amp osc1 osc2 osc1-level osc2-level cutoff attack decay sustain release fattack fdecay fsustain frelease gate])
+:   Choose 0, 1, or 2 for saw, sin, or pulse
+***** rise-fall-pad
+#+BEGIN_SRC clojure :results output
+(doc rise-fall-pad)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.inst.synth/rise-fall-pad
+: ([freq t amt amp])
+:   nil
+***** pad
+#+BEGIN_SRC clojure :results output
+(doc pad)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.inst.synth/pad
+: ([note t amt amp a d s r])
+:   nil
+***** overpad
+#+BEGIN_SRC clojure :results output
+(doc overpad)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.inst.synth/overpad
+: ([note amp attack release])
+:   nil
+***** buzz
+#+BEGIN_SRC clojure :results output
+(doc buzz)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.inst.synth/buzz
+: ([pitch cutoff dur])
+:   nil
+***** ks1
+#+BEGIN_SRC clojure :results output
+(doc ks1)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.inst.synth/ks1
+: ([note amp dur decay coef])
+:   nil
+***** ks-stringer
+#+BEGIN_SRC clojure :results output
+(doc ks-stringer)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.inst.synth/ks-stringer
+: ([freq rate])
+:   nil
+***** fm-demo
+#+BEGIN_SRC clojure :results output
+(doc fm-demo)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.inst.synth/fm-demo
+: ([note amp gate])
+:   nil
+***** harmonic-swimming
+#+BEGIN_SRC clojure :results output
+(doc harmonic-swimming)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.inst.synth/harmonic-swimming
+: ([amp])
+:   nil
+***** whoahaha
+#+BEGIN_SRC clojure :results output
+(doc whoahaha)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.inst.synth/whoahaha
+: ([freq dur osc mul])
+:   nil
+***** bubbles
+#+BEGIN_SRC clojure :results output
+(doc bubbles)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.inst.synth/bubbles
+: ([bass-freq])
+:   nil
+***** supersaw
+#+BEGIN_SRC clojure :results output
+(doc supersaw)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.inst.synth/supersaw
+: ([freq amp])
+:   nil
+***** cs80lead
+#+BEGIN_SRC clojure :results output
+(doc cs80lead)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.inst.synth/cs80lead
+: ([freq amp att decay sus rel fatt fdecay fsus frel cutoff dtune vibrate vibdepth gate ratio cbus freq-lag])
+:   nil
+***** simple-flute
+#+BEGIN_SRC clojure :results output
+(doc simple-flute)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.inst.synth/simple-flute
+: ([freq amp attack decay sustain release gate out])
+:   nil
+
+*** overtone.inst.io
+**** IO 
+**** mic
+#+BEGIN_SRC clojure :results output
+(doc mic)
+#+END_SRC
+
+#+RESULTS:
 
 ** Synths (need to be manually referred)                             :synth:
 *** overtone.synth.sampled-piano
-   Sampled Piano
+**** Sampled Piano
+**** sampled-piano
+#+BEGIN_SRC clojure :results output
+(doc sampled-piano)
+#+END_SRC
 
- sampled-piano
+#+RESULTS:
 
 *** overtone.synth.stringed
    Stringed
- s guitar
+ s 
+
+*** guitar
+#+BEGIN_SRC clojure :results output
+(doc guitar)
+#+END_SRC
+
+#+RESULTS:
 
 *** overtone.synth.ixi
    Ixi impulser kick kick2 kick3
 
 *** overtone.synth.retro
-   Retro tb-303
+
+**** Retro
+
+**** tb-303
+#+BEGIN_SRC clojure :results output
+(doc tb-303)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.synth.retro/tb-303
+: ([note wave cutoff env res sus dec amp gate action position out-bus])
+:   A clone of the sound of a Roland TB-303 bass synthesizer.
 
 *** overtone.synth.sts
-   STS prophet
+
+**** STS
+
+***** prophet
+#+BEGIN_SRC clojure :results output
+(doc prophet)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.synth.sts/prophet
+([amp freq cutoff-freq rq attack decay out-bus])
+  The Prophet Speaks (page 2)
+
+   Dark and swirly, this synth uses Pulse Width Modulation (PWM) to
+   create a timbre which continually moves around. This effect is
+   created using the pulse ugen which produces a variable width square
+   wave. We then control the width of the pulses using a variety of LFOs
+   - sin-osc and lf-tri in this case. We use a number of these LFO
+   modulated pulse ugens with varying LFO type and rate (and phase in
+   some cases) to provide the LFO with a different starting point. We
+   then mix all these pulses together to create a thick sound and then
+   feed it through a resonant low pass filter (rlpf).
+
+   For extra bass, one of the pulses is an octave lower (half the
+   frequency) and its LFO has a little bit of randomisation thrown into
+   its frequency component for that extra bit of variety.
+#+end_example
 
 ** REPL helpers                                                       :repl:
 *** Documentation
@@ -350,8 +578,29 @@ overtone.live/metronome
 ** Studio                                                           :studio:
 *** Mixer
 **** Control
- volume
- input-gain
+**** volume
+#+BEGIN_SRC clojure :results output
+(doc volume)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/volume
+: ([] [vol])
+:   Set the volume on the master mixer. When called with no params, retrieves the
+:    current value
+**** input-gain
+#+BEGIN_SRC clojure :results output
+(doc input-gain)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/input-gain
+: ([] [gain])
+:   Set the input gain on the master mixer. When called with no params, retrieves
+:   the current value
+
 *** MIDI
 **** Connected Controllers
  midi-connected-devices
@@ -428,14 +677,220 @@ overtone.studio.scope/scope
 recording?
 *** Inst Effects
 **** Instrument
- inst-volume inst-out-bus inst-fx! clear-fx
+**** inst-volume vs. inst-volume!
+#+BEGIN_SRC clojure :results output
+(doc inst-volume!)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/inst-volume!
+: ([inst vol])
+:   Control the volume of a single instrument.
+**** inst-out-bus
+#+BEGIN_SRC clojure :results output
+(doc inst-out-bus)
+#+END_SRC
+
+#+RESULTS:
+**** inst-fx!
+#+BEGIN_SRC clojure :results output
+(doc inst-fx!)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/inst-fx!
+:   Append an effect to an instrument channel. Returns a SynthNode or a
+:   vector of SynthNodes representing the effect instance.
+**** clear-fx
+#+BEGIN_SRC clojure :results output
+(doc clear-fx)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/clear-fx
+: ([inst])
+:   nil
+
 **** FX
-fx-noise-gate fx-compressor fx-limiter
-  fx-sustainer fx-freeverb fx-reverb
-  fx-echo fx-chorus fx-distortion
-  fx-distortion2 fx-distortion-tubescreamer
-  fx-bitcrusher fx-rlpf fx-rhpf fx-feedback
-  fx-feedback-distortion
+
+**** fx-noise-gate
+#+BEGIN_SRC clojure :results output
+(doc fx-noise-gate)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/fx-noise-gate
+: ([bus threshold slope-below slope-above clamp-time relax-time])
+:   A noise gate only lets audio above a certain amplitude threshold through.  Often used to filter out hardware circuit noise or unwanted background noise.
+
+**** fx-compressor
+#+BEGIN_SRC clojure :results output
+(doc fx-compressor)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/fx-compressor
+: ([bus threshold slope-below slope-above clamp-time relax-time])
+:   A compressor clamps audio signals above an amplitude threshold down, compressing the dynamic range.  Used to normalize a poppy sound so that the amplitude is more consistent, or as a sound warping effect.  The clamp time determines the delay from when the signal is detected as going over the threshold to when clamping begins, and the slope determines the rate at which the clamp occurs.
+
+**** fx-limiter
+#+BEGIN_SRC clojure :results output
+(doc fx-limiter)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/fx-limiter
+: ([bus threshold slope-below slope-above clamp-time relax-time])
+:   A limiter sets a maximum threshold for the audio amplitude, and anything above this threshold is quickly clamped down to within it.
+
+**** fx-sustainer
+#+BEGIN_SRC clojure :results output
+(doc fx-sustainer)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/fx-sustainer
+: ([bus threshold slope-below slope-above clamp-time relax-time])
+:   nil
+
+**** fx-freeverb
+#+BEGIN_SRC clojure :results output
+(doc fx-freeverb)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/fx-freeverb
+: ([bus wet-dry room-size dampening])
+:   Uses the free-verb ugen.
+
+**** fx-reverb
+#+BEGIN_SRC clojure :results output
+(doc fx-reverb)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/fx-reverb
+: ([bus])
+:   Implements Schroeder reverb using delays.
+
+**** fx-echo
+#+BEGIN_SRC clojure :results output
+(doc fx-echo)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/fx-echo
+: ([bus max-delay delay-time decay-time])
+:   nil
+
+**** fx-chorus
+#+BEGIN_SRC clojure :results output
+(doc fx-chorus)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/fx-chorus
+: ([bus rate depth])
+:   nil
+
+**** fx-distortion
+#+BEGIN_SRC clojure :results output
+(doc fx-distortion)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/fx-distortion
+: ([bus boost level])
+:   nil
+
+**** fx-distortion2
+#+BEGIN_SRC clojure :results output
+(doc fx-distortion2)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/fx-distortion2
+: ([bus amount])
+:   nil
+
+**** fx-distortion-tubescreamer
+#+BEGIN_SRC clojure :results output
+(doc fx-distortion-tubescreamer)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/fx-distortion-tubescreamer
+: ([bus hi-freq low-freq hi-freq2 gain threshold])
+:   nil
+
+**** fx-bitcrusher
+#+BEGIN_SRC clojure :results output
+(doc fx-bitcrusher)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/fx-bitcrusher
+: ([in-bus])
+:   nil
+
+**** fx-rlpf
+#+BEGIN_SRC clojure :results output
+(doc fx-rlpf)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/fx-rlpf
+: ([bus cutoff res])
+:   nil
+
+**** fx-rhpf
+#+BEGIN_SRC clojure :results output
+(doc fx-rhpf)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/fx-rhpf
+: ([bus cutoff res])
+:   nil
+
+**** fx-feedback
+#+BEGIN_SRC clojure :results output
+(doc fx-feedback)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/fx-feedback
+: ([bus delay-t decay])
+:   nil
+
+**** fx-feedback-distortion
+#+BEGIN_SRC clojure :results output
+(doc fx-feedback-distortion)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/fx-feedback-distortion
+: ([bus delay-t noise-rate boost decay])
+:   nil
 
 ** Synth Design                                                  :syndesign:
 
@@ -2711,17 +3166,230 @@ overtone.live/sample
 
 *** Busses
 **** Create & Free
- control-bus audio-bus free-bus
+***** control-bus
+#+BEGIN_SRC clojure :results output
+(doc control-bus)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/control-bus
+: ([] [n-channels-or-name] [n-channels name])
+:   Allocate one or more successive control buses. By default, just one
+:    bus is allocated. However, if you specify a number of channels, a
+:    successive range of that length will be allocated.
+: 
+:    You may also specify a name for the bus for labelling purposes.
+***** audio-bus
+#+BEGIN_SRC clojure :results output
+(doc audio-bus)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/audio-bus
+([] [n-channels-or-name] [n-channels name])
+  Allocate one or more successive audio buses. By default, just one
+   bus is allocated. However, if you specify a number of channels, a
+   successive range of that length will be allocated.
+
+   For example, to allocate a stereo bus: (audio-bus 2)
+
+   You may also specify a name for the bus for labelling purposes.
+#+end_example
+***** free-bus
+#+BEGIN_SRC clojure :results output
+(doc free-bus)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/free-bus
+: ([bus])
+:   Free this control or audio bus - enabling the resource to be re-allocated
+
 **** Modify & Read
- control-bus-set! control-bus-set-range!
-  control-bus-get control-bus-get-range
+
+***** 
+
+***** control-bus-set! 
+#+BEGIN_SRC clojure :results output
+(doc control-bus-set! )
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/control-bus-set!
+([bus val] [bus val offset])
+  Asynchronously updates control bus to new val.
+
+   (control-bus-set! my-bus 3) ;=> Sets my-bus to the value 3
+
+   An optional offset may be supplied to access values within
+   multi-channel buses.
+
+   Modification takes place on the server asynchronously.
+#+end_example
+
+***** control-bus-set-range!
+#+BEGIN_SRC clojure :results output
+(doc control-bus-set-range!)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/control-bus-set-range!
+([bus vals] [bus vals offset])
+  Asynchronously set a range of consecutive control buses to the
+   supplied vals.
+
+   An optional offset may be supplied to set values within multi-channel
+   buses.
+
+   Modification takes place on the server asynchronously.
+#+end_example
+
+***** control-bus-get
+#+BEGIN_SRC clojure :results output
+(doc control-bus-get)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/control-bus-get
+: ([bus] [bus offset])
+:   Synchronously get the current value of a control bus. If a
+:    control-bus record is passed in, all channels are returned.
+: 
+:    An optional offset may be supplied to access values within
+:    multi-channel buses.
+
+***** control-bus-get-range
+#+BEGIN_SRC clojure :results output
+(doc control-bus-get-range)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/control-bus-get-range
+: ([bus len] [bus len offset])
+:   Synchronously get a range (of length len) of consecutive control bus
+:    values.
+: 
+:    An optional offset may be supplied to access values within
+:    multi-channel buses.
+
 **** Query
- bus? control-bus? audio-bus?
+***** bus? 
+#+BEGIN_SRC clojure :results output
+(doc bus? )
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/bus?
+: ([bus])
+:   Returns true if the specified bus is a map representing a bus (either control
+:   or audio) 
+***** control-bus? 
+#+BEGIN_SRC clojure :results output
+(doc control-bus? )
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/control-bus?
+: ([bus])
+:   Returns true if the specified bus is a map representing a control bus.
+***** audio-bus?
+#+BEGIN_SRC clojure :results output
+(doc audio-bus?)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/audio-bus?
+: ([bus])
+:   Returns true if the specified bus is a map representing a control bus.
+
 **** Info
- bus-id
+***** bus-id
+#+BEGIN_SRC clojure :results output
+(doc bus-id)
+#+END_SRC
+
+#+RESULTS:
+
 **** Monitor
- bus-monitor control-bus-monitor
-  audio-bus-monitor
+
+***** bus-monitor
+#+BEGIN_SRC clojure :results output
+(doc bus-monitor)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/bus-monitor
+([bus] [bus chan-offset])
+  Returns either a control or audio bus monitor depending on the rate
+   of bus supplied. Returns an atom containing the current value of the
+   control bus. Note that this isn't the peak amplitude, rather the
+   direct value of the control bus.
+
+   For multi-channel buses, an offset may be specified. Current
+   amplitude is updated within the returned atom every 50 ms.
+
+   Note - only creates one monitor per bus - subsequent calls for the
+   same bus will return a cached monitor.
+
+   See audio-bus-monitor and control-bus-monitor for specific details.
+#+end_example
+
+***** control-bus-monitor
+#+BEGIN_SRC clojure :results output
+(doc control-bus-monitor)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/control-bus-monitor
+([control-bus] [control-bus chan-offset])
+  Control bus monitor. Returns an atom containing the current value of
+   the control bus. Note that this isn't the peak amplitude, rather the
+   direct value of the control bus.
+
+   For multi-channel buses, an offset may be specified. Current
+   amplitude is updated within the returned atom every 50 ms.
+
+   Note - only creates one monitor per control bus - subsequent calls for
+   the same control bus idx will return a cached monitor.
+#+end_example
+
+***** audio-bus-monitor
+#+BEGIN_SRC clojure :results output
+(doc audio-bus-monitor)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/audio-bus-monitor
+([audio-bus] [audio-bus chan-offset])
+  Mono bus amplitude monitor. Returns an atom containing the current
+   amplitude of the audio bus. Note that this isn't the current value,
+   rather it's the peak amplitude of the signal within the audio bus.
+
+   For multi-channel buses, an offset may be specified. Current
+   amplitude is updated within the returned atom every 50 ms.
+
+   Note - only creates one monitor per audio bus - subsequent calls for
+   the same audio bus idx will return a cached monitor.
+#+end_example
 
 ** Persistence
 *** Local Store
@@ -3472,11 +4140,567 @@ overtone.live/clear-buf
    amplitude compander normalizer limiter
 
 *** Delay UGens
-   delay1 delay-n delay-l delay-c comb-n comb-l
-   comb-c allpass-n allpass-l allpass-c buf-delay-n
-   buf-delay-l buf-delay-c buf-comb-n buf-comb-l
-   buf-comb-c buf-allpass-n buf-allpass-l
-   buf-allpass-c
+
+*** delay1
+#+BEGIN_SRC clojure :results output
+(doc delay1)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/delay1
+([in])
+  
+  [in 0.0]
+
+  in - Input to be delayed. 
+
+  Delay input signal by one frame of samples. Note: for 
+  audio-rate signals the delay is 1 audio frame, and for 
+  control-rate signals the delay is 1 control period. 
+
+  Categories: Delays
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+*** delay-n
+#+BEGIN_SRC clojure :results output
+(doc delay-n)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/delay-n
+([in max-delay-time delay-time])
+  
+  [in 0.0, max-delay-time 0.2, delay-time 0.2]
+
+  in             - The input signal 
+  max-delay-time - The maximum delay time in 
+                   seconds. Used to initialize the 
+                   delay buffer size 
+  delay-time     - Delay time in seconds 
+
+  Simple delay line, no interpolation. See also DelayL which 
+  uses linear interpolation, and DelayC which uses cubic 
+  interpolation. Cubic interpolation is more computationally 
+  expensive than linear, but more accurate. 
+
+  Categories: Delays
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+*** delay-l
+#+BEGIN_SRC clojure :results output
+(doc delay-l)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/delay-l
+([in max-delay-time delay-time])
+  
+  [in 0.0, max-delay-time 0.2, delay-time 0.2]
+
+  in             - The input signal 
+  max-delay-time - The maximum delay time in 
+                   seconds. Used to initialize the 
+                   delay buffer size 
+  delay-time     - Delay time in seconds 
+
+  Simple delay line, linear interpolation. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+*** delay-c
+#+BEGIN_SRC clojure :results output
+(doc delay-c)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/delay-c
+([in max-delay-time delay-time])
+  
+  [in 0.0, max-delay-time 0.2, delay-time 0.2]
+
+  in             - The input signal 
+  max-delay-time - The maximum delay time in 
+                   seconds. Used to initialize the 
+                   delay buffer size 
+  delay-time     - Delay time in seconds 
+
+  Simple delay line, cubic interpolation. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+*** comb-n
+#+BEGIN_SRC clojure :results output
+(doc comb-n)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/comb-n
+([in max-delay-time delay-time decay-time])
+  
+  [in 0.0, max-delay-time 0.2, delay-time 0.2, decay-time 1.0]
+
+  in             - The input signal 
+  max-delay-time - The maximum delay time in 
+                   seconds. Used to initialize the 
+                   delay buffer size 
+  delay-time     - Delay time in seconds 
+  decay-time     - Time for the echoes to decay by 
+                   60 decibels. If this time is 
+                   negative then the feedback 
+                   coefficient will be negative, 
+                   thus emphasizing only odd 
+                   harmonics at an octave lower. 
+
+  Comb delay line, no interpolation. See also CombL which 
+  uses linear interpolation, and CombC which uses cubic 
+  interpolation. Cubic interpolation is more computationally 
+  expensive than linear, but more accurate. 
+
+  Categories: Delays
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+*** comb-l
+#+BEGIN_SRC clojure :results output
+(doc comb-l)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/comb-l
+([in max-delay-time delay-time decay-time])
+  
+  [in 0.0, max-delay-time 0.2, delay-time 0.2, decay-time 1.0]
+
+  in             - The input signal 
+  max-delay-time - The maximum delay time in 
+                   seconds. Used to initialize the 
+                   delay buffer size 
+  delay-time     - Delay time in seconds 
+  decay-time     - Time for the echoes to decay by 
+                   60 decibels. If this time is 
+                   negative then the feedback 
+                   coefficient will be negative, 
+                   thus emphasizing only odd 
+                   harmonics at an octave lower. 
+
+  Comb delay line, linear interpolation 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+*** comb-c
+#+BEGIN_SRC clojure :results output
+(doc comb-c)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/comb-c
+([in max-delay-time delay-time decay-time])
+  
+  [in 0.0, max-delay-time 0.2, delay-time 0.2, decay-time 1.0]
+
+  in             - The input signal 
+  max-delay-time - The maximum delay time in 
+                   seconds. Used to initialize the 
+                   delay buffer size 
+  delay-time     - Delay time in seconds 
+  decay-time     - Time for the echoes to decay by 
+                   60 decibels. If this time is 
+                   negative then the feedback 
+                   coefficient will be negative, 
+                   thus emphasizing only odd 
+                   harmonics at an octave lower. 
+
+  Comb delay line, cubic interpolation 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+*** allpass-n
+#+BEGIN_SRC clojure :results output
+(doc allpass-n)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/allpass-n
+([in max-delay-time delay-time decay-time])
+  
+  [in 0.0, max-delay-time 0.2, delay-time 0.2, decay-time 1.0]
+
+  in             - The input signal 
+  max-delay-time - The maximum delay time in 
+                   seconds. Used to initialize the 
+                   delay buffer size 
+  delay-time     - Delay time in seconds 
+  decay-time     - Time for the echoes to decay by 
+                   60 decibels. If this time is 
+                   negative then the feedback 
+                   coefficient will be negative, 
+                   thus emphasizing only odd 
+                   harmonics at an octave lower. 
+
+  All pass delay line, no interpolation. See also AllpassC 
+  which uses cubic interpolation, and AllpassL which uses 
+  linear interpolation. Cubic interpolation is more 
+  computationally expensive than linear, but more accurate. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+*** allpass-l
+#+BEGIN_SRC clojure :results output
+(doc allpass-l)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/allpass-l
+([in max-delay-time delay-time decay-time])
+  
+  [in 0.0, max-delay-time 0.2, delay-time 0.2, decay-time 1.0]
+
+  in             - The input signal 
+  max-delay-time - The maximum delay time in 
+                   seconds. Used to initialize the 
+                   delay buffer size 
+  delay-time     - Delay time in seconds 
+  decay-time     - Time for the echoes to decay by 
+                   60 decibels. If this time is 
+                   negative then the feedback 
+                   coefficient will be negative, 
+                   thus emphasizing only odd 
+                   harmonics at an octave lower. 
+
+  All pass delay line, linear interpolation 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+*** allpass-c
+#+BEGIN_SRC clojure :results output
+(doc allpass-c)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/allpass-c
+([in max-delay-time delay-time decay-time])
+  
+  [in 0.0, max-delay-time 0.2, delay-time 0.2, decay-time 1.0]
+
+  in             - The input signal 
+  max-delay-time - The maximum delay time in 
+                   seconds. Used to initialize the 
+                   delay buffer size 
+  delay-time     - Delay time in seconds 
+  decay-time     - Time for the echoes to decay by 
+                   60 decibels. If this time is 
+                   negative then the feedback 
+                   coefficient will be negative, 
+                   thus emphasizing only odd 
+                   harmonics at an octave lower. 
+
+  All pass delay line, cubic interpolation 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+*** buf-delay-n
+#+BEGIN_SRC clojure :results output
+(doc buf-delay-n)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/buf-delay-n
+([buf in delay-time])
+  
+  [buf 0.0, in 0.0, delay-time 0.2]
+
+  buf        - Buffer number 
+  in         - The input signal 
+  delay-time - Delay time in seconds 
+
+  Buffer based simple delay line with no interpolation. See 
+  also BufDelayL which uses linear interpolation, and 
+  BufDelayC which uses cubic interpolation. Cubic 
+  interpolation is more computationally expensive than 
+  linear, but more accurate. 
+
+  Categories: Delays
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+*** buf-delay-l
+#+BEGIN_SRC clojure :results output
+(doc buf-delay-l)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/buf-delay-l
+([buf in delay-time])
+  
+  [buf 0.0, in 0.0, delay-time 0.2]
+
+  buf        - Buffer number 
+  in         - The input signal 
+  delay-time - Delay time in seconds 
+
+  Buffer based simple delay line with linear interpolation 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+*** buf-delay-c
+#+BEGIN_SRC clojure :results output
+(doc buf-delay-c)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/buf-delay-c
+([buf in delay-time])
+  
+  [buf 0.0, in 0.0, delay-time 0.2]
+
+  buf        - Buffer number 
+  in         - The input signal 
+  delay-time - Delay time in seconds 
+
+  Buffer based simple delay line with cubic interpolation 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+*** buf-comb-n
+#+BEGIN_SRC clojure :results output
+(doc buf-comb-n)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/buf-comb-n
+([buf in delay-time decay-time])
+  
+  [buf 0, in 0.0, delay-time 0.2, decay-time 1.0]
+
+  buf        - Buffer number 
+  in         - The input signal 
+  delay-time - Delay time in seconds 
+  decay-time - Time for the echoes to decay by 60 
+               decibels. If this time is negative 
+               then the feedback coefficient will 
+               be negative, thus emphasizing only 
+               odd harmonics at an octave lower. 
+
+  Buffer based comb delay line with no interpolation. See 
+  also [BufCombL] which uses linear interpolation, and 
+  BufCombC which uses cubic interpolation. Cubic 
+  interpolation is more computationally expensive than 
+  linear, but more accurate. 
+
+  Categories: Delays
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+*** buf-comb-l
+#+BEGIN_SRC clojure :results output
+(doc buf-comb-l)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/buf-comb-l
+([buf in delay-time decay-time])
+  
+  [buf 0, in 0.0, delay-time 0.2, decay-time 1.0]
+
+  buf        - Buffer number 
+  in         - The input signal 
+  delay-time - Delay time in seconds 
+  decay-time - Time for the echoes to decay by 60 
+               decibels. If this time is negative 
+               then the feedback coefficient will 
+               be negative, thus emphasizing only 
+               odd harmonics at an octave lower. 
+
+  Buffer based comb delay line with linear interpolation 
+
+  Categories: 
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+*** buf-comb-c
+#+BEGIN_SRC clojure :results output
+(doc buf-comb-c)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/buf-comb-c
+([buf in delay-time decay-time])
+  
+  [buf 0, in 0.0, delay-time 0.2, decay-time 1.0]
+
+  buf        - Buffer number 
+  in         - The input signal 
+  delay-time - Delay time in seconds 
+  decay-time - Time for the echoes to decay by 60 
+               decibels. If this time is negative 
+               then the feedback coefficient will 
+               be negative, thus emphasizing only 
+               odd harmonics at an octave lower. 
+
+  Buffer based comb delay line with cubic interpolation 
+
+  Categories: 
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+*** buf-allpass-n
+#+BEGIN_SRC clojure :results output
+(doc buf-allpass-n)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/buf-allpass-n
+([buf in delay-time decay-time])
+  
+  [buf 0, in 0.0, delay-time 0.2, decay-time 1.0]
+
+  buf        - Buffer number 
+  in         - The input signal 
+  delay-time - Delay time in seconds 
+  decay-time - Time for the echoes to decay by 60 
+               decibels. If this time is negative 
+               then the feedback coefficient will 
+               be negative, thus emphasizing only 
+               odd harmonics at an octave lower. 
+
+  Buffer based all pass delay line with no interpolation. 
+  See also BufAllpassC which uses cubic interpolation, and 
+  BufAllpassL which uses linear interpolation. Cubic 
+  interpolation is more computationally expensive than 
+  linear, but more accurate. 
+
+  Categories: 
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+*** buf-allpass-l
+#+BEGIN_SRC clojure :results output
+(doc buf-allpass-l)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/buf-allpass-l
+([buf in delay-time decay-time])
+  
+  [buf 0, in 0.0, delay-time 0.2, decay-time 1.0]
+
+  buf        - Buffer number 
+  in         - The input signal 
+  delay-time - Delay time in seconds 
+  decay-time - Time for the echoes to decay by 60 
+               decibels. If this time is negative 
+               then the feedback coefficient will 
+               be negative, thus emphasizing only 
+               odd harmonics at an octave lower. 
+
+  Buffer based all pass delay line with linear interpolation 
+
+  Categories: 
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+*** buf-allpass-c
+#+BEGIN_SRC clojure :results output
+(doc buf-allpass-c)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/buf-allpass-c
+([buf in delay-time decay-time])
+  
+  [buf 0, in 0.0, delay-time 0.2, decay-time 1.0]
+
+  buf        - Buffer number 
+  in         - The input signal 
+  delay-time - Delay time in seconds 
+  decay-time - Time for the echoes to decay by 60 
+               decibels. If this time is negative 
+               then the feedback coefficient will 
+               be negative, thus emphasizing only 
+               odd harmonics at an octave lower. 
+
+  Buffer based all pass delay line with cubic interpolation 
+
+  Categories: 
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
 
 *** Demand UGens
    demand duty t-duty demand-env-gen dseries dgeom

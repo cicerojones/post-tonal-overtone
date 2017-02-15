@@ -1,4 +1,4 @@
-* Buses
+* Busses
 :PROPERTIES:
 :ID:       BC1BF72C-E838-4484-B73D-843F0EEAF72F
 :END:
@@ -2629,6 +2629,9 @@
 #+END_SRC
 ** 
 ** (nsovertone.examples.instruments.external
+:PROPERTIES:
+:ID:       60552745-D635-4A59-859B-4B12D784EBE1
+:END:
 #+BEGIN_SRC clojure
 (nsovertone.examples.instruments.external
   (:use overtone.live))
@@ -2796,7 +2799,7 @@
    ))
 #+END_SRC
 ** 
-** (nsovertone.examples.instruments.monotron
+** [#A] (nsovertone.examples.instruments.monotron
 #+BEGIN_SRC clojure
 (nsovertone.examples.instruments.monotron
   (:use overtone.live))

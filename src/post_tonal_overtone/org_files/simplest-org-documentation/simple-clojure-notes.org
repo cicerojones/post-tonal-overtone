@@ -34,6 +34,23 @@ Practical Clojure (Sierra/Vanderhart)
 (use '[overtone.core :exclude (->ShellStringList)])
 #+END_SRC
 
+From clojure help:
+
+#+BEGIN_SRC clojure 
+  ;; Use of ns is preferred to
+  ;;   individual calls to in-ns/require/use/import
+    (ns foo.bar
+      (:refer-clojure :exclude [ancestors printf])
+      (:require (clojure.contrib sql combinatorics))
+      (:use (my.lib this that))
+      (:import (java.util Date Timer Random)
+               (java.sql Connection Statement)))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(ns baz (:require [user :as u]))
+#+END_SRC
+
 
 ** run quil sketch from the cider repl
 *** code blocks
