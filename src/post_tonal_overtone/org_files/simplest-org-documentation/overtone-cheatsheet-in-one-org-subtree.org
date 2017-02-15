@@ -2148,7 +2148,6 @@ overtone.live/foundation-safe-post-default-group
 :   Shutdown the running server
 
 *** Control
-
 **** stop
 #+BEGIN_SRC clojure :results output
 (doc stop)
@@ -2204,7 +2203,6 @@ overtone.live/foundation-safe-post-default-group
 :   playing. Subgroups are cleared out and removed.
 
 *** OSC Communication
-
 **** snd
 #+BEGIN_SRC clojure :results output
 (doc snd)
@@ -2307,7 +2305,6 @@ Macro
 :   nil
 
 *** Diagnostic
-
 **** server-status
 #+BEGIN_SRC clojure :results output
 (doc server-status)
@@ -2492,7 +2489,6 @@ overtone.live/server-info
 :   Throws an exception if the server isn't currently connected
 
 *** Debug
-
 **** sc-osc-log-on
 #+BEGIN_SRC clojure :results output
 (doc sc-osc-log-on)
@@ -3736,21 +3732,238 @@ overtone.live/range-lin
 
 ** ugens                                                             :ugens:
 *** UGen Helper Constants
-   Done Actions 
-NO-ACTION PAUSE FREE FREE-AND-BEFORE
-   FREE-AND-AFTER FREE-AND-GROUP-BEFORE
-   FREE-AND-GROUP-AFTER
-   FREE-UPTO-THIS FREE-FROM-THIS-ON
-   FREE-PAUSE-BEFORE FREE-PAUSE-AFTER
-   FREE-AND-GROUP-BEFORE-DEEP
-   FREE-AND-GROUP-AFTER-DEEP FREE-CHILDREN
-   FREE-GROUP
-   FFT Windows SINE HANN RECT
-   Lines LINEAR LIN EXPONENTIAL EXP
-   Onset Analysis POWER MAGSUM COMPLEX RCOMPLEX PHASE
+**** Done Actions 
+***** NO-ACTION
+#+BEGIN_SRC clojure :results output
+(doc NO-ACTION)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/NO-ACTION
+:   Do nothing when the ugen is finished
+***** PAUSE
+#+BEGIN_SRC clojure :results output
+(doc PAUSE)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/PAUSE
+:   Pause the enclosing synth, but do not free it
+***** FREE
+#+BEGIN_SRC clojure :results output
+(doc FREE)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/FREE
+:   Free the enclosing synth
+***** FREE-AND-BEFORE
+#+BEGIN_SRC clojure :results output
+(doc FREE-AND-BEFORE)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/FREE-AND-BEFORE
+:   Free both this synth and the preceding node
+***** FREE-AND-AFTER
+#+BEGIN_SRC clojure :results output
+(doc FREE-AND-AFTER)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/FREE-AND-AFTER
+:   Free both this synth and the following node
+***** FREE-AND-GROUP-BEFORE
+#+BEGIN_SRC clojure :results output
+(doc FREE-AND-GROUP-BEFORE)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/FREE-AND-GROUP-BEFORE
+:   Free this synth; if the preceding node is a group then do g_freeAll
+:    on it, else free it
+***** FREE-AND-GROUP-AFTER
+#+BEGIN_SRC clojure :results output
+(doc FREE-AND-GROUP-AFTER)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/FREE-AND-GROUP-AFTER
+:   Free this synth; if the following node is a group then do g_freeAll
+:    on it, else free it
+***** FREE-UPTO-THIS
+#+BEGIN_SRC clojure :results output
+(doc FREE-UPTO-THIS)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/FREE-UPTO-THIS
+:   Free this synth and all preceding nodes in this group
+***** FREE-FROM-THIS-ON
+#+BEGIN_SRC clojure :results output
+(doc FREE-FROM-THIS-ON)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/FREE-FROM-THIS-ON
+:   Free this synth and all following nodes in this group
+***** FREE-PAUSE-BEFORE
+#+BEGIN_SRC clojure :results output
+(doc FREE-PAUSE-BEFORE)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/FREE-PAUSE-BEFORE
+:   Free this synth and pause the preceding node
+***** FREE-PAUSE-AFTER
+#+BEGIN_SRC clojure :results output
+(doc FREE-PAUSE-AFTER)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/FREE-PAUSE-AFTER
+:   Free this synth and pause the following node
+***** FREE-AND-GROUP-BEFORE-DEEP
+#+BEGIN_SRC clojure :results output
+(doc FREE-AND-GROUP-BEFORE-DEEP)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/FREE-AND-GROUP-BEFORE-DEEP
+:   Free this synth and if the preceding node is a group then do
+:   g_deepFree on it, else free it
+***** FREE-AND-GROUP-AFTER-DEEP
+#+BEGIN_SRC clojure :results output
+(doc FREE-AND-GROUP-AFTER-DEEP)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/FREE-AND-GROUP-AFTER-DEEP
+:   Free this synth and if the following node is a group then do
+:  g_deepFree on it, else free it
+***** FREE-CHILDREN
+#+BEGIN_SRC clojure :results output
+(doc FREE-CHILDREN)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/FREE-CHILDREN
+:   Free this synth and all other nodes in this group (before and after)
+***** FREE-GROUP
+#+BEGIN_SRC clojure :results output
+(doc FREE-GROUP)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/FREE-GROUP
+:   Free the enclosing group and all nodes within it (including this
+:    synth)
+
+**** FFT Windows 
+
+***** SINE
+#+BEGIN_SRC clojure :results output
+(doc SINE)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/SINE
+:   nil
+
+***** HANN
+#+BEGIN_SRC clojure :results output
+(doc HANN)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/HANN
+:   nil
+
+***** RECT
+#+BEGIN_SRC clojure :results output
+(doc RECT)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/RECT
+:   nil
+
+**** Lines
+
+***** LINEAR
+#+BEGIN_SRC clojure :results output
+(doc LINEAR)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/LINEAR
+:   nil
+
+***** LIN
+#+BEGIN_SRC clojure :results output
+(doc LIN)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/LIN
+:   nil
+
+***** EXPONENTIAL
+#+BEGIN_SRC clojure :results output
+(doc EXPONENTIAL)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/EXPONENTIAL
+:   nil
+
+***** EXP
+#+BEGIN_SRC clojure :results output
+(doc EXP)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/EXP
+:   nil
+
+**** Onset Analysis
+POWER MAGSUM COMPLEX RCOMPLEX PHASE
    WPHASE MKL
-   Infinity INFINITE INF
-   UGen Envelope Helper Functions
+**** Infinity
+***** INFINITE 
+***** INF
+#+BEGIN_SRC clojure :results output
+(doc INF)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/INF
+:   Positive infinity - abbreviation for Float/POSITIVE_INFINITY
+
+*** UGen Envelope Helper Functions
    env-perc env-triangle env-sine env-lin env-cutoff
    env-dadsr env-adsr env-asr
 
@@ -4141,7 +4354,7 @@ overtone.live/clear-buf
 
 *** Delay UGens
 
-*** delay1
+**** delay1
 #+BEGIN_SRC clojure :results output
 (doc delay1)
 #+END_SRC
@@ -4165,7 +4378,7 @@ overtone.live/delay1
   Default rate: :ar
 #+end_example
 
-*** delay-n
+**** delay-n
 #+BEGIN_SRC clojure :results output
 (doc delay-n)
 #+END_SRC
@@ -4194,7 +4407,7 @@ overtone.live/delay-n
   Default rate: :ar
 #+end_example
 
-*** delay-l
+**** delay-l
 #+BEGIN_SRC clojure :results output
 (doc delay-l)
 #+END_SRC
@@ -4220,7 +4433,7 @@ overtone.live/delay-l
   Default rate: :ar
 #+end_example
 
-*** delay-c
+**** delay-c
 #+BEGIN_SRC clojure :results output
 (doc delay-c)
 #+END_SRC
@@ -4246,7 +4459,7 @@ overtone.live/delay-c
   Default rate: :ar
 #+end_example
 
-*** comb-n
+**** comb-n
 #+BEGIN_SRC clojure :results output
 (doc comb-n)
 #+END_SRC
@@ -4281,7 +4494,7 @@ overtone.live/comb-n
   Default rate: :ar
 #+end_example
 
-*** comb-l
+**** comb-l
 #+BEGIN_SRC clojure :results output
 (doc comb-l)
 #+END_SRC
@@ -4313,7 +4526,7 @@ overtone.live/comb-l
   Default rate: :ar
 #+end_example
 
-*** comb-c
+**** comb-c
 #+BEGIN_SRC clojure :results output
 (doc comb-c)
 #+END_SRC
@@ -4345,7 +4558,7 @@ overtone.live/comb-c
   Default rate: :ar
 #+end_example
 
-*** allpass-n
+**** allpass-n
 #+BEGIN_SRC clojure :results output
 (doc allpass-n)
 #+END_SRC
@@ -4380,7 +4593,7 @@ overtone.live/allpass-n
   Default rate: :ar
 #+end_example
 
-*** allpass-l
+**** allpass-l
 #+BEGIN_SRC clojure :results output
 (doc allpass-l)
 #+END_SRC
@@ -4412,7 +4625,7 @@ overtone.live/allpass-l
   Default rate: :ar
 #+end_example
 
-*** allpass-c
+**** allpass-c
 #+BEGIN_SRC clojure :results output
 (doc allpass-c)
 #+END_SRC
@@ -4444,7 +4657,7 @@ overtone.live/allpass-c
   Default rate: :ar
 #+end_example
 
-*** buf-delay-n
+**** buf-delay-n
 #+BEGIN_SRC clojure :results output
 (doc buf-delay-n)
 #+END_SRC
@@ -4472,7 +4685,7 @@ overtone.live/buf-delay-n
   Default rate: :ar
 #+end_example
 
-*** buf-delay-l
+**** buf-delay-l
 #+BEGIN_SRC clojure :results output
 (doc buf-delay-l)
 #+END_SRC
@@ -4496,7 +4709,7 @@ overtone.live/buf-delay-l
   Default rate: :ar
 #+end_example
 
-*** buf-delay-c
+**** buf-delay-c
 #+BEGIN_SRC clojure :results output
 (doc buf-delay-c)
 #+END_SRC
@@ -4520,7 +4733,7 @@ overtone.live/buf-delay-c
   Default rate: :ar
 #+end_example
 
-*** buf-comb-n
+**** buf-comb-n
 #+BEGIN_SRC clojure :results output
 (doc buf-comb-n)
 #+END_SRC
@@ -4553,7 +4766,7 @@ overtone.live/buf-comb-n
   Default rate: :ar
 #+end_example
 
-*** buf-comb-l
+**** buf-comb-l
 #+BEGIN_SRC clojure :results output
 (doc buf-comb-l)
 #+END_SRC
@@ -4582,7 +4795,7 @@ overtone.live/buf-comb-l
   Default rate: :ar
 #+end_example
 
-*** buf-comb-c
+**** buf-comb-c
 #+BEGIN_SRC clojure :results output
 (doc buf-comb-c)
 #+END_SRC
@@ -4611,7 +4824,7 @@ overtone.live/buf-comb-c
   Default rate: :ar
 #+end_example
 
-*** buf-allpass-n
+**** buf-allpass-n
 #+BEGIN_SRC clojure :results output
 (doc buf-allpass-n)
 #+END_SRC
@@ -4644,7 +4857,7 @@ overtone.live/buf-allpass-n
   Default rate: :ar
 #+end_example
 
-*** buf-allpass-l
+**** buf-allpass-l
 #+BEGIN_SRC clojure :results output
 (doc buf-allpass-l)
 #+END_SRC
@@ -4673,7 +4886,7 @@ overtone.live/buf-allpass-l
   Default rate: :ar
 #+end_example
 
-*** buf-allpass-c
+**** buf-allpass-c
 #+BEGIN_SRC clojure :results output
 (doc buf-allpass-c)
 #+END_SRC
@@ -5406,8 +5619,333 @@ x-out
 shared-out
 
 *** Line Ugens
-   line x-line lin-exp lin-lin amp-comp amp-comp-a k2a
-   a2k t2k t2a dc silent
+
+**** line
+#+BEGIN_SRC clojure :results output
+(doc line)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/line
+([start end dur action])
+  
+  Line generator. 
+
+  [start 0.0, end 1.0, dur 1.0, action 0]
+
+  start  - Starting value 
+  end    - Ending value 
+  dur    - Duration in seconds 
+  action - A done action to be evaluated when the 
+           line is completed. Default: NO-ACTION 
+
+  Generates a line from the start value to the end value. 
+
+  Categories: Envelopes
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** x-line
+#+BEGIN_SRC clojure :results output
+(doc x-line)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/x-line
+([start end dur action])
+  
+  Exponential line generator. 
+
+  [start 1.0, end 2.0, dur 1.0, action 0]
+
+  start  - Starting value 
+  end    - Ending value 
+  dur    - Duration in seconds 
+  action - A done action to be evaluated when the 
+           line is completed. Default: NO-ACTION 
+
+  Generates an exponential curve from the start value to the 
+  end value. Both the start and end values must be non-zero 
+  and have the same sign. 
+
+  Categories: Envelopes
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** lin-exp
+#+BEGIN_SRC clojure :results output
+(doc lin-exp)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/lin-exp
+([in srclo srchi dstlo dsthi])
+  
+  Map a linear range to an exponential range 
+
+  [in 0.0, srclo 0.0, srchi 1.0, dstlo 1.0, dsthi 2.0]
+
+  in    - Input to convert 
+  srclo - Lower limit of input range 
+  srchi - Upper limit of input range 
+  dstlo - Lower limit of output range 
+  dsthi - Upper limit of output range 
+
+  Convert from a linear range to an exponential range. The 
+  dstlo and dsthi arguments must be nonzero and have the 
+  same sign. 
+
+  Categories: Maths
+  Rates: [ :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** lin-lin
+#+BEGIN_SRC clojure :results output
+(doc lin-lin)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/lin-lin
+([in srclo srchi dstlo dsthi])
+  
+  Map values from one linear range to another 
+
+  [in 0.0, srclo 0.0, srchi 1.0, dstlo 1.0, dsthi 2.0]
+
+  in    - Input to convert 
+  srclo - Lower limit of input range 
+  srchi - Upper limit of input range 
+  dstlo - Lower limit of output range 
+  dsthi - Upper limit of output range 
+
+   
+
+  Categories: Composite Ugen
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** amp-comp
+#+BEGIN_SRC clojure :results output
+(doc amp-comp)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/amp-comp
+([freq root exp])
+  
+  Basic psychoacoustic amplitude compensation. 
+
+  [freq 261.6256, root 261.6256, exp 0.3333]
+
+  freq - Input frequency value. For freq == root, 
+         the output is 1.0. 
+  root - Root freq relative to which the curve is 
+         calculated (usually lowest freq) 
+  exp  - Exponent: how steep the curve decreases 
+         for increasing freq 
+
+  Amplitude compensation: because higher frequencies are 
+  normally perceived as louder. Note that for frequencies 
+  very much smaller than root the amplitudes can become very 
+  high. In this case limit the freqor use amp-comp-a
+
+  Implements the (optimized) formula:
+
+  compensationFactor = (root / freq) ** exp 
+
+  Categories: Analysis -> Amplitude
+  Rates: [ :ir, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** amp-comp-a
+#+BEGIN_SRC clojure :results output
+(doc amp-comp-a)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/amp-comp-a
+([freq root min-amp root-amp])
+  
+  Basic psychoacoustic amplitude compensation (ANSI 
+  A-weighting curve). 
+
+  [freq 1000.0, root 0, min-amp 0.32, root-amp 1.0]
+
+  freq     - Input frequency value. For freq == 
+             root, the output is root-amp 
+  root     - Root freq relative to which the curve 
+             is calculated (usually lowest freq) 
+  min-amp  - Amplitude at the minimum point of the 
+             curve (around 2512 Hz) 
+  root-amp - Amplitude at the root frequency. 
+
+  Higher frequencies are normally perceived as louder, which 
+  amp-comp-a compensates. Following the measurings by 
+  Fletcher and Munson, the ANSI standard describes a 
+  function for loudness vs. frequency. Note that this curve 
+  is only valid for standardized amplitude. 1 For a simpler 
+  but more flexible curve, see amp-comp 
+
+  Categories: Analysis -> Amplitude
+  Rates: [ :ir, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** k2a
+#+BEGIN_SRC clojure :results output
+(doc k2a)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/k2a
+([in])
+  
+  [in 0.0]
+
+  in - Input signal 
+
+  Control rate to audio rate converter via linear 
+  interpolation. 
+
+  Categories: Conversion
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** a2k
+#+BEGIN_SRC clojure :results output
+(doc a2k)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/a2k
+([in])
+  
+  [in 0.0]
+
+  in - Input signal 
+
+  Audio rate to control rate converter via linear 
+  interpolation 
+
+  Categories: Conversion
+  Rates: [ :kr ]
+  Default rate: :kr
+#+end_example
+
+**** t2k
+#+BEGIN_SRC clojure :results output
+(doc t2k)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/t2k
+([in])
+  
+  [in 0.0]
+
+  in - Input signal 
+
+  Audio rate trigger to control rate trigger converter. Uses 
+  the maxiumum trigger in the input during each control 
+  period. 
+
+  Categories: Conversion
+  Rates: [ :kr ]
+  Default rate: :kr
+#+end_example
+
+**** t2a
+#+BEGIN_SRC clojure :results output
+(doc t2a)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/t2a
+([in offset])
+  
+  [in 0.0, offset 0]
+
+  in     - Input signal 
+  offset - Sample offset within control period 
+
+  Control rate trigger to audio rate trigger converter 
+  (maximally one per control period). 
+
+  Categories: Conversion
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** dc
+#+BEGIN_SRC clojure :results output
+(doc dc)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/dc
+([in])
+  
+  [in :none]
+
+  in - Constant value to output, cannot be 
+       modulated, set at initialisation time 
+
+  Outputs the initial value you give it. 
+
+  Categories: Generators -> Single-value
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** silent
+#+BEGIN_SRC clojure :results output
+(doc silent)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/silent
+([num-channels])
+  
+  [num-channels 1]
+
+  num-channels - Number of channels of silence. 
+
+  Continuously outputs 0 
+
+  Categories: Generators -> Single-value
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
 
 *** Machine Listening UGens
    beat-track loudness onsets key-track mfcc
@@ -7643,13 +8181,975 @@ overtone.live/lin-rand
    stk-blow-hole stk-moog stk-bee-three
 
 *** Trig UGens
-   tw-index trig1 trig t-delay send-trig send-reply
-   latch gate pulse-count set-reset-ff peak
-   running-min running-max stepper pulse-divider
-   toggle-ff zero-crossing timer sweep phasor
-   peak-follower pitch in-range fold clip wrap
-   schmidt in-rect trapezoid most-changed least-change
-   last-value
+
+**** tw-index
+#+BEGIN_SRC clojure :results output
+(doc tw-index)
+#+END_SRC
+
+#+RESULTS:
+
+
+**** trig1
+#+BEGIN_SRC clojure :results output
+(doc trig1)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/trig1
+([trig dur])
+  
+  Timed trigger 
+
+  [trig 0.0, dur 0.1]
+
+  trig - Trigger. Trigger can be any signal. A 
+         trigger happens when the signal changes 
+         from non-positive to positive. 
+  dur  - Duration of the trigger output in 
+         seconds. 
+
+  Outputs one for dur seconds whenever the input goes from 
+  negative to positive, otherwise outputs 0. 
+
+  Categories: Triggers
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** trig
+#+BEGIN_SRC clojure :results output
+(doc trig)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/trig
+([trig dur])
+  
+  Timed trigger 
+
+  [trig 0.0, dur 0.1]
+
+  trig - Trigger. Trigger can be any signal. A 
+         trigger happens when the signal changes 
+         from non-positive to positive. 
+  dur  - Duration of the trigger output in 
+         seconds. 
+
+  When a nonpositive to positive transition occurs at the 
+  input, Trig outputs the level of the triggering input for 
+  the specified duration, otherwise it outputs zero. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** t-delay
+#+BEGIN_SRC clojure :results output
+(doc t-delay)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/t-delay
+([trig dur])
+  
+  Trigger delay 
+
+  [trig 0.0, dur 0.1]
+
+  trig - Input trigger signal. 
+  dur  - Delay time in seconds. 
+
+  Delays an input trigger by dur, ignoring other triggers in 
+  the meantime 
+
+  Categories: Triggers, Delays
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** send-trig
+#+BEGIN_SRC clojure :results output
+(doc send-trig)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/send-trig
+([in id value])
+  
+  Send a /tr OSC message to Overtone 
+
+  [in 0.0, id 0, value 0.0]
+
+  in    - Input trigger signal 
+  id    - An integer that will be passed with the 
+          trigger message. This is useful if you 
+          have more than one send-trig in a synth 
+          design. Consider using trig-id to 
+          genearate a unique id. 
+  value - A ugen or float that will be polled at 
+          the time of trigger, and its value 
+          passed with the trigger message 
+
+  On receiving a trigger sends a :trigger event with id and 
+  value. This command is the mechanism that synths can use 
+  to trigger events in clients.
+
+  The trigger message sent back to the client is this:
+
+  int - node ID
+
+  int - trigger ID
+
+  float - trigger value
+
+  This is then presented as an event on the event-stream 
+  which is a map containing the key :path with the string 
+  "/tr" and the key :args containing a sequence of the 
+  values in the above order. i.e.
+
+  {:path /tr, :args (34 3 123.0)}
+
+  See on-trigger, on-latest-trigger and on-sync-trigger for 
+  registering handlers for trigger events. 
+
+  Categories: Triggers
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** send-reply
+#+BEGIN_SRC clojure :results output
+(doc send-reply)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/send-reply
+([trig cmd-name values reply-id])
+  
+  Send information via OSC to Overtone 
+
+  [trig 0.0, cmd-name /reply, values 0.0, reply-id -1]
+
+  trig     - Input trigger signal 
+  cmd-name - A string or symbol, as a message 
+             name. 
+  values   - Array of ugens, or valid ugen inputs 
+  reply-id - Integer id (similar to that used by 
+             send-trig) 
+
+  Send an array of values from the server via an message. 
+  The OSC message is formed with cmd-name as the path, 
+  followed by two compulsary args: node-id (the id of the 
+  node that sent the message) and reply-id (the value 
+  specified in the params). These args are then followed by 
+  the list of values specified in the params.
+
+  For example, if the ugen is used as follows:
+
+  (send-reply tr "/foobar" [1 2 3] 42)
+
+  When the trig tr triggers, Overtone will receive an event 
+  that looks like the following (where 32 represents the 
+  node-id of the synth that sent the message):
+
+  {:path "/foobar" :args (32 42 1 2 3)}
+
+  You can register to respond to this event as follows:
+
+  (on-event "/foobar" (fn [msg] (println msg)) 
+  ::handle-foobar) 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** latch
+#+BEGIN_SRC clojure :results output
+(doc latch)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/latch
+([in trig])
+  
+  Sample and hold 
+
+  [in 0.0, trig 0.0]
+
+  in   - Input signal. 
+  trig - Trigger. Trigger can be any signal. A 
+         trigger happens when the signal changes 
+         from non-positive to positive. 
+
+  Holds input signal value when triggered. 
+
+  Categories: Triggers
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** gate
+#+BEGIN_SRC clojure :results output
+(doc gate)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/gate
+([in trig])
+  
+  Gate or hold 
+
+  [in 0.0, trig 0.0]
+
+  in   - Input signal. 
+  trig - Trigger. Trigger can be any signal. A 
+         trigger happens when the signal changes 
+         from non-positive to positive. 
+
+  Lets signal flow when trig is positive, otherwise holds 
+  last input value 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** pulse-count
+#+BEGIN_SRC clojure :results output
+(doc pulse-count)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/pulse-count
+([trig reset])
+  
+  Pulse counter 
+
+  [trig 0.0, reset 0.0]
+
+  trig  - Trigger. Trigger can be any signal. A 
+          trigger happens when the signal changes 
+          from non-positive to positive. 
+  reset - Resets the counter to zero when 
+          triggered. 
+
+  Each input trigger increments a counter value that is 
+  output. 
+
+  Categories: Triggers
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** set-reset-ff
+#+BEGIN_SRC clojure :results output
+(doc set-reset-ff)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/set-reset-ff
+([trig reset])
+  
+  Set-reset flip flop 
+
+  [trig 0.0, reset 0.0]
+
+  trig  - Trigger. Trigger can be any signal. A 
+          trigger happens when the signal changes 
+          from non-positive to positive. 
+  reset - Resets the counter to zero when 
+          triggered. 
+
+  When a trigger is received the output is set to 1.0 
+  Subsequent triggers have no effect When a trigger is 
+  received in the reset input, the output is set back to 
+  0.0
+
+  One use of this is to have some precipitating event cause 
+  something to happen until you reset it. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** peak
+#+BEGIN_SRC clojure :results output
+(doc peak)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/peak
+([trig reset])
+  
+  Track peak signal amplitude 
+
+  [trig 0.0, reset 0.0]
+
+  trig  - Trigger. Trigger can be any signal. A 
+          trigger happens when the signal changes 
+          from non-positive to positive. 
+  reset - Resets the counter to zero when 
+          triggered. 
+
+  Outputs the peak amplitude of the signal so far, a trigger 
+  resets to current value 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** running-min
+#+BEGIN_SRC clojure :results output
+(doc running-min)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/running-min
+([in trig])
+  
+  Track minimum level 
+
+  [in 0.0, trig 0.0]
+
+  in   - Input signal. 
+  trig - Trigger. Trigger can be any signal. A 
+         trigger happens when the signal changes 
+         from non-positive to positive. 
+
+  Outputs the minimum value received at the input. When 
+  triggered, the minimum output value is reset to the 
+  current value. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** running-max
+#+BEGIN_SRC clojure :results output
+(doc running-max)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/running-max
+([in trig])
+  
+  Track maximum level 
+
+  [in 0.0, trig 0.0]
+
+  in   - Input signal. 
+  trig - Trigger. Trigger can be any signal. A 
+         trigger happens when the signal changes 
+         from non-positive to positive. 
+
+  Outputs the maximum value received at the input. When 
+  triggered, the maximum output value is reset to the 
+  current value. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** stepper
+#+BEGIN_SRC clojure :results output
+(doc stepper)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/stepper
+([trig reset min max step resetval])
+  
+  Pulse counter 
+
+  [trig 0, reset 0, min 0, max 7, step 1, resetval 1]
+
+  trig     - Trigger. Trigger can be any signal. A 
+             trigger happens when the signal 
+             changes from non-positive to 
+             positive. 
+  reset    - Resets the counter to resetval when 
+             triggered. 
+  min      - Minimum value of the counter. 
+  max      - Maximum value of the counter. 
+  step     - Step value each trigger. May be 
+             negative. 
+  resetval - Value to which the counter is reset 
+             when it receives a reset trigger. 
+
+  Triggers increment a counter which is output as a signal. 
+  The counter loops around from max to min by step 
+  increments 
+
+  Categories: Triggers
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** pulse-divider
+#+BEGIN_SRC clojure :results output
+(doc pulse-divider)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/pulse-divider
+([trig div start-val])
+  
+  Pulse divider 
+
+  [trig 0.0, div 2.0, start-val 0.0]
+
+  trig      - Trigger. Trigger can be any signal. 
+              A trigger happens when the signal 
+              changes from non-positive to 
+              positive. 
+  div       - Number of pulses to divide by. 
+  start-val - Starting value for the trigger 
+              count. This lets you start somewhere 
+              in the middle of a count, or if 
+              startCount is negative it adds that 
+              many counts to the first time the 
+              output is triggers. 
+
+  Outputs a trigger every div input triggers 
+
+  Categories: Triggers
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** toggle-ff
+#+BEGIN_SRC clojure :results output
+(doc toggle-ff)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/toggle-ff
+([trig])
+  
+  Toggle flip flop 
+
+  [trig 0.0]
+
+  trig - Trigger input 
+
+  Flip-flops between zero and one each trigger 
+
+  Categories: Triggers
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** zero-crossing
+#+BEGIN_SRC clojure :results output
+(doc zero-crossing)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/zero-crossing
+([in])
+  
+  Zero crossing frequency follower 
+
+  [in 0.0]
+
+  in - Input signal 
+
+  Outputs a frequency based upon the distance between 
+  interceptions of the X axis. The X intercepts are 
+  determined via linear interpolation so this gives better 
+  than just integer wavelength resolution. This is a very 
+  crude pitch follower, but can be useful in some 
+  situations. 
+
+  Categories: Analysis -> Pitch
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** timer
+#+BEGIN_SRC clojure :results output
+(doc timer)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/timer
+([trig])
+  
+  Trigger timer 
+
+  [trig 0.0]
+
+  trig - Trigger input 
+
+  Outputs time since last trigger 
+
+  Categories: Triggers
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** sweep
+#+BEGIN_SRC clojure :results output
+(doc sweep)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/sweep
+([trig rate])
+  
+  Triggered linear ramp 
+
+  [trig 0.0, rate 1.0]
+
+  trig - Trigger input 
+  rate - Rate in seconds 
+
+  Outputs a linear increasing signal by rate/second when 
+  trig input crosses from non-positive to positive 
+
+  Categories: Triggers
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** phasor
+#+BEGIN_SRC clojure :results output
+(doc phasor)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/phasor
+([trig rate start end reset-pos])
+  
+  Resettable linear ramp between two levels 
+
+  [trig 0.0, rate 1.0, start 0.0, end 1.0, reset-pos 0.0]
+
+  trig      - When triggered, reset value to 
+              reset-pos (default: 0, phasor 
+              outputs start initially) 
+  rate      - The amount of change per sample i.e 
+              at a rate of 1 the value of each 
+              sample will be 1 greater than the 
+              preceding sample 
+  start     - Starting point of the ramp 
+  end       - End point of the ramp 
+  reset-pos - The value to jump to upon receiving 
+              a trigger 
+
+  Phasor is a linear ramp between start and end values. When 
+  its trigger input crosses from non-positive to positive, 
+  Phasor's output will jump to its reset position. Upon 
+  reaching the end of its ramp Phasor will wrap back to its 
+  start. N.B. Since end is defined as the wrap point, its 
+  value is never actually output. 
+
+  Categories: Triggers, Buffer
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** peak-follower
+#+BEGIN_SRC clojure :results output
+(doc peak-follower)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/peak-follower
+([in decay])
+  
+  Track peak signal amplitude 
+
+  [in 0.0, decay 0.999]
+
+  in    - Input signal. 
+  decay - Decay factor. 
+
+  Outputs the peak signal amplitude, falling with decay over 
+  time until reaching signal level 
+
+  Categories: Analysis -> Amplitude
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** pitch
+#+BEGIN_SRC clojure :results output
+(doc pitch)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/pitch
+([in init-freq min-freq max-freq exec-freq max-bins-per-octave median amp-threshold peak-threshold down-sample clar])
+  
+  Autocorrelation pitch follower 
+
+  [in :none, init-freq 440.0, min-freq 60.0, max-freq 4000.0, exec-freq 100.0, max-bins-per-octave 16, median 1, amp-threshold 0.01, peak-threshold 0.5, down-sample 1, clar 0]
+
+  in                  - Input signal 
+  init-freq           - Value of output pitch 
+                        until first pitch 
+                        detected. 
+  min-freq            - Minimum frequency of 
+                        execution. 
+  max-freq            - Maximum frequency of 
+                        execution. 
+  exec-freq           - The target rate to 
+                        periodically execute in 
+                        cps. Clipped between 
+                        min-freq and max-freq. 
+  max-bins-per-octave - Number of lags for course 
+                        search. A larger value 
+                        will cause the coarse 
+                        search to take longer, a 
+                        smaller value will cause 
+                        the subsequent fine search 
+                        to take longer. 
+  median              - Median filter value of 
+                        length median on the 
+                        output estimation. Helps 
+                        eliminate outliers and 
+                        jitter. Value of 1 means 
+                        no filter. 
+  amp-threshold       - Minum peak to peak 
+                        amplitude of input signal 
+                        before pitch estimation is 
+                        performed. 
+  peak-threshold      - Finds the next peak that 
+                        is above peak-threshold 
+                        times the amplitude of the 
+                        peak at lag zero. A value 
+                        of 0.5 does a pretty good 
+                        job of eliminating 
+                        overtones. 
+  down-sample         - Down sample the input 
+                        signal by an integer 
+                        factor. Helps reduce CPU 
+                        overthead. Also reduces 
+                        pitch resolution. 
+  clar                - Clarity measurement 
+                        (purity of the pitched 
+                        signal) if greater than 0. 
+
+  This is a better pitch follower than zero-crossing, but 
+  more costly of CPU. For most purposes the default settings 
+  can be used and only in needs to be supplied. Pitch 
+  returns two values (via an Array of OutputProxys), a freq 
+  which is the pitch estimate and has-freq, which tells 
+  whether a pitch was found. Some vowels are still 
+  problematic, for instance a wide open mouth sound 
+  somewhere between a low pitched short 'a' sound as in 
+  'sat', and long 'i' sound as in 'fire', contains enough 
+  overtone energy to confuse the algorithm. None of these 
+  settings are time variable. 
+
+  Categories: Analysis -> Pitch, MachineListening
+  Rates: [ :kr ]
+  Default rate: :kr
+#+end_example
+
+**** in-range
+#+BEGIN_SRC clojure :results output
+(doc in-range)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/in-range
+([in lo hi])
+  
+  Tests if a signal is within a given range 
+
+  [in 0.0, lo 0.0, hi 1.0]
+
+  in - Input signal 
+  lo - Low threshold 
+  hi - High threshold 
+
+  If in is >= lo and <= hi output 1.0, otherwise output 0.0. 
+  Output is initially zero. 
+
+  Categories: Maths
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** fold
+#+BEGIN_SRC clojure :results output
+(doc fold)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/fold
+([in lo hi])
+  
+  Fold a signal outside given thresholds. 
+
+  [in 0.0, lo 0.0, hi 1.0]
+
+  in - Input signal 
+  lo - Low threshold 
+  hi - High threshold 
+
+  Folds input wave to within the lo and hi thresholds. This 
+  differs from the ugen fold2 in that it allows one to set 
+  both low and high thresholds. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** clip
+#+BEGIN_SRC clojure :results output
+(doc clip)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/clip
+([in lo hi])
+  
+  Clip a signal outside given thresholds. 
+
+  [in 0.0, lo 0.0, hi 1.0]
+
+  in - The signal to be clipped 
+  lo - Low threshold of clipping. Must be less 
+       then hi 
+  hi - High threshold of clipping. Must be greater 
+       then lo 
+
+  Clip a signal outside given thresholds. This differs from 
+  the ugen clip2 in that it allows one to set both low and 
+  high thresholds. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** wrap
+#+BEGIN_SRC clojure :results output
+(doc wrap)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/wrap
+([in lo hi])
+  
+  Wrap a signal outside given thresholds. 
+
+  [in 0.0, lo 0.0, hi 1.0]
+
+  in - Input signal 
+  lo - Low threshold 
+  hi - High threshold 
+
+  Wraps input wave to the low and high thresholds. This 
+  differs from the ugen wrap2 in that it allows one to set 
+  both low and high thresholds. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** schmidt
+#+BEGIN_SRC clojure :results output
+(doc schmidt)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/schmidt
+([in lo hi])
+  
+  Schmidt trigger 
+
+  [in 0.0, lo 0.0, hi 1.0]
+
+  in - Input signal 
+  lo - Low threshold 
+  hi - High threshold 
+
+  Outout one when signal greater than high, and zero when 
+  lower than low. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** in-rect
+#+BEGIN_SRC clojure :results output
+(doc in-rect)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/in-rect
+([x y left top right bottom])
+  
+  Test if a point is within a given rectangle. 
+
+  [x 0.0, y 0.0, left :none, top :none, right :none, bottom :none]
+
+  x      - X component signal 
+  y      - Y component signal 
+  left   - - 
+  top    - - 
+  right  - - 
+  bottom - - 
+
+  Outputs one if the 2d coordinate of x,y input values falls 
+  inside a rectangle, else zero 
+
+  Categories: Maths
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** trapezoid
+#+BEGIN_SRC clojure :results output
+(doc trapezoid)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/trapezoid
+([in a b c d])
+  
+  [in 0.0, a 0.2, b 0.4, c 0.6, d 0.8]
+
+  in - The input signal 
+  a  - - 
+  b  - - 
+  c  - - 
+  d  - - 
+
+  No documentation has been defined for this ugen. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** most-changed
+#+BEGIN_SRC clojure :results output
+(doc most-changed)
+#+END_SRC
+
+#+RESULTS:
+
+**** least-change
+#+BEGIN_SRC clojure :results output
+(doc least-change)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/least-change
+([a b])
+  
+  Output least changed 
+
+  [a 0.0, b 0.0]
+
+  a - First input 
+  b - Second input 
+
+  Output whichever signal changed the least 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
+
+**** last-value
+#+BEGIN_SRC clojure :results output
+(doc last-value)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/last-value
+([in diff])
+  
+  Output the last value before the input changed 
+
+  [in 0.0, diff 0.01]
+
+  in   - Input signal 
+  diff - Difference threshold 
+
+  Output the last value before the input changed by a 
+  threshold of diff 
+
+  Categories: Triggers
+  Rates: [ :ar, :kr ]
+  Default rate: :kr
+#+end_example
 
 *** AY Extra UGens
    ay
