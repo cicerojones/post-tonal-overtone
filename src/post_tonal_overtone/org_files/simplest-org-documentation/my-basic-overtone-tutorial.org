@@ -745,8 +745,27 @@ A basic reverb player
   (slow-grain-reverb)
 #+END_SRC
 
-** after a bit of work, a need for building "artist-specific" abstractions arises
-*** understanding workflow, tools, and idiomatic patterns for your domain.
+* Going Further with tutorials in this project
+
+after a bit of work, a need for building "artist-specific"
+abstractions arises, to say nothing of a deeper understanding of both
+fundamentals that you take for granted and some nice patterns, styles
+and workflows that tend to emerge after extended usage.
+
+** Using and Augmenting Official Documentation for Overtone (and Clojure)
+*** -rw-r--r--  1 b  staff    1293 Dec 30 14:03 README.org
+*** -rw-r--r--  1 b  staff   28049 Feb  1 20:25 overtone-cheatsheet.org
+*** -rw-r--r--  1 b  staff  232853 Feb 15 19:40 overtone-cheatsheet-in-one-org-subtree.org
+*** -rw-r--r--  1 b  staff   10566 Feb 15 20:19 my-documented-overtone-cheatsheet.org
+*** -rw-r--r--  1 b  staff    6046 Feb 14 21:33 simple-clojure-notes.org
+** Exploring Electronic Music Basics and Techniques
+*** -rw-r--r--  1 b  staff     820 Feb  7 10:39 electronic-music-basics.org
+*** -rw-r--r--  1 b  staff   11014 Feb 15 09:04 granular-synth-focused.org
+** Literate Programming-style Overtone walk throughs
+*** -rw-r--r--  1 b  staff   23437 Feb 15 20:21 my-basic-overtone-tutorial.org
+*** -rw-r--r--  1 b  staff   37958 Feb 15 20:13 more-advanced-overtone-exploring.org
+*** -rw-r--r--  1 b  staff   35464 Feb 14 14:27 resonate2013-tutorials.org
+** understanding workflow, tools, and idiomatic patterns for your domain.
 
 Numbers and programming constructs are used to represent more than
 just the values that translate computer memory to sound.

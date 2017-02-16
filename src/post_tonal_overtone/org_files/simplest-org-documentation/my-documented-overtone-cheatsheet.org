@@ -1,5 +1,10 @@
 * Orzo Tours o' UGens (doc and examples)
 ** lf-cub
+#+BEGIN_SRC clojure :results silent
+;; loud and unpleasant!
+(demo (* 0.1 (lf-pulse:ar 800 0)))
+#+END_SRC
+
 #+begin_example
 -------------------------
 overtone.core/lf-cub
@@ -20,10 +25,6 @@ overtone.core/lf-cub
   Default rate: :ar
 #+end_example
 
-#+BEGIN_SRC clojure :results silent
-;; loud and unpleasant!
-(demo (* 0.1 (lf-pulse:ar 800 0)))
-#+END_SRC
 ** lf-noise0, lf-noise1 etc
 *** lf-noise0
 #+BEGIN_SRC clojure :results output
@@ -352,34 +353,34 @@ Ring3
 (run (poll:kr (impulse:kr 10) (+ 0 (sin-osc:kr))))
 #+END_SRC
 
-* use =run= with poll
+** use =run= with poll
+Should print out to repl
 #+BEGIN_SRC clojure :results output
 (run (poll:kr (impulse:kr 5) (+ 0 (sin-osc:kr))))
 #+END_SRC
 
 #+RESULTS:
 
-* or scope!
+** prefer =scope= to =run= for waveforms
 Not automatically loaded with .live
 #+BEGIN_SRC clojure
 (use 'overtone.studio.scope)
 #+END_SRC
 
-* notes
-** scope
+*** scope
 
   "Throws an exception if the server isn't internal - scope relies on
   fast access to shared buffers with the server which is currently only
   available with the internal server. Also ensures server is
   connected."
-* [#A] Tour of UGen examples translated
+** [#A] Tour of UGen examples translated
 :PROPERTIES:
 :ID:       5D5E462C-92EE-4896-82A5-E0B6DE501BEF
 :END:
 
-** LF (Low Frequency UGens)
+*** LF (Low Frequency UGens)
 
-*** Low Frequency UGens as one-liners
+**** Low Frequency UGens as one-liners
 :PROPERTIES:
 :ID:       E8F1B9F7-E3AC-4784-9784-691D2C3C23FE
 :END:
@@ -428,8 +429,20 @@ Not automatically loaded with .live
 #+BEGIN_SRC clojure :results silent
 (demo 10 (lf-pulse:ar (+ 800 (* 400 (lf-pulse:kr (+ 10 (* 8 (lf-pulse:kr 0.2 0)))))) 0))
 #+END_SRC
-* ideas for UGen exploration abstraction
-** default atoms
+
+* Misc. Notes on project of developing your own "grimoire" incrementally
+** name space (if gets messed up looking at .clj files
+#+BEGIN_SRC clojure
+(in-ns 'user)
+#+END_SRC
+
+#+RESULTS:
+: #namespace[user]
+** UGens Category Broswer from Supercollider Tutorial
+*** UGens
+*** for examples, see: [[id:03FDC781-8605-442B-AF5C-1AA04BAF2306][title:: Tour of UGens]] 
+** ideas for UGen exploration abstraction
+*** default atoms
 Most of the examples in the Tour of UGens involve at most a handful or
 so of basic arguments
 
@@ -488,14 +501,3 @@ so of basic arguments
 - reset
 - div
 - start
-
-* UGens Category Broswer from Supercollider Tutorial
-** UGens
-** for examples, see: [[id:03FDC781-8605-442B-AF5C-1AA04BAF2306][title:: Tour of UGens]] 
-* name space (if gets messed up looking at .clj files
-#+BEGIN_SRC clojure
-(in-ns 'user)
-#+END_SRC
-
-#+RESULTS:
-: #namespace[user]

@@ -1,7 +1,3 @@
-* examples MIDI event messages
-** note-on
-** note-off
-** pads
 * Building up more sophisticated Controller abstractions
 :PROPERTIES:
 :ID:       62D39834-5A93-49BB-80CD-6475FD7C1D6D
@@ -507,6 +503,8 @@ add yancey versions on channel 2
 : #<synth: test-pan2>#<synth-node[loading]: user/test-pan2 94>
 
 * Exploring Overtone examples directory
+See all-examples.org
+[[file:~/Github-repos/post-tonal-overtone/src/post_tonal_overtone/org_files/source-examples-in-org/all-examples.org][file:~/Github-repos/post-tonal-overtone/src/post_tonal_overtone/org_files/source-examples-in-org/all-examples.org]]
 ** "Space Organ" example
 Taken from:
 [[file:~/Github-repos/overtone-source/src/overtone/examples/workshops/resonate2013/ex05_synthesis.clj][file:~/Github-repos/overtone-source/src/overtone/examples/workshops/resonate2013/ex05_synthesis.clj]]
@@ -541,6 +539,184 @@ Taken from:
 
 #+RESULTS:
 : nil
+** =Examples= function
+*** function
+#+BEGIN_SRC clojure :results output
+(examples)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+svf
+  :state-filter    (:ar) - Create a state variable 
+                           filter 
+
+sound-in
+  :mono-patch      (:ar) - World's most expensive 
+                           patchcord 
+  :stereo-patch    (:ar) - World's most expensive 
+                           stereo patchcord 
+
+impulse
+  :poll            (:kr) - Poll an impulse to view 
+                           its output 
+
+send-reply
+  :count           (:kr) - Send back an OSC 
+                           message containing a 
+                           rolling count 
+
+amplitude
+  :saw-vol         (:ar) - Use input amplitude to 
+                           control saw amplitude 
+  :sin-freq        (:ar) - Use input amplitude to 
+                           control saw frequency 
+
+dibrown
+  :rand-walk       (:ar) - Random whole number 
+                           walk through freqs with 
+                           rate determined by 
+                           mouse-x 
+
+membrane-hexagon
+  :mouse           (:kr) - Use mouse button, X and 
+                           Y locations to play a 
+                           drum. 
+
+vosim
+  :mouse1          (:ar) - Use mouse X location to 
+                           control the frequency 
+                           of the vosim. 
+  :mouse2          (:ar) - Use the mouse X & Y 
+                           location to modify some 
+                           random vosim noises. 
+
+membrane-circle
+  :mouse           (:kr) - Use mouse button, X and 
+                           Y locations to play a 
+                           drum. 
+
+dbrown
+  :rand-walk       (:ar) - Random floating point 
+                           number walk through 
+                           freqs with rate 
+                           determined by mouse-x 
+
+dyn-klang
+  :sin-osc         (:ar) - Use a sin-osc to change 
+                           3 running sine 
+                           oscillators 
+
+dwhite
+  :rand-seq        (:ar) - Play a random sequence 
+                           of floats mapped to 
+                           freqs with rate 
+                           determined by mouse-x 
+
+dyn-klank
+  :mouse           (:ar) - Use mouse to change 3 
+                           running frequency 
+                           resonators 
+
+compander
+  :noise-gate      (:ar) - Use compander to create 
+                           a noise gate 
+  :data            (:ar) - View data coming out of 
+                           a compander 
+
+diwhite
+  :rand-seq        (:ar) - Play a random sequence 
+                           of integers mapped to 
+                           freqs with rate 
+                           determined by mouse-x 
+
+b-moog
+  :compare-filters (:ar) - Compare low, high, and 
+                           bandpass 
+
+iir-filter
+  :low-pass        (:ar) - Create a low pass 
+                           filter 
+
+#+end_example
+*** org-mode list
+**** svf
+  :state-filter    (:ar) - Create a state variable 
+                           filter 
+**** sound-in
+  :mono-patch      (:ar) - World's most expensive 
+                           patchcord 
+  :stereo-patch    (:ar) - World's most expensive 
+                           stereo patchcord 
+**** impulse
+  :poll            (:kr) - Poll an impulse to view 
+                           its output 
+**** send-reply
+  :count           (:kr) - Send back an OSC 
+                           message containing a 
+                           rolling count 
+**** amplitude
+  :saw-vol         (:ar) - Use input amplitude to 
+                           control saw amplitude 
+  :sin-freq        (:ar) - Use input amplitude to 
+                           control saw frequency 
+**** dibrown
+  :rand-walk       (:ar) - Random whole number 
+                           walk through freqs with 
+                           rate determined by 
+                           mouse-x 
+**** membrane-hexagon
+  :mouse           (:kr) - Use mouse button, X and 
+                           Y locations to play a 
+                           drum. 
+**** vosim
+  :mouse1          (:ar) - Use mouse X location to 
+                           control the frequency 
+                           of the vosim. 
+  :mouse2          (:ar) - Use the mouse X & Y 
+                           location to modify some 
+                           random vosim noises. 
+**** membrane-circle
+  :mouse           (:kr) - Use mouse button, X and 
+                           Y locations to play a 
+                           drum. 
+**** dbrown
+  :rand-walk       (:ar) - Random floating point 
+                           number walk through 
+                           freqs with rate 
+                           determined by mouse-x 
+**** dyn-klang
+  :sin-osc         (:ar) - Use a sin-osc to change 
+                           3 running sine 
+                           oscillators 
+**** dwhite
+  :rand-seq        (:ar) - Play a random sequence 
+                           of floats mapped to 
+                           freqs with rate 
+                           determined by mouse-x 
+**** dyn-klank
+  :mouse           (:ar) - Use mouse to change 3 
+                           running frequency 
+                           resonators 
+**** compander
+  :noise-gate      (:ar) - Use compander to create 
+                           a noise gate 
+  :data            (:ar) - View data coming out of 
+                           a compander 
+**** diwhite
+  :rand-seq        (:ar) - Play a random sequence 
+                           of integers mapped to 
+                           freqs with rate 
+                           determined by mouse-x 
+**** b-moog
+  :compare-filters (:ar) - Compare low, high, and 
+                           bandpass 
+**** iir-filter
+  :low-pass        (:ar) - Create a low pass 
+                           filter 
+
+#+end_example
+
 * Use Macros to wrap over commonly used overtone idioms
 ** simple example over =demo=
 Note that this works, but if we try to pass a "duration" argument to
@@ -596,7 +772,9 @@ However, using a macro...
 : #'user/my-ugen-demo
 
 See examples of usage below
-* the four waveforms (a la Nonesuch Guide to Electronic Music)
+
+* basic Overtone ugens and examples
+** the four waveforms (a la Nonesuch Guide to Electronic Music)
 Uses my-ugen-demo as defined above:
 [[id:EB78186B-636E-40F4-A2B3-E38FC312DD3F][pass in ugens to demo]]
 
@@ -641,7 +819,7 @@ Uses my-ugen-demo as defined above:
 #+BEGIN_SRC clojure :results silent
 (my-ugen-demo 0.1 blip)
 #+END_SRC
-* pass interesting frequencies to examples
+** pass interesting frequencies to examples
 #+BEGIN_SRC clojure :results silent
 (demo 4 (sin-osc (+ 440 (* (sin-osc:kr 1) 100))))
 #+END_SRC
@@ -681,8 +859,8 @@ Uses my-ugen-demo as defined above:
 (demo 10 (sin-osc (+ 350 (* (* 100 (lf-brown-noise0:kr 5)) (lf-clip-noise 4)))))
 #+END_SRC
 
-* figure out how to pass interesting frequencies to examples
-** use simple waveforms
+** figure out how to pass interesting frequencies to examples
+*** use simple waveforms
 #+BEGIN_SRC clojure :results silent
 (demo 4 (sin-osc (+ 440 (* (sin-osc:kr 1) 100))))
 #+END_SRC
@@ -699,7 +877,7 @@ Uses my-ugen-demo as defined above:
 (demo 4 (sin-osc (+ 440 (* (lf-tri:kr 1) 100))))
 #+END_SRC
 
-** use randomness
+*** use randomness
 #+BEGIN_SRC clojure :results silent
 (demo 4 (sin-osc (+ (weighted-choose [10 400] [0.1 0.9])  (* (weighted-choose [10 400] [0.1 0.9]) (pink-noise)))))
 #+END_SRC
@@ -1087,5 +1265,3 @@ Uses my-ugen-demo as defined above:
 #+BEGIN_SRC clojure
 (def durnumerator-ref (atom 8))
 #+END_SRC
-* counter atom for non-ugen lines
-** experiment with sleeping
