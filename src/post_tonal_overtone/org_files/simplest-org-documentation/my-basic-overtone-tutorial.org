@@ -529,6 +529,7 @@ Must be playing the anoise!
 #+END_SRC
 
 ** can you control more than one parameter with your controller?
+
 *** use a 'cond' to match the cc-channel number (which comes in as a "note")
 Make sure an-fnoise is playing!
 #+BEGIN_SRC clojure :results silent

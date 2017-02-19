@@ -1982,7 +1982,7 @@ overtone.live/remove-event-handler
 : ([])
 :   Return a set of all the keys of most recently seen events.
 
-*** Ugen Triggers
+*** [#A] Ugen Triggers
 
 **** trig-id
 #+BEGIN_SRC clojure :results output
@@ -5784,10 +5784,10 @@ overtone.live/klang
 
   specs      - An array of three arrays 
                frequencies, amplitudes and phases: 
-               1) an array of filter frequencies, 
-               2) an Array of filter amplitudes, 
+               (1) an array of filter frequencies, 
+               (2) an Array of filter amplitudes, 
                or nil. If nil, then amplitudes 
-               default to 1.0, 3) an Array of 
+               default to 1.0, (3) an Array of 
                initial phases, or nil. If nil, 
                then phases default to 0.0. 
   freqscale  - A scale factor multiplied by all 
@@ -5822,10 +5822,10 @@ overtone.live/klank
   specs      - An array of three arrays: 
                frequencies, amplitudes and ring 
                times: *all arrays should have the 
-               same length* 1) an Array of filter 
-               frequencies. 2) an Array of filter 
+               same length* (1) an Array of filter 
+               frequencies. (2) an Array of filter 
                amplitudes, or nil. If nil, then 
-               amplitudes default to 1.0 3) an 
+               amplitudes default to 1.0 (3) an 
                Array of 60 dB decay times for the 
                filters. 
   input      - The excitation input to the 
