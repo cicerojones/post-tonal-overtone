@@ -188,7 +188,7 @@ button to report back a channel and a "velocity"
 #+BEGIN_SRC clojure :results silent
 (remove-event-handler ::cc-state)
 #+END_SRC
-** receive and respond to channel change messages
+** [#A] receive and respond to channel change messages
 Print out
 
 #+BEGIN_SRC clojure :results silent
@@ -1133,8 +1133,12 @@ Uses my-ugen-demo as defined above:
 (play-rand7 0.8 60)
 #+END_SRC
 
-#+RESULTS:
+!!!
 : #<synth-node[loading]: user/audition-synth 666>
+
+
+#+RESULTS:
+
 
 * scaling 0-127 MIDI notes
 

@@ -1,4 +1,4 @@
-* Overtone Cheat Sheet 0.9.1 in one subtree
+* OVERTONE Cheat Sheet 0.9.1 in one subtree
 ** Instruments (need to be manually referred)                         :inst:
 *** overtone.inst.drum
 **** Drums
@@ -327,7 +327,7 @@ overtone.synth.sts/prophet
    its frequency component for that extra bit of variety.
 #+end_example
 
-** REPL helpers (OUTDATED)                                             :repl:
+** [#B] REPL helpers (OUTDATED)                                        :repl:
 *** Outdated paths
 **** Documentation
 ***** odoc
@@ -603,7 +603,18 @@ at
 ***** Stopping 
 stop-player kill-player
 ***** Feedback 
-show-schedule
+****** 
+****** show-schedule
+#+BEGIN_SRC clojure :results output
+(doc show-schedule)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: overtone.live/show-schedule
+: ([])
+:   Print the schedule of currently running audio players.
+
 *** Metronome
 **** Create 
 *****  metronome
@@ -715,7 +726,6 @@ overtone.live/metronome
 :   Get the current beats per bar or change it to new-bpb
 
 *** bps 
-
 **** beat-ms
 #+BEGIN_SRC clojure :results output
 (doc beat-ms)
@@ -1317,7 +1327,6 @@ overtone.live/recording-start
 ** Synth Design                                                  :syndesign:
 
 *** Design
-
 **** definst
 #+BEGIN_SRC clojure :results output
 (doc definst)
@@ -1600,7 +1609,7 @@ overtone.live/synth-arg-index
    (synth-arg-index foo :baz) #=> nil
 #+end_example
 
-** Synth Control                                                :syncontrol:
+** [#B] Synth Control                                            :syncontrol:
 *** Live Control 
 **** ctl 
 #+BEGIN_SRC clojure :results output
@@ -1616,7 +1625,7 @@ overtone.live/synth-arg-index
 :   messages will be sent to all nodes.  i.e.
 :   (ctl 34 :freq 440 :amp 0.2)
 :   (ctl [34 37] :freq 440 :amp 0.2)
-**** kill
+**** [#B] kill
 #+BEGIN_SRC clojure :results output
 (doc kill)
 #+END_SRC
@@ -1636,8 +1645,7 @@ overtone.live/kill
 
 #+end_example
 
-*** Node Liveness
-
+*** [#C] Node Liveness
 **** inactive-node-modification-error
 #+BEGIN_SRC clojure :results output
 (doc inactive-node-modification-error)
@@ -1729,7 +1737,7 @@ overtone.live/kill
 :    within the specified block. Options are: :exception, :warning
 :    and :silent
 
-** Event Handling                                                   :events:
+** [#B] Event Handling                                               :events:
 *** Add
 **** on-event
 #+BEGIN_SRC clojure :results output
@@ -2084,7 +2092,7 @@ overtone.live/on-sync-trigger
    Trigger handler can be removed with remove-event-handler.
 #+end_example
 
-** Nodes & Groups                                           :nodes:groups:
+** [#A] Nodes & Groups                                       :nodes:groups:
 *** Create & Free 
 **** node
 #+BEGIN_SRC clojure :results output
@@ -2324,7 +2332,7 @@ overtone.live/group
 : ([n])
 :   Returns true if n is an active synth node.
 
-**** node-tree
+**** [#A] node-tree
 #+BEGIN_SRC clojure :results output
 (doc node-tree)
 #+END_SRC
@@ -2336,7 +2344,7 @@ overtone.live/group
 :   Returns a data representation of the synth node tree starting at
 :   the root group.
 
-**** pp-node-tree 
+**** [#A] pp-node-tree 
 #+BEGIN_SRC clojure :results output
 (doc pp-node-tree )
 #+END_SRC
@@ -2593,53 +2601,52 @@ overtone.live/foundation-safe-post-default-group
 :    is destroyed. Returns on-started handler key.
 
 *** Event Keys
+**** node-destroyed-event-key
+ #+BEGIN_SRC clojure :results output
+ (doc node-destroyed-event-key)
+ #+END_SRC
 
-*** node-destroyed-event-key
-#+BEGIN_SRC clojure :results output
-(doc node-destroyed-event-key)
-#+END_SRC
+ #+RESULTS:
+ : -------------------------
+ : overtone.live/node-destroyed-event-key
+ : ([node])
+ :   Returns the key used for node destroyed events
 
-#+RESULTS:
-: -------------------------
-: overtone.live/node-destroyed-event-key
-: ([node])
-:   Returns the key used for node destroyed events
+**** node-created-event-key
+ #+BEGIN_SRC clojure :results output
+ (doc node-created-event-key)
+ #+END_SRC
 
-*** node-created-event-key
-#+BEGIN_SRC clojure :results output
-(doc node-created-event-key)
-#+END_SRC
+ #+RESULTS:
+ : -------------------------
+ : overtone.live/node-created-event-key
+ : ([node])
+ :   Returns the key used for node created events
 
-#+RESULTS:
-: -------------------------
-: overtone.live/node-created-event-key
-: ([node])
-:   Returns the key used for node created events
+**** node-paused-event-key
+ #+BEGIN_SRC clojure :results output
+ (doc node-paused-event-key)
+ #+END_SRC
 
-*** node-paused-event-key
-#+BEGIN_SRC clojure :results output
-(doc node-paused-event-key)
-#+END_SRC
+ #+RESULTS:
+ : -------------------------
+ : overtone.live/node-paused-event-key
+ : ([node])
+ :   Returns the key used for node paused events
 
-#+RESULTS:
-: -------------------------
-: overtone.live/node-paused-event-key
-: ([node])
-:   Returns the key used for node paused events
+**** node-started-event-key
+ #+BEGIN_SRC clojure :results output
+ (doc node-started-event-key)
+ #+END_SRC
 
-*** node-started-event-key
-#+BEGIN_SRC clojure :results output
-(doc node-started-event-key)
-#+END_SRC
+ #+RESULTS:
+ : -------------------------
+ : overtone.live/node-started-event-key
+ : ([node])
+ :   Returns the key used for node started events
 
-#+RESULTS:
-: -------------------------
-: overtone.live/node-started-event-key
-: ([node])
-:   Returns the key used for node started events
-
-** Server                                                           :server:
-*** Startup
+** [#A] Server                                                       :server:
+*** [#B] Startup
 **** boot-server
 #+BEGIN_SRC clojure :results output
 (doc boot-server)
@@ -2697,7 +2704,7 @@ overtone.live/foundation-safe-post-default-group
 : ([])
 :   Shutdown the running server
 
-*** Control
+*** [#B] Control
 **** stop
 #+BEGIN_SRC clojure :results output
 (doc stop)
@@ -2752,7 +2759,7 @@ overtone.live/foundation-safe-post-default-group
 :   have defined, rather it just stops any of them that are currently
 :   playing. Subgroups are cleared out and removed.
 
-*** OSC Communication
+*** [#A] OSC Communication
 **** snd
 #+BEGIN_SRC clojure :results output
 (doc snd)
@@ -2854,7 +2861,7 @@ Macro
 : Macro
 :   nil
 
-*** Diagnostic
+*** [#A] Diagnostic
 **** server-status
 #+BEGIN_SRC clojure :results output
 (doc server-status)
@@ -3038,7 +3045,7 @@ overtone.live/server-info
 : ([])
 :   Throws an exception if the server isn't currently connected
 
-*** Debug
+*** [#A] Debug
 **** sc-osc-log-on
 #+BEGIN_SRC clojure :results output
 (doc sc-osc-log-on)
@@ -3172,7 +3179,7 @@ asset-bundle-dir
  freesound-searchm
  freesound-search-paths
 
-** Algorithmic Composition                                            :algo:
+** [#A] Algorithmic Composition                                        :algo:
 *** Chance
 **** Choice
 ***** choose
@@ -3247,53 +3254,52 @@ overtone.live/weighted-choose
 
 *** Scaling
 **** Range
-**** scale-range
-#+BEGIN_SRC clojure :results output
-(doc scale-range)
-#+END_SRC
+***** scale-range
+ #+BEGIN_SRC clojure :results output
+ (doc scale-range)
+ #+END_SRC
 
-#+RESULTS:
-#+begin_example
--------------------------
-overtone.live/scale-range
-([x in-min in-max out-min out-max])
-  Scales a given input value within the specified input range to a
-  corresponding value in the specified output range using the formula:
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/scale-range
+ ([x in-min in-max out-min out-max])
+   Scales a given input value within the specified input range to a
+   corresponding value in the specified output range using the formula:
 
-           (out-max - out-min) (x - in-min)
-   f (x) = --------------------------------  + out-min
-                    in-max - in-min
+            (out-max - out-min) (x - in-min)
+    f (x) = --------------------------------  + out-min
+                     in-max - in-min
 
 
-#+end_example
+ #+end_example
 
 **** Rounding
+***** closest-to
+ #+BEGIN_SRC clojure :results output
+ (doc closest-to)
+ #+END_SRC
 
-**** closest-to
-#+BEGIN_SRC clojure :results output
-(doc closest-to)
-#+END_SRC
+ #+RESULTS:
+ : -------------------------
+ : overtone.live/closest-to
+ : ([n low hi])
+ :   Returns either low or hi depending on which is numerically closer
+ :   to n.
+ :   (closest-to 4.7 4 6) ;=> 4 (4.7 is closer to 4 than 6)
 
-#+RESULTS:
-: -------------------------
-: overtone.live/closest-to
-: ([n low hi])
-:   Returns either low or hi depending on which is numerically closer
-:   to n.
-:   (closest-to 4.7 4 6) ;=> 4 (4.7 is closer to 4 than 6)
+***** round-to
+ #+BEGIN_SRC clojure :results output
+ (doc round-to)
+ #+END_SRC
 
-**** round-to
-#+BEGIN_SRC clojure :results output
-(doc round-to)
-#+END_SRC
-
-#+RESULTS:
-: -------------------------
-: overtone.live/round-to
-: ([n div])
-:   Rounds n to the nearest multiple of div
-:   (round-to 4.7 1) ;=> 5
-:   (round-to 4.7 2) ;=> 4 (4.7 is closer to 4 than 6)
+ #+RESULTS:
+ : -------------------------
+ : overtone.live/round-to
+ : ([n div])
+ :   Rounds n to the nearest multiple of div
+ :   (round-to 4.7 1) ;=> 5
+ :   (round-to 4.7 2) ;=> 4 (4.7 is closer to 4 than 6)
 
 *** Trig
 **** Scaled
@@ -3479,8 +3485,8 @@ scale resolve-scale scale-field
 **** Amplitude
  db->amp
 
-** Sound Data
-*** Buffers                                                       :buffers:
+** [#B] Sound Data
+*** [#B] Buffers                                                    :buffers:
 **** Create & Free
 ***** buffer
 #+BEGIN_SRC clojure :results output
@@ -3528,32 +3534,32 @@ overtone.live/buffer-alloc-read
 **** Generate Buffer Data
 data->wavetable
 
-**** create-buffer-data
-#+BEGIN_SRC clojure :results output
-(doc create-buffer-data)
-#+END_SRC
+***** create-buffer-data
+ #+BEGIN_SRC clojure :results output
+ (doc create-buffer-data)
+ #+END_SRC
 
-#+RESULTS:
-#+begin_example
--------------------------
-overtone.live/create-buffer-data
-([size f range-min range-max])
-  Create a sequence of floats for use as a buffer.  Result will contain
-   values obtained by calling f with values linearly interpolated
-   between range-min (inclusive) and range-max (exclusive).  For most
-   purposes size must be a power of 2.
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/create-buffer-data
+ ([size f range-min range-max])
+   Create a sequence of floats for use as a buffer.  Result will contain
+    values obtained by calling f with values linearly interpolated
+    between range-min (inclusive) and range-max (exclusive).  For most
+    purposes size must be a power of 2.
 
-   Examples:
+    Examples:
 
-   Just a line from -1 to 1:
-    (create-buffer-data 32 identity -1 1)
+    Just a line from -1 to 1:
+     (create-buffer-data 32 identity -1 1)
 
-   Sine-wave for (osc) ugen:
-    (create-buffer-data 512 #(Math/sin %) 0 TWO-PI)
+    Sine-wave for (osc) ugen:
+     (create-buffer-data 512 #(Math/sin %) 0 TWO-PI)
 
-   Chebyshev polynomial for wave-shaping:
-    (create-buffer-data 1024 #(- (* 2 % %) 1) -1 1)
-#+end_example
+    Chebyshev polynomial for wave-shaping:
+     (create-buffer-data 1024 #(- (* 2 % %) 1) -1 1)
+ #+end_example
 
 **** Read & Write To Server
  buffer-read buffer-write!
@@ -3641,7 +3647,7 @@ overtone.live/buffer-info
 : ([bc])
 :   nil
 
-**** Info
+**** [#A] Info
 ***** buffer-info
 #+BEGIN_SRC clojure :results output
 (doc buffer-info)
@@ -3691,9 +3697,9 @@ overtone.live/buffer-info
 : ([b])
 :   Return the id of buffer b. Simply punts out to to-sc-id
 
-*** Samples
+*** [#B] Samples
 **** Create
-***** load-sample
+***** [#A] load-sample
 #+BEGIN_SRC clojure :results output
 (doc load-sample)
 #+END_SRC
@@ -3719,7 +3725,7 @@ overtone.live/load-sample
   of the sample will be removed and the sample will be forcibly
   reloaded.
 #+end_example
-***** load-samples
+***** [#B] load-samples
 #+BEGIN_SRC clojure :results output
 (doc load-samples)
 #+END_SRC
@@ -3732,7 +3738,7 @@ overtone.live/load-sample
 :    and loads up all matching samples and returns a seq of maps
 :    representing information for each loaded sample (see
 :    load-sample). Samples should be in .aiff or .wav format.
-***** sample
+***** [#C] sample
 #+BEGIN_SRC clojure :results output
 (doc sample)
 #+END_SRC
@@ -3783,7 +3789,7 @@ overtone.live/sample
 
 #+RESULTS:
 
-*** Busses
+*** [#A] Busses
 **** Create & Free
 ***** control-bus
 #+BEGIN_SRC clojure :results output
@@ -3829,8 +3835,6 @@ overtone.live/audio-bus
 :   Free this control or audio bus - enabling the resource to be re-allocated
 
 **** Modify & Read
-
-***** 
 
 ***** control-bus-set! 
 #+BEGIN_SRC clojure :results output
@@ -4081,9 +4085,6 @@ overtone.live/sound-in
 #+end_example
 
 *** Buffer Playback
-
-**** 
-
 **** scaled-play-buf
 #+BEGIN_SRC clojure :results output
 (doc scaled-play-buf)
@@ -4165,7 +4166,7 @@ overtone.live/hold
   Default rate: :ar
 #+end_example
 
-*** Oscillators
+*** [#A] Oscillators
 
 **** pm-osc
 #+BEGIN_SRC clojure :results output
@@ -4224,9 +4225,9 @@ overtone.live/square
   Default rate: :ar
 #+end_example
 
-*** Mix
+*** [#B] Mix
 
-**** mix
+**** [#A] mix
 #+BEGIN_SRC clojure :results output
 (doc mix)
 #+END_SRC
@@ -4252,7 +4253,7 @@ overtone.live/mix
   Default rate: :ar
 #+end_example
 
-**** splay
+**** [#C] splay
 #+BEGIN_SRC clojure :results output
 (doc splay)
 #+END_SRC
@@ -4287,7 +4288,7 @@ overtone.live/splay
   Default rate: :ar
 #+end_example
 
-**** sum
+**** [#C] sum
 #+BEGIN_SRC clojure :results output
 (doc sum)
 #+END_SRC
@@ -4343,7 +4344,6 @@ overtone.live/add-cents
 #+end_example
 
 *** Tapping
-
 **** tap
 #+BEGIN_SRC clojure :results output
 (doc tap)
@@ -4374,9 +4374,9 @@ overtone.live/tap
   Default rate: :kr
 #+end_example
 
-*** Range
+*** [#B] Range
 
-**** range-lin
+**** [#B] range-lin
 #+BEGIN_SRC clojure :results output
 (doc range-lin)
 #+END_SRC
@@ -4404,9 +4404,9 @@ overtone.live/range-lin
   Default rate: :ar
 #+end_example
 
-** ugens                                                             :ugens:
+** [#A] ugens                                                         :ugens:
 *** UGen Helper Constants
-**** Done Actions 
+**** [#B] Done Actions 
 ***** NO-ACTION
 #+BEGIN_SRC clojure :results output
 (doc NO-ACTION)
@@ -4637,7 +4637,7 @@ POWER MAGSUM COMPLEX RCOMPLEX PHASE
 : overtone.live/INF
 :   Positive infinity - abbreviation for Float/POSITIVE_INFINITY
 
-*** UGen Envelope Helper Functions
+*** [#A] UGen Envelope Helper Functions
    env-perc env-triangle env-sine env-lin env-cutoff
    env-dadsr env-adsr env-asr
 
@@ -4649,20 +4649,835 @@ POWER MAGSUM COMPLEX RCOMPLEX PHASE
    distort softclip rect-window han-window wel-window
    tri-window
 
-*** Binary UGens
-   + - * / mod = not= < > <= >= min max and or xor
-   round round-up round-down atan2 hypot hypot-aprox
-   pow ring1 ring2 ring3 ring4 difsqr sumsqr sqrsum
-   sqrdif absdif thresh amclip scale-neg clip2 excess
-   fold2 wrap2
+*** [#B] Binary UGens
+**** + 
+#+BEGIN_SRC clojure :results output
+(doc + )
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: clojure.core/+
+: ([] [x] [x y] [x y & more])
+:   Returns the sum of nums. (+) returns 0. Does not auto-promote
+:   longs, will throw on overflow. See also: +'
+
+**** - 
+#+BEGIN_SRC clojure :results output
+(doc - )
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: clojure.core/-
+: ([x] [x y] [x y & more])
+:   If no ys are supplied, returns the negation of x, else subtracts
+:   the ys from x and returns the result. Does not auto-promote
+:   longs, will throw on overflow. See also: -'
+
+**** * 
+#+BEGIN_SRC clojure :results output
+(doc * )
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: clojure.core/*
+: ([] [x] [x y] [x y & more])
+:   Returns the product of nums. (*) returns 1. Does not auto-promote
+:   longs, will throw on overflow. See also: *'
+
+**** /
+#+BEGIN_SRC clojure :results output
+(doc /)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: clojure.core//
+: ([x] [x y] [x y & more])
+:   If no denominators are supplied, returns 1/numerator,
+:   else returns numerator divided by all of the denominators.
+
+**** mod
+#+BEGIN_SRC clojure :results output
+(doc mod)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: clojure.core/mod
+: ([num div])
+:   Modulus of num and div. Truncates toward negative infinity.
+
+**** =
+#+BEGIN_SRC clojure :results output
+(doc =)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: clojure.core/=
+: ([x] [x y] [x y & more])
+:   Equality. Returns true if x equals y, false if not. Same as
+:   Java x.equals(y) except it also works for nil, and compares
+:   numbers and collections in a type-independent manner.  Clojure's immutable data
+:   structures define equals() (and thus =) as a value, not an identity,
+:   comparison.
+
+**** not=
+#+BEGIN_SRC clojure :results output
+(doc not=)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: clojure.core/not=
+: ([x] [x y] [x y & more])
+:   Same as (not (= obj1 obj2))
+
+**** <
+#+BEGIN_SRC clojure :results output
+(doc <)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: clojure.core/<
+: ([x] [x y] [x y & more])
+:   Returns non-nil if nums are in monotonically increasing order,
+:   otherwise false.
+
+**** >
+#+BEGIN_SRC clojure :results output
+(doc >)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: clojure.core/>
+: ([x] [x y] [x y & more])
+:   Returns non-nil if nums are in monotonically decreasing order,
+:   otherwise false.
+
+**** <=
+#+BEGIN_SRC clojure :results output
+(doc <=)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: clojure.core/<=
+: ([x] [x y] [x y & more])
+:   Returns non-nil if nums are in monotonically non-decreasing order,
+:   otherwise false.
+
+**** >=
+#+BEGIN_SRC clojure :results output
+(doc >=)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: clojure.core/>=
+: ([x] [x y] [x y & more])
+:   Returns non-nil if nums are in monotonically non-increasing order,
+:   otherwise false.
+
+**** min
+#+BEGIN_SRC clojure :results output
+(doc min)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: clojure.core/min
+: ([x] [x y] [x y & more])
+:   Returns the least of the nums.
+
+**** max
+#+BEGIN_SRC clojure :results output
+(doc max)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: clojure.core/max
+: ([x] [x y] [x y & more])
+:   Returns the greatest of the nums.
+
+**** and
+#+BEGIN_SRC clojure :results output
+(doc and)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: clojure.core/and
+: ([] [x] [x & next])
+: Macro
+:   Evaluates exprs one at a time, from left to right. If a form
+:   returns logical false (nil or false), and returns that value and
+:   doesn't evaluate any of the other expressions, otherwise it returns
+:   the value of the last expr. (and) returns true.
+
+**** or
+#+BEGIN_SRC clojure :results output
+(doc or)
+#+END_SRC
+
+#+RESULTS:
+: -------------------------
+: clojure.core/or
+: ([] [x] [x & next])
+: Macro
+:   Evaluates exprs one at a time, from left to right. If a form
+:   returns a logical true value, or returns that value and doesn't
+:   evaluate any of the other expressions, otherwise it returns the
+:   value of the last expression. (or) returns nil.
+
+**** xor
+#+BEGIN_SRC clojure :results output
+(doc xor)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/xor
+([a b])
+  
+  Signal comparison - xor 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  Compares the two input signals a and b. If only one is 
+  greater than 0 outputs 1, otherwise outputs 0 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** round
+#+BEGIN_SRC clojure :results output
+(doc round)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/round
+([a b])
+  
+  Rounding - nearest multiple 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  Rounds a to the nearest (up or down) multiple of b.
+
+  i.e. (round 2 10) => 0, (round 5 10) => 10 and (round 21 
+  10) => 20 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** round-up
+#+BEGIN_SRC clojure :results output
+(doc round-up)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/round-up
+([a b])
+  
+  Rounding - next multiple 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  Rounds a up to the next multiple of b above a.
+
+  i.e. (round-up 2 10) => 10, (round-up 21 10) => 30, 
+  (round-up 0 10) => 0 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** round-down
+#+BEGIN_SRC clojure :results output
+(doc round-down)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/round-down
+([a b])
+  
+  Rounding - previous multiple 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  Rounds a down to the previous multiple of b below a. SC 
+  refers to this ugen as trunc.
+
+  i.e. (round-down 2 10) => 0, (round-down 20 10) => 20, 
+  (round-down 0 10) => 0 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** atan2
+#+BEGIN_SRC clojure :results output
+(doc atan2)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/atan2
+([a b])
+  
+  Arctangent of fraction 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  Returns the arctangent of a/b 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** hypot
+#+BEGIN_SRC clojure :results output
+(doc hypot)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/hypot
+([a b])
+  
+  Length of hypotenuse using Pythag 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  Returns the square root of the sum of the squares of a and 
+  b. Or equivalently, the distance from the origin to the 
+  point (x, y). 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** hypot-aprox
+#+BEGIN_SRC clojure :results output
+(doc hypot-aprox)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/hypot-aprox
+([a b])
+  
+  Approximation of hypotenuse length 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  Returns an approximation of the square root of the sum of 
+  the squares of x and y. The formula used is :
+
+  abs(x) + abs(y) - ((sqrt(2) - 1) * min(abs(x), abs(y)))
+
+  This should not be used for simulating a doppler shift 
+  because it is discontinuous. Use hypot. 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** pow
+#+BEGIN_SRC clojure :results output
+(doc pow)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/pow
+([a b])
+  
+  exponentiation 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  Returns a to the power of b
+
+  i.e. (pow 2 4) => 16, (pow 5 3) => 125 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** ring1
+#+BEGIN_SRC clojure :results output
+(doc ring1)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/ring1
+([a b])
+  
+  Ring modulation plus first source 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  Return the value of ((a*b) + a). This is more efficient 
+  than using separate unit generators for the multiply and 
+  add. 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** ring2
+#+BEGIN_SRC clojure :results output
+(doc ring2)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/ring2
+([a b])
+  
+  Ring modulation plus both sources 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  Return the value of ((a*b) + a + b). This is more 
+  efficient than using separate unit generators for the 
+  multiply and adds. 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** ring3
+#+BEGIN_SRC clojure :results output
+(doc ring3)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/ring3
+([a b])
+  
+  Ring modulation variant 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  Return the value of (a * a * b). This is more efficient 
+  than using separate unit generators for each multiply. 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** ring4
+#+BEGIN_SRC clojure :results output
+(doc ring4)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/ring4
+([a b])
+  
+  Ring modulation variant 2 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  Return the value of ((a * a * b) - (a * b * b)). This is 
+  more efficient than using separate unit generators for 
+  each operation. 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** difsqr
+#+BEGIN_SRC clojure :results output
+(doc difsqr)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/difsqr
+([a b])
+  
+  Difference of squares 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  Return the value of (a*a) - (b*b). This is more efficient 
+  than using separate unit generators for each operation. 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** sumsqr
+#+BEGIN_SRC clojure :results output
+(doc sumsqr)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/sumsqr
+([a b])
+  
+  Sum of squares 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  Return the value of (a*a) + (b*b). This is more efficient 
+  than using separate unit generators for each operation. 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** sqrsum
+#+BEGIN_SRC clojure :results output
+(doc sqrsum)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/sqrsum
+([a b])
+  
+  Square of the sum 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  Return the value of (a + b)^2. This is more efficient than 
+  using separate unit generators for each operation. 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** sqrdif
+#+BEGIN_SRC clojure :results output
+(doc sqrdif)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/sqrdif
+([a b])
+  
+  Square of the difference 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  Return the value of (a - b)**2. This is more efficient 
+  than using separate unit generators for each operation. 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** absdif
+#+BEGIN_SRC clojure :results output
+(doc absdif)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/absdif
+([a b])
+  
+  Absolute value of the difference 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  Return the value of abs(a - b). Finding the magnitude of 
+  the difference of two values is a common operation. 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** thresh
+#+BEGIN_SRC clojure :results output
+(doc thresh)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/thresh
+([a b])
+  
+  Signal thresholding 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  0 when a < b, otherwise a. 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** amclip
+#+BEGIN_SRC clojure :results output
+(doc amclip)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/amclip
+([a b])
+  
+  Two quadrant multiply 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  0 when b <= 0, a*b when b > 0 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** scale-neg
+#+BEGIN_SRC clojure :results output
+(doc scale-neg)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/scale-neg
+([a b])
+  
+  Scale negative part of input wave 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  A*b when a < 0, otherwise a. 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** clip2
+#+BEGIN_SRC clojure :results output
+(doc clip2)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/clip2
+([input clip-val])
+  
+  Bilateral clipping 
+
+  [input :none, clip-val :none]
+
+  input    - Input signal 
+  clip-val - Max/min val of input signal before 
+             clipping is applied 
+
+  Clips input wave to +/- clip-val 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** excess
+#+BEGIN_SRC clojure :results output
+(doc excess)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/excess
+([a b])
+  
+  Clipping residual 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  Returns the difference of the original signal and its 
+  clipped form: (a - clip2(a,b)). 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** fold2
+#+BEGIN_SRC clojure :results output
+(doc fold2)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/fold2
+([a b])
+  
+  Bilateral folding 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  Folds input wave a to +/- b 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** wrap2
+#+BEGIN_SRC clojure :results output
+(doc wrap2)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/wrap2
+([a b])
+  
+  Bilateral wrapping 
+
+  [a :none, b :none]
+
+  a - First input 
+  b - Second input 
+
+  Wraps input wave to +/- b 
+
+  Categories: Binary Operations
+  Rates: [ :ir, :dr, :ar, :kr ]
+  Default rate: :auto
+#+end_example
 
 *** B Equalization Suit UGens
    b-low-pass b-hi-pass b-all-pass b-band-pass
    b-band-stop b-peak-eq b-low-shelf b-hi-shelf
 
-*** Buffer IO UGens                                             :buffer:io:
+*** [#A] Buffer IO UGens                                          :buffer:io:
 
-**** play-buf
+**** [#A] play-buf
 #+BEGIN_SRC clojure :results output
 (doc play-buf)
 #+END_SRC
@@ -5026,7 +5841,7 @@ overtone.live/clear-buf
 *** Compander
    amplitude compander normalizer limiter
 
-*** Delay UGens
+*** [#B] Delay UGens
 
 **** delay1
 #+BEGIN_SRC clojure :results output
@@ -5594,7 +6409,7 @@ overtone.live/buf-allpass-c
    dbufrd dbufwr dseq dser dshuf drand dxrand dswitch1
    dswitch dwhite dbrown dibrown dstutter donce dpoll
 
-*** Envelope Ugens
+*** [#B] Envelope Ugens
 
 **** done
 done
@@ -5616,7 +6431,7 @@ pause
 
 **** free
 free
-**** env-gen
+**** [#A] env-gen
  #+BEGIN_SRC clojure :results output 
 (doc env-gen)
  #+END_SRC
@@ -5678,7 +6493,7 @@ free
    Default rate: :kr
 #+end_example
 
-**** linen
+**** [#B] linen
  #+BEGIN_SRC clojure :results output 
 (doc linen)
  #+END_SRC
@@ -5736,7 +6551,7 @@ free
    Default rate: :ar
 #+end_example
 
-*** Fixed Frequency Oscillator UGens
+*** [#A] Fixed Frequency Oscillator UGens
 **** f-sin-osc
 #+BEGIN_SRC clojure :results output
 (doc f-sin-osc)
@@ -5769,7 +6584,7 @@ overtone.live/f-sin-osc
   Rates: [ :ar, :kr ]
   Default rate: :ar
 #+end_example
-**** klang
+**** [#B] klang
 #+BEGIN_SRC clojure :results output
 (doc klang)
 #+END_SRC
@@ -5887,7 +6702,7 @@ overtone.live/blip
   Rates: [ :ar ]
   Default rate: :ar
 #+end_example
-**** saw
+**** [#A] saw
 #+BEGIN_SRC clojure :results output
 (doc saw)
 #+END_SRC
@@ -5916,7 +6731,7 @@ overtone.live/saw
   Rates: [ :ar ]
   Default rate: :ar
 #+end_example
-**** pulse
+**** [#A] pulse
 #+BEGIN_SRC clojure :results output
 (doc pulse)
 #+END_SRC
@@ -5992,17 +6807,1025 @@ overtone.live/p-sin-grain
    convolution2-l stereo-convolution2-l convolution3
    pv-jenson-andersen pv-hainsworth-foote running-sum
 
-*** Filter UGens
-   resonz one-pole one-zero two-pole two-zero apf
-   integrator decay decay2 lag lag2 lag3 ramp lag-ud
-   lag2-ud lag3-ud leak-dc rlpf rhpf hpf bpf brf
-   mid-eq lpz1 lpz2 hpz1 hpz2 slope bpz2 median slew
-   sos ringz formlet detect-silence
+*** [#A] Filter UGens
+**** resonz
+ #+BEGIN_SRC clojure :results output
+ (doc resonz)
+ #+END_SRC
 
-*** Grain UGens
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/resonz
+ ([in freq bwr])
+  
+   [in 0.0, freq 440.0, bwr 1.0]
+
+   in   - Input signal to be processed 
+   freq - Resonant frequency in Hertz 
+   bwr  - Bandwidth ratio (reciprocal of Q). rq = 
+          bandwidth / centerFreq 
+
+   A Note on Constant-Gain Digital Resonators," Computer 
+   Music Journal, vol 18, no. 4, pp. 8-10, Winter 1994." 
+   Computer Music Journal, vol 18, no. 4, pp. 8-10, Winter 
+   1994. 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** one-pole
+ #+BEGIN_SRC clojure :results output
+ (doc one-pole)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/one-pole
+ ([in coef])
+  
+   [in 0.0, coef 0.5]
+
+   in   - Input signal to be processed 
+   coef - Feedback coefficient. Should be between 
+          -1 and +1 
+
+   A one pole filter. Implements the formula:
+
+   out(i) = ((1 - abs(coef)) * in(i)) + (coef * out(i-1)) 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** one-zero
+ #+BEGIN_SRC clojure :results output
+ (doc one-zero)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/one-zero
+ ([in coef])
+  
+   [in 0.0, coef 0.5]
+
+   in   - Input signal to be processed 
+   coef - Feed forward coefficient. +0.5 makes a 
+          two point averaging filter (see also 
+          lpz1), -0.5 makes a differentiator (see 
+          also hpz1), +1 makes a single sample 
+          delay (see also delay1), -1 makes an 
+          inverted single sample delay. 
+
+   A one zero filter. Implements the formula :
+
+   out(i) = ((1 - abs(coef)) * in(i)) + (coef * in(i-1)) 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** two-pole
+ #+BEGIN_SRC clojure :results output
+ (doc two-pole)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/two-pole
+ ([in freq radius])
+  
+   [in 0.0, freq 440.0, radius 0.8]
+
+   in     - Input signal to be processed 
+   freq   - Frequency of pole angle 
+   radius - Radius of pole. Should be between 0 and 
+            +1 
+
+   A two pole filter. This provides lower level access to 
+   setting of pole location.
+
+   For general purposes Resonz is better. 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** two-zero
+ #+BEGIN_SRC clojure :results output
+ (doc two-zero)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/two-zero
+ ([in freq radius])
+  
+   [in 0.0, freq 440.0, radius 0.8]
+
+   in     - Input signal to be processed 
+   freq   - Frequency of zero angle 
+   radius - Radius of zero 
+
+   A two zero filter 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** apf
+ #+BEGIN_SRC clojure :results output
+ (doc apf)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/apf
+ ([in freq radius])
+  
+   [in 0.0, freq 440.0, radius 0.8]
+
+   in     - The input signal 
+   freq   - Frequency in hz (cycles per second) 
+   radius - - 
+
+   
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** integrator
+ #+BEGIN_SRC clojure :results output
+ (doc integrator)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/integrator
+ ([in coef])
+  
+   [in 0.0, coef 1.0]
+
+   in   - Input signal 
+   coef - Leak coefficient 
+
+   Leaky integrator. Integrates an input signal with a leak. 
+   The formula implemented is:
+
+   out(0) = in(0) + (coef * out(-1)) 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** decay
+ #+BEGIN_SRC clojure :results output
+ (doc decay)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/decay
+ ([in decay-time])
+  
+   triggered exponential decay. 
+
+   [in 0.0, decay-time 1.0]
+
+   in         - Input signal 
+   decay-time - 60 dB decay time in seconds 
+
+   This is essentially the same as integrator except that 
+   instead of supplying the coefficient directly, it is 
+   calculated from a 60 dB decay time. This is the time 
+   required for the integrator to lose 99.9 % of its value or 
+   -60dB. This is useful for exponential decaying envelopes 
+   triggered by impulses. 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** decay2
+ #+BEGIN_SRC clojure :results output
+ (doc decay2)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/decay2
+ ([in attack-time decay-time])
+  
+   [in 0.0, attack-time 0.01, decay-time 1.0]
+
+   in          - Input signal 
+   attack-time - 60 dB attack time in seconds. 
+   decay-time  - 60 dB decay time in seconds. 
+
+   Triggered exponential attack and exponential decay. Decay 
+   has a very sharp attack and can produce clicks. Decay2 
+   rounds off the attack by subtracting one Decay from 
+   another. (decay in attack-time decay-time) equivalent to: 
+   (- (decay in attack-time decay-time) (decay in attack-time 
+   decay-time)) 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** lag
+ #+BEGIN_SRC clojure :results output
+ (doc lag)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/lag
+ ([in lag-time])
+  
+   [in 0.0, lag-time 0.1]
+
+   in       - Input signal 
+   lag-time - 60 dB lag time in seconds 
+
+   Exponential lag, useful for smoothing out control signals. 
+   This is essentially the same as OnePole except that 
+   instead of supplying the coefficient directly, it is 
+   calculated from a 60 dB lag time. This is the time 
+   required for the filter to converge to within 0.01 % of a 
+   value. 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** lag2
+ #+BEGIN_SRC clojure :results output
+ (doc lag2)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/lag2
+ ([in lag-time])
+  
+   [in 0.0, lag-time 0.1]
+
+   in       - Input signal 
+   lag-time - 60 dB lag time in seconds 
+
+   Equivalent to (lag (lag in time) time), resulting in a 
+   smoother transition. This saves on CPU as you only have to 
+   calculate the decay factor once instead of twice. See lag 
+   for more details. 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** lag3
+ #+BEGIN_SRC clojure :results output
+ (doc lag3)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/lag3
+ ([in lag-time])
+  
+   [in 0.0, lag-time 0.1]
+
+   in       - Input signal 
+   lag-time - 60 dB lag time in seconds 
+
+   Lag3 is equivalent to (lag (lag (lag in time) time) time), 
+   thus resulting in a smoother transition. This saves on CPU 
+   as you only have to calculate the decay factor once 
+   instead of three times. See Lag for more details. 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** ramp
+ #+BEGIN_SRC clojure :results output
+ (doc ramp)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/ramp
+ ([in lag-time])
+  
+   [in 0.0, lag-time 0.1]
+
+   in       - Input signal 
+   lag-time - 60 dB lag time in seconds 
+
+   Similar to lag but with a linear rather than exponential 
+   lag, useful for smoothing out control signals 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** lag-ud
+ #+BEGIN_SRC clojure :results output
+ (doc lag-ud)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/lag-ud
+ ([in lag-time-up lag-time-down])
+  
+   [in 0.0, lag-time-up 0.1, lag-time-down 0.1]
+
+   in            - Input signal 
+   lag-time-up   - 60 dB lag time in seconds for 
+                   the upgoing signal 
+   lag-time-down - 60 dB lag time in seconds for 
+                   the downgoing signal 
+
+   The same as Lag except that you can supply a different 60 
+   dB time for when the signal goes up, from when the signal 
+   goes down 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** lag2-ud
+ #+BEGIN_SRC clojure :results output
+ (doc lag2-ud)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/lag2-ud
+ ([in lag-time-up lag-time-down])
+  
+   [in 0.0, lag-time-up 0.1, lag-time-down 0.1]
+
+   in            - Input signal 
+   lag-time-up   - 60 dB lag time in seconds for 
+                   the upgoing signal 
+   lag-time-down - 60 dB lag time in seconds for 
+                   the downgoing signal 
+
+   Equivalent to (lag-ud (lag-ud in up-t down-t) up-t down-t) 
+   thus resulting in a smoother transition. This saves on CPU 
+   as you only have to calculate the decay factor once 
+   instead of twice. See Lag for more details. 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** lag3-ud
+ #+BEGIN_SRC clojure :results output
+ (doc lag3-ud)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/lag3-ud
+ ([in lag-time-up lag-time-down])
+  
+   [in 0.0, lag-time-up 0.1, lag-time-down 0.1]
+
+   in            - Input signal 
+   lag-time-up   - 60 dB lag time in seconds for 
+                   the upgoing signal 
+   lag-time-down - 60 dB lag time in seconds for 
+                   the downgoing signal 
+
+   Equivalent to
+
+   (lag-ud (lag-ud (lag-ud (in up-t down-t) up-t down-t) 
+   up-t, down-t)
+
+   thus resulting in a smoother transition. This saves on CPU 
+   as you only have to calculate the decay factor once 
+   instead of three times. 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** leak-dc
+ #+BEGIN_SRC clojure :results output
+ (doc leak-dc)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/leak-dc
+ ([in coef])
+  
+   [in 0.0, coef 0.995]
+
+   in   - Input signal 
+   coef - Leak coefficient. A value of 1 indicates 
+          no leakage and 0 indicates high leakage - 
+          essentially the rate at which the offset 
+          will return back to 0 
+
+   Removes a DC offset from signal. For example, a square 
+   wave contains prolonged sections of the cycle which are at 
+   +1 and -1 (the top and bottom of the square sections). If 
+   you were to pass this wave through leak-dc, then these top 
+   parts would taper back towards 0 with a greater slope as 
+   you move coef from 1 to 0..
+
+   Good starting point coef values are to 0.995 for audio 
+   rate and 0.9 for control rate 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** rlpf
+ #+BEGIN_SRC clojure :results output
+ (doc rlpf)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/rlpf
+ ([in freq rq])
+  
+   resonant low pass filter 
+
+   [in 0.0, freq 440.0, rq 1.0]
+
+   in   - Input signal to be processed 
+   freq - Cutoff frequency 
+   rq   - The reciprocal of Q. bandwidth / 
+          cutoffFreq. A lower rq results in more 
+          resonance. 
+
+   A resonant low pass filter is a standard subtractive 
+   synthesis tool which removes frequencies above a defined 
+   cut-off point. This typically has the effect of making 
+   bright sounds duller. However, in addition to this 
+   behaviour, the resonant low pass filter also 
+   emphasises/resonates the frequencies around the cutoff 
+   point. The amount of emphasis is controlled by the rq 
+   param with a lower rq resulting in greater resonance. High 
+   amounts of resonance (rq ~0) can create a whistling sound 
+   around the cutoff frequency.
+
+   Using a low pass filter allows you to have fine-grained 
+   control of the level of brightness/dullness to tune your 
+   timbre in addition to allowing you to modulate the effect 
+   in real time thus creating movement in the sound. 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** rhpf
+ #+BEGIN_SRC clojure :results output
+ (doc rhpf)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/rhpf
+ ([in freq rq])
+  
+   resonant high pass filter 
+
+   [in 0.0, freq 440.0, rq 1.0]
+
+   in   - Input signal to be processed 
+   freq - Cutoff frequency 
+   rq   - The reciprocal of Q. bandwidth / 
+          cutoffFreq. A lower rq results in more 
+          resonance 
+
+   A resonant high pass filter lets through the frequencies 
+   above the cutoff point and successfully dampens the 
+   frequencies below the cutoff point. This effectively 
+   removes the fundamental frequency of the sound, leaving 
+   only the fizz harmonic overtones. However, in addition to 
+   this behaviour, the resonant high pass filter also 
+   emphasises/resonates the frequencies around the cutoff 
+   point. The amount of emphasis is controlled by the rq 
+   param with a lower rq resulting in greater resonance. High 
+   amounts of resonance (rq ~0) can create a whistling sound 
+   around the cutoff frequency.
+
+   High pass filters are rarely used in the creation of 
+   instruments and are predominantly used to create 
+   effervescent sound effects of bright timbres that can be 
+   laid over the top of another low pass sound to increase 
+   the harmonic content. 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** hpf
+ #+BEGIN_SRC clojure :results output
+ (doc hpf)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/hpf
+ ([in freq])
+  
+   second order high pass filter 
+
+   [in 0.0, freq 440.0]
+
+   in   - Input signal to be processed 
+   freq - Cutoff frequency 
+
+   A high pass filter lets through the frequencies above the 
+   cutoff point and successfully dampens the frequencies 
+   below the cutoff point. This effectively removes the 
+   fundamental frequency of the sound, leaving only the fizz 
+   harmonic overtones.
+
+   High pass filters are rarely used in the creation of 
+   instruments and are predominantly used to create 
+   effervexcent sound effects of bright timbres that can be 
+   laid over the top of another low pass sound to increase 
+   the harmonic content. 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** bpf
+ #+BEGIN_SRC clojure :results output
+ (doc bpf)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/bpf
+ ([in freq rq])
+  
+   second order Butterworth bandpass filter 
+
+   [in 0.0, freq 440.0, rq 1.0]
+
+   in   - Input signal to be processed 
+   freq - Centre frequency in Hertz 
+   rq   - The reciprocal of Q. bandwidth / 
+          cutoffFreq 
+
+   A band pass filter permits the frequencies around a 
+   specified centre frequency to pass unaltered through the 
+   filter while the frequencies either side are attenuated. 
+   The frequencies that pass through are known as the 
+   bandwidth or the band pass of the filter.
+
+   Used to create timbres consisting of fizzy harmonics, 
+   lo-fi qualities or very thin sounds that may form the 
+   basis of sound effects. 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** brf
+ #+BEGIN_SRC clojure :results output
+ (doc brf)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/brf
+ ([in freq rq])
+  
+   second order Butterworth band reject filter 
+
+   [in 0.0, freq 440.0, rq 1.0]
+
+   in   - Input signal to be processed 
+   freq - Centre frequency in Hertz 
+   rq   - The reciprocal of Q. bandwidth / 
+          cutoffFreq 
+
+   Band reject filters, also known as notch filters, 
+   attenuate a selected range of frequencies effectively 
+   creating a notch in the sound.
+
+   This type of filter is handy for scooping out frequencies, 
+   thinning out a sound while leaving the fundamental intact, 
+   making them useful for creating timbres that contain a 
+   discernable pitch but do not have a high level of harmonic 
+   content. 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** mid-eq
+ #+BEGIN_SRC clojure :results output
+ (doc mid-eq)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/mid-eq
+ ([in freq rq db])
+  
+   [in 0.0, freq 440.0, rq 1.0, db 0.0]
+
+   in   - Input signal to be processed 
+   freq - Center frequency of the band in Hertz 
+   rq   - The reciprocal of Q. bandwidth / 
+          cutoffFreq 
+   db   - Amount of boost (db > 0) or attenuation 
+          (db < 0) of the frequency band 
+
+   Attenuates or boosts a frequency band 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** lpz1
+ #+BEGIN_SRC clojure :results output
+ (doc lpz1)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/lpz1
+ ([in])
+  
+   [in 0.0]
+
+   in - The input signal 
+
+   Two point average filter. Implements the formula:
+
+   out(i) = 0.5 * (in(i) + in(i-1)) 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** lpz2
+ #+BEGIN_SRC clojure :results output
+ (doc lpz2)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/lpz2
+ ([in])
+  
+   [in 0.0]
+
+   in - The input signal 
+
+   Two zero fixed lowpass. Implements the formula:
+
+   out(i) = 0.25 * (in(i) + (2*in(i-1)) + in(i-2)) 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** hpz1
+ #+BEGIN_SRC clojure :results output
+ (doc hpz1)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/hpz1
+ ([in])
+  
+   [in 0.0]
+
+   in - The input signal 
+
+   Two point difference filter. Implements the formula:
+
+   out(i) = 0.5 * (in(i) - in(i-1)) 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** hpz2
+ #+BEGIN_SRC clojure :results output
+ (doc hpz2)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/hpz2
+ ([in])
+  
+   [in 0.0]
+
+   in - The input signal 
+
+   Two zero fixed highpass. Implements the formula:
+
+   out(i) = 0.25 * (in(i) - (2*in(i-1)) + in(i-2)) 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** slope
+ #+BEGIN_SRC clojure :results output
+ (doc slope)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/slope
+ ([in])
+  
+   [in 0.0]
+
+   in - Input signal to measure 
+
+   Measures the rate of change per second of a signal. 
+   Formula implemented is:
+
+   out[i] = (in[i] - in[i-1]) * sampling_rate 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** bpz2
+ #+BEGIN_SRC clojure :results output
+ (doc bpz2)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/bpz2
+ ([in])
+  
+   [in 0.0]
+
+   in - The input signal 
+
+   Two zero fixed midpass which cuts out 0 Hz and the Nyquist 
+   frequency. Implements the formula:
+
+   out(i) = 0.5 * (in(i) - in(i-2)) 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** median
+ #+BEGIN_SRC clojure :results output
+ (doc median)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/median
+ ([length in])
+  
+   [length 3.0, in 0.0]
+
+   length - Number of input points in which to find 
+            the median. Must be an odd number from 
+            1 to 31. If length is 1 then Median has 
+            no effect. 
+   in     - Input signal to be processed 
+
+   Returns the median of the last length input points. This 
+   non linear filter is good at reducing impulse noise from a 
+   signal. 
+
+   Categories: Filters -> Nonlinear
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** slew
+ #+BEGIN_SRC clojure :results output
+ (doc slew)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/slew
+ ([in up dn])
+  
+   [in 0.0, up 1.0, dn 1.0]
+
+   in - Input signal 
+   up - Maximum upward slope 
+   dn - Maximum downward slope 
+
+   Smooth the curve by limiting the slope of the input signal 
+   to up and dn 
+
+   Categories: Filters -> Nonlinear
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** sos
+ #+BEGIN_SRC clojure :results output
+ (doc sos)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/sos
+ ([in a0 a1 a2 b1 b2])
+  
+   [in 0.0, a0 0.0, a1 0.0, a2 0.0, b1 0.0, b2 0.0]
+
+   in - Input signal 
+   a0 - 1st coefficient 
+   a1 - 2nd coefficient 
+   a2 - 3rd coefficient 
+   b1 - 4th coefficient 
+   b2 - 5th coefficient 
+
+   Second order filter section (biquad). Formula is 
+   equivalent to:
+
+   out(i) = (a0 * in(i)) + (a1 * in(i-1)) + (a2 * in(i-2)) + 
+   (b1 * out(i-1)) + (b2 * out(i-2)) 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** ringz
+ #+BEGIN_SRC clojure :results output
+ (doc ringz)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/ringz
+ ([in freq decay-time])
+  
+   [in 0.0, freq 440.0, decay-time 1.0]
+
+   in         - Input signal to be processed 
+   freq       - Resonant frequency in Hertz 
+   decay-time - The 60 dB decay time of the filter 
+
+   Ringz is the same as Resonz, except that instead of a 
+   resonance parameter, the bandwidth is specified in a 60dB 
+   ring decay time. One Ringz is equivalent to one component 
+   of the klank ugen 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** formlet
+ #+BEGIN_SRC clojure :results output
+ (doc formlet)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/formlet
+ ([in freq attack-time decay-time])
+  
+   [in 0.0, freq 440.0, attack-time 1.0, decay-time 1.0]
+
+   in          - Input signal to be processed 
+   freq        - Resonant frequency in Hertz 
+   attack-time - 60 dB attack time in seconds 
+   decay-time  - 60 dB decay time in seconds 
+
+   A resonant filter whose impulse response is like that of a 
+   sine wave with a Decay2 envelope over it. The great 
+   advantage to this filter over FOF is that there is no 
+   limit to the number of overlapping grains since the grain 
+   is just the impulse response of the filter. Note that if 
+   attacktime == decaytime then the signal cancels out and if 
+   attacktime > decaytime then the impulse response is 
+   inverted. 
+
+   Categories: 
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+
+**** detect-silence
+ #+BEGIN_SRC clojure :results output
+ (doc detect-silence)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ -------------------------
+ overtone.live/detect-silence
+ ([in amp time action])
+  
+   [in 0.0, amp 1.0E-4, time 0.1, action 0]
+
+   in     - Any source 
+   amp    - When input falls below this, evaluate 
+            done action 
+   time   - The minimum duration of the input 
+            signal which input must fall below 
+            thresh before this triggers. The 
+            default is 0.1 seconds 
+   action - The action to perform when silence is 
+            detected. Default: NO-ACTION 
+
+   If the signal input starts with silence at the beginning 
+   of the synth's duration, then DetectSilence will wait 
+   indefinitely until the first sound before starting to 
+   monitor for silence. This UGen outputs 1 if silence is 
+   detected, otherwise 0. 
+
+   Categories: Synth control, Analysis -> Amplitude
+   Rates: [ :ar, :kr ]
+   Default rate: :auto
+ #+end_example
+   
+*** [#B] Grain UGens
    grain-sin grain-in warp1
 
-*** Information UGens
+*** [#A] Information UGens
 **** sample-rate
 #+BEGIN_SRC clojure :results output
 (doc sample-rate)
@@ -6398,7 +8221,7 @@ overtone.live/poll
   Default rate: :kr
 #+end_example
 
-*** Input UGens
+*** [#B] Input UGens
 **** mouse-x
 #+BEGIN_SRC clojure :results output
 (doc mouse-x)
@@ -6513,26 +8336,621 @@ overtone.live/key-state
   Default rate: :kr
 #+end_example
 
+**** key-state from supercollider values
+[ q, 12 ]
+[ w, 13 ]
+[ e, 14 ]
+[ r, 15 ]
+[ t, 17 ]
+[ y, 16 ]
+[ u, 32 ]
+[ i, 34 ]
+[ o, 31 ]
+[ p, 35 ]
+[ a, 0 ]
+[ s, 1 ]
+[ d, 2 ]
+[ f, 3 ]
+[ g, 5 ]
+[ h, 4 ]
+[ j, 38 ]
+[ k, 40 ]
+[ l, 37 ]
+[ z, 6 ]
+[ x, 7 ]
+[ c, 8 ]
+[ v, 9 ]
+[ b, 11 ]
+[ n, 45 ]
+[ m, 46 ]
+
+[ 1, 18 ]
+[ 2, 19 ]
+[ 3, 20 ]
+[ 4, 21 ]
+[ 5, 23 ]
+[ 6, 22 ]
+[ 7, 26 ]
+[ 8, 28 ]
+[ 9, 25 ]
+[ 0, 29 ]
+[ -, 27 ]
+[ =, 24 ]
+[ `, 50 ]
+[ [, 33 ]
+[ ], 30 ]
+[ \, 42 ]
+[ ;, 41 ]
+[ ', 39 ]
+[ ,, 43 ]
+[ ., 47 ]
+[ /, 44 ]
+
 *** IO UGens
-disk-out
-disk-in
-v-disk-in
-in
-local-in
-lag-in
-in-feedback
-in-trig
-shared-in
-out
-replace-out
-offset-out
-local-out
-x-out
-shared-out
 
-*** Line Ugens
+**** disk-out
+#+BEGIN_SRC clojure :results output
+(doc disk-out)
+#+END_SRC
 
-**** line
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/disk-out
+([bufnum channelsArray])
+  
+  stream audio out to disk file 
+
+  [bufnum :none, channelsArray :none]
+
+  bufnum        - The number of the buffer to 
+                  write to (prepared with 
+                  /b-write) 
+  channelsArray - The Array of channels to write 
+                  to the file. 
+
+  The output of DiskOut is the number of frames written to 
+  disk. Note that the number of channels in the buffer and 
+  the channelsArray must be the same, otherwise DiskOut will 
+  fail silently (and not write anything to your file). 
+
+  Categories: InOut, Buffer
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** disk-in
+#+BEGIN_SRC clojure :results output
+(doc disk-in)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/disk-in
+([numChannels bufnum loop])
+  
+  stream audio in from disk file 
+
+  [numChannels :none, bufnum :none, loop 0]
+
+  numChannels - Number of channels in the incoming 
+                audio. 
+  bufnum      - Id of buffer 
+  loop        - Soundfile will loop if 1 otherwise 
+                not. 
+
+  Continuously play a longer soundfile from disk. This 
+  requires a buffer to be preloaded with one buffer size of 
+  sound. If loop is set to 1, the soundfile will loop. 
+
+  Categories: InOut, Buffer
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** v-disk-in
+#+BEGIN_SRC clojure :results output
+(doc v-disk-in)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/v-disk-in
+([numChannels bufnum rate loop sendID])
+  
+  stream in audio from a file (with variable rate) 
+
+  [numChannels :none, bufnum :none, rate 1, loop 0, sendID 0]
+
+  numChannels - Number of channels in the audio 
+  bufnum      - Id of buffer 
+  rate        - Controls the rate of playback. 
+                Values below 4 are probably fine, 
+                but the higher the value, the more 
+                disk activity there is, and the 
+                more likelihood there will be a 
+                problem. 
+  loop        - Soundfile will loop if 1 otherwise 
+                not. 
+  sendID      - Send an osc message with this id 
+                and the file position each time 
+                the buffer is reloaded: 
+                ['/diskin', nodeID, sendID, frame] 
+
+  Continuously play a longer soundfile from disk. This 
+  requires a buffer to be preloaded with one buffer size of 
+  sound. 
+
+  Categories: 
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** in
+#+BEGIN_SRC clojure :results output
+(doc in)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/in
+([bus num-channels])
+  
+  Read a signal from a bus. 
+
+  [bus 0, num-channels 1]
+
+  bus          - The index of the bus to read in 
+                 from 
+  num-channels - The number of channels (i.e. 
+                 adjacent buses) to read in. The 
+                 default is 1. You cannot modulate 
+                 this number by assigning it to an 
+                 argument in a SynthDef. 
+
+  In:kr is functionally similar to in-feedback. That is it 
+  reads all data on the bus whether it is from the current 
+  cycle or not. This allows for it to receive data from 
+  later in the node order.
+
+  in:ar reads only data from the current cycle, and will 
+  zero data from earlier cycles (for use within that synth; 
+  the data remains on the bus). Because of this and the fact 
+  that the various out ugens mix their output with data from 
+  the current cycle but overwrite data from an earlier cycle 
+  it may be necessary to use a private control bus when this 
+  type of feedback is desired. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** local-in
+#+BEGIN_SRC clojure :results output
+(doc local-in)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/local-in
+([num-channels])
+  
+  [num-channels 1]
+
+  num-channels - The number of channels (i.e. 
+                 adjacent buses) to read in. The 
+                 default is 1. You cannot modulate 
+                 this argument. 
+
+  Defines buses that are local to the enclosing synth. These 
+  are like the global buses, but are more convenient if you 
+  want to implement a self contained effect that uses a 
+  feedback processing loop.
+
+  There can only be one audio rate and one control rate 
+  local-in per SynthDef.
+
+  The audio can be written to the bus using local-out. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** lag-in
+#+BEGIN_SRC clojure :results output
+(doc lag-in)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/lag-in
+([bus num-channels lag])
+  
+  Read a control signal from a bus with a lag. 
+
+  [bus 0, num-channels 1, lag 0.1]
+
+  bus          - The index of the bus to read in 
+                 from 
+  num-channels - The number of channels (i.e. 
+                 adjacent buses) to read in. Not 
+                 modulatable. 
+  lag          - Lag factor 
+
+  Please document me 
+
+  Categories: 
+  Rates: [ :kr ]
+  Default rate: :kr
+#+end_example
+
+**** in-feedback
+#+BEGIN_SRC clojure :results output
+(doc in-feedback)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/in-feedback
+([bus num-channels])
+  
+  read signal from a bus with a current or one cycle old 
+  timestamp 
+
+  [bus 0, num-channels 1]
+
+  bus          - The index of the bus to read in 
+                 from. 
+  num-channels - The number of channels (i.e. 
+                 adjacent buses) to read in. The 
+                 default is 1. You cannot modulate 
+                 this number by assigning it to an 
+                 argument in a SynthDef. 
+
+  When the various output ugens (out, offsetOut, x-out) 
+  write data to a bus, they mix it with any data from the 
+  current cycle, but overwrite any data from the previous 
+  cycle. (replace-out overwrites all data regardless.) Thus 
+  depending on node order and what synths are writing to 
+  thep bus, the data on a given bus may be from the current 
+  cycle or be one cycle old at the time of reading. in:ar 
+  checks the timestamp of any data it reads in and zeros any 
+  data from the previous cycle (for use within that node; 
+  the data remains on the bus). This is fine for audio data, 
+  as it avoids feedback, but for control data it is useful 
+  to be able to read data from any place in the node order. 
+  For this reason in:kr also reads data that is older than 
+  the current cycle.
+
+  In some cases we might also want to read audio from a node 
+  later in the current node order. This is the purpose of 
+  InFeedback. The delay introduced by this is one block 
+  size, which equals about 0.0014 sec at the default block 
+  size and sample rate. (See the resonator example below to 
+  see the implications of this.)
+
+  The variably mixing and overwriting behaviour of the 
+  output ugens can make order of execution crucial. (No pun 
+  intended.) For example with a node order like the 
+  following the InFeedback ugen in Synth 2 will only receive 
+  data from Synth 1 (-> = write out; <- = read in):
+
+  Synth 1 -> busA This synth overwrites the output of Synth3 
+  before it reaches Synth 2
+
+  Synth 2 (with InFeedback) <- busA
+
+  Synth 3 -> busA
+
+  If Synth 1 were moved after Synth 2 then Synth 2's 
+  InFeedback would receive a mix of the output from Synth 1 
+  and Synth 3. This would also be true if Synth 2 came after 
+  Synth1 and Synth 3. In both cases data from Synth 1 and 
+  Synth 3 would have the same time stamp (either current or 
+  from the previous cycle), so nothing would be 
+  overwritten.
+
+  Because of this it is often useful to allocate a separate 
+  bus for feedback. With the following arrangement Synth 2 
+  will receive data from Synth3 regardless of Synth 1's 
+  position in the node order.
+
+  Synth 1 -> busA
+
+  Synth 2 (with InFeedback) <- busB
+
+  Synth 3 -> busB + busA 
+
+  Categories: 
+  Rates: [ :ar ]
+  Default rate: :ar
+#+end_example
+
+**** in-trig
+#+BEGIN_SRC clojure :results output
+(doc in-trig)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/in-trig
+([bus numChannels])
+  
+  generates a trigger any time the bus is set 
+
+  [bus 0, numChannels 1]
+
+  bus         - The index of the bus to read in 
+                from. 
+  numChannels - The number of channels (i.e. 
+                adjacent buses) to read in. The 
+                default is 1. You cannot modulate 
+                this number by assigning it to an 
+                argument in a SynthDef. 
+
+  Any time the bus is 'touched' ie. has its value set (using 
+  "/c_set" etc.), a single impulse trigger will be 
+  generated. Its amplitude is the value that the bus was set 
+  to. 
+
+  Categories: 
+  Rates: [ :kr ]
+  Default rate: :kr
+#+end_example
+
+**** shared-in
+#+BEGIN_SRC clojure :results output
+(doc shared-in)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/shared-in
+([bus numChannels])
+  
+  read from a shared control bus (internal dsp only) 
+
+  [bus 0, numChannels 1]
+
+  bus         - The index of the shared control 
+                bus to read from 
+  numChannels - The number of channels (i.e. 
+                adjacent buses) to read in. The 
+                default is 1. You cannot modulate 
+                this number by assigning it to an 
+                argument in a SynthDef. 
+
+  Reads from a control bus shared between the internal 
+  server and the SC client. Control rate only. Writing to a 
+  shared control bus from the client is synchronous. When 
+  not using the internal server use node arguments or the 
+  set method of Bus (or /c_set in messaging style). 
+
+  Categories: 
+  Rates: [ :kr ]
+  Default rate: :kr
+#+end_example
+
+**** out
+#+BEGIN_SRC clojure :results output
+(doc out)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/out
+([bus signals])
+  
+  write a signal to a bus, adding to previous contents. 
+
+  [bus :none, signals :none]
+
+  bus     - The index of the buss to write to. The 
+            lowest index numbers are written to 
+            the audio hardware. 
+  signals - A list of signals or single output to 
+            write out. You cannot change the size 
+            of this once a synth has been defined. 
+
+  Write a signal to a bus, adding to any existing contents
+
+  N.B. Out is subject to control rate jitter. Where sample 
+  accurate output is needed, use OffsetOut.
+
+  When using an array of bus indexes, the channel array will 
+  just be copied to each bus index in the array. So (out:ar 
+  [bus1 bus2] channels-array) will be the same as (+ (out:ar 
+  bus1 channelsArray) (out:ar bus2 channelsArray)). 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** replace-out
+#+BEGIN_SRC clojure :results output
+(doc replace-out)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/replace-out
+([bus signals])
+  
+  Send signal to a bus, overwriting previous contents. 
+
+  [bus :none, signals :none]
+
+  bus     - The index of the buss to write to. The 
+            lowest index numbers are written to 
+            the audio hardware. 
+  signals - A list of signals or single output to 
+            write out. You cannot change the size 
+            of this once a synth has been defined. 
+
+  Out adds its output to a given bus, making it available to 
+  all nodes later in the node tree (See Synth and 
+  Order-of-execution for more information). ReplaceOut 
+  overwrites those contents. This can make it useful for 
+  processing. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :auto
+#+end_example
+
+**** offset-out
+#+BEGIN_SRC clojure :results output
+(doc offset-out)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/offset-out
+([bus signals])
+  
+  write signal to a bus with sample accurate timing 
+
+  [bus :none, signals :none]
+
+  bus     - The index of the buss to write to. The 
+            lowest index numbers are written to 
+            the audio hardware. 
+  signals - A list of signals or single output to 
+            write out. You cannot change the size 
+            of this once a synth has been defined. 
+
+  Output signal to a bus, the sample offset within the bus 
+  is kept exactly; i.e. if the synth is scheduled to be 
+  started part way through a control cycle, offset-out will 
+  maintain the correct offset by buffering the output and 
+  delaying it until the exact time that the synth was 
+  scheduled for.
+
+  This ugen is used where sample accurate output is needed. 
+
+  Categories: 
+  Rates: [ :ar ]
+  Default rate: :auto
+#+end_example
+
+**** local-out
+#+BEGIN_SRC clojure :results output
+(doc local-out)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/local-out
+([channels-array])
+  
+  write to buses local to a synth 
+
+  [channels-array :none]
+
+  channels-array - An Array of channels or single 
+                   output to write out. You cannot 
+                   change the size of this once a 
+                   SynthDef has been built. 
+
+  Local-out writes to buses that are local to the enclosing 
+  synth. The buses should have been defined by a local-in 
+  ugen. The channelsArray must be the same number of 
+  channels as were declared in the LocalIn. These are like 
+  the global buses, but are more convenient if you want to 
+  implement a self contained effect that uses a feedback 
+  processing loop. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** x-out
+#+BEGIN_SRC clojure :results output
+(doc x-out)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/x-out
+([bus xfade channels-array])
+  
+  write signal to a bus, crossfading with the existing 
+  content 
+
+  [bus :none, xfade :none, channels-array :none]
+
+  bus            - The index, or array of indexes, 
+                   of buses to write to. The 
+                   lowest index numbers are 
+                   written to the audio hardware. 
+  xfade          - Crossfade level. 
+  channels-array - An Array of channels or single 
+                   output to write out. You cannot 
+                   change the size of this once a 
+                   SynthDef has been built. 
+
+  Xfade is a level for the crossfade between what is on the 
+  bus and what you are sending.
+
+  The algorithm is equivalent to this:
+
+  bus_signal = (input_signal * xfade) + (bus_signal * (1 - 
+  xfade)); 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+#+end_example
+
+**** shared-out
+#+BEGIN_SRC clojure :results output
+(doc shared-out)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/shared-out
+([bus channels-array])
+  
+  [bus :none, channels-array :none]
+
+  bus            - The index of the shared control 
+                   bus to read from 
+  channels-array - An Array of channels or single 
+                   output to write out. You cannot 
+                   change the size of this once a 
+                   SynthDef has been built. 
+
+  Reads from a control bus shared between the internal 
+  server and the SC client. Control rate only. Reading from 
+  a shared control bus on the client is synchronous. 
+
+  Categories: 
+  Rates: [ :kr ]
+  Default rate: :kr
+#+end_example
+
+*** [#B] Line Ugens
+
+**** [#A] line
 #+BEGIN_SRC clojure :results output
 (doc line)
 #+END_SRC
@@ -6560,7 +8978,7 @@ overtone.live/line
   Default rate: :ar
 #+end_example
 
-**** x-line
+**** [#A] x-line
 #+BEGIN_SRC clojure :results output
 (doc x-line)
 #+END_SRC
@@ -6590,7 +9008,7 @@ overtone.live/x-line
   Default rate: :ar
 #+end_example
 
-**** lin-exp
+**** [#B] lin-exp
 #+BEGIN_SRC clojure :results output
 (doc lin-exp)
 #+END_SRC
@@ -6620,7 +9038,7 @@ overtone.live/lin-exp
   Default rate: :auto
 #+end_example
 
-**** lin-lin
+**** [#B] lin-lin
 #+BEGIN_SRC clojure :results output
 (doc lin-lin)
 #+END_SRC
@@ -6863,7 +9281,7 @@ overtone.live/silent
    beat-track loudness onsets key-track mfcc
    beat-track2 spec-flatness spec-pcile spec-centroid
 
-*** Miscellaneous UGens
+*** [#B] Miscellaneous UGens
 
 **** pitch-shift
 #+BEGIN_SRC clojure :results output
@@ -7034,7 +9452,7 @@ overtone.live/freq-shift
   Default rate: :ar
 #+end_example
 
-**** g-verb                                                       :reverb:
+**** [#A] g-verb                                                     :reverb:
 #+BEGIN_SRC clojure :results output
 (doc g-verb)
 #+END_SRC
@@ -7076,7 +9494,7 @@ overtone.live/g-verb
   Default rate: :ar
 #+end_example
 
-**** free-verb                                                    :reverb:
+**** [#A] free-verb                                                  :reverb:
 #+BEGIN_SRC clojure :results output
 (doc free-verb)
 #+END_SRC
@@ -7103,7 +9521,7 @@ overtone.live/free-verb
   Default rate: :ar
 #+end_example
 
-**** free-verb2                                                   :reverb:
+**** [#A] free-verb2                                                 :reverb:
 #+BEGIN_SRC clojure :results output
 (doc free-verb2)
 #+END_SRC
@@ -7268,7 +9686,7 @@ overtone.live/check-bad-values
   Default rate: :auto
 #+end_example
 
-**** gendy1
+**** [#B] gendy1
 #+BEGIN_SRC clojure :results output
 (doc gendy1)
 #+END_SRC
@@ -7353,7 +9771,7 @@ overtone.live/gendy1
   Default rate: :ar
 #+end_example
 
-**** gendy2
+**** [#B] gendy2
 #+BEGIN_SRC clojure :results output
 (doc gendy2)
 #+END_SRC
@@ -7436,7 +9854,7 @@ overtone.live/gendy2
   Default rate: :ar
 #+end_example
 
-**** gendy3
+**** [#B] gendy3
 #+BEGIN_SRC clojure :results output
 (doc gendy3)
 #+END_SRC
@@ -7510,7 +9928,7 @@ overtone.live/gendy3
   Default rate: :ar
 #+end_example
 
-*** Noise UGens                                                   :noise:
+*** [#A] Noise UGens                                                :noise:
 
 **** white-noise
 #+BEGIN_SRC clojure :results output
@@ -7995,7 +10413,7 @@ overtone.live/mantissa-mask
   Default rate: :ar
 #+end_example
 
-**** dust
+**** [#A] dust
 #+BEGIN_SRC clojure :results output
 (doc dust)
 #+END_SRC
@@ -8017,7 +10435,7 @@ overtone.live/dust
   Default rate: :ar
 #+end_example
 
-**** dust2
+**** [#B] dust2
 #+BEGIN_SRC clojure :results output
 (doc dust2)
 #+END_SRC
@@ -8817,11 +11235,11 @@ overtone.live/dust2
    Default rate: :ar
 #+end_example
 
-*** Pan UGens
+*** [#B] Pan UGens
    pan2 lin-pan2 pan4 balance2 rotate2 pan-b pan-b2
    bi-pan-b2 decode-b2 pan-az x-fade2 lin-x-fade2
 
-*** Random UGens                                                   :random:
+*** [#A] Random UGens                                                :random:
 **** rand-seed
 #+BEGIN_SRC clojure :results output
 (doc rand-seed)
@@ -9092,7 +11510,7 @@ overtone.live/lin-rand
    stk-voic-form stk-modal-bar stk-clarinet
    stk-blow-hole stk-moog stk-bee-three
 
-*** Trig UGens
+*** [#B] Trig UGens
 
 **** tw-index
 #+BEGIN_SRC clojure :results output
@@ -10080,7 +12498,7 @@ overtone.live/last-value
    os-fold4 os-fold8 os-trunc4 os-trunc8 drive-noise
    peak-eq2 peak-eq4
 
-*** Bhob Extra UGens
+*** [#A] Bhob Extra UGens
    henon2-dn henon2-dl henon2-dc henon-trig
    gbman2-dn gbman2-dl gbman2-dc gbman-trig
    standard2-dn standard2-dl standard2-dc
