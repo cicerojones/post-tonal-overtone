@@ -1,8 +1,9 @@
 (ns for-the-glory-of-art
-  (:require [quil.core :as q]))
+  (:require [quil.core :as q])
+  (:require [quil-workflow.dynamic :as dynamic]))
 
 (defn setup []
-  (q/frame-rate 1)                    ;; Set framerate to 1 FPS
+  (q/frame-rate 3)                    ;; Set framerate to 1 FPS
   (q/background 200))                 ;; Set the background colour to
                                       ;; a nice shade of grey.
 (defn draw []
@@ -18,6 +19,8 @@
 (q/defsketch example                  ;; Define a new sketch named example
   :title "Oh so many grey circles"    ;; Set the title of the sketch
   :settings #(q/smooth 2)             ;; Turn on anti-aliasing
-  :setup setup                        ;; Specify the setup fn
-  :draw draw                          ;; Specify the draw fn
+  ;; :setup setup                        ;; Specify the setup fn
+  :setup dynamic/setup                        ;; Specify the setup fn
+  ;; :draw draw                          ;; Specify the draw fn
+  :draw dynamic/draw                          ;; Specify the draw fn
   :size [323 200])                    ;; You struggle to beat the golden ratio
