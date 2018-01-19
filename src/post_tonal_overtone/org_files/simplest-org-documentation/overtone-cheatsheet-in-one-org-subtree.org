@@ -9495,6 +9495,9 @@ overtone.live/g-verb
 #+end_example
 
 **** [#A] free-verb                                                  :reverb:
+     :PROPERTIES:
+     :ID:       73808CB5-7834-483F-A9C3-44744911F38B
+     :END:
 #+BEGIN_SRC clojure :results output
 (doc free-verb)
 #+END_SRC

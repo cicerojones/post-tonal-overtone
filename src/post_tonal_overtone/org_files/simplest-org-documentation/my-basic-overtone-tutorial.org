@@ -102,7 +102,7 @@ Use a repl to call (stop)
 
 ** make a definst with more parameters
 *** use a "env-gen" Ugen (with a lin)
- #+BEGIN_SRC clojure :session getting-started :tangle yes 
+ #+BEGIN_SRC clojure :session getting-started :tangle no
 (definst noisey [attack 1 sustain 1 release 1 vol 0.4 length 3] 
   (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
      (pink-noise) ; also have (white-noise) and others...

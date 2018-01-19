@@ -146,6 +146,9 @@ overtone.core/t-grains
 
 
 ** general-tgrains as a synth
+   :PROPERTIES:
+   :ID:       5C575441-0230-4F0B-8F5D-257821ECBA92
+   :END:
 #+BEGIN_SRC clojure
   (defsynth general-tgrains-synth
     "my main granular synthesis abstraction (in stereo!)"
