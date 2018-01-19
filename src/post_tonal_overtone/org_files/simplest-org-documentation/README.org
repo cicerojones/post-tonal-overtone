@@ -10,13 +10,13 @@ Understand busses and groups!
 ** recent documentation
 *** more advanced
 
--rw-r--r--  1 b  staff  12756 Dec 30 09:12 more-advanced-overtone-exploring.org
+12756 Dec 30 09:12 more-advanced-overtone-exploring.org
 *** basic
--rw-r--r--  1 b  staff  22434 Dec 30 09:11 my-basic-overtone-tutorial.org
+22434 Dec 30 09:11 my-basic-overtone-tutorial.org
 *** expanded cheatsheet
--rw-r--r--  1 b  staff    588 Dec 30 08:51 my-documented-overtone-cheatsheet.org
+588 Dec 30 08:51 my-documented-overtone-cheatsheet.org
 *** basic cheatsheet
--rw-r--r--  1 b  staff  58798 Dec 30 08:47 overtone-cheatsheet.org
+58798 Dec 30 08:47 overtone-cheatsheet.org
 *** apollo and incarnation work work
 [[file:~/Github-repos/apollo-supercollider/][file:~/Github-repos/apollo-supercollider/]]
 
