@@ -1,0 +1,3 @@
+* TODO deal with timings
+* TODO save generated data
+* TODO organize sequences according to some logic

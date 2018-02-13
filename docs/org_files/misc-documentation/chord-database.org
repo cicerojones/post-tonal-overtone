@@ -1,0 +1,325 @@
+* steps--for interacting with SQL db from Clojure using YeSQL
+** create chord tables
+*** use sql arrays?
+#+BEGIN_SRC sql :engine postgresql :database heroku_psql_tutorial
+CREATE TABLE chord_event (chord_id serial PRIMARY KEY, pcs integer[], midis integer[]);
+#+END_SRC
+*** dedicate tables to set-types
+**** midis only--see below
+**** deluxe (include pc-set, t-level etc.)
+#+BEGIN_SRC sql :engine postgresql :database heroku_psql_tutorial
+CREATE TABLE trichord_events (chord_id serial PRIMARY KEY, pcset text, midi1 int, midi2 int, midi3 int)
+CREATE TABLE tetrachord_events (chord_id serial PRIMARY KEY, pcset text, midi1 int, midi2 int, midi3 int, midi4)
+CREATE TABLE pentachord_events (chord_id serial PRIMARY KEY, pcset text, midi1 int, midi2 int, midi3 int, midi4 int, midi5 int)
+CREATE TABLE hexachord_events (chord_id serial PRIMARY KEY, pcset text, midi1 int, midi2 int, midi3 int, midi4 int, midi5 int, midi6 int)
+#+END_SRC
+*** dedicated columns per chord voice
+requires specific table for chords of each set-type?
+| tetrachord |    |    |    |    |
+|------------+----+----+----+----|
+|            | m1 | m2 | m3 | m4 |
+
+** basic insertion using jdbc
+#+BEGIN_SRC clojure
+(require '[clojure.java.jdbc :as sql])
+
+(sql/insert! "postgresql://localhost:5432/heroku_psql_tutorial"
+:chord_event {:pcs [0 1 5 8] :midis [60 61 65 68]})
+#+END_SRC
+
+#+RESULTS:
+: nil
+
+** your core.clj file (and directory structure)
+*** directory
+given the following directory structure
+
+./dbchords/resources/modles:
+all_chords.sql	user_model.clj
+
+*** spacing and line usage in .sql matters?
+#+BEGIN_SRC sql :engine postgresql :database heroku_psql_tutorial
+
+-- name: insert-chord!
+INSERT INTO chord_event (pcs, midis) VALUES (:pcs, :midis);
+#+END_SRC
+<
+*** core.clj
+#+BEGIN_SRC clojure
+(ns dbchords.core
+  (:require [yesql.core :refer [defqueries]]))
+
+(defn foo
+  "I don't do a whole lot."
+  [x]
+  (println x "Hello, World!"))
+
+(defqueries "modles/all_chords.sql"
+  )
+
+
+#+END_SRC
+** call your clojure function named for a SQL querya
+#+BEGIN_SRC clojure
+(dbchords.core/all-chords)
+#+END_SRC
+
+#+RESULTS:
+: '((:chord_id 1  :pcs #object(org.postgresql.jdbc4.Jdbc4Array 0xb9180df "{0,1,4,8}")  :midis #object(org.postgresql.jdbc4.Jdbc4Array 0x7da3b667 "{60,61,64,68}")) (:chord_id 2  :pcs #object(org.postgresql.jdbc4.Jdbc4Array 0x71c64a2 "{0,1,3,4}")  :midis #object(org.postgresql.jdbc4.Jdbc4Array 0x5912cb53 "{60,61,63,64}")) (:chord_id 3  :pcs #object(org.postgresql.jdbc4.Jdbc4Array 0x60e2e3d4 "{0,1,3,4}")  :midis #object(org.postgresql.jdbc4.Jdbc4Array 0x4fdba4fd "{60,61,63,64}")) (:chord_id 4  :pcs #object(org.postgresql.jdbc4.Jdbc4Array 0x5d2d0700 "{0,1,3,4}")  :midis #object(org.postgresql.jdbc4.Jdbc4Array 0x3726c0ca "{60,61,63,64}")) (:chord_id 5  :pcs #object(org.postgresql.jdbc4.Jdbc4Array 0x513b2a0f "{0,1,3,4}")  :midis #object(org.postgresql.jdbc4.Jdbc4Array 0x3466873 "{60,61,63,64}")) (:chord_id 6  :pcs #object(org.postgresql.jdbc4.Jdbc4Array 0x37357b3 "{0,1,3,4}")  :midis #object(org.postgresql.jdbc4.Jdbc4Array 0x982aa8a "{60,61,63,64}")))
+
+
+: '((:chord_id 1  :pcs #object(org.postgresql.jdbc4.Jdbc4Array 0x88b5161 "{0,1,4,8}")  :midis #object(org.postgresql.jdbc4.Jdbc4Array 0x728bbba8 "{60,61,64,68}")) (:chord_id 2  :pcs #object(org.postgresql.jdbc4.Jdbc4Array 0x33cd4d58 "{0,1,3,4}")  :midis #object(org.postgresql.jdbc4.Jdbc4Array 0x6b90e6f9 "{60,61,63,64}")) (:chord_id 3  :pcs #object(org.postgresql.jdbc4.Jdbc4Array 0x762c1c9a "{0,1,3,4}")  :midis #object(org.postgresql.jdbc4.Jdbc4Array 0x4a09ff12 "{60,61,63,64}")) (:chord_id 4  :pcs #object(org.postgresql.jdbc4.Jdbc4Array 0x56491cb7 "{0,1,3,4}")  :midis #object(org.postgresql.jdbc4.Jdbc4Array 0x59fc5ea2 "{60,61,63,64}")) (:chord_id 5  :pcs #object(org.postgresql.jdbc4.Jdbc4Array 0x47a90bd5 "{0,1,3,4}")  :midis #object(org.postgresql.jdbc4.Jdbc4Array 0x2b47f1b4 "{60,61,63,64}")))
+
+
+: '((:chord_id 1  :pcs #object(org.postgresql.jdbc4.Jdbc4Array 0x79897163 "{0,1,4,8}")  :midis #object(org.postgresql.jdbc4.Jdbc4Array 0x2e7358eb "{60,61,64,68}")))
+
+#+BEGIN_SRC sql :engine postgresql :database heroku_psql_tutorial
+-- name: insert-chords!
+INSERT INTO chord_event (pcs, midis) VALUES ('{0, 1, 3, 4}', '{60, 61, 63, 64}');
+#+END_SRC
+** SQL array more trouble than they're worth?
+#+BEGIN_SRC clojure
+(map #(apply str %) [[0 1 3 4] [60 61 63 64]])
+#+END_SRC
+
+#+RESULTS:
+| 0134 | 60616364 |
+
+#+BEGIN_SRC clojure
+(map #(apply str %) [[0 2 4 6 8 't] [60 61 63 64]])
+#+END_SRC
+
+#+RESULTS:
+| 02468t | 60616364 |
+
+* debugging
+** what are the tables for project's db?
+#+BEGIN_SRC sql :engine postgresql :database heroku_psql_tutorial
+\dt
+#+END_SRC
+
+#+RESULTS:
+| List of relations |             |       |       |
+|-------------------+-------------+-------+-------|
+| Schema            | Name        | Type  | Owner |
+| public            | chord_event | table | a     |
+| public            | pcs_event   | table | a     |
+** use direct SQL for interactions
+*** select * from chord_event
+#+BEGIN_SRC sql :engine postgresql :database heroku_psql_tutorial
+select * from chord_event
+#+END_SRC
+
+#+RESULTS:
+| chord_id | pcs       | midis         |
+|----------+-----------+---------------|
+|        1 | {0,1,4,8} | {60,61,64,68} |
+*** INSERT INTO chord_event (pcs, midis) VALUES ('{0, 1, 4, 8}', '{60, 61, 64, 68}');
+#+BEGIN_SRC sql :engine postgresql :database heroku_psql_tutorial
+INSERT INTO chord_event (pcs, midis) VALUES ('{0, 1, 4, 8}', '{60, 61, 64, 68}');
+#+END_SRC
+
+#+RESULTS:
+| INSERT 0 1 |
+|------------|
+*** 
+*** must use some delimiter other than whitespace
+http://www.postgresql.org/docs/9.4/static/arrays.html
+
+#+BEGIN_SRC sql :engine postgresql :database heroku_psql_tutorial
+INSERT INTO chord_event (pcs, midis) VALUES ('{0 1 5 8}', '{61 62 65 69}');
+#+END_SRC
+
+#+RESULTS:
+
+"/Users/a/git-projects/post_tonal_overtone/src/post_tonal_overtone/org_files/all_chords.sql"o
+** class path hell
+*** (System/getProperty "java.class.path")
+See [[file:~/git-projects/all-tutorials/clojure/Clojure.Programming.org::*A%20classpath%20primer][A classpath primer]]
+#+BEGIN_SRC clojure
+(def classpat (System/getProperty "java.class.path"))
+#+END_SRC
+
+#+RESULTS:
+: #'user/classpat
+
+#+BEGIN_SRC clojure :output results
+classpat
+#+END_SRC
+*** results of (System/getProperty "java.class.path")
+#+RESULTS:
+: /Users/a/Documents/working-directory/clojure-web-development/postgres-experiments/dbchords/test
+:/Users/a/Documents/working-directory/clojure-web-development/postgres-experiments/dbchords/src
+:/Users/a/Documents/working-directory/clojure-web-development/postgres-experiments/dbchords/dev-resources
+:/Users/a/Documents/working-directory/clojure-web-development/postgres-experiments/dbchords/resources
+:/Users/a/Documents/working-directory/clojure-web-development/postgres-experiments/dbchords/target/classes
+:/Users/a/.m2/repository/cider/cider-nrepl/0.11.0-SNAPSHOT/cider-nrepl-0.11.0-SNAPSHOT.jar
+:/Users/a/.m2/repository/org/tcrawley/dynapath/0.2.3/dynapath-0.2.3.jar
+:/Users/a/.m2/repository/org/clojure/clojure/1.8.0/clojure-1.8.0.jar
+:/Users/a/.m2/repository/org/clojure/java.jdbc/0.5.0/java.jdbc-0.5.0.jar
+:/Users/a/.m2/repository/org/postgresql/postgresql/9.4-1201-jdbc41/postgresql-9.4-1201-jdbc41.jar
+:/Users/a/.m2/repository/yesql/yesql/0.5.2/yesql-0.5.2.jar
+:/Users/a/.m2/repository/instaparse/instaparse/1.4.1/instaparse-1.4.1.jar
+:/Users/a/.m2/repository/org/clojure/tools.nrepl/0.2.12/tools.nrepl-0.2.12.jar
+:/Users/a/.m2/repository/clojure-complete/clojure-complete/0.2.4/clojure-complete-0.2.4.jar
+** directory structure, then
+./dbchords/resources:
+modles
+
+./dbchords/resources/modles:
+all_chords.sql	user_model.clj
+
+./dbchords/src:
+dbchords
+
+./dbchords/src/dbchords:
+#core.clj#	core.clj
+** \d chord_event
+#+BEGIN_SRC sql :engine postgresql :database heroku_psql_tutorial
+\d chord_event
+#+END_SRC
+
+#+RESULTS:
+| Table "public.chord_event"                       |           |                                                                |
+|--------------------------------------------------+-----------+----------------------------------------------------------------|
+| Column                                           | Type      | Modifiers                                                      |
+| chord_id                                         | integer   | not null default nextval('chord_event_chord_id_seq'::regclass) |
+| pcs                                              | integer[] |                                                                |
+| midis                                            | integer[] |                                                                |
+| Indexes:                                         |           |                                                                |
+| "chord_event_pkey" PRIMARY KEY, btree (chord_id) |           |                                                                |
+
+#+BEGIN_SRC sql :engine postgresql :database heroku_psql_tutorial
+\d pcs_event
+#+END_SRC
+
+#+RESULTS:
+| Table "public.pcs_event"                       |         |                                                              |
+|------------------------------------------------+---------+--------------------------------------------------------------|
+| Column                                         | Type    | Modifiers                                                    |
+| chord_id                                       | integer | not null default nextval('pcs_event_chord_id_seq'::regclass) |
+| pcs_as_string                                  | text    |                                                              |
+| Indexes:                                       |         |                                                              |
+| "pcs_event_pkey" PRIMARY KEY, btree (chord_id) |         |                                                              |
+
+* call INSERT INTO functions from Clojure
+** tables
+#+BEGIN_SRC sql :engine postgresql :database heroku_psql_tutorial
+DROP TABLE monochord_events; 
+DROP TABLE trichord_events; 
+DROP TABLE tetrachord_events;
+DROP TABLE pentachord_events;
+DROP TABLE hexachord_events;
+#+END_SRC
+
+#+RESULTS:
+| DROP TABLE |
+|------------|
+| DROP TABLE |
+| DROP TABLE |
+| DROP TABLE |
+| DROP TABLE |
+
+#+BEGIN_SRC sql :engine postgresql :database heroku_psql_tutorial
+CREATE TABLE monochord_events (chord_id serial PRIMARY KEY, midi1 int);
+CREATE TABLE dyad_events (chord_id serial PRIMARY KEY, midi1 int, midi2 int);
+CREATE TABLE trichord_events (chord_id serial PRIMARY KEY, midi1 int, midi2 int, midi3 int);
+CREATE TABLE tetrachord_events (chord_id serial PRIMARY KEY, midi1 int, midi2 int, midi3 int, midi4 int);
+CREATE TABLE pentachord_events (chord_id serial PRIMARY KEY, midi1 int, midi2 int, midi3 int, midi4 int, midi5 int);
+CREATE TABLE hexachord_events (chord_id serial PRIMARY KEY, midi1 int, midi2 int, midi3 int, midi4 int, midi5 int, midi6 int);
+#+END_SRC
+
+#+RESULTS:
+| CREATE TABLE |
+|--------------|
+
+** monochord
+
+#+BEGIN_SRC clojure
+(dbchords.core/insert-monochords<! {:midi1 60})
+#+END_SRC
+
+#+RESULTS:
+| :chord_id | 1 | :midi1 | 60 |
+
+#+END_SRC
+** trichord
+#+BEGIN_SRC clojure
+(dbchords.core/insert-trichords<! {:midi1 59 :midi2 62 :midi3 65})
+#+END_SRC
+
+#+RESULTS:
+| :chord_id | 1 | :midi1 | 59 | :midi2 | 62 | :midi3 | 65 |
+** tetrachord
+#+BEGIN_SRC clojure
+(dbchords.core/insert-tetrachords<! {:midi1 58 :midi2 62 :midi3 64 :midi4 67})
+#+END_SRC
+
+#+RESULTS:
+| :chord_id | 1 | :midi1 | 58 | :midi2 | 62 | :midi3 | 64 | :midi4 | 67 |
+** pentachord (async)
+#+BEGIN_SRC clojure
+(dbchords.core/insert-pentachords<! {:midi1 59 :midi2 61 :midi3 64 :midi4 67 :midi5 70})
+#+END_SRC
+
+#+RESULTS:
+| :chord_id | 1 | :midi1 | 59 | :midi2 | 61 | :midi3 | 64 | :midi4 | 67 | :midi5 | 70 |
+
+** hexachord
+#+BEGIN_SRC clojure
+(dbchords.core/insert-hexachords<! {:midi1 59 :midi2 61 :midi3 64 :midi4 67 :midi5 70 :midi6 71})
+#+END_SRC
+
+#+RESULTS:
+| :chord_id | 1 | :midi1 | 59 | :midi2 | 61 | :midi3 | 64 | :midi4 | 67 | :midi5 | 70 | :midi6 | 71 |
+** select all
+#+BEGIN_SRC sql :engine postgresql :database heroku_psql_tutorial
+select * from monochord_events;
+select * from trichord_events;
+select * from tetrachord_events;
+select * from pentachord_events;
+select * from hexachord_events;
+#+END_SRC
+
+#+RESULTS:
+| chord_id | midi1 |       |       |       |       |       |
+|----------+-------+-------+-------+-------+-------+-------|
+|        1 |    60 |       |       |       |       |       |
+| chord_id | midi1 | midi2 | midi3 |       |       |       |
+|        1 |    59 |    62 |    65 |       |       |       |
+| chord_id | midi1 | midi2 | midi3 | midi4 |       |       |
+|        1 |    58 |    62 |    64 |    67 |       |       |
+| chord_id | midi1 | midi2 | midi3 | midi4 | midi5 |       |
+|        1 |    59 |    61 |    64 |    67 |    70 |       |
+| chord_id | midi1 | midi2 | midi3 | midi4 | midi5 | midi6 |
+|        1 |    59 |    61 |    64 |    67 |    70 |    71 |
+
+#+BEGIN_SRC sql :engine postgresql :database heroku_psql_tutorial
+
+#+END_SRC
+
+#+RESULTS:
+| chord_id | midi1 | midi2 | midi3 |
+|----------+-------+-------+-------|
+|        1 |    59 |    62 |    65 |
+
+#+BEGIN_SRC sql :engine postgresql :database heroku_psql_tutorial
+select * from monochord_events
+#+END_SRC
+
+#+RESULTS:
+| chord_id | midi1 |
+|----------+-------|
+|        1 |    60 |
+
+#+BEGIN_SRC sql :engine postgresql :database heroku_psql_tutorial
+select * from tetrachord_events
+#+END_SRC
+
+#+RESULTS:
+| chord_id | midi1 | midi2 | midi3 | midi4 |
+|----------+-------+-------+-------+-------|
+|        1 |    58 |    62 |    64 |    67 |
+|        2 |    57 |    63 |    64 |    67 |
+|        3 |    48 |    75 |    65 |    80 |
+

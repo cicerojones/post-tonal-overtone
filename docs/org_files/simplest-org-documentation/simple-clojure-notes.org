@@ -1,0 +1,326 @@
+* clojure topics arising while using overtone
+** doing midi->hz conversion
+#+BEGIN_SRC clojure
+;; have to include the following library as a dependency
+(require '[clojure.math.numeric-tower :as math])
+
+(defn my-midihz [d] (* (math/expt 2 (/ (- d 69) 12)) 440))
+
+#+END_SRC
+
+#+RESULTS:
+: nil#'user/my-midihz
+
+Note that exponentiation is provided by Java, else use library
+
+#+BEGIN_SRC clojure
+(Math/pow 2 10)
+#+END_SRC
+* clojure topics arising from using quil (require!)
+** [#A] require vs. refer vs. use
+For example
+
+#+BEGIN_SRC clojure
+(require '[clojure.set :as ra])
+#+END_SRC
+
+See Halloway: 
+[[id:AE7F811E-8C76-436D-823A-1DA2A122CA96][1.3 Exploring Clojure Libraries]]
+
+Practical Clojure (Sierra/Vanderhart)
+[[id:B69673E6-A2C9-4B73-B021-29AE7EE1C20C][Declaring Namespaces]]
+
+#+BEGIN_SRC clojure
+(use '[overtone.core :exclude (->ShellStringList)])
+#+END_SRC
+
+From clojure help:
+
+#+BEGIN_SRC clojure 
+  ;; Use of ns is preferred to
+  ;;   individual calls to in-ns/require/use/import
+    (ns foo.bar
+      (:refer-clojure :exclude [ancestors printf])
+      (:require (clojure.contrib sql combinatorics))
+      (:use (my.lib this that))
+      (:import (java.util Date Timer Random)
+               (java.sql Connection Statement)))
+#+END_SRC
+
+#+BEGIN_SRC clojure 
+(ns baz (:require [user :as u]))
+#+END_SRC
+
+
+** run quil sketch from the cider repl
+*** code blocks
+:PROPERTIES:
+:ID:       6A12023E-F68D-4FB0-96B4-A3550717F057
+:END:
+**** namespace declaration with dependencies
+#+BEGIN_SRC clojure
+(ns my-sketch
+  (:require [quil.core :as q]
+            [quil.middleware :as m]))
+#+END_SRC
+**** definition of 'setup' function
+#+BEGIN_SRC clojure
+;; (in-ns 'my-sketch)
+
+(defn setup []
+  (q/smooth)
+  (q/background 230 230 230)
+  (q/stroke 130, 0 0)
+  (q/stroke-weight 4)
+  (let [cross-size      70
+        circ-size       50
+        canvas-x-center (/ (q/width) 2)
+        canvas-y-center (/ (q/height) 2)
+        left            (- canvas-x-center cross-size)
+        right           (+ canvas-x-center cross-size)
+        top             (+ canvas-y-center cross-size)
+        bottom          (- canvas-y-center cross-size)]
+    (q/line left bottom right top)
+    (q/line right bottom left top)
+
+    (q/fill 255 150)
+    (q/ellipse canvas-x-center canvas-y-center circ-size circ-size)))
+
+#+END_SRC
+
+#+RESULTS:
+: #'my-sketch/setup
+**** run sketch with defsketch
+#+BEGIN_SRC clojure
+(in-ns 'my-sketch)
+
+(q/defsketch gen-art-1
+  :title "Cross with circle"
+  :setup setup
+  :size [500 300]
+  :middleware [m/fun-mode])
+#+END_SRC
+
+#+RESULTS:
+: #namespace[my-sketch]#'my-sketch/gen-art-1
+
+#+BEGIN_SRC clojure
+*ns*
+#+END_SRC
+
+#+RESULTS:
+: #namespace[my-sketch]
+** more complex and interactive functional mode sketch
+https://github.com/quil/quil/wiki/Functional-mode-(fun-mode)
+#+BEGIN_SRC clojure
+(ns fun-mode-sketch
+  (:require [quil.core :as q]
+            [quil.middleware :as m]))
+#+END_SRC
+
+#+BEGIN_SRC clojure
+(def min-r 10)
+
+(defn setup []
+  ; initial state
+  {:x 0 :y 0 :r min-r})
+
+(defn update [state]
+  ; increase radius of the circle by 1 on each frame
+  (update-in state [:r] inc))
+
+(defn draw [state]
+  (q/background 255)
+  (q/ellipse (:x state) (:y state) (:r state) (:r state)))
+
+; decrease radius by 1 but keeping it not less than min-r
+(defn shrink [r]
+  (max min-r (dec r)))
+
+(defn mouse-moved [state event]
+  (-> state
+      ; set circle position to mouse position
+      (assoc :x (:x event) :y (:y event))
+      ; decrease radius
+      (update-in [:r] shrink)))
+
+(q/defsketch example
+  :size [600 600]
+  :setup setup
+  :draw draw
+  :update update
+  :mouse-moved mouse-moved
+  :middleware [m/fun-mode])
+#+END_SRC
+
+#+RESULTS:
+: #'my-sketch/min-r#'my-sketch/setup#'my-sketch/update#'my-sketch/draw#'my-sketch/shrink#'my-sketch/mouse-moved#'my-sketch/example
+** another more complex (non-interactive) fun mode sketch
+
+#+BEGIN_SRC clojure
+(ns middleware-example 
+  (:require [quil.core :as q]))
+
+#+END_SRC
+
+#+RESULTS:
+: nil
+
+#+BEGIN_SRC clojure
+
+(defn show-frame-rate [options]
+  (let [; retrieve existing draw function or use empty one if not present
+        draw (:draw options (fn []))
+        ; updated-draw will replace draw
+        updated-draw (fn []
+                       (draw) ; call user-provided draw function
+                       (q/fill 0)
+                       (q/text-num (q/current-frame-rate) 10 10))]
+    ; set updated-draw as :draw function
+    (assoc options :draw updated-draw)))
+
+(defn setup []
+  (q/frame-rate 30)
+  (q/color-mode :hsb))
+
+; draw ellipse of random size and random color
+(defn draw []
+  (q/background 240)
+  (let [period 100
+        cur (mod (q/frame-count) period)
+        angle (q/map-range cur
+                           0 period
+                           0 q/PI)]
+    (q/fill (q/map-range cur 0 period 0 255) 255 255)
+    (q/ellipse 100 100
+               (* 150 (q/sin angle))
+               (* 150 (q/cos angle)))))
+
+(q/defsketch my-sketch
+  :size [200 200]
+  :setup setup
+  :draw draw
+  :middleware [show-frame-rate])
+#+END_SRC
+
+#+RESULTS:
+: #'middleware-example/show-frame-rate#'middleware-example/setup#'middleware-example/draw#'middleware-example/my-sketch
+** uses navigation-3d middleware
+#+BEGIN_SRC clojure
+(ns example
+  (:require [quil.core :as q]
+            [quil.middleware :as m]))
+#+END_SRC
+
+
+#+BEGIN_SRC clojure
+; Draws sphere at point [0 0 0] and 6 cubes around it.
+; You can fly around this objects using navigation-3d.
+; This draw function is fun-mode compatible (it takes state),
+; though it's not used here, but we need fun-mode for navigation-3d.
+(defn draw [state]
+  (q/background 255)
+  (q/lights)
+  (q/fill 150 100 150)
+  (q/sphere 75)
+  (doseq [pos [[150 0 0] [-150 0 0]
+               [0 150 0] [0 -150 0]
+               [0 0 150] [0 0 -150]]]
+    (q/with-translation pos
+      (q/box 75))))
+#+END_SRC
+
+#+BEGIN_SRC clojure
+(q/defsketch my-sketch
+  :draw draw
+  :size [500 500]
+  :renderer :p3d
+  ; Enable navigation-3d.
+  ; Note: it should be used together with fun-mode.
+  :middleware [m/fun-mode m/navigation-3d])
+#+END_SRC
+
+#+RESULTS:
+: #'middleware-example/draw
+* clojure topics arising from working on projects
+** classpath in Java
+#+BEGIN_SRC clojure :results output
+(pprint (System/getProperty "java.class.path"))
+#+END_SRC
+
+#+RESULTS:
+: "/Users/b/Github-repos/post-tonal-overtone/test:/Users/b/Github-repos/post-tonal-overtone/src:/Users/b/Github-repos/post-tonal-overtone/dev-resources:/Users/b/Github-repos/post-tonal-overtone/resources:/Users/b/Github-repos/post-tonal-overtone/target/classes:/Users/b/.m2/repository/instaparse/instaparse/1.4.1/instaparse-1.4.1.jar:/Users/b/.m2/repository/org/clojure/tools.macro/0.1.0/tools.macro-0.1.0.jar:/Users/b/.m2/repository/org/clojure/math.combinatorics/0.1.1/math.combinatorics-0.1.1.jar:/Users/b/.m2/repository/org/clojure/clojure/1.8.0/clojure-1.8.0.jar:/Users/b/.m2/repository/org/clojure/java.jdbc/0.5.0/java.jdbc-0.5.0.jar:/Users/b/.m2/repository/watchtower/watchtower/0.1.1/watchtower-0.1.1.jar:/Users/b/.m2/repository/com/lowagie/itext/2.1.7/itext-2.1.7.jar:/Users/b/.m2/repository/overtone/scsynth-extras/3.5.7.0/scsynth-extras-3.5.7.0.jar:/Users/b/.m2/repository/quil/processing-pdf/2.2.1/processing-pdf-2.2.1.jar:/Users/b/.m2/repository/net/java/dev/jna/jna/3.4.0/jna-3.4.0.jar:/Users/b/.m2/repository/org/clojure/google-closure-library-third-party/0.0-20130212-95c19e7f0f5f/google-closure-library-third-party-0.0-20130212-95c19e7f0f5f.jar:/Users/b/.m2/repository/cider/cider-nrepl/0.15.0-SNAPSHOT/cider-nrepl-0.15.0-SNAPSHOT.jar:/Users/b/.m2/repository/com/keminglabs/cljx/0.4.0/cljx-0.4.0.jar:/Users/b/.m2/repository/org/clojure/clojure-contrib/1.2.0/clojure-contrib-1.2.0.jar:/Users/b/.m2/repository/org/clojure/clojurescript/0.0-2080/clojurescript-0.0-2080.jar:/Users/b/.m2/repository/org/bouncycastle/bcmail-jdk14/1.38/bcmail-jdk14-1.38.jar:/Users/b/.m2/repository/com/google/protobuf/protobuf-java/2.4.1/protobuf-java-2.4.1.jar:/Users/b/.m2/repository/org/clojure/core.match/0.2.0/core.match-0.2.0.jar:/Users/b/.m2/repository/overtone/at-at/1.2.0/at-at-1.2.0.jar:/Users/b/.m2/repository/org/clojure/tools.nrepl/0.2.12/tools.nrepl-0.2.12.jar:/Users/b/.m2/repository/org/clojure/tools.reader/0.8.0/tools.reader-0.8.0.jar:/Users/b/.m2/repository/quil/jogl-all-fat/2.1.5/jogl-all-fat-2.1.5.jar:/Users/b/.m2/repository/net/cgrand/regex/1.1.0/regex-1.1.0.jar:/Users/b/.m2/repository/quil/processing-js/1.4.8.2/processing-js-1.4.8.2.jar:/Users/b/.m2/repository/com/google/javascript/closure-compiler/v20130603/closure-compiler-v20130603.jar:/Users/b/.m2/repository/quil/quil/2.2.5/quil-2.2.5.jar:/Users/b/.m2/repository/clojure-complete/clojure-complete/0.2.4/clojure-complete-0.2.4.jar:/Users/b/.m2/repository/overtone/byte-spec/0.3.1/byte-spec-0.3.1.jar:/Users/b/.m2/repository/org/mozilla/rhino/1.7R4/rhino-1.7R4.jar:/Users/b/.m2/repository/overtone/overtone/0.10.1/overtone-0.10.1.jar:/Users/b/.m2/repository/org/json/json/20090211/json-20090211.jar:/Users/b/.m2/repository/bouncycastle/bcprov-jdk14/138/bcprov-jdk14-138.jar:/Users/b/.m2/repository/overtone/osc-clj/0.9.0/osc-clj-0.9.0.jar:/Users/b/.m2/repository/org/clojure/math.numeric-tower/0.0.4/math.numeric-tower-0.0.4.jar:/Users/b/.m2/repository/org/bouncycastle/bctsp-jdk14/1.38/bctsp-jdk14-1.38.jar:/Users/b/.m2/repository/quil/gluegen-rt-fat/2.1.5/gluegen-rt-fat-2.1.5.jar:/Users/b/.m2/repository/bouncycastle/bcmail-jdk14/138/bcmail-jdk14-138.jar:/Users/b/.m2/repository/overtone/libs.handlers/0.2.0/libs.handlers-0.2.0.jar:/Users/b/.m2/repository/org/clojure/algo.monads/0.1.5/algo.monads-0.1.5.jar:/Users/b/.m2/repository/quil/processing-dxf/2.2.1/processing-dxf-2.2.1.jar:/Users/b/.m2/repository/org/postgresql/postgresql/9.4-1201-jdbc41/postgresql-9.4-1201-jdbc41.jar:/Users/b/.m2/repository/quil/processing-core/2.2.1/processing-core-2.2.1.jar:/Users/b/.m2/repository/org/tukaani/xz/1.5/xz-1.5.jar:/Users/b/.m2/repository/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar:/Users/b/.m2/repository/me/raynes/fs/1.4.6/fs-1.4.6.jar:/Users/b/.m2/repository/overtone/scsynth/3.5.7.0/scsynth-3.5.7.0.jar:/Users/b/.m2/repository/commons-net/commons-net/3.0.1/commons-net-3.0.1.jar:/Users/b/.m2/repository/net/cgrand/parsley/0.9.1/parsley-0.9.1.jar:/Users/b/.m2/repository/args4j/args4j/2.0.16/args4j-2.0.16.jar:/Users/b/.m2/repository/org/apache/commons/commons-compress/1.8/commons-compress-1.8.jar:/Users/b/.m2/repository/com/google/guava/guava/14.0.1/guava-14.0.1.jar:/Users/b/.m2/repository/javax/jmdns/jmdns/3.4.1/jmdns-3.4.1.jar:/Users/b/.m2/repository/org/tcrawley/dynapath/0.2.5/dynapath-0.2.5.jar:/Users/b/.m2/repository/yesql/yesql/0.5.2/yesql-0.5.2.jar:/Users/b/.m2/repository/com/cemerick/piggieback/0.1.3/piggieback-0.1.3.jar:/Users/b/.m2/repository/clj-glob/clj-glob/1.0.0/clj-glob-1.0.0.jar:/Users/b/.m2/repository/org/clojure/google-closure-library/0.0-20130212-95c19e7f0f5f/google-closure-library-0.0-20130212-95c19e7f0f5f.jar:/Users/b/.m2/repository/overtone/midi-clj/0.5.0/midi-clj-0.5.0.jar:/Users/b/.m2/repository/org/clojure/data.json/0.2.3/data.json-0.2.3.jar:/Users/b/.m2/repository/clj-native/clj-native/0.9.3/clj-native-0.9.3.jar:/Users/b/.m2/repository/org/clojars/trptcolin/sjacket/0.1.0.6/sjacket-0.1.0.6.jar:/Users/b/.m2/repository/org/bouncycastle/bcprov-jdk14/1.38/bcprov-jdk14-1.38.jar"
+
+#+BEGIN_SRC clojure 
+(System/getProperty "java.class.path")
+#+END_SRC
+
+#+RESULTS:
+: /Users/b/Github-repos/post-tonal-overtone/test:/Users/b/Github-repos/post-tonal-overtone/src:/Users/b/Github-repos/post-tonal-overtone/dev-resources:/Users/b/Github-repos/post-tonal-overtone/resources:/Users/b/Github-repos/post-tonal-overtone/target/classes:/Users/b/.m2/repository/instaparse/instaparse/1.4.1/instaparse-1.4.1.jar:/Users/b/.m2/repository/org/clojure/tools.macro/0.1.0/tools.macro-0.1.0.jar:/Users/b/.m2/repository/org/clojure/math.combinatorics/0.1.1/math.combinatorics-0.1.1.jar:/Users/b/.m2/repository/org/clojure/clojure/1.8.0/clojure-1.8.0.jar:/Users/b/.m2/repository/org/clojure/java.jdbc/0.5.0/java.jdbc-0.5.0.jar:/Users/b/.m2/repository/watchtower/watchtower/0.1.1/watchtower-0.1.1.jar:/Users/b/.m2/repository/com/lowagie/itext/2.1.7/itext-2.1.7.jar:/Users/b/.m2/repository/overtone/scsynth-extras/3.5.7.0/scsynth-extras-3.5.7.0.jar:/Users/b/.m2/repository/quil/processing-pdf/2.2.1/processing-pdf-2.2.1.jar:/Users/b/.m2/repository/net/java/dev/jna/jna/3.4.0/jna-3.4.0.jar:/Users/b/.m2/repository/org/clojure/google-closure-library-third-party/0.0-20130212-95c19e7f0f5f/google-closure-library-third-party-0.0-20130212-95c19e7f0f5f.jar:/Users/b/.m2/repository/cider/cider-nrepl/0.15.0-SNAPSHOT/cider-nrepl-0.15.0-SNAPSHOT.jar:/Users/b/.m2/repository/com/keminglabs/cljx/0.4.0/cljx-0.4.0.jar:/Users/b/.m2/repository/org/clojure/clojure-contrib/1.2.0/clojure-contrib-1.2.0.jar:/Users/b/.m2/repository/org/clojure/clojurescript/0.0-2080/clojurescript-0.0-2080.jar:/Users/b/.m2/repository/org/bouncycastle/bcmail-jdk14/1.38/bcmail-jdk14-1.38.jar:/Users/b/.m2/repository/com/google/protobuf/protobuf-java/2.4.1/protobuf-java-2.4.1.jar:/Users/b/.m2/repository/org/clojure/core.match/0.2.0/core.match-0.2.0.jar:/Users/b/.m2/repository/overtone/at-at/1.2.0/at-at-1.2.0.jar:/Users/b/.m2/repository/org/clojure/tools.nrepl/0.2.12/tools.nrepl-0.2.12.jar:/Users/b/.m2/repository/org/clojure/tools.reader/0.8.0/tools.reader-0.8.0.jar:/Users/b/.m2/repository/quil/jogl-all-fat/2.1.5/jogl-all-fat-2.1.5.jar:/Users/b/.m2/repository/net/cgrand/regex/1.1.0/regex-1.1.0.jar:/Users/b/.m2/repository/quil/processing-js/1.4.8.2/processing-js-1.4.8.2.jar:/Users/b/.m2/repository/com/google/javascript/closure-compiler/v20130603/closure-compiler-v20130603.jar:/Users/b/.m2/repository/quil/quil/2.2.5/quil-2.2.5.jar:/Users/b/.m2/repository/clojure-complete/clojure-complete/0.2.4/clojure-complete-0.2.4.jar:/Users/b/.m2/repository/overtone/byte-spec/0.3.1/byte-spec-0.3.1.jar:/Users/b/.m2/repository/org/mozilla/rhino/1.7R4/rhino-1.7R4.jar:/Users/b/.m2/repository/overtone/overtone/0.10.1/overtone-0.10.1.jar:/Users/b/.m2/repository/org/json/json/20090211/json-20090211.jar:/Users/b/.m2/repository/bouncycastle/bcprov-jdk14/138/bcprov-jdk14-138.jar:/Users/b/.m2/repository/overtone/osc-clj/0.9.0/osc-clj-0.9.0.jar:/Users/b/.m2/repository/org/clojure/math.numeric-tower/0.0.4/math.numeric-tower-0.0.4.jar:/Users/b/.m2/repository/org/bouncycastle/bctsp-jdk14/1.38/bctsp-jdk14-1.38.jar:/Users/b/.m2/repository/quil/gluegen-rt-fat/2.1.5/gluegen-rt-fat-2.1.5.jar:/Users/b/.m2/repository/bouncycastle/bcmail-jdk14/138/bcmail-jdk14-138.jar:/Users/b/.m2/repository/overtone/libs.handlers/0.2.0/libs.handlers-0.2.0.jar:/Users/b/.m2/repository/org/clojure/algo.monads/0.1.5/algo.monads-0.1.5.jar:/Users/b/.m2/repository/quil/processing-dxf/2.2.1/processing-dxf-2.2.1.jar:/Users/b/.m2/repository/org/postgresql/postgresql/9.4-1201-jdbc41/postgresql-9.4-1201-jdbc41.jar:/Users/b/.m2/repository/quil/processing-core/2.2.1/processing-core-2.2.1.jar:/Users/b/.m2/repository/org/tukaani/xz/1.5/xz-1.5.jar:/Users/b/.m2/repository/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar:/Users/b/.m2/repository/me/raynes/fs/1.4.6/fs-1.4.6.jar:/Users/b/.m2/repository/overtone/scsynth/3.5.7.0/scsynth-3.5.7.0.jar:/Users/b/.m2/repository/commons-net/commons-net/3.0.1/commons-net-3.0.1.jar:/Users/b/.m2/repository/net/cgrand/parsley/0.9.1/parsley-0.9.1.jar:/Users/b/.m2/repository/args4j/args4j/2.0.16/args4j-2.0.16.jar:/Users/b/.m2/repository/org/apache/commons/commons-compress/1.8/commons-compress-1.8.jar:/Users/b/.m2/repository/com/google/guava/guava/14.0.1/guava-14.0.1.jar:/Users/b/.m2/repository/javax/jmdns/jmdns/3.4.1/jmdns-3.4.1.jar:/Users/b/.m2/repository/org/tcrawley/dynapath/0.2.5/dynapath-0.2.5.jar:/Users/b/.m2/repository/yesql/yesql/0.5.2/yesql-0.5.2.jar:/Users/b/.m2/repository/com/cemerick/piggieback/0.1.3/piggieback-0.1.3.jar:/Users/b/.m2/repository/clj-glob/clj-glob/1.0.0/clj-glob-1.0.0.jar:/Users/b/.m2/repository/org/clojure/google-closure-library/0.0-20130212-95c19e7f0f5f/google-closure-library-0.0-20130212-95c19e7f0f5f.jar:/Users/b/.m2/repository/overtone/midi-clj/0.5.0/midi-clj-0.5.0.jar:/Users/b/.m2/repository/org/clojure/data.json/0.2.3/data.json-0.2.3.jar:/Users/b/.m2/repository/clj-native/clj-native/0.9.3/clj-native-0.9.3.jar:/Users/b/.m2/repository/org/clojars/trptcolin/sjacket/0.1.0.6/sjacket-0.1.0.6.jar:/Users/b/.m2/repository/org/bouncycastle/bcprov-jdk14/1.38/bcprov-jdk14-1.38.jar
+** ls (Using overtone utility function)
+
+#+BEGIN_SRC clojure 
+(ls ".")
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+.DS_Store
+.git
+.gitignore
+.nrepl-port
+conversions.txt
+conversions2.txt
+data
+hs_err_pid11336.log
+hs_err_pid89889.log
+hs_err_pid97531.log
+LICENSE
+project.clj
+README.md
+resources
+src
+target
+test-text.txt
+two-digit-multiplication-as-strings.txt
+two-digit-multiplication.txt
+#+end_example
+
+#+BEGIN_SRC clojure 
+(ls "/")
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+.dbfseventsd
+.DocumentRevisions-V100
+.DS_Store
+.file
+.fseventsd
+.hotfiles.btree
+.OSInstallerMessages
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.vol
+Applications
+bin
+cores
+dev
+etc
+home
+installer.failurerequests
+Library
+net
+Network
+opt
+private
+sbin
+System
+tmp
+Users
+usr
+var
+Volumes
+#+end_example
+

@@ -1,0 +1,3650 @@
+* starting-up--basics
+When viewing this in emacs org-mode, you will see results for running
+any block code; however, these results will not appear on the github
+wiki (unless you click the 'Raw' tab at the top).
+
+** namespaces
+A big part of really understanding how to build things in Clojure is
+to understand namespaces. Learning about what namespaces are--and
+importantly, what's available to you "in" different namespaces--is a
+step that cannot be emphasized enough at the early stages of learning.
+*** starting up from a .clj source file
+The key here will be having an functioning cider-repl open and
+evaluating a main source file. In emacs, this involves visiting the
+~post_tonal_definitions.clj~ file in my
+post_tonal_overtone/src/post_tonal_overtone directory. (Note, the
+leiningen build template involves installing a basic core.clj file.
+Learning how to best use this is not obvious at first).
+
+But, even more significantly, you will want to develop a strong
+concept of how to instantiate a namespace, and how to load in any code
+you want to be working with from WITHIN the namespace declaration.
+
+Here's one good example (note, the presence of overtone.live on your
+machine or in your files is no minor thing! There should be a link to 
+how to best deal with this for those times when you are starting up a
+system that hasn't had overtone working for it yet. The simplest
+answer is to--once this project is cloned--navigate to the directory
+containing it and start up your lein repl/cider-jack-in from there.
+
+Note that the first time you do this, there may be a lot of stuff to
+download! You can also simply just:
+
+#+BEGIN_SRC clojure
+(use 'overtone.live)
+#+END_SRC
+)
+
+#+BEGIN_SRC clojure
+(ns post_tonal_overtone.core
+  (:use overtone.live)
+  (:require [post_tonal_overtone.data.set_class_data :as set-class]))
+#+END_SRC
+Here's a slightly more messed up one. Can you spot the differences,
+subtle and obvious?
+
+#+BEGIN_SRC clojure
+(ns post-tonal-overtone.core
+  (:use overtone.live
+        overtone.inst.sampled-piano
+
+        ;;	post-tonal-overtone.set-class-data
+        ;;	post-tonal-overtone
+        ;;	org.clojure/math.combinatorics "0.1.1"
+        ;; is it necessary to load .repl?
+        ;; if you want to call 'dir' and such un-prefixed
+        ;;	clojure.repl
+        )
+  (:require [post_tonal_overtone.data.set_class_data :as set-class]
+            [post_tonal_overtone.core :as pt]))
+#+END_SRC
+*** calling dir
+If you want to get a sense of what you have been bringing in, and want
+to begin to get a sense of how namespaces really work, take a look at
+what may be defined in a given namespace.
+**** (dir post_tonal_overtone.core)
+Note, this will not necessarily produce the same results as below.
+Why? What has to happen for all my nice handiwork to be loaded?
+#+BEGIN_SRC clojure :results output
+(dir post_tonal_overtone.core)
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_EXAMPLE
+a
+actual-melody
+append-to
+b
+bpm
+chord-progression-time1
+chord-progression-time10
+chord-progression-time2
+chord-progression-time3
+chord-progression-time4
+chord-progression-time5
+chord-progression-time6
+chord-progression-time7
+chord-progression-time8
+chord-progression-time9
+do-re-mi
+event-list
+event-list1
+from
+looper
+m
+med96
+metro
+mod12
+my-chord-progression-time
+my-ctford-play
+my-play
+new-play
+noisey-sustained
+noisey2
+piano-dissonances3
+play
+play-chord-saw1
+play-chord-sin2
+play-piano-chord
+play-piano-dissonances2
+play-piano-dissonances3
+play-quieter-piano-chord
+random-sample
+saw-diss
+saw1
+scale-degrees
+sin3
+sine-tetra-diss
+some-midis
+stateful-chord
+tetrachord-piano-dissonances2
+voice-and-transpose-rand-set
+voice-rand-set
+where
+#+END_EXAMPLE
+**** (dir post_tonal_overtone.data.set_class_data)
+#+BEGIN_SRC clojure :results output
+(dir post_tonal_overtone.data.set_class_data)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+cmajtriads
+dyads
+dyads-tn
+hexachords
+hexachords-tn
+nested-transposed-tetrachords
+pentachords
+pentachords-tn
+tetrachords
+tetrachords-tn
+trichords
+trichords-tn
+#+end_example
+**** (dir post_tonal_overtone.probability_functions.finite-distributions)
+#+BEGIN_SRC clojure :results output
+(dir post_tonal_overtone.probability_functions.finite-distributions)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+bernoulli
+binomial
+certainly
+choose
+cond-dist-m
+cond-prob
+dist-m
+join-with
+make-distribution
+normalize
+normalize-cond
+prob
+select
+uniform
+zipf
+#+end_example
+**** overtone.live
+#+BEGIN_SRC clojure :results output
+(dir overtone.live)
+#+END_SRC
+
+#+RESULTS:
+**** overtone.core--same as overtone.live?
+#+BEGIN_SRC clojure :results output
+(dir overtone.core)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+*api-key*
+*cache-root*
+*constants*
+*demo-time*
+*node-tree-data*
+*ugens*
+->AudioBus
+->Buffer
+->BufferFile
+->BufferInStream
+->BufferInfo
+->BufferOutStream
+->ControlBus
+->FreesoundSample
+->Inst
+->LossyWorker
+->Metronome
+->PlayableSample
+->Sample
+->ShellStringList
+->Synth
+->SynthGroup
+->SynthNode
+BITS
+CHORD
+COMPLEX
+CONFIG-DEFAULTS
+DEFAULT-PAN
+DEFAULT-RATE
+DEFAULT-VOLUME
+DEGREE
+ENV-SHAPES
+EXP
+EXPONENTIAL
+FREE
+FREE-AND-AFTER
+FREE-AND-BEFORE
+FREE-AND-GROUP-AFTER
+FREE-AND-GROUP-AFTER-DEEP
+FREE-AND-GROUP-BEFORE
+FREE-AND-GROUP-BEFORE-DEEP
+FREE-CHILDREN
+FREE-FROM-THIS-ON
+FREE-GROUP
+FREE-PAUSE-AFTER
+FREE-PAUSE-BEFORE
+FREE-UPTO-THIS
+HANN
+IBus
+IControllableNode
+IMetronome
+INF
+INFINITE
+ISynthGroup
+ISynthNode
+ISynthNodeStatus
+LIN
+LINEAR
+MAGSUM
+MAX-DELAY
+MIDDLE-C
+MIDI-NOTE-RE
+MIDI-NOTE-RE-STR
+MIDI-RANGE
+MIXER-BOOT-DEPS
+MKL
+NO-ACTION
+NODE-POSITION
+NOTES
+ONLY-MIDI-NOTE-RE
+OVERTONE-ASSETS-FILE
+OVERTONE-CONFIG-FILE
+OVERTONE-DIRS
+OVERTONE-LOG-FILE
+OVERTONE-USER-STORE-FILE
+OVERTONE-VERSION
+OVERTONE-VERSION-STR
+PAUSE
+PHASE
+POWER
+RCOMPLEX
+RECT
+REVERSE-NOTES
+SCALE
+SINE
+TWO-PI
+WPHASE
+__BUS-MIXERS__
+__BUS-MONITOR-SYNTH__
+__DEFINE-PLAYERS__
+__ENSURE-DIRS___
+__ENSURE-LIVE-ASSET-STORE__
+__ENSURE-STORAGE-FILES__
+__INTERN-UGENS__
+__LOAD-CONFIG__
+__MIXER-SYNTHS__
+__MOVE-OLD-ROOT-DIR__
+__PRINT-CONNECT-HELP__
+__RECORDER__
+__SERVER-INFO__
+___reserve-overtone-busses____
+_root-group_
+a2k
+a2k:kr
+abs
+absdif
+acos
+active-synth-nodes*
+active-synths
+#<cgen: add-cents>
+#<cgen: add-cents:ar>
+#<cgen: add-cents:kr>
+add-instrument
+adsr
+after-delay
+allpass-c
+allpass-c:ar
+allpass-c:kr
+allpass-l
+allpass-l:ar
+allpass-l:kr
+allpass-n
+allpass-n:ar
+allpass-n:kr
+amclip
+amp->db
+amp-comp
+amp-comp-a
+amp-comp-a:ar
+amp-comp-a:ir
+amp-comp-a:kr
+amp-comp:ar
+amp-comp:ir
+amp-comp:kr
+ampdb
+amplitude
+amplitude-mod
+amplitude-mod:ar
+amplitude-mod:kr
+amplitude:ar
+amplitude:kr
+analyse-events2
+analyse-events2:ar
+apf
+apf:ar
+apf:kr
+apply-at
+apply-by
+asin
+asr
+asset-bundle-dir
+asset-bundle-path
+asset-path
+asset-seq
+assets*
+at
+atan
+atan2
+audio-bus
+audio-bus-count*
+audio-bus-monitor
+audio-bus?
+ay
+ay:ar
+b-all-pass
+b-all-pass:ar
+b-band-pass
+b-band-pass:ar
+b-band-stop
+b-band-stop:ar
+b-hi-pass
+#<cgen: b-hi-pass4>
+#<cgen: b-hi-pass4:ar>
+b-hi-pass:ar
+b-hi-shelf
+b-hi-shelf:ar
+b-low-pass
+#<cgen: b-low-pass4>
+#<cgen: b-low-pass4:ar>
+b-low-pass:ar
+b-low-shelf
+b-low-shelf:ar
+b-moog
+b-moog:ar
+b-peak-eq
+b-peak-eq:ar
+balance2
+balance2:ar
+ball
+ball:ar
+beat-ms
+beat-track
+beat-track2
+beat-track2:kr
+beat-track:kr
+bi-pan-b2
+bi-pan-b2:ar
+bi-pan-b2:kr
+bl-buf-rd
+bl-buf-rd:ar
+bl-buf-rd:kr
+blip
+blip:ar
+block-node-until-ready?
+boot-external-server
+boot-internal-server
+boot-server
+boot-server-and-mixer
+bpf
+bpf:ar
+bpf:kr
+bpz2
+bpz2:ar
+bpz2:kr
+breakcore
+breakcore:ar
+brf
+brf:ar
+brf:kr
+brown-noise
+brown-noise:ar
+brown-noise:kr
+brusselator
+brusselator:ar
+brz2
+brz2:ar
+brz2:kr
+buf-allpass-c
+buf-allpass-c:ar
+buf-allpass-l
+buf-allpass-l:ar
+buf-allpass-n
+buf-allpass-n:ar
+buf-channels
+buf-channels:ir
+buf-channels:kr
+buf-comb-c
+buf-comb-c:ar
+buf-comb-l
+buf-comb-l:ar
+buf-comb-n
+buf-comb-n:ar
+buf-delay-c
+buf-delay-c:ar
+buf-delay-c:kr
+buf-delay-l
+buf-delay-l:ar
+buf-delay-l:kr
+buf-delay-n
+buf-delay-n:ar
+buf-delay-n:kr
+buf-dur
+buf-dur:ir
+buf-dur:kr
+buf-frames
+buf-frames:ir
+buf-frames:kr
+buf-rate-scale
+buf-rate-scale:ir
+buf-rate-scale:kr
+buf-rd
+buf-rd:ar
+buf-rd:kr
+buf-sample-rate
+buf-sample-rate:ir
+buf-sample-rate:kr
+buf-samples
+buf-samples:ir
+buf-samples:kr
+buf-wr
+buf-wr:ar
+buf-wr:kr
+buffer
+buffer-alloc-read
+buffer-count*
+buffer-cue
+buffer-cue-pos
+buffer-data
+buffer-fill!
+buffer-free
+buffer-get
+buffer-id
+buffer-in-stream?
+buffer-info
+buffer-info?
+buffer-live?
+buffer-out-stream?
+buffer-read
+buffer-save
+buffer-set!
+buffer-size
+buffer-stream
+buffer-stream-close
+buffer-write!
+buffer-write-relay!
+buffer?
+bus-monitor
+bus?
+c-osc
+c-osc:ar
+c-osc:kr
+cached-samples*
+canonical-pitch-class-name
+ceil
+cents
+cgen
+check-bad-values
+check-bad-values:ir
+check-bad-values:kr
+choose
+choose-n
+chord
+chord-degree
+chosen-from
+clear
+clear-all
+clear-buf
+clear-buf:ir
+clear-fx
+clear-instruments
+clear-msg-queue
+clip
+clip-noise
+clip-noise:ar
+clip2
+clip:ar
+clip:kr
+clipper32
+clipper32:ar
+clipper4
+clipper4:ar
+clipper8
+clipper8:ar
+closest-to
+coin-gate
+coin-gate:ir
+coin-gate:kr
+comb-c
+comb-c:ar
+comb-c:kr
+comb-l
+comb-l:ar
+comb-l:kr
+comb-n
+comb-n:ar
+comb-n:kr
+compander
+compander:ar
+config
+config-get
+config-set!
+connect-external-server
+connection-info
+control-bus
+control-bus-get
+control-bus-get-range
+control-bus-monitor
+control-bus-set!
+control-bus-set-range!
+control-bus?
+control-dur
+control-dur:ir
+control-rate
+control-rate:ir
+convolution
+convolution2
+convolution2-l
+convolution2-l:ar
+convolution2:ar
+convolution3
+convolution3:ar
+convolution3:kr
+convolution:ar
+cos
+cosh
+cosr
+count-ugens
+coyote
+coyote:kr
+cpsmidi
+cpsoct
+crackle
+crackle:ar
+crackle:kr
+create-buffer-data
+crossover-distortion
+crossover-distortion:ar
+ctl
+cubed
+cubed-shape
+curve-shape
+cusp-l
+cusp-l:ar
+cusp-n
+cusp-n:ar
+cutoff
+cycle-fn
+#<cgen: d-gauss>
+#<cgen: d-gauss:dr>
+dadsr
+db->amp
+dbamp
+#<cgen: dbrown>
+dbrown2
+dbrown2:dr
+#<cgen: dbrown:dr>
+dbufrd
+dbufrd:dr
+#<cgen: dbufwr>
+#<cgen: dbufwr:dr>
+dc
+dc:ar
+dc:kr
+decay
+decay2
+decay2:ar
+decay2:kr
+decay:ar
+decay:kr
+decimator
+decimator:ar
+decode-b2
+decode-b2:ar
+decode-b2:kr
+defcgen
+definst
+defratio
+defsample
+defsynth
+defunk-env
+degree->int
+degree->interval
+degree-to-key
+degree-to-key:ar
+degree-to-key:kr
+degrees->pitches
+delay-c
+delay-c:ar
+delay-c:kr
+delay-l
+delay-l:ar
+delay-l:kr
+delay-n
+delay-n:ar
+delay-n:kr
+delay1
+delay1:ar
+delay1:kr
+delay2
+delay2:ar
+delay2:kr
+demand
+demand-env-gen
+demand-env-gen:ar
+demand-env-gen:kr
+demand:ar
+demand:kr
+demo
+detect-index
+detect-index:ar
+detect-index:kr
+detect-silence
+detect-silence:ar
+detect-silence:kr
+#<cgen: dgeom>
+#<cgen: dgeom:dr>
+#<cgen: dibrown>
+#<cgen: dibrown:dr>
+difsqr
+disintegrator
+disintegrator:ar
+disk-in
+disk-in:ar
+disk-out
+disk-out:ar
+distort
+#<cgen: diwhite>
+#<cgen: diwhite:dr>
+donce
+donce:dr
+done
+done:kr
+double-nested-allpass-c
+double-nested-allpass-c:ar
+double-nested-allpass-l
+double-nested-allpass-l:ar
+double-nested-allpass-n
+double-nested-allpass-n:ar
+double-well
+double-well2
+double-well2:ar
+double-well3
+double-well3:ar
+double-well:ar
+dpoll
+dpoll:dr
+drand
+drand:dr
+drive-noise
+drive-noise:ar
+dseq
+dseq:dr
+dser
+dser:dr
+#<cgen: dseries>
+#<cgen: dseries:dr>
+dshuf
+dshuf:dr
+dstutter
+dstutter:dr
+dswitch
+dswitch1
+dswitch1:dr
+dswitch:dr
+dust
+dust2
+dust2:ar
+dust2:kr
+dust:ar
+dust:kr
+#<cgen: duty>
+#<cgen: duty:ar>
+#<cgen: duty:kr>
+#<cgen: dwhite>
+#<cgen: dwhite:dr>
+dxrand
+dxrand:dr
+ensure-buffer-active!
+ensure-connected!
+ensure-node-active!
+env-adsr
+env-asr
+env-cutoff
+env-dadsr
+env-gen
+env-gen:ar
+env-gen:kr
+env-lin
+env-perc
+env-sine
+env-triangle
+envelope
+event
+event-debug-off
+event-debug-on
+event-monitor
+event-monitor-keys
+event-monitor-off
+event-monitor-on
+event-monitor-timer
+example
+examples
+excess
+exp
+exp-rand
+exp-rand:ir
+expand-control-ugs
+exponential-shape
+external-server-log
+external-server?
+f-sin-osc
+f-sin-osc:ar
+f-sin-osc:kr
+fb-sine-c
+fb-sine-c:ar
+fb-sine-l
+fb-sine-l:ar
+fb-sine-n
+fb-sine-n:ar
+fft
+fft-trigger
+fft-trigger:kr
+fft:kr
+fhn-trig
+fhn-trig:ar
+fhn-trig:kr
+fhn2-dc
+fhn2-dc:ar
+fhn2-dc:kr
+fhn2-dl
+fhn2-dl:ar
+fhn2-dl:kr
+fhn2-dn
+fhn2-dn:ar
+fhn2-dn:kr
+fifth
+file-buffer?
+fill
+find-chord
+find-note-name
+find-pitch-class-name
+find-scale-name
+find-ugen
+find-ugen-doc
+flat
+floor
+fold
+fold2
+fold:ar
+fold:kr
+formant
+formant:ar
+formlet
+formlet:ar
+formlet:kr
+fos
+fos:ar
+fos:kr
+foundation-default-group
+foundation-input-group
+foundation-monitor-group
+foundation-output-group
+foundation-overtone-group
+foundation-root-group
+foundation-safe-group
+foundation-safe-post-default-group
+foundation-safe-pre-default-group
+foundation-user-group
+fourth
+frac
+frame-compare
+frame-compare:kr
+free
+free-all-loaded-samples
+free-bus
+free-sample
+free-self
+free-self-when-done
+free-self-when-done:kr
+free-self:kr
+free-verb
+free-verb2
+free-verb2:ar
+free-verb:ar
+free:kr
+freesound
+freesound-info
+freesound-pack-dir
+freesound-pack-info
+freesound-path
+freesound-sample
+freesound-search
+freesound-search-paths
+freesound-searchm
+freq-shift
+freq-shift:ar
+#<synth: fx-bitcrusher>
+#<synth: fx-chorus>
+#<synth: fx-compressor>
+#<synth: fx-distortion>
+#<synth: fx-distortion-tubescreamer>
+#<synth: fx-distortion2>
+#<synth: fx-echo>
+#<synth: fx-feedback>
+#<synth: fx-feedback-distortion>
+#<synth: fx-freeverb>
+#<synth: fx-limiter>
+#<synth: fx-noise-gate>
+#<synth: fx-reverb>
+#<synth: fx-rhpf>
+#<synth: fx-rlpf>
+#<synth: fx-sustainer>
+g-verb
+g-verb:ar
+gate
+gate:ar
+gate:kr
+gather-ugens-and-constants
+gauss-trig
+gauss-trig:ar
+gauss-trig:kr
+gbman-l
+gbman-l:ar
+gbman-n
+gbman-n:ar
+gbman-trig
+gbman-trig:ar
+gbman-trig:kr
+gbman2-dc
+gbman2-dc:ar
+gbman2-dc:kr
+gbman2-dl
+gbman2-dl:ar
+gbman2-dl:kr
+gbman2-dn
+gbman2-dn:ar
+gbman2-dn:kr
+gendy1
+gendy1:ar
+gendy1:kr
+gendy2
+gendy2:ar
+gendy2:kr
+gendy3
+gendy3:ar
+gendy3:kr
+gendy4
+gendy4:ar
+gendy4:kr
+gendy5
+gendy5:ar
+gendy5:kr
+generate-full-cgen-doc
+get-example
+glitch-hpf
+glitch-hpf:ar
+glitch-hpf:kr
+glitch-rhpf
+glitch-rhpf:ar
+glitch-rhpf:kr
+grain-in
+grain-in:ar
+grain-sin
+grain-sin:ar
+graphviz
+gravity-grid
+gravity-grid2
+gravity-grid2:ar
+gravity-grid:ar
+gray-noise
+gray-noise:ar
+grep
+group
+group-append-node
+group-clear
+group-deep-clear
+group-free
+group-node-tree
+group-post-tree
+group-prepend-node
+han-window
+hasher
+hasher:ar
+henon-c
+henon-c:ar
+henon-l
+henon-l:ar
+henon-n
+henon-n:ar
+henon-trig
+henon-trig:ar
+henon-trig:kr
+henon2-dc
+henon2-dc:ar
+henon2-dc:kr
+henon2-dl
+henon2-dl:ar
+henon2-dl:kr
+henon2-dn
+henon2-dn:ar
+henon2-dn:kr
+hilbert
+hilbert:ar
+#<cgen: hold>
+#<cgen: hold:ar>
+hpf
+hpf:ar
+hpf:kr
+hpz1
+hpz1:ar
+hpz1:kr
+hpz2
+hpz2:ar
+hpz2:kr
+hypot
+hypot-aprox
+hz->midi
+i-env-gen
+i-env-gen:ar
+i-env-gen:kr
+i-rand
+i-rand:ir
+idify
+ifft
+ifft:ar
+ifft:kr
+iir-filter
+iir-filter:ar
+impulse
+impulse:ar
+impulse:kr
+in
+#<synth: in-bus-mixer>
+in-feedback
+in-feedback:ar
+in-osc-bundle
+in-range
+in-range:ar
+in-range:kr
+in-rect
+in-rect:ar
+in-rect:kr
+in-trig
+in-trig:kr
+in-unested-osc-bundle
+in:ar
+in:kr
+inactive-buffer-modification-error
+inactive-node-modification-error
+index
+index-in-between
+index-in-between:ar
+index-in-between:kr
+index:ar
+index:kr
+input-bus-count*
+input-gain
+inst
+inst-channels
+inst-fx!
+inst-mixer
+inst-pan!
+inst-volume!
+inst?
+integrator
+integrator:ar
+integrator:kr
+internal-server?
+internal:d-gauss
+internal:d-gauss:dr
+internal:dbrown
+internal:dbrown:dr
+internal:dbufwr
+internal:dbufwr:dr
+internal:dgeom
+internal:dgeom:dr
+internal:dibrown
+internal:dibrown:dr
+internal:diwhite
+internal:diwhite:dr
+internal:dseries
+internal:dseries:dr
+internal:duty
+internal:duty:ar
+internal:duty:kr
+internal:dwhite
+internal:dwhite:dr
+internal:local-buf
+internal:local-buf:ir
+internal:poll
+internal:poll:ar
+internal:poll:kr
+internal:t-duty
+internal:t-duty:ar
+internal:t-duty:kr
+interspaced
+interval-freq
+invert
+invert-chord
+k2a
+k2a:ar
+key-state
+key-state:kr
+key-track
+key-track:kr
+kill
+kill-player
+kill-server
+klang
+klang:ar
+klank
+klank:ar
+lag
+lag-in
+lag-in:kr
+lag-ud
+lag-ud:ar
+lag-ud:kr
+lag2
+lag2-ud
+lag2-ud:ar
+lag2-ud:kr
+lag2:ar
+lag2:kr
+lag3
+lag3-ud
+lag3-ud:ar
+lag3-ud:kr
+lag3:ar
+lag3:kr
+lag:ar
+lag:kr
+last-value
+last-value:ar
+last-value:kr
+latch
+latch:ar
+latch:kr
+latoocarfian-c
+latoocarfian-c:ar
+latoocarfian-l
+latoocarfian-l:ar
+latoocarfian-n
+latoocarfian-n:ar
+latoocarfian-trig
+latoocarfian-trig:ar
+latoocarfian-trig:kr
+latoocarfian2-dc
+latoocarfian2-dc:ar
+latoocarfian2-dc:kr
+latoocarfian2-dl
+latoocarfian2-dl:ar
+latoocarfian2-dl:kr
+latoocarfian2-dn
+latoocarfian2-dn:ar
+latoocarfian2-dn:kr
+leak-dc
+leak-dc:ar
+leak-dc:kr
+least-change
+least-change:ar
+least-change:kr
+lf-brown-noise0
+lf-brown-noise0:ar
+lf-brown-noise0:kr
+lf-brown-noise1
+lf-brown-noise1:ar
+lf-brown-noise1:kr
+lf-brown-noise2
+lf-brown-noise2:ar
+lf-brown-noise2:kr
+lf-clip-noise
+lf-clip-noise:ar
+lf-clip-noise:kr
+lf-cub
+lf-cub:ar
+lf-cub:kr
+lf-gauss
+lf-gauss:ar
+lf-gauss:kr
+lf-noise0
+lf-noise0:ar
+lf-noise0:kr
+lf-noise1
+lf-noise1:ar
+lf-noise1:kr
+lf-noise2
+lf-noise2:ar
+lf-noise2:kr
+lf-par
+lf-par:ar
+lf-par:kr
+lf-pulse
+lf-pulse:ar
+lf-pulse:kr
+lf-saw
+lf-saw:ar
+lf-saw:kr
+lf-tri
+lf-tri:ar
+lf-tri:kr
+lfd-clip-noise
+lfd-clip-noise:ar
+lfd-clip-noise:kr
+lfd-noise0
+lfd-noise0:ar
+lfd-noise0:kr
+lfd-noise1
+lfd-noise1:ar
+lfd-noise1:kr
+lfd-noise3
+lfd-noise3:ar
+lfd-noise3:kr
+limiter
+limiter:ar
+lin
+lin-cong-c
+lin-cong-c:ar
+lin-cong-l
+lin-cong-l:ar
+lin-cong-n
+lin-cong-n:ar
+lin-exp
+lin-exp:ar
+lin-exp:kr
+#<cgen: lin-lin>
+#<cgen: lin-lin:ar>
+#<cgen: lin-lin:kr>
+lin-pan2
+lin-pan2:ar
+lin-pan2:kr
+lin-rand
+lin-rand:ir
+lin-x-fade2
+lin-x-fade2:ar
+lin-x-fade2:kr
+line
+line:ar
+line:kr
+linear-interpolate-wavetable
+linear-shape
+linen
+linen:kr
+live-config
+live-store
+load-instruments
+load-sample
+load-samples
+loaded-samples*
+#<cgen: local-buf>
+#<cgen: local-buf:ir>
+local-in
+local-in:ar
+local-in:kr
+local-out
+local-out:ar
+local-out:kr
+log
+log10
+log2
+logistic
+logistic:ar
+lorenz-l
+lorenz-l:ar
+lorenz-trig
+lorenz-trig:ar
+lorenz-trig:kr
+lorenz2-dc
+lorenz2-dc:ar
+lorenz2-dc:kr
+lorenz2-dl
+lorenz2-dl:ar
+lorenz2-dl:kr
+lorenz2-dn
+lorenz2-dn:ar
+lorenz2-dn:kr
+loudness
+loudness:kr
+lpf
+lpf1
+lpf18
+lpf18:ar
+lpf1:ar
+lpf1:kr
+lpf:ar
+lpf:kr
+lpfvs6
+lpfvs6:ar
+lpfvs6:kr
+lpz1
+lpz1:ar
+lpz1:kr
+lpz2
+lpz2:ar
+lpz2:kr
+ls
+mantissa-mask
+mantissa-mask:ar
+map->AudioBus
+map->Buffer
+map->BufferFile
+map->BufferInStream
+map->BufferInfo
+map->BufferOutStream
+map->ControlBus
+map->FreesoundSample
+map->Inst
+map->LossyWorker
+map->PlayableSample
+map->Sample
+map->Synth
+map->SynthGroup
+map->SynthNode
+markov-synth
+markov-synth:ar
+#<synth: master-recorder>
+match-note
+max-local-bufs
+max-local-bufs:ir
+mda-piano
+mda-piano:ar
+median
+median:ar
+median:kr
+membrane-circle
+membrane-circle:ar
+membrane-hexagon
+membrane-hexagon:ar
+metro-bar
+metro-bar-start
+metro-beat
+metro-bpb
+metro-bpm
+metro-start
+metro-tick
+metro-tock
+metronome
+mfcc
+mfcc:kr
+mid-eq
+mid-eq:ar
+mid-eq:kr
+midi->hz
+midi-agent-for-control
+midi-capture-next-control-input
+midi-capture-next-controller-control-key
+midi-capture-next-controller-key
+midi-connected-devices
+midi-connected-receivers
+midi-control
+midi-control-agents*
+midi-device-keys
+midi-device-num
+midi-find-connected-device
+midi-find-connected-devices
+midi-find-connected-receiver
+midi-find-connected-receivers
+midi-full-device-key
+midi-inst-controller
+midi-mk-control-key-keyword
+midi-mk-full-control-event-key
+midi-mk-full-device-event-key
+midi-mk-full-device-key
+midi-note
+midi-note-off
+midi-note-on
+midi-player-stop
+midi-poly-player
+midi-sysex
+midicps
+midiratio
+min-sixth
+min-third
+#<cgen: mix>
+#<cgen: mix:ar>
+mixer-booted?
+mk-cgen
+mk-midi-string
+modify-synth-params
+#<synth: mono-audio-bus-level>
+#<synth: mono-inst-mixer>
+#<synth: mono-player>
+#<synth: mono-stream-player>
+moog-ff
+moog-ff:ar
+moog-ff:kr
+moog-ladder
+moog-ladder:ar
+moog-ladder:kr
+most-change
+most-change:ar
+most-change:kr
+mouse-button
+mouse-button:kr
+mouse-x
+mouse-x:kr
+mouse-y
+mouse-y:kr
+mul-add
+mul-add:ar
+mul-add:dr
+mul-add:ir
+mul-add:kr
+n-rand
+n-rand:ir
+needle-rect
+needle-rect:ar
+neg
+nested-allpass-c
+nested-allpass-c:ar
+nested-allpass-l
+nested-allpass-l:ar
+nested-allpass-n
+nested-allpass-n:ar
+nl-filt-c
+nl-filt-c:ar
+nl-filt-c:kr
+nl-filt-l
+nl-filt-l:ar
+nl-filt-l:kr
+nl-filt-n
+nl-filt-n:ar
+nl-filt-n:kr
+node
+node-active?
+node-block-until-ready
+node-block-until-ready*
+node-control
+node-control*
+node-control-range
+node-control-range*
+node-created-event-key
+node-destroyed-event-key
+node-free
+node-free*
+node-get-control
+node-get-control-range
+node-get-controls
+node-live?
+node-loading?
+node-map-controls
+node-map-controls*
+node-map-n-controls
+node-map-n-controls*
+node-pause
+node-pause*
+node-paused-event-key
+node-paused?
+node-place
+node-place*
+node-start
+node-start*
+node-started-event-key
+node-status
+node-status*
+node-tree
+node-tree-matching-synth-ids
+node-tree-seq
+node-tree-zipper
+node?
+normalize-synth-args
+normalizer
+normalizer:ar
+not-pos?
+note
+note-info
+now
+ns-instruments
+nth-equal-tempered-freq
+nth-interval
+nth-octave
+num-audio-buses
+num-audio-buses:ir
+num-buffers
+num-buffers:ir
+num-control-buses
+num-control-buses:ir
+num-frames
+num-input-buses
+num-input-buses:ir
+num-output-buses
+num-output-buses:ir
+num-running-synths
+num-running-synths:ir
+num-running-synths:kr
+octave
+octave-note
+octcps
+odoc
+offset-out
+offset-out:ar
+on-event
+on-latest-event
+on-latest-trigger
+on-node-created
+on-node-destroyed
+on-node-paused
+on-node-started
+on-sync-event
+on-sync-trigger
+on-trigger
+one-pole
+one-pole:ar
+one-pole:kr
+one-zero
+one-zero:ar
+one-zero:kr
+oneshot-event
+oneshot-sync-event
+only
+onsets
+onsets:kr
+opp
+os-fold4
+os-fold4:ar
+os-fold8
+os-fold8:ar
+os-trunc4
+os-trunc4:ar
+os-trunc8
+os-trunc8:ar
+os-wrap4
+os-wrap4:ar
+os-wrap8
+os-wrap8:ar
+osc
+osc-bundle
+osc-client
+osc-close
+osc-debug
+osc-handle
+osc-handlers
+osc-listen
+osc-listeners
+osc-msg
+osc-n
+osc-n:ar
+osc-n:kr
+osc-now
+osc-peer
+osc-recv
+osc-reply
+osc-reply-msg
+osc-rm-all-handlers
+osc-rm-all-listeners
+osc-rm-handler
+osc-rm-listener
+osc-send
+osc-send-bundle
+osc-send-msg
+osc-server
+osc-target
+osc:ar
+osc:kr
+oscy
+oscy:ar
+oscy:kr
+out
+#<synth: out-bus-mixer>
+out:ar
+out:kr
+output-bus-count*
+p-sin-grain
+p-sin-grain:ar
+pan-az
+pan-az:ar
+pan-az:kr
+pan-b
+pan-b2
+pan-b2:ar
+pan-b2:kr
+pan-b:ar
+pan-b:kr
+pan2
+pan2:ar
+pan2:kr
+pan4
+pan4:ar
+pan4:kr
+parse-cgen-params
+part-conv
+part-conv:ar
+pause
+pause-self
+pause-self-when-done
+pause-self-when-done:kr
+pause-self:kr
+pause:kr
+peak
+peak-eq2
+peak-eq2:ar
+peak-eq4
+peak-eq4:ar
+peak-follower
+peak-follower:ar
+peak-follower:kr
+peak:ar
+peak:kr
+perc
+periodic
+phasor
+phasor:ar
+phasor:kr
+pink-noise
+pink-noise:ar
+pink-noise:kr
+pitch
+pitch-shift
+pitch-shift:ar
+pitch:kr
+play-buf
+play-buf:ar
+play-buf:kr
+player-pool
+pluck
+pluck:ar
+#<cgen: pm-osc>
+#<cgen: pm-osc:ar>
+#<cgen: pm-osc:kr>
+#<cgen: poll>
+#<cgen: poll:ar>
+#<cgen: poll:kr>
+poly-players*
+pow
+pp-node-tree
+pp-sdef
+pp-unified-sdef
+pre-inst
+pre-synth
+pretty-ugen-doc-string
+print-ugen-docs
+pulse
+pulse-count
+pulse-count:ar
+pulse-count:kr
+pulse-divider
+pulse-divider:ar
+pulse-divider:kr
+pulse:ar
+pv-add
+pv-add:kr
+pv-bin-scramble
+pv-bin-scramble:kr
+pv-bin-shift
+pv-bin-shift:kr
+pv-bin-wipe
+pv-bin-wipe:kr
+pv-brick-wall
+pv-brick-wall:kr
+pv-common-mag
+pv-common-mag:kr
+pv-common-mul
+pv-common-mul:kr
+pv-compander
+pv-compander:kr
+pv-conformal-map
+pv-conformal-map:kr
+pv-conj
+pv-conj:kr
+pv-copy
+pv-copy-phase
+pv-copy-phase:kr
+pv-copy:kr
+pv-cutoff
+pv-cutoff:kr
+pv-diffuser
+pv-diffuser:kr
+pv-div
+pv-div:kr
+pv-hainsworth-foote
+pv-hainsworth-foote:ar
+pv-jensen-andersen
+pv-jensen-andersen:ar
+pv-local-max
+pv-local-max:kr
+pv-mag-above
+pv-mag-above:kr
+pv-mag-below
+pv-mag-below:kr
+pv-mag-clip
+pv-mag-clip:kr
+pv-mag-div
+pv-mag-div:kr
+pv-mag-freeze
+pv-mag-freeze:kr
+pv-mag-gate
+pv-mag-gate:kr
+pv-mag-minus
+pv-mag-minus:kr
+pv-mag-mul
+pv-mag-mul:kr
+pv-mag-noise
+pv-mag-noise:kr
+pv-mag-scale
+pv-mag-scale:kr
+pv-mag-shift
+pv-mag-shift:kr
+pv-mag-smear
+pv-mag-smear:kr
+pv-mag-squared
+pv-mag-squared:kr
+pv-max
+pv-max:kr
+pv-min
+pv-min:kr
+pv-morph
+pv-morph:kr
+pv-mul
+pv-mul:kr
+pv-phase-shift
+pv-phase-shift270
+pv-phase-shift270:kr
+pv-phase-shift90
+pv-phase-shift90:kr
+pv-phase-shift:kr
+pv-rand-comb
+pv-rand-comb:kr
+pv-rand-wipe
+pv-rand-wipe:kr
+pv-rect-comb
+pv-rect-comb2
+pv-rect-comb2:kr
+pv-rect-comb:kr
+pv-soft-wipe
+pv-soft-wipe:kr
+pv-x-fade
+pv-x-fade:kr
+quad-c
+quad-c:ar
+quad-l
+quad-l:ar
+quad-n
+quad-n:ar
+radians-per-sample
+radians-per-sample:ir
+ramp
+ramp:ar
+ramp:kr
+rand-chord
+rand-id
+rand-id:ir
+rand-id:kr
+rand-seed
+rand-seed:ir
+rand-seed:kr
+#<cgen: range-lin>
+#<cgen: range-lin:ar>
+#<cgen: range-lin:kr>
+ranged-rand
+ratiomidi
+reciprocal
+record-buf
+record-buf:ar
+record-buf:kr
+recording-start
+recording-stop
+recording?
+rect-window
+recv
+register-assets!
+registered-assets
+remove-event-handler
+remove-instrument
+replace-out
+replace-out:ar
+replace-out:kr
+reset-instruments
+reset-synth-defaults
+resolve-chord
+resolve-degree
+resolve-degrees
+resolve-scale
+resonz
+resonz:ar
+resonz:kr
+rhpf
+rhpf:ar
+rhpf:kr
+ring1
+ring2
+ring3
+ring4
+ringz
+ringz:ar
+ringz:kr
+rlpf
+rlpf:ar
+rlpf:kr
+rlpfd
+rlpfd:ar
+rlpfd:kr
+rotate
+rotate2
+rotate2:ar
+rotate2:kr
+round
+round-down
+round-to
+round-up
+run
+running-max
+running-max:ar
+running-max:kr
+running-min
+running-min:ar
+running-min:kr
+running-sum
+running-sum:ar
+running-sum:kr
+sample
+sample-dur
+sample-dur:ir
+sample-info
+sample-player
+sample-rate
+sample-rate*
+sample-rate:ir
+sample?
+saw
+saw:ar
+sc-debug-off
+sc-debug-on
+sc-osc-debug-off
+sc-osc-debug-on
+scale
+scale-field
+scale-neg
+scale-range
+#<cgen: scaled-play-buf>
+#<cgen: scaled-play-buf:ar>
+#<cgen: scaled-play-buf:kr>
+#<cgen: scaled-v-disk-in>
+#<cgen: scaled-v-disk-in:ar>
+schmidt
+schmidt:ar
+schmidt:kr
+scope-out
+scope-out:ar
+sdef
+select
+select:ar
+select:kr
+send-reply
+send-reply:ar
+send-reply:kr
+send-trig
+send-trig:ar
+send-trig:kr
+server-connected?
+server-connecting?
+server-disconnected?
+server-info
+server-num-audio-buses
+server-num-buffers
+server-num-input-buses
+server-num-output-buses
+server-opts
+server-sample-rate
+server-status
+set-buf
+set-buf:ar
+set-buf:kr
+set-reset-ff
+set-reset-ff:ar
+set-reset-ff:kr
+shaper
+shaper:ar
+shaper:kr
+shared-in
+shared-in:kr
+shared-out
+shared-out:kr
+sharp
+shift
+show-graphviz-synth
+show-schedule
+sign
+signal->wavetable
+silent
+silent:ar
+sin
+sin-osc
+sin-osc-fb
+sin-osc-fb:ar
+sin-osc-fb:kr
+sin-osc:ar
+sin-osc:kr
+sine
+sine-shape
+sine-shaper
+sine-shaper:ar
+sinh
+sinr
+sixth
+skip-needle
+skip-needle:ar
+slew
+slew:ar
+slew:kr
+slope
+slope:ar
+slope:kr
+smooth-decimator
+smooth-decimator:ar
+snd
+snd-immediately
+#<synth: snd-server-info>
+#<cgen: soft-clip-amp>
+soft-clip-amp4
+soft-clip-amp4:ar
+soft-clip-amp8
+soft-clip-amp8:ar
+#<cgen: soft-clip-amp:ar>
+soft-clipper4
+soft-clipper4:ar
+soft-clipper8
+soft-clipper8:ar
+softclip
+sos
+sos:ar
+sos:kr
+#<cgen: sound-in>
+#<cgen: sound-in:ar>
+spec-centroid
+spec-centroid:kr
+spec-flatness
+spec-flatness:kr
+spec-pcile
+spec-pcile:kr
+speech-buffer
+#<cgen: splay>
+#<cgen: splay:ar>
+spring
+spring:ar
+sqrdif
+sqrsum
+sqrt
+#<cgen: square>
+#<cgen: square:ar>
+squared
+squared-shape
+standard-l
+standard-l:ar
+standard-n
+standard-n:ar
+standard-trig
+standard-trig:ar
+standard-trig:kr
+standard2-dc
+standard2-dc:ar
+standard2-dc:kr
+standard2-dl
+standard2-dl:ar
+standard2-dl:kr
+standard2-dn
+standard2-dn:ar
+standard2-dn:kr
+status
+step-shape
+stepper
+stepper:ar
+stepper:kr
+stereo-convolution2-l
+stereo-convolution2-l:ar
+#<synth: stereo-inst-mixer>
+#<synth: stereo-player>
+#<synth: stereo-stream-player>
+stk-banded-wg
+stk-banded-wg:ar
+stk-banded-wg:kr
+stk-bee-three
+stk-bee-three:ar
+stk-bee-three:kr
+stk-blow-hole
+stk-blow-hole:ar
+stk-blow-hole:kr
+stk-bowed
+stk-bowed:ar
+stk-bowed:kr
+stk-clarinet
+stk-clarinet:ar
+stk-clarinet:kr
+stk-flute
+stk-flute:ar
+stk-flute:kr
+stk-mandolin
+stk-mandolin:ar
+stk-mandolin:kr
+stk-modal-bar
+stk-modal-bar:ar
+stk-modal-bar:kr
+stk-moog
+stk-moog:ar
+stk-moog:kr
+stk-pluck
+stk-pluck:ar
+stk-pluck:kr
+stk-saxofony
+stk-saxofony:ar
+stk-saxofony:kr
+stk-shakers
+stk-shakers:ar
+stk-shakers:kr
+stk-voic-form
+stk-voic-form:ar
+stk-voic-form:kr
+stop
+stop-all
+stop-player
+store
+store-get
+store-set!
+streson
+streson:ar
+streson:kr
+studio*
+subsample-offset
+subsample-offset:ir
+#<cgen: sum>
+#<cgen: sum:ar>
+sumsqr
+svf
+svf:ar
+svf:kr
+sweep
+sweep:ar
+sweep:kr
+sync-event
+sync-saw
+sync-saw:ar
+sync-saw:kr
+synth
+synth-arg-index
+synth-args
+synth-form
+synth-player
+synth?
+synthdef
+t-ball
+t-ball:ar
+t-beta-rand
+t-beta-rand:ar
+t-beta-rand:kr
+t-brown-rand
+t-brown-rand:ar
+t-brown-rand:kr
+t-delay
+t-delay:ar
+t-delay:kr
+#<cgen: t-duty>
+#<cgen: t-duty:ar>
+#<cgen: t-duty:kr>
+t-exp-rand
+t-exp-rand:ar
+t-exp-rand:kr
+t-gauss-rand
+t-gauss-rand:ar
+t-gauss-rand:kr
+t-grains
+t-grains2
+t-grains2:ar
+t-grains3
+t-grains3:ar
+t-grains:ar
+t-rand
+t-rand:ar
+t-rand:kr
+t-windex
+t-windex:ar
+t-windex:kr
+t2a
+t2a:ar
+t2k
+t2k:kr
+tan
+tanh
+tanr
+#<cgen: tap>
+#<cgen: tap:kr>
+third
+thresh
+ti-rand
+ti-rand:ar
+ti-rand:kr
+timer
+timer:ar
+timer:kr
+to-id
+to-sc-id
+to-sc-id*
+toggle-ff
+toggle-ff:ar
+toggle-ff:kr
+topological-sort-ugens
+trapezoid
+trapezoid:ar
+trapezoid:kr
+tri-window
+triangle
+trig
+trig-avg
+trig-avg:kr
+trig-id
+trig1
+trig1:ar
+trig1:kr
+trig:ar
+trig:kr
+two-pole
+two-pole:ar
+two-pole:kr
+two-zero
+two-zero:ar
+two-zero:kr
+ugen-doc
+unified-sdef
+unison
+unregister-assets!
+update-tap-data
+v-disk-in
+v-disk-in:ar
+v-osc
+v-osc3
+v-osc3:ar
+v-osc3:kr
+v-osc:ar
+v-osc:kr
+validate-tap!
+var-saw
+var-saw:ar
+var-saw:kr
+vibrato
+vibrato:ar
+vibrato:kr
+volume
+vosim
+vosim:ar
+w-amp
+w-amp:kr
+wait-until-mixer-booted
+warp1
+warp1:ar
+wavetable
+wavetable->signal
+weighted-choose
+weighted-coin
+wel-window
+welch-shape
+white-noise
+white-noise:ar
+white-noise:kr
+with-inactive-buffer-modification-error
+with-inactive-modification-error
+with-inactive-node-modification-error
+with-no-ugen-checks
+with-overloaded-ugens
+with-ugen-debugging
+without-node-blocking
+without-osc-bundle
+wrap
+wrap-index
+wrap-index:ar
+wrap-index:kr
+wrap2
+wrap:ar
+wrap:kr
+write-wav
+x-fade2
+x-fade2:ar
+x-fade2:kr
+x-line
+x-line:ar
+x-line:kr
+x-out
+x-out:ar
+x-out:kr
+xor
+zero-conf-off
+zero-conf-on
+zero-conf?
+zero-crossing
+zero-crossing:ar
+zero-crossing:kr
+#+end_example
+
+**** clojure.core
+#+BEGIN_SRC clojure :results output
+(dir clojure.core)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+*
+*'
+*1
+*2
+*3
+*agent*
+*allow-unresolved-vars*
+*assert*
+*clojure-version*
+*command-line-args*
+*compile-files*
+*compile-path*
+*compiler-options*
+*data-readers*
+*default-data-reader-fn*
+*e
+*err*
+*file*
+*flush-on-newline*
+*fn-loader*
+*in*
+*math-context*
+*ns*
+*out*
+*print-dup*
+*print-length*
+*print-level*
+*print-meta*
+*print-readably*
+*read-eval*
+*source-path*
+*unchecked-math*
+*use-context-classloader*
+*verbose-defrecords*
+*warn-on-reflection*
++
++'
+-
+-'
+->
+->>
+->ArrayChunk
+->Vec
+->VecNode
+->VecSeq
+-cache-protocol-fn
+-reset-methods
+..
+/
+<
+<=
+=
+==
+>
+>=
+EMPTY-NODE
+accessor
+aclone
+add-classpath
+add-watch
+agent
+agent-error
+agent-errors
+aget
+alength
+alias
+all-ns
+alter
+alter-meta!
+alter-var-root
+amap
+ancestors
+and
+apply
+areduce
+array-map
+as->
+aset
+aset-boolean
+aset-byte
+aset-char
+aset-double
+aset-float
+aset-int
+aset-long
+aset-short
+assert
+assoc
+assoc!
+assoc-in
+associative?
+atom
+await
+await-for
+await1
+bases
+bean
+bigdec
+bigint
+biginteger
+binding
+bit-and
+bit-and-not
+bit-clear
+bit-flip
+bit-not
+bit-or
+bit-set
+bit-shift-left
+bit-shift-right
+bit-test
+bit-xor
+boolean
+boolean-array
+booleans
+bound-fn
+bound-fn*
+bound?
+butlast
+byte
+byte-array
+bytes
+case
+cast
+char
+char-array
+char-escape-string
+char-name-string
+char?
+chars
+chunk
+chunk-append
+chunk-buffer
+chunk-cons
+chunk-first
+chunk-next
+chunk-rest
+chunked-seq?
+class
+class?
+clear-agent-errors
+clojure-version
+coll?
+comment
+commute
+comp
+comparator
+compare
+compare-and-set!
+compile
+complement
+concat
+cond
+cond->
+cond->>
+condp
+conj
+conj!
+cons
+constantly
+construct-proxy
+contains?
+count
+counted?
+create-ns
+create-struct
+cycle
+dec
+dec'
+decimal?
+declare
+default-data-readers
+definline
+definterface
+defmacro
+defmethod
+defmulti
+defn
+defn-
+defonce
+defprotocol
+defrecord
+defstruct
+deftype
+delay
+delay?
+deliver
+denominator
+deref
+derive
+descendants
+destructure
+disj
+disj!
+dissoc
+dissoc!
+distinct
+distinct?
+doall
+dorun
+doseq
+dosync
+dotimes
+doto
+double
+double-array
+doubles
+drop
+drop-last
+drop-while
+empty
+empty?
+ensure
+enumeration-seq
+error-handler
+error-mode
+eval
+even?
+every-pred
+every?
+ex-data
+ex-info
+extend
+extend-protocol
+extend-type
+extenders
+extends?
+false?
+ffirst
+file-seq
+filter
+filterv
+find
+find-keyword
+find-ns
+find-protocol-impl
+find-protocol-method
+find-var
+first
+flatten
+float
+float-array
+float?
+floats
+flush
+fn
+fn?
+fnext
+fnil
+for
+force
+format
+frequencies
+future
+future-call
+future-cancel
+future-cancelled?
+future-done?
+future?
+gen-class
+gen-interface
+gensym
+get
+get-in
+get-method
+get-proxy-class
+get-thread-bindings
+get-validator
+group-by
+hash
+hash-combine
+hash-map
+hash-ordered-coll
+hash-set
+hash-unordered-coll
+identical?
+identity
+if-let
+if-not
+if-some
+ifn?
+import
+in-ns
+inc
+inc'
+init-proxy
+instance?
+int
+int-array
+integer?
+interleave
+intern
+interpose
+into
+into-array
+ints
+io!
+isa?
+iterate
+iterator-seq
+juxt
+keep
+keep-indexed
+key
+keys
+keyword
+keyword?
+last
+lazy-cat
+lazy-seq
+let
+letfn
+line-seq
+list
+list*
+list?
+load
+load-file
+load-reader
+load-string
+loaded-libs
+locking
+long
+long-array
+longs
+loop
+macroexpand
+macroexpand-1
+make-array
+make-hierarchy
+map
+map-indexed
+map?
+mapcat
+mapv
+max
+max-key
+memfn
+memoize
+merge
+merge-with
+meta
+method-sig
+methods
+min
+min-key
+mix-collection-hash
+mod
+munge
+name
+namespace
+namespace-munge
+neg?
+newline
+next
+nfirst
+nil?
+nnext
+not
+not-any?
+not-empty
+not-every?
+not=
+ns
+ns-aliases
+ns-imports
+ns-interns
+ns-map
+ns-name
+ns-publics
+ns-refers
+ns-resolve
+ns-unalias
+ns-unmap
+nth
+nthnext
+nthrest
+num
+number?
+numerator
+object-array
+odd?
+or
+parents
+partial
+partition
+partition-all
+partition-by
+pcalls
+peek
+persistent!
+pmap
+pop
+pop!
+pop-thread-bindings
+pos?
+pr
+pr-str
+prefer-method
+prefers
+primitives-classnames
+print
+print-ctor
+print-dup
+print-method
+print-simple
+print-str
+printf
+println
+println-str
+prn
+prn-str
+promise
+proxy
+proxy-call-with-super
+proxy-mappings
+proxy-name
+proxy-super
+push-thread-bindings
+pvalues
+quot
+rand
+rand-int
+rand-nth
+range
+ratio?
+rational?
+rationalize
+re-find
+re-groups
+re-matcher
+re-matches
+re-pattern
+re-seq
+read
+read-line
+read-string
+realized?
+record?
+reduce
+reduce-kv
+reduced
+reduced?
+reductions
+ref
+ref-history-count
+ref-max-history
+ref-min-history
+ref-set
+refer
+refer-clojure
+reify
+release-pending-sends
+rem
+remove
+remove-all-methods
+remove-method
+remove-ns
+remove-watch
+repeat
+repeatedly
+replace
+replicate
+require
+reset!
+reset-meta!
+resolve
+rest
+restart-agent
+resultset-seq
+reverse
+reversible?
+rseq
+rsubseq
+satisfies?
+second
+select-keys
+send
+send-off
+send-via
+seq
+seq?
+seque
+sequence
+sequential?
+set
+set-agent-send-executor!
+set-agent-send-off-executor!
+set-error-handler!
+set-error-mode!
+set-validator!
+set?
+short
+short-array
+shorts
+shuffle
+shutdown-agents
+slurp
+some
+some->
+some->>
+some-fn
+some?
+sort
+sort-by
+sorted-map
+sorted-map-by
+sorted-set
+sorted-set-by
+sorted?
+special-symbol?
+spit
+split-at
+split-with
+str
+string?
+struct
+struct-map
+subs
+subseq
+subvec
+supers
+swap!
+symbol
+symbol?
+sync
+take
+take-last
+take-nth
+take-while
+test
+the-ns
+thread-bound?
+time
+to-array
+to-array-2d
+trampoline
+transient
+tree-seq
+true?
+type
+unchecked-add
+unchecked-add-int
+unchecked-byte
+unchecked-char
+unchecked-dec
+unchecked-dec-int
+unchecked-divide-int
+unchecked-double
+unchecked-float
+unchecked-inc
+unchecked-inc-int
+unchecked-int
+unchecked-long
+unchecked-multiply
+unchecked-multiply-int
+unchecked-negate
+unchecked-negate-int
+unchecked-remainder-int
+unchecked-short
+unchecked-subtract
+unchecked-subtract-int
+underive
+unquote
+unquote-splicing
+unsigned-bit-shift-right
+update-in
+update-proxy
+use
+val
+vals
+var-get
+var-set
+var?
+vary-meta
+vec
+vector
+vector-of
+vector?
+when
+when-first
+when-let
+when-not
+when-some
+while
+with-bindings
+with-bindings*
+with-in-str
+with-loading-context
+with-local-vars
+with-meta
+with-open
+with-out-str
+with-precision
+with-redefs
+with-redefs-fn
+xml-seq
+zero?
+zipmap
+#+end_example
+*** simple namespaces moves
+For the moment, let's see what evaluating the following reveals.
+
+ #+BEGIN_SRC clojure :session getting-started :tangle yes
+(in-ns 'user)
+ #+END_SRC
+
+ #+RESULTS:
+ : #<Namespace user>
+
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+*ns*
+ #+END_SRC
+
+ #+RESULTS:
+
+ You'll discover that it is good practice to define a namespace at the
+ beginning of a file of related code. If you are working through this
+ in emacs org-mode babel, evaluate this now (The results of executing
+ src_elisp{C-c C-c} on or within block will be telling).
+
+ #+BEGIN_SRC clojure :session getting-started :tangle yes
+(in-ns 'post_tonal_overtone.core)
+ #+END_SRC
+
+ #+RESULTS:
+ : #<Namespace post_tonal_overtone.core>
+
+You can either call this in the CIDER repl, or from within a org-babel
+block.
+
+Now, you should check to see what went down (especially in a babel
+block where it might not be obvious). If you have called code in the
+REPL but not within a Babel block you may not always be in the right
+place (note a discrepancy here).
+
+ #+RESULTS:
+ : #<Namespace post_tonal_overtone.core>
+
+ #+BEGIN_SRC clojure :session getting-started
+*ns*
+ #+END_SRC
+
+ #+RESULTS:
+
+#+BEGIN_SRC clojure :results output
+(dir post_tonal_overtone.core)
+#+END_SRC
+
+#+RESULTS:
+
+
+
+
+#+begin_example
+chord-progression-time1
+chord-progression-time10
+chord-progression-time2
+chord-progression-time3
+chord-progression-time4
+chord-progression-time5
+chord-progression-time6
+chord-progression-time7
+chord-progression-time8
+chord-progression-time9
+looper
+med96
+metro
+noisey-sustained
+noisey2
+play-chord-saw1
+play-chord-sin2
+saw-diss
+saw1
+sin3
+sine-tetra-diss
+some-midis
+voice-and-transpose-rand-set
+voice-rand-set
+#+end_example
+
+*** eventually more complex, as you realize what your work will require
+note, that this is for the Babel session for the "getting-started"
+program. Maybe don't evaluate this unless you are working with a
+strong sense of what your namespace situation is.
+
+Note, that as [2015-04-14 Tue] the use of hyphens vs. underscore is at issue.
+
+
+#+BEGIN_SRC clojure :session getting-started
+;; (ns post-tonal-overtone.core
+;;   (:use overtone.live
+;;         overtone.inst.sampled-piano
+;; 	post-tonal-overtone.set-class-data
+;; ;;	post-tonal-overtone
+;; ;;	org.clojure/math.combinatorics "0.1.1"
+;; 	clojure.repl))
+#+END_SRC
+
+Note you can also just call this requirement in directly to whatever
+namespace you happen to be in. Does this code cause nREPL to time out
+for some reason?
+
+#+BEGIN_SRC clojure :session getting-started
+post_tonal_overtone.data.set_class_data/cmajtriads
+#+END_SRC
+
+#+RESULTS:
+| 48 | 52 | 55 |
+| 48 | 52 | 67 |
+| 48 | 52 | 79 |
+| 48 | 64 | 55 |
+| 48 | 64 | 67 |
+| 48 | 64 | 79 |
+| 48 | 76 | 55 |
+| 48 | 76 | 67 |
+| 48 | 76 | 79 |
+| 60 | 52 | 55 |
+| 60 | 52 | 67 |
+| 60 | 52 | 79 |
+| 60 | 64 | 55 |
+| 60 | 64 | 67 |
+| 60 | 64 | 79 |
+| 60 | 76 | 55 |
+| 60 | 76 | 67 |
+| 60 | 76 | 79 |
+| 72 | 52 | 55 |
+| 72 | 52 | 67 |
+| 72 | 52 | 79 |
+| 72 | 64 | 55 |
+| 72 | 64 | 67 |
+| 72 | 64 | 79 |
+| 72 | 76 | 55 |
+| 72 | 76 | 67 |
+| 72 | 76 | 79 |
+
+** test sound
+*** a definst template (noise, non-pitched)
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(definst noisey2 [attack 0.01 sustain 0.4 release 0.1 vol 0.4 length 3] 
+  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
+     (pink-noise) ; also have (white-noise) and others...
+     vol))
+
+(noisey2)
+ #+END_SRC
+
+ #+RESULTS:
+ : #<instrument: noisey2>#<synth-node[loading]: user/noisey2 35>
+
+*** definst can take an envelope for scaling the ugen output--using lin
+use of lin presents several default keyword args. When called as an
+argument for env-gen as is you will get these default values that
+basically make for a "sharp" sound, i.e. no gentle entrance and ending
+to the sound.
+
+#+BEGIN_SRC clojure 
+(lin :attack :sustain :release :level :curve)
+#+END_SRC
+
+#+RESULTS:
+| 0 | 3 | -99 | -99 | :curve | :attack | 1 | 0 | :curve | :release | 1 | 0 | 0 | 1 | 1 | 0 |
+
+*** scale output using an env-gen
+#+BEGIN_SRC clojure
+;; not for evaluating?
+(env-gen :envelope :gate :level-scale :level-bias :time-scale :action)
+#+END_SRC
+
+#+RESULTS:
+
+*** define constant pink noise
+You'll have to stop this on your own (if you want to!) by evaluating
+the ~(stop)~ function below.
+
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(definst noisey-sustained [vol 0.5] 
+  (* (pink-noise) ; also have (white-noise) and others...
+     vol))
+
+(noisey-sustained 1)
+  #+END_SRC
+
+  #+RESULTS:
+  : #<instrument: noisey-sustained>#<synth-node[loading]: user/noisey-sustained 42>
+
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(stop)
+  #+END_SRC
+
+  #+RESULTS:
+  : nil
+
+Since you might have to do this frequently (that is, stop some playing
+sound), it's wise to create an emacs function or macro to invoke this quickly.
+* shaping some basic sounds
+What sounds can you make with your computer? And how easily can you
+figure out what they are and how to use them? I like to start with
+white-noise.
+** play long white noise
+Let's see how we can call the above function with some arguments.
+*** example--10 second version, long release?
+
+Experimenting with different parameter values reveals that there are
+some mechanics to the ~env-gen~ function. What's happens when we use
+an attack of '0.4' and a sustain of '0?'
+
+Sounds like a pleasant (and quiet, depending on how loud your system is
+turned up) wave just rolled up?
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(noisey2 :attack 0.4 :sustain 0 :release 0.7 :vol 0.3 :length 10)
+  #+END_SRC
+
+  #+RESULTS:
+  : #<synth-node[loading]: user/noisey2 43>
+
+
+Sounds like percussion now?
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(noisey2 :attack 0 :sustain 0 :release 0.1 :vol 0.3 :length 1)
+  #+END_SRC
+
+  #+RESULTS:
+  : #<synth-node[loading]: user/noisey2 44>
+
+Wouldn't it be nice to be able to experiment with different values for
+these things in some way other than typing values at the keyboard?
+We'll have to get to this.
+
+** build some 'pitched' synth instruments for playing chords
+Really understanding =definst= will take some time. Here are some
+quick sound examples that use =sin-osc= and =saw= to produce those
+respective waveforms, which now will allow us to use actual
+frequencies and pitches.
+
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(definst sin1 [freq 880 attack 0.1 sustain 0.15 release 0.25 vol 0.4 length 5]
+  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
+     (sin-osc freq)
+     vol))
+
+(sin1)
+ #+END_SRC
+
+ #+RESULTS:
+ : #<instrument: sin1>#<synth-node[loading]: user/sin1 49>
+
+You can also give sin1 an argument:
+
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(sin1 330)
+ #+END_SRC
+
+ #+RESULTS:
+ : #<synth-node[loading]: user/sin1 50>
+
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(definst saw1 [freq 330 attack 0.3 sustain 0.15 release 0.25 vol 0.2 length 5]
+  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
+     (saw freq)
+     vol))
+
+(saw1)
+ #+END_SRC
+
+ #+RESULTS:
+ : #<instrument: saw1>#<synth-node[loading]: user/saw1 55>
+
+** saw waves are harmonically rich--sine waves not so much...
+The above options give us comparatively straightforward sounds.
+However, they are not necessarily very pleasant or interesting by
+themselves. If you're interested right now, we can play around a
+little with a saw wave, just to give any idea of other ways you can
+get sounds.
+
+Play with evaluating both of these repeatedly. Because we are now
+using a filtering object--and most importantly, because there is now
+some randomness in the equation--you now start to hear a slightly
+different quality to the sound, as well as some slight variations as
+you progressively evaluate it.
+
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(definst saw2 [freq 220 attack 0.3 sustain 0.15 release 0.25 vol 0.1 length 5]
+  (* (bpf (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
+             (saw freq)
+             (* 10 (inc (rand-int 10)))
+             (* 0.01 (inc (rand-int 10)))))
+     vol))
+
+
+(saw2)
+ #+END_SRC
+
+ #+RESULTS:
+ : #<instrument: saw2>#<synth-node[loading]: user/saw2 63>
+
+ #+BEGIN_EXAMPLE
+evaluating clojure/babel blocks can be annoying if they block your navigation in emacs. If this happens, try evaluating the blocks that don't contain the definst as well as the function call.
+ #+END_EXAMPLE
+
+#+BEGIN_SRC clojure
+(saw2)
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: user/saw2 76>
+
+Just to compare against the unfiltered version with no envelope:
+#+BEGIN_SRC clojure
+(demo 0.5 (saw 220))
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: user/audition-synth 72>
+
+** here's a use of a built-in overtone library for making choices algorithmically
+#+BEGIN_SRC clojure
+(saw2 (overtone.algo.chance/ranged-rand 300 302) :vol 0.3)
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: user/saw2 81>
+
+Giving it a different envelope begins to give it another quality as
+well, as if a kind simple little synthesizer.
+#+BEGIN_SRC clojure
+(demo (bpf (* (env-gen (lin 0.0 0.2 0.3)) (saw)) 800 0.3))
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: user/audition-synth 87>
+
+* begin creating scheduled events
+To really make music, we're going to have to understand how to get
+things to play in time, without simply triggering everything at the
+REPL. That means we are going to have to schedule things.
+
+And to really understand how to use scheduling we'll ultimately need
+to look at some other files that are dedicated to this pursuit. For
+now, here are some quick examples
+** basic example
+There are two keys functions to wrap your head around: =at= and
+=metro.= Let's start with =at=.
+
+*** use 'at' to schedule chord events
+Simply, we can use the =at= function to schedule some events relative
+to a given starting point (which will be determined by calling =now=).
+Note that below, we are hard-coding in the offsets, which means that
+this won't be especially useful for more than a few listens.
+
+However, it neatly demonstrates that time can be quite nicely
+quanitified--here in milliseconds.
+
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+;; first let's make an instrument to play chords.
+;; note, we are using midi->hz because synths will tend to expect
+;; arguments in hz
+
+;; Note, that sin1 was defined early
+
+(defn play-chord-sin2 [a-chord]
+  (doseq [note a-chord] (sin1 (midi->hz note))))
+ #+END_SRC
+
+  #+RESULTS:
+  : #'user/play-chord-sin2
+
+Here is the sine instrument at work, demonstrating the fact that it
+will take midi number arguments and convert it to Hertz.
+
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+;; bring the dogs running!
+(sin1 (midi->hz 96))
+ #+END_SRC
+
+ #+RESULTS:
+ : #<synth-node[loading]: user/sin1 88>
+
+And here's an interesting 7-note chord
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(play-chord-sin2 [64 76 81 86 91 96 101])
+ #+END_SRC
+
+ #+RESULTS:
+ : nil
+
+Now, here's a progression. 
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(defn chord-progression-time1 []
+  (let [time (now)]
+    (at time          (play-chord-sin2 [68 81 46 50 88]))
+    (at (+ 2000 time) (play-chord-sin2 [80 69 46 73 86]))
+    (at (+ 4000 time) (play-chord-sin2 [68 59 48 85 64]))
+    (at (+ 6000 time) (play-chord-sin2 [68 69 72 87 52]))
+    (at (+ 8000 time) (play-chord-sin2 [89 55 45 60 62]))))
+
+(chord-progression-time1)
+  #+END_SRC
+
+ #+RESULTS:
+ : #'user/chord-progression-time1nil
+
+Note that having to type all this out every time would be a pain. And
+ultimately, there are a lot of things we might like to change about
+this. For one thing, wouldn't it be nice to know more about those
+chords?
+
+And of course, most importantly, we want to make it easier to work
+with such progressions. One way to do that is to make progression that
+deal with time more robustly. We'll get there.
+
+(When using this file from within emacs, we can take advantage of
+org-mode and emacs kmacro and functions to make it a little more
+fluid, eventually maybe even treating it like an instrument!)
+
+** schedule a single event
+*** test out single event versions using 'at'
+Here's a test of making a chord progression function that take an
+instrument (with a whole series of default keyword arguments
+hard-coded in--eek!) as an argument instead.
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(defn chord-progression-time2 [inst]
+  (let [time (now)]
+    (at time (inst :attack 0.15 :sustain 0.2 :release 0.4 :vol 0.5 :length 10))))
+
+(chord-progression-time2 sin1)
+ #+END_SRC
+
+ #+RESULTS:
+ : #'user/chord-progression-time2#<synth-node[loading]: user/sin1 121>
+
+
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(chord-progression-time2 saw2)
+ #+END_SRC
+
+ #+RESULTS:
+ : #<synth-node[loading]: user/saw2 122>
+
+** how do we establish a beat for scheduling events using metronome?
+
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(def metro (metronome 60))
+  #+END_SRC
+
+  #+RESULTS:
+  : #'user/metro
+
+Understanding how to use the values that this produces gets at the
+part of the overtone language that is at the heart of scheduling, and
+is crucial to doing musical things--to the extent that music happens
+in time, or according to some constructed notion of time.
+
+We will get to this. For now just observe that we have a special type
+of named thing here:
+
+#+BEGIN_SRC clojure
+(type metro)
+(metro)
+#+END_SRC
+
+#+RESULTS:
+: overtone.music.rhythm.Metronome6
+
+*** Preparing dissonant chords 
+(Note: this functionality has largely been superseded elsewhere)
+
+The function =sine-tetra-diss= will provide sets of pitches to a sine
+instrument. The pitches are chosen from a local file (which is aliased
+with =set-class.= We'll get to explaining this soon.)
+
+Note that it also calls a special function for making voicings. There
+is some functionality like this in overtone already, namely a
+=rand-chord= function.
+
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+;; A function to work with sets
+(defn voice-and-transpose-rand-set [set-type tn-level]
+  (let [set (rand-nth set-type)
+        voiced-set (map #(+ (rand-nth [36 48 60 72]) %) set)
+        transposed-set (map #(+ tn-level %) voiced-set)
+        set-voicing-group (list set voiced-set tn-level transposed-set)]
+    (do
+      (println set-voicing-group)
+      (last set-voicing-group))))
+
+(defn sine-tetra-diss []
+  (doseq [notes (voice-and-transpose-rand-set ; voicing
+                 set-class/tetrachords
+                       (rand-int 12))]
+    (sin1 (midi->hz notes))))
+
+(sine-tetra-diss)
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post_tonal_overtone.core/voice-and-transpose-rand-set#'post_tonal_overtone.core/sine-tetra-dissnil
+
+*** Schedule dissonant chords
+Define and use a chord progression player--use 'apply-at.'
+
+Note that this uses the sine-tetra-diss as a hard-coded 'instrument',
+or rather an instrumentalist. As well, we call the progression with
+the metro we defined above, which means that the tempo is determined
+from there.
+
+There one major thing not described here, which is how this can just
+keep going. We'll get to that (it involves recursion, and that
+=apply-at=). The main purpose here is to give us something interesting
+to listen to.
+
+
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(defn chord-progression-time8 [nome]
+  (let [beat (nome)]
+    (at (nome beat) (sine-tetra-diss))
+    (apply-at (nome (inc beat)) chord-progression-time8 nome [])))
+
+;; to paraphrase "A Foggy Day", how long can this thing last?
+(chord-progression-time8 metro)
+  #+END_SRC
+
+  #+RESULTS:
+  : #'post_tonal_overtone.core/chord-progression-time8#<ScheduledJob id: 1, created-at: Mon 09:08:21s, initial-delay: 1964, desc: "Overtone delayed fn", scheduled? true>
+
+How might we want to modify this? One of the first things we should
+take care of is the ability to pass in a different instrument. That
+is, playing chord progressions is a different concern from the sound
+that will render those.
+
+A lot depends on the nature of that instrument, which in this case
+performs a series of calculations that are encapsulated and abstracted
+away from our view. But a lot also depends on the means by which each
+new chord is scheduled according to the relentless march of the
+metronome. 
+
+Since a metronome (or at least the old-fashioned physical ones) is
+quite truly a mechanical thing, we are only going to get out a kind of
+mechanical-sounding series of events. How we eventually improve this
+is another matter.
+* miscellaneous experiments 
+The rest is mostly slight variation on the above. In a sense it shows 
+the process that may have been used to arrive at the above, as these
+various progressions were numbered, and the above one (which is the
+preferred of these others) was number 8 in the series.
+
+That will have to wait till we begin building a voice-leading engine,
+and especially when we consider preparing scores of musical events all
+at once. In such a situation, we are modeling musical time using a
+rather different technique.
+
+** Experiment with progression based on sawtooth synths
+*** use sawtooth synths to play various chords
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(map (rand-nth [saw1 saw2]) (map #(midi->hz %) (last (voice-rand-set set-class/pentachords))))
+  #+END_SRC
+
+  #+RESULTS:
+  : '(#<synth-node(loading): post_tonal_overtone.core/saw2 251> #<synth-node(loading): post_tonal_overtone.core/saw2 252> #<synth-node(loading): post_tonal_overtone.core/saw2 253> #<synth-node(loading): post_tonal_overtone.core/saw2 254> #<synth-node(loading): post_tonal_overtone.core/saw2 255>)
+
+*** chord progression number 3--sawtooth intensive
+
+  a lot of repetition with this one
+  # apply-at appears to cause problems when attempting to
+  # call a functions that takes more than one argument
+
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(defn chord-progression-time3 [nome]
+  (let [beat (nome)]
+    (at (nome beat)
+        (doseq [note (rand-nth [[60 61 62] [60 49 51 55 44]])]
+          (saw1 (midi->hz note))))
+    (apply-at (nome (inc beat)) chord-progression-time3 nome [])))
+  #+END_SRC
+
+  #+RESULTS:
+  : #'post-tonal-overtone.core/chord-progression-time3
+
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(chord-progression-time3 metro)
+  #+END_SRC
+
+  #+RESULTS:
+  : #<ScheduledJob id: 1, created-at: Tue 05:47:31s, initial-delay: 1872, desc: "Overtone delayed fn", scheduled? true>
+
+*** chord progression 4
+  # loops through random tetrachords without printing
+
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(defn chord-progression-time4 [nome]
+  (let [beat (nome)]
+    (at (nome beat)
+        (doseq [notes (voice-and-transpose-rand-set ; voicing
+                       *tetrachords* ; set-type
+                       (rand-int 12))]
+          (saw1 (midi->hz notes))))
+    (apply-at (nome (inc beat)) chord-progression-time4 nome [])))
+  #+END_SRC
+
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(chord-progression-time4 metro)
+  #+END_SRC
+
+** chord progression 5
+  # hack to get around the apply-at problem
+use a set of pitched chords
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(def some-midis [[72 61 50 46] [60 49 51 55 44] [74 63 52 68] [42 79
+70 61]])
+  #+END_SRC
+
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(defn chord-progression-time5 [nome]
+  (let [beat (nome)]
+    (at (nome beat)
+        (doseq [note (rand-nth some-midis)]
+          (saw1 (midi->hz note))))
+    (apply-at (nome (inc beat)) chord-progression-time5 nome [])))
+  #+END_SRC
+
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(chord-progression-time5 metro)
+  #+END_SRC
+
+*** define a sawtooth random chord player
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(defn saw-diss []
+  (doseq [notes (voice-and-transpose-rand-set ; voicing
+                       *tetrachords* ; set-type
+                       (rand-int 12))]
+    (saw1 (midi->hz notes))))
+  #+END_SRC
+
+
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(saw-diss)
+  #+END_SRC
+
+
+
+  # also good, only prints first chord
+
+*** chord progression 6
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(defn chord-progression-time6 [nome]
+  (let [beat (nome)]
+    (at (nome beat) (saw-diss))
+    (apply-at (nome (inc beat)) chord-progression-time6 nome [])))
+  #+END_SRC
+
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(chord-progression-time6 metro)
+  #+END_SRC
+
+*** chord progression 7
+  # broken? because of apply-at problem?
+
+
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(defn chord-progression-time7 [nome sound]
+  (let [beat (nome)]
+    (at (nome beat) sound)
+    (apply-at (nome (inc beat)) chord-progression-time7 nome sound
+[])))
+  #+END_SRC
+
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(chord-progression-time7 metro saw-diss)
+  #+END_SRC
+
+*** develop a looping function
+
+ The use of "metro" hardcoded in causes problems?
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(defn looper [sound]    
+    (let [beat (metro)]
+        (at (metro beat) (sound))
+        (apply-at (metro (inc beat)) looper sound [])))
+  #+END_SRC
+
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(looper (play-chord-sin2 '(80 69 46 73 86)))
+  #+END_SRC
+
+  #+RESULTS:
+
+*** make a sawtooth chord player
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(defn play-chord-saw1 [a-chord]
+  (doseq [note a-chord] (saw1 (midi->hz note))))
+  #+END_SRC
+
+  #+RESULTS:
+  : #'post-tonal-overtone.core/play-chord-saw1
+
+*** define a preselected set of chords for progression 9
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(defn chord-progression-time9 []
+  (let [time (now)]
+    (at time          (play-chord-saw1 [68 81 46 50 88]))
+    (at (+ 2000 time) (play-chord-saw1 [80 69 46 73 86]))
+    (at (+ 4000 time) (play-chord-saw1 [68 59 48 85 64]))
+    (at (+ 6000 time) (play-chord-saw1 [68 69 72 87 52]))
+    (at (+ 8000 time) (play-chord-saw1 [89 55 45 60 62]))))
+  #+END_SRC
+
+  #+RESULTS:
+  : #'post-tonal-overtone.core/chord-progression-time9
+
+
+  #+BEGIN_SRC clojure :session getting-started :tangle yes             
+(chord-progression-time9)
+  #+END_SRC
+
+  #+RESULTS:
+  : nil
+
+*** refactor chord progressions to use a player-fn
+  #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(defn chord-progression-time10 [player-fn]
+  (let [time (now)]
+    (at (+ 0.00 time) (player-fn [68 81 46 50 88]))
+    (at (+ 2000 time) (player-fn [80 69 46 73 86]))
+    (at (+ 4000 time) (player-fn [68 59 48 85 64]))
+    (at (+ 6000 time) (player-fn [68 69 72 87 52]))
+    (at (+ 8000 time) (player-fn [89 55 45 60 62]))))
+  #+END_SRC
+
+
+  #+BEGIN_SRC clojure :session getting-started :tangle yes             
+(chord-progression-time10 play-chord-saw1)
+  #+END_SRC
+
+* from the 'sequencing' wiki tutorial
+More typically, people like to listen to drum beats repeat, rather
+than endless strings of dissonant chords.
+** use kick on each beat of a metronome
+#+BEGIN_SRC clojure
+(def kick (sample (freesound-path 2086)))
+
+; setup a tempo for our metronome to use
+(def forty-bpm (metronome 40))
+
+; this function will play our sound at whatever tempo we've set our metronome to 
+(defn looper [nome sound]    
+    (let [beat (nome)]
+        (at (nome beat) (sound))
+        (apply-by (nome (inc beat)) looper nome sound [])))
+
+; turn on the metronome
+(looper forty-bpm kick)
+#+END_SRC
+
+#+RESULTS:
+: #'post-tonal-overtone.core/kick#'post-tonal-overtone.core/one-twenty-bpm#'post-tonal-overtone.core/looper#<ScheduledJob id: 1, created-at: Mon 05:02:32s, initial-delay: 2694, desc: "Overtone delayed fn", scheduled? true>
+#+BEGIN_SRC clojure
+(stop)
+
+#+END_SRC
+
+#+RESULTS:
+: nil
+
+** startup a metronome and check in with its beats as it runs
+#+BEGIN_SRC clojure
+; to get a feel for how the metronome works, try defining one at the REPL
+(def nome (metronome 200))
+#+END_SRC
+
+#+BEGIN_SRC clojure
+(nome)
+#+END_SRC
+
+#+RESULTS:
+: 284
+
+#+BEGIN_SRC clojure :session getting-started
+; setup a tempo for our metronome to use
+(def forty-bpm (metronome 40))
+
+; this function will play our sound at whatever tempo we've set our metronome to 
+(defn looper [nome sound]    
+    (let [beat (nome)]
+        (at (nome beat) (sound))
+        (apply-by (nome (inc beat)) looper nome sound [])))
+
+;; turn on the metronome 
+;; uh, where is 'piano' anything defined?
+
+#+END_SRC
+
+#+RESULTS:
+: #'post-tonal-overtone.core/forty-bpm#'post-tonal-overtone.core/looper
+
+#+BEGIN_SRC clojure
+(defn foo [t freq]
+  (at t (sin1 freq))
+  (let [next-t (+ t 3000)
+        next-f (+ freq 10)]
+    (apply-by next-t #'foo [next-t next-f])))
+
+(foo (now) 40)
+#+END_SRC
+
+#+RESULTS:
+: #<ScheduledJob id: 1, created-at: Mon 05:35:33s, initial-delay: 0, desc: "Overtone delayed fn", scheduled? false>
+
+this one, using sin1 as defined above, gradually steps up and up
+through the frequencies from a given fundamental
+#+BEGIN_SRC clojure
+(defn foo [t freq]
+  (at t (sin1 freq))
+  (let [next-t (+ t 6000)
+        next-f (+ freq 10)]
+    (apply-by next-t #'foo [next-t next-f])))
+
+(foo (now) 40)
+#+END_SRC
+
+* develop chords progressions (not "intro" enough--should be moved elsewhere?)
+Because I am interested in post-tonal music, the following is about
+how to incorporate such sounds into overtone projects.
+** start working with post tonal set classes
+*** getting-started babel session
+note, this will only work if...you are in the proper namespace. What
+that really means is...don't do this. 
+
+Make sure that your data is loaded in a namespace declaration, i.e.
+don't call this. There is a general preference for using a different
+idiom than the following, which is very easy, but obscures some things
+about how namespaces work.
+
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+;; (load "set-class-data")
+ #+END_SRC
+
+While the above seems so innocent, it fails to reveal anything about
+where this file lives, which means you will be able to use things
+defined in there with a false sense of security. "Everything just
+works!" Until it doesn't. 
+
+What should you do instead? Use =require= which will be described more
+elsewhere [link]
+
+ #+RESULTS:
+ : nil
+
+#+COMMENT why do you want to hear an extremely high pitched sin wave?
+ #+BEGIN_SRC clojure :session getting-started :tangle yes 
+(definst med96 [] (* 0.01 (sin-osc (midi->hz 96))))
+
+(med96)
+ #+END_SRC
+
+ #+RESULTS:
+ : #<instrument: med96>
+* miscellaneous utilities and problems
+** all caps is a problem--clojure is case sensitive
+#+BEGIN_SRC clojure :session getting-started :tangle yes 
+(LET [TIME (NOW) ]
+     (
+      (AT (+ 0 TIME) (PLAYER-FN '(1 2 3)))
+      (AT (+ 1000 TIME) (PLAYER-FN '(4 5 6)))))
+#+END_SRC
+
+
+# downcase
+
+
+#+BEGIN_SRC clojure :session getting-started :tangle yes 
+(defn chord-prog-time11 [player-fn]
+  (let [TIME (NOW) ] 
+       (AT (+ 0 TIME) (PLAYER-FN '(68 81 46 50 88)))
+       (AT (+ 1000 TIME) (PLAYER-FN '(80 69 46 73 86)))
+       (AT (+ 2000 TIME) (PLAYER-FN '(68 59 48 85 64)))
+       (AT (+ 3000 TIME) (PLAYER-FN '(68 69 72 87 52)))
+       (AT (+ 4000 TIME) (PLAYER-FN '(89 55 45 60 62)))))
+#+END_SRC
+
+
+#+BEGIN_SRC clojure :session getting-started :tangle yes 
+(stop)
+#+END_SRC
+
+#+RESULTS:
+: nil
+* play piano in overtone
+** 
+#+BEGIN_SRC clojure
+(use 'overtone.live)
+
+(use 'overtone.inst.sampled-piano)
+#+END_SRC
+
+#+RESULTS:
+: nilnil
+
+#+BEGIN_SRC clojure
+(midi-connected-devices)
+#+END_SRC
+
+#+RESULTS:
+: '((:description "Axiom A.I.R. Mini32 MIDI"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "MIDI"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x7c3ca8b7 "MIDI")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x749e1319 "com.sun.media.sound.MidiInDevice@749e1319")  :version "Unknown version") (:description "Axiom A.I.R. Mini32 HyperControl"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "HyperControl"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "HyperControl" "Axiom A.I.R. Mini32 HyperControl" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x3e9db3f "HyperControl")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x6a97965c "com.sun.media.sound.MidiInDevice@6a97965c")  :version "Unknown version"))
+
+: '((:description "Axiom A.I.R. Mini32 MIDI"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "MIDI"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x6fc3836b "MIDI")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x5e406927 "com.sun.media.sound.MidiInDevice@5e406927")  :version "Unknown version") (:description "Axiom A.I.R. Mini32 HyperControl"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "HyperControl"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "HyperControl" "Axiom A.I.R. Mini32 HyperControl" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x40d9b724 "HyperControl")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x534c9c7b "com.sun.media.sound.MidiInDevice@534c9c7b")  :version "Unknown version"))
+
+#+BEGIN_SRC clojure
+(sampled-piano)
+
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: overtone.inst.973/sampled-piano 39>
+
+ #+BEGIN_SRC clojure
+(def piano-player (midi-poly-player sampled-piano))
+
+#+END_SRC
+
+#+RESULTS:
+: #'user/piano-player
+* stop all playing sound
+#+BEGIN_SRC clojure
+(stop)
+#+END_SRC
+
+#+RESULTS:
+: nil

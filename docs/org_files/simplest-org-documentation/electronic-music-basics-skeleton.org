@@ -1,0 +1,21 @@
+* electronic music essential concepts and techniques
+** explanation and rationale
+Because all these music making environments use a similar set of
+concepts but translate them into different language or different
+techniques of combination, it would make sense to develop a basic
+high-level understanding of what the essentials are to a quick recipe
+for making something sonically interesting using any particular
+language or environment.
+
+The peculiarities of Pd vs. Supercollider vs. Overtone are partially
+ones of language and partly ones of implementation of the same set of
+basic concepts. 
+
+Let's imagine a set of the basic concepts and see how they would work
+with that set of three named above.
+** some basic concepts
+*** synthesis--wave types
+*** filtering
+*** envelopes
+*** timing and delays
+*** wave modulation

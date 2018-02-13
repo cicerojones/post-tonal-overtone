@@ -1,0 +1,1277 @@
+* lists of primary formal constituents
+** create rhythms for event list maps 
+*** all 'selections' of 4 things from 2 as durations
+ #+BEGIN_SRC clojure
+;;(require '[clojure.math.combinatorics :as cmb])
+
+(cmb/selections [1 2] 4)
+ #+END_SRC
+
+ #+RESULTS:
+ | 1 | 1 | 1 | 1 |
+ | 1 | 1 | 1 | 2 |
+ | 1 | 1 | 2 | 1 |
+ | 1 | 1 | 2 | 2 |
+ | 1 | 2 | 1 | 1 |
+ | 1 | 2 | 1 | 2 |
+ | 1 | 2 | 2 | 1 |
+ | 1 | 2 | 2 | 2 |
+ | 2 | 1 | 1 | 1 |
+ | 2 | 1 | 1 | 2 |
+ | 2 | 1 | 2 | 1 |
+ | 2 | 1 | 2 | 2 |
+ | 2 | 2 | 1 | 1 |
+ | 2 | 2 | 1 | 2 |
+ | 2 | 2 | 2 | 1 |
+ | 2 | 2 | 2 | 2 |
+
+*** creat a midi event map a la Ctford
+ Examine this kind of template for creating durations and pitches.
+
+ Start with lists of duration-lists, and then convert them to on-times.
+ #+BEGIN_SRC clojure
+
+
+(def event-list1
+  (let [durations (cmb/selections [1 2] 4)
+        times (reductions + 0 (flatten (cmb/selections [1 2] 4)))
+        pitches (repeat (count times) 0)]
+    (map (fn [t p] {:time t :pitch p}) times pitches)))
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post_tonal_overtone.core/event-list1
+
+ #+BEGIN_SRC clojure
+(count event-list1)
+ #+END_SRC
+
+ #+RESULTS:
+ : 65
+
+ #+BEGIN_SRC clojure
+event-list1
+ #+END_SRC
+
+ #+COMMENT long list of ontimes
+ #+RESULTS:
+ | :time |  0 | :pitch | 0 |
+ | :time |  1 | :pitch | 0 |
+ | :time |  2 | :pitch | 0 |
+ | :time |  3 | :pitch | 0 |
+ | :time |  4 | :pitch | 0 |
+ | :time |  5 | :pitch | 0 |
+ | :time |  6 | :pitch | 0 |
+ | :time |  7 | :pitch | 0 |
+ | :time |  9 | :pitch | 0 |
+ | :time | 10 | :pitch | 0 |
+ | :time | 11 | :pitch | 0 |
+ | :time | 13 | :pitch | 0 |
+ | :time | 14 | :pitch | 0 |
+ | :time | 15 | :pitch | 0 |
+ | :time | 16 | :pitch | 0 |
+ | :time | 18 | :pitch | 0 |
+ | :time | 20 | :pitch | 0 |
+ | :time | 21 | :pitch | 0 |
+ | :time | 23 | :pitch | 0 |
+ | :time | 24 | :pitch | 0 |
+ | :time | 25 | :pitch | 0 |
+ | :time | 26 | :pitch | 0 |
+ | :time | 28 | :pitch | 0 |
+ | :time | 29 | :pitch | 0 |
+ | :time | 31 | :pitch | 0 |
+ | :time | 32 | :pitch | 0 |
+ | :time | 34 | :pitch | 0 |
+ | :time | 36 | :pitch | 0 |
+ | :time | 37 | :pitch | 0 |
+ | :time | 38 | :pitch | 0 |
+ | :time | 40 | :pitch | 0 |
+ | :time | 42 | :pitch | 0 |
+ | :time | 44 | :pitch | 0 |
+ | :time | 46 | :pitch | 0 |
+ | :time | 47 | :pitch | 0 |
+ | :time | 48 | :pitch | 0 |
+ | :time | 49 | :pitch | 0 |
+ | :time | 51 | :pitch | 0 |
+ | :time | 52 | :pitch | 0 |
+ | :time | 53 | :pitch | 0 |
+ | :time | 55 | :pitch | 0 |
+ | :time | 57 | :pitch | 0 |
+ | :time | 58 | :pitch | 0 |
+ | :time | 60 | :pitch | 0 |
+ | :time | 61 | :pitch | 0 |
+ | :time | 63 | :pitch | 0 |
+ | :time | 64 | :pitch | 0 |
+ | :time | 66 | :pitch | 0 |
+ | :time | 68 | :pitch | 0 |
+ | :time | 70 | :pitch | 0 |
+ | :time | 72 | :pitch | 0 |
+ | :time | 73 | :pitch | 0 |
+ | :time | 74 | :pitch | 0 |
+ | :time | 76 | :pitch | 0 |
+ | :time | 78 | :pitch | 0 |
+ | :time | 79 | :pitch | 0 |
+ | :time | 81 | :pitch | 0 |
+ | :time | 83 | :pitch | 0 |
+ | :time | 85 | :pitch | 0 |
+ | :time | 87 | :pitch | 0 |
+ | :time | 88 | :pitch | 0 |
+ | :time | 90 | :pitch | 0 |
+ | :time | 92 | :pitch | 0 |
+ | :time | 94 | :pitch | 0 |
+ | :time | 96 | :pitch | 0 |
+
+
+ #+BEGIN_SRC clojure
+(reductions + 0 (repeat 3 1))
+ #+END_SRC
+
+ #+RESULTS:
+ | 0 | 1 | 2 | 3 |
+
+*** ~where~ maps update-in over its argument, for a given key and update function
+ #+BEGIN_SRC clojure
+(defn where [k f ev-list]
+ (map #(update-in % [k] f) ev-list))
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post_tonal_overtone.core/where
+
+ #+BEGIN_SRC clojure
+(def m {:time 0 :pitch 0})
+(update-in m [:time] inc)
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post_tonal_overtone.core/m{:time 1, :pitch 0}
+
+*** bpm returns a function that:
+ #+BEGIN_SRC clojure
+(defn bpm [beats] (fn [beat] (/ (* beat 60 1000) beats)))
+ #+END_SRC
+
+ Takes a given ~now~ timestamp?
+
+ #+BEGIN_SRC clojure
+((fn [beat] (/ (* beat 60 1000) 90)) (now))
+ #+END_SRC
+
+ #+RESULTS:
+ : 953164185200000
+
+*** how does ~partial~ work?
+ #+BEGIN_SRC clojure
+(partial + 10)
+ #+END_SRC
+
+ #+RESULTS:
+ : #<core$partial$fn__4228 clojure.core$partial$fn__4228@616e3c0b>
+
+ #+BEGIN_SRC clojure
+((partial + 10) 10)
+ #+END_SRC
+
+ #+RESULTS:
+ : 20
+
+*** define ~from~ as a partial
+ #+BEGIN_SRC clojure
+(defn from [n] (partial + n))
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post_tonal_overtone.core/from
+
+*** create event-list map with ~where~ and event-list template
+ #+BEGIN_SRC clojure
+(->> event-list1
+     (where :time (comp (from (now)) (bpm 90))))
+ #+END_SRC
+
+ #+RESULTS:
+ | :time | 1429747135605   | :pitch | 0 |
+ | :time | 4289241408815/3 | :pitch | 0 |
+ | :time | 4289241410815/3 | :pitch | 0 |
+ | :time | 1429747137605   | :pitch | 0 |
+ | :time | 4289241414815/3 | :pitch | 0 |
+ | :time | 4289241416815/3 | :pitch | 0 |
+ | :time | 1429747139605   | :pitch | 0 |
+ | :time | 4289241420815/3 | :pitch | 0 |
+ | :time | 1429747141605   | :pitch | 0 |
+ | :time | 4289241426815/3 | :pitch | 0 |
+ | :time | 4289241428815/3 | :pitch | 0 |
+ | :time | 4289241432815/3 | :pitch | 0 |
+ | :time | 4289241434815/3 | :pitch | 0 |
+ | :time | 1429747145605   | :pitch | 0 |
+ | :time | 4289241438815/3 | :pitch | 0 |
+ | :time | 1429747147605   | :pitch | 0 |
+ | :time | 4289241446815/3 | :pitch | 0 |
+ | :time | 1429747149605   | :pitch | 0 |
+ | :time | 4289241452815/3 | :pitch | 0 |
+ | :time | 1429747151605   | :pitch | 0 |
+ | :time | 4289241456815/3 | :pitch | 0 |
+ | :time | 4289241458815/3 | :pitch | 0 |
+ | :time | 4289241462815/3 | :pitch | 0 |
+ | :time | 4289241464815/3 | :pitch | 0 |
+ | :time | 4289241468815/3 | :pitch | 0 |
+ | :time | 4289241470815/3 | :pitch | 0 |
+ | :time | 4289241474815/3 | :pitch | 0 |
+ | :time | 1429747159605   | :pitch | 0 |
+ | :time | 4289241480815/3 | :pitch | 0 |
+ | :time | 4289241482815/3 | :pitch | 0 |
+ | :time | 4289241486815/3 | :pitch | 0 |
+ | :time | 1429747163605   | :pitch | 0 |
+ | :time | 4289241494815/3 | :pitch | 0 |
+ | :time | 4289241498815/3 | :pitch | 0 |
+ | :time | 4289241500815/3 | :pitch | 0 |
+ | :time | 1429747167605   | :pitch | 0 |
+ | :time | 4289241504815/3 | :pitch | 0 |
+ | :time | 1429747169605   | :pitch | 0 |
+ | :time | 4289241510815/3 | :pitch | 0 |
+ | :time | 4289241512815/3 | :pitch | 0 |
+ | :time | 4289241516815/3 | :pitch | 0 |
+ | :time | 1429747173605   | :pitch | 0 |
+ | :time | 4289241522815/3 | :pitch | 0 |
+ | :time | 1429747175605   | :pitch | 0 |
+ | :time | 4289241528815/3 | :pitch | 0 |
+ | :time | 1429747177605   | :pitch | 0 |
+ | :time | 4289241534815/3 | :pitch | 0 |
+ | :time | 1429747179605   | :pitch | 0 |
+ | :time | 4289241542815/3 | :pitch | 0 |
+ | :time | 4289241546815/3 | :pitch | 0 |
+ | :time | 1429747183605   | :pitch | 0 |
+ | :time | 4289241552815/3 | :pitch | 0 |
+ | :time | 4289241554815/3 | :pitch | 0 |
+ | :time | 4289241558815/3 | :pitch | 0 |
+ | :time | 1429747187605   | :pitch | 0 |
+ | :time | 4289241564815/3 | :pitch | 0 |
+ | :time | 1429747189605   | :pitch | 0 |
+ | :time | 4289241572815/3 | :pitch | 0 |
+ | :time | 4289241576815/3 | :pitch | 0 |
+ | :time | 1429747193605   | :pitch | 0 |
+ | :time | 4289241582815/3 | :pitch | 0 |
+ | :time | 1429747195605   | :pitch | 0 |
+ | :time | 4289241590815/3 | :pitch | 0 |
+ | :time | 4289241594815/3 | :pitch | 0 |
+ | :time | 1429747199605   | :pitch | 0 |
+
+*** thread last is the same as
+ UNDERSTANDING THREAD LAST!! Most simply, it says, use this first
+ argument as the last argument for next function
+
+ #+BEGIN_SRC clojure
+(where :time (comp (from (now)) (bpm 90)) event-list) 
+ #+END_SRC
+
+ #+RESULTS:
+ | :time | 1429741821225   | :pitch | 0 |
+ | :time | 4289225465675/3 | :pitch | 0 |
+ | :time | 4289225467675/3 | :pitch | 0 |
+ | :time | 1429741823225   | :pitch | 0 |
+ | :time | 4289225471675/3 | :pitch | 0 |
+ | :time | 4289225473675/3 | :pitch | 0 |
+ | :time | 1429741825225   | :pitch | 0 |
+ | :time | 4289225477675/3 | :pitch | 0 |
+ | :time | 1429741827225   | :pitch | 0 |
+ | :time | 4289225483675/3 | :pitch | 0 |
+ | :time | 4289225485675/3 | :pitch | 0 |
+ | :time | 4289225489675/3 | :pitch | 0 |
+ | :time | 4289225491675/3 | :pitch | 0 |
+ | :time | 1429741831225   | :pitch | 0 |
+ | :time | 4289225495675/3 | :pitch | 0 |
+ | :time | 1429741833225   | :pitch | 0 |
+ | :time | 4289225503675/3 | :pitch | 0 |
+ | :time | 1429741835225   | :pitch | 0 |
+ | :time | 4289225509675/3 | :pitch | 0 |
+ | :time | 1429741837225   | :pitch | 0 |
+ | :time | 4289225513675/3 | :pitch | 0 |
+ | :time | 4289225515675/3 | :pitch | 0 |
+ | :time | 4289225519675/3 | :pitch | 0 |
+ | :time | 4289225521675/3 | :pitch | 0 |
+ | :time | 4289225525675/3 | :pitch | 0 |
+ | :time | 4289225527675/3 | :pitch | 0 |
+ | :time | 4289225531675/3 | :pitch | 0 |
+ | :time | 1429741845225   | :pitch | 0 |
+ | :time | 4289225537675/3 | :pitch | 0 |
+ | :time | 4289225539675/3 | :pitch | 0 |
+ | :time | 4289225543675/3 | :pitch | 0 |
+ | :time | 1429741849225   | :pitch | 0 |
+ | :time | 4289225551675/3 | :pitch | 0 |
+ | :time | 4289225555675/3 | :pitch | 0 |
+ | :time | 4289225557675/3 | :pitch | 0 |
+ | :time | 1429741853225   | :pitch | 0 |
+ | :time | 4289225561675/3 | :pitch | 0 |
+ | :time | 1429741855225   | :pitch | 0 |
+ | :time | 4289225567675/3 | :pitch | 0 |
+ | :time | 4289225569675/3 | :pitch | 0 |
+ | :time | 4289225573675/3 | :pitch | 0 |
+ | :time | 1429741859225   | :pitch | 0 |
+ | :time | 4289225579675/3 | :pitch | 0 |
+ | :time | 1429741861225   | :pitch | 0 |
+ | :time | 4289225585675/3 | :pitch | 0 |
+ | :time | 1429741863225   | :pitch | 0 |
+ | :time | 4289225591675/3 | :pitch | 0 |
+ | :time | 1429741865225   | :pitch | 0 |
+ | :time | 4289225599675/3 | :pitch | 0 |
+ | :time | 4289225603675/3 | :pitch | 0 |
+ | :time | 1429741869225   | :pitch | 0 |
+ | :time | 4289225609675/3 | :pitch | 0 |
+ | :time | 4289225611675/3 | :pitch | 0 |
+ | :time | 4289225615675/3 | :pitch | 0 |
+ | :time | 1429741873225   | :pitch | 0 |
+ | :time | 4289225621675/3 | :pitch | 0 |
+ | :time | 1429741875225   | :pitch | 0 |
+ | :time | 4289225629675/3 | :pitch | 0 |
+ | :time | 4289225633675/3 | :pitch | 0 |
+ | :time | 1429741879225   | :pitch | 0 |
+ | :time | 4289225639675/3 | :pitch | 0 |
+ | :time | 1429741881225   | :pitch | 0 |
+ | :time | 4289225647675/3 | :pitch | 0 |
+ | :time | 4289225651675/3 | :pitch | 0 |
+ | :time | 1429741885225   | :pitch | 0 |
+
+*** how does System/millisecond (which ~now~ wraps) work?
+ #+BEGIN_SRC clojure :results output
+(let [den (now)
+      dis (+ 1000 den)]
+  (do (prn den)
+      (prn dis)))
+ #+END_SRC
+
+ #+RESULTS:
+ : 1429742420877
+ : 1429742421877
+
+*** version of ctford play function that uses sampled-piano
+ #+BEGIN_SRC clojure
+(defn my-ctford-play [notes] (doseq [{ms :time midi :pitch} notes] (at ms (sampled-piano (+ midi 60)))))
+ #+END_SRC
+
+ #+RESULTS:
+ : #'post_tonal_overtone.core/my-ctford-play
+
+*** play the event-list
+ #+BEGIN_SRC clojure
+(->> event-list1 (where :time (comp (from (now)) (bpm 420))) my-ctford-play)
+ #+END_SRC
+
+ #+RESULTS:
+ : nil
+
+** create pitches for the event list map system
+*** start with some kind of structure
+There are a lot of options, depending on what kind of pitch structures
+you want to work with, and how you wish to represent them.
+
+Some of the simplest things to do are just to generate lists of
+possible permutations, in this case using the combinatorics library,
+and specificially the selections function, because it deals well with
+repetition, i.e. P and C "with replacement"
+*** concatenating patterns
+**** documenting the combinatorics library
+ #+BEGIN_SRC clojure
+cmb/assert-with-message <m> 	cmb/cartesian-product <f> 	cmb/combinations <f>
+cmb/count-combinations <f> 	cmb/count-permutations <f> 	cmb/count-subsets <f>
+cmb/drop-permutations <f> 	cmb/nth-combination <f> 	cmb/nth-permutation <f>
+cmb/nth-subset <f> 	cmb/partitions <f> 	cmb/permutation-index <f>
+cmb/permutations <f> 	cmb/selections <f> 	cmb/subsets <f>
+ #+END_SRC
+
+***** combinations
+ #+BEGIN_SRC clojure
+post_tonal_overtone.core> (source cmb/combinations)
+(defn combinations
+  "All the unique ways of taking t different elements from items"
+  [items t]      
+  (let [v-items (vec (reverse items))]
+    (if (zero? t) (list ())
+      (let [cnt (count items)]
+        (cond (> t cnt) nil
+              (= t 1) (for [item (distinct items)] (list item))
+              (all-different? items) (if (= t cnt) 
+                                        (list (seq items))
+                                        (map #(map v-items %) (index-combinations t cnt))),
+              :else (multi-comb items t))))))
+ #+END_SRC
+
+***** permutations
+ #+BEGIN_SRC clojure
+(defn permutations
+  "All the distinct permutations of items, lexicographic by index 
+(special handling for duplicate items)."
+  [items]
+  (cond
+    (sorted-numbers? items) (lex-permutations items),
+    
+    (all-different? items)
+    (let [v (vec items)]
+      (map #(map v %) (lex-permutations (range (count v)))))
+    
+    :else
+    (multi-perm items)))
+ #+END_SRC
+
+***** subsets
+ #+BEGIN_SRC clojure
+post_tonal_overtone.core> (source cmb/subsets)
+(defn subsets
+  "All the subsets of items"
+  [items]
+  (mapcat (fn [n] (combinations items n))
+          (unchunk (range (inc (count items))))))
+ #+END_SRC
+
+***** partitions
+ #+BEGIN_SRC clojure
+(defn partitions
+  "All the lexicographic distinct partitions of items.
+    Optionally pass in :min and/or :max to specify inclusive bounds on the number of parts the items can be split into."
+  [items & args]
+  (cond
+    (= (count items) 0) (apply partitions-H items args)
+    (all-different? items) (apply partitions-H items args)
+    :else (apply partitions-M items args)))
+ #+END_SRC
+
+***** cartesian-product
+ #+BEGIN_SRC clojure
+(defn cartesian-product
+  "All the ways to take one item from each sequence"
+  [& seqs]
+  (let [v-original-seqs (vec seqs)
+        step
+        (fn step [v-seqs]
+          (let [increment
+                (fn [v-seqs]
+                  (loop [i (dec (count v-seqs)), v-seqs v-seqs]
+                    (if (= i -1) nil
+                      (if-let [rst (next (v-seqs i))]
+                        (assoc v-seqs i rst)
+                        (recur (dec i) (assoc v-seqs i (v-original-seqs i)))))))]
+            (when v-seqs
+              (cons (map first v-seqs)
+                    (lazy-seq (step (increment v-seqs)))))))]
+    (when (every? seq seqs)
+      (lazy-seq (step v-original-seqs)))))
+ #+END_SRC
+
+***** permutation indexing
+ #+BEGIN_SRC clojure
+(defn permutation-index
+  "Input must be a sortable collection of items.  Returns the n such that
+    (nth-permutation (sort items) n) is items."
+  [items]
+  (if (all-different? items)
+    (permutation-index-distinct items)
+    (permutation-index-duplicates items)))
+ #+END_SRC
+
+ #+BEGIN_SRC clojure
+(cmb/nth-permutation '(0 1 2 3) 4)
+ #+END_SRC
+
+ #+RESULTS:
+ | 0 | 3 | 1 | 2 |
+
+
+ #+BEGIN_SRC clojure
+
+ #+END_SRC
+*** pitch and scalar collection
+**** diatonic
+In terms of scale degrees using arabic numerals 1 through 7, which
+aligns most nicely with the diatonic scale
+#+BEGIN_SRC clojure
+(count (cmb/selections (map inc (range 7)) 3))
+#+END_SRC
+
+#+RESULTS:
+: 343
+**** 12-note chromatic scale
+#+BEGIN_SRC clojure
+(count (cmb/selections (range 12) 3))
+#+END_SRC
+
+#+RESULTS:
+: 1728
+**** roman numerals as provided by overtone
+#+BEGIN_SRC clojure
+(count (cmb/selections [:i :ii :iii :iv :v :vi :vii] 3))
+#+END_SRC
+
+#+RESULTS:
+: 343
+
+#+RESULTS:
+| :i   | :i   | :i   |
+| :i   | :i   | :ii  |
+| :i   | :i   | :iii |
+| :i   | :i   | :iv  |
+| :i   | :i   | :v   |
+| :i   | :i   | :vi  |
+| :i   | :i   | :vii |
+| :i   | :ii  | :i   |
+| :i   | :ii  | :ii  |
+| :i   | :ii  | :iii |
+| :i   | :ii  | :iv  |
+| :i   | :ii  | :v   |
+| :i   | :ii  | :vi  |
+| :i   | :ii  | :vii |
+| :i   | :iii | :i   |
+| :i   | :iii | :ii  |
+| :i   | :iii | :iii |
+| :i   | :iii | :iv  |
+| :i   | :iii | :v   |
+| :i   | :iii | :vi  |
+| :i   | :iii | :vii |
+| :i   | :iv  | :i   |
+| :i   | :iv  | :ii  |
+| :i   | :iv  | :iii |
+| :i   | :iv  | :iv  |
+| :i   | :iv  | :v   |
+| :i   | :iv  | :vi  |
+| :i   | :iv  | :vii |
+| :i   | :v   | :i   |
+| :i   | :v   | :ii  |
+| :i   | :v   | :iii |
+| :i   | :v   | :iv  |
+| :i   | :v   | :v   |
+| :i   | :v   | :vi  |
+| :i   | :v   | :vii |
+| :i   | :vi  | :i   |
+| :i   | :vi  | :ii  |
+| :i   | :vi  | :iii |
+| :i   | :vi  | :iv  |
+| :i   | :vi  | :v   |
+| :i   | :vi  | :vi  |
+| :i   | :vi  | :vii |
+| :i   | :vii | :i   |
+| :i   | :vii | :ii  |
+| :i   | :vii | :iii |
+| :i   | :vii | :iv  |
+| :i   | :vii | :v   |
+| :i   | :vii | :vi  |
+| :i   | :vii | :vii |
+| :ii  | :i   | :i   |
+| :ii  | :i   | :ii  |
+| :ii  | :i   | :iii |
+| :ii  | :i   | :iv  |
+| :ii  | :i   | :v   |
+| :ii  | :i   | :vi  |
+| :ii  | :i   | :vii |
+| :ii  | :ii  | :i   |
+| :ii  | :ii  | :ii  |
+| :ii  | :ii  | :iii |
+| :ii  | :ii  | :iv  |
+| :ii  | :ii  | :v   |
+| :ii  | :ii  | :vi  |
+| :ii  | :ii  | :vii |
+| :ii  | :iii | :i   |
+| :ii  | :iii | :ii  |
+| :ii  | :iii | :iii |
+| :ii  | :iii | :iv  |
+| :ii  | :iii | :v   |
+| :ii  | :iii | :vi  |
+| :ii  | :iii | :vii |
+| :ii  | :iv  | :i   |
+| :ii  | :iv  | :ii  |
+| :ii  | :iv  | :iii |
+| :ii  | :iv  | :iv  |
+| :ii  | :iv  | :v   |
+| :ii  | :iv  | :vi  |
+| :ii  | :iv  | :vii |
+| :ii  | :v   | :i   |
+| :ii  | :v   | :ii  |
+| :ii  | :v   | :iii |
+| :ii  | :v   | :iv  |
+| :ii  | :v   | :v   |
+| :ii  | :v   | :vi  |
+| :ii  | :v   | :vii |
+| :ii  | :vi  | :i   |
+| :ii  | :vi  | :ii  |
+| :ii  | :vi  | :iii |
+| :ii  | :vi  | :iv  |
+| :ii  | :vi  | :v   |
+| :ii  | :vi  | :vi  |
+| :ii  | :vi  | :vii |
+| :ii  | :vii | :i   |
+| :ii  | :vii | :ii  |
+| :ii  | :vii | :iii |
+| :ii  | :vii | :iv  |
+| :ii  | :vii | :v   |
+| :ii  | :vii | :vi  |
+| :ii  | :vii | :vii |
+| :iii | :i   | :i   |
+| :iii | :i   | :ii  |
+| :iii | :i   | :iii |
+| :iii | :i   | :iv  |
+| :iii | :i   | :v   |
+| :iii | :i   | :vi  |
+| :iii | :i   | :vii |
+| :iii | :ii  | :i   |
+| :iii | :ii  | :ii  |
+| :iii | :ii  | :iii |
+| :iii | :ii  | :iv  |
+| :iii | :ii  | :v   |
+| :iii | :ii  | :vi  |
+| :iii | :ii  | :vii |
+| :iii | :iii | :i   |
+| :iii | :iii | :ii  |
+| :iii | :iii | :iii |
+| :iii | :iii | :iv  |
+| :iii | :iii | :v   |
+| :iii | :iii | :vi  |
+| :iii | :iii | :vii |
+| :iii | :iv  | :i   |
+| :iii | :iv  | :ii  |
+| :iii | :iv  | :iii |
+| :iii | :iv  | :iv  |
+| :iii | :iv  | :v   |
+| :iii | :iv  | :vi  |
+| :iii | :iv  | :vii |
+| :iii | :v   | :i   |
+| :iii | :v   | :ii  |
+| :iii | :v   | :iii |
+| :iii | :v   | :iv  |
+| :iii | :v   | :v   |
+| :iii | :v   | :vi  |
+| :iii | :v   | :vii |
+| :iii | :vi  | :i   |
+| :iii | :vi  | :ii  |
+| :iii | :vi  | :iii |
+| :iii | :vi  | :iv  |
+| :iii | :vi  | :v   |
+| :iii | :vi  | :vi  |
+| :iii | :vi  | :vii |
+| :iii | :vii | :i   |
+| :iii | :vii | :ii  |
+| :iii | :vii | :iii |
+| :iii | :vii | :iv  |
+| :iii | :vii | :v   |
+| :iii | :vii | :vi  |
+| :iii | :vii | :vii |
+| :iv  | :i   | :i   |
+| :iv  | :i   | :ii  |
+| :iv  | :i   | :iii |
+| :iv  | :i   | :iv  |
+| :iv  | :i   | :v   |
+| :iv  | :i   | :vi  |
+| :iv  | :i   | :vii |
+| :iv  | :ii  | :i   |
+| :iv  | :ii  | :ii  |
+| :iv  | :ii  | :iii |
+| :iv  | :ii  | :iv  |
+| :iv  | :ii  | :v   |
+| :iv  | :ii  | :vi  |
+| :iv  | :ii  | :vii |
+| :iv  | :iii | :i   |
+| :iv  | :iii | :ii  |
+| :iv  | :iii | :iii |
+| :iv  | :iii | :iv  |
+| :iv  | :iii | :v   |
+| :iv  | :iii | :vi  |
+| :iv  | :iii | :vii |
+| :iv  | :iv  | :i   |
+| :iv  | :iv  | :ii  |
+| :iv  | :iv  | :iii |
+| :iv  | :iv  | :iv  |
+| :iv  | :iv  | :v   |
+| :iv  | :iv  | :vi  |
+| :iv  | :iv  | :vii |
+| :iv  | :v   | :i   |
+| :iv  | :v   | :ii  |
+| :iv  | :v   | :iii |
+| :iv  | :v   | :iv  |
+| :iv  | :v   | :v   |
+| :iv  | :v   | :vi  |
+| :iv  | :v   | :vii |
+| :iv  | :vi  | :i   |
+| :iv  | :vi  | :ii  |
+| :iv  | :vi  | :iii |
+| :iv  | :vi  | :iv  |
+| :iv  | :vi  | :v   |
+| :iv  | :vi  | :vi  |
+| :iv  | :vi  | :vii |
+| :iv  | :vii | :i   |
+| :iv  | :vii | :ii  |
+| :iv  | :vii | :iii |
+| :iv  | :vii | :iv  |
+| :iv  | :vii | :v   |
+| :iv  | :vii | :vi  |
+| :iv  | :vii | :vii |
+| :v   | :i   | :i   |
+| :v   | :i   | :ii  |
+| :v   | :i   | :iii |
+| :v   | :i   | :iv  |
+| :v   | :i   | :v   |
+| :v   | :i   | :vi  |
+| :v   | :i   | :vii |
+| :v   | :ii  | :i   |
+| :v   | :ii  | :ii  |
+| :v   | :ii  | :iii |
+| :v   | :ii  | :iv  |
+| :v   | :ii  | :v   |
+| :v   | :ii  | :vi  |
+| :v   | :ii  | :vii |
+| :v   | :iii | :i   |
+| :v   | :iii | :ii  |
+| :v   | :iii | :iii |
+| :v   | :iii | :iv  |
+| :v   | :iii | :v   |
+| :v   | :iii | :vi  |
+| :v   | :iii | :vii |
+| :v   | :iv  | :i   |
+| :v   | :iv  | :ii  |
+| :v   | :iv  | :iii |
+| :v   | :iv  | :iv  |
+| :v   | :iv  | :v   |
+| :v   | :iv  | :vi  |
+| :v   | :iv  | :vii |
+| :v   | :v   | :i   |
+| :v   | :v   | :ii  |
+| :v   | :v   | :iii |
+| :v   | :v   | :iv  |
+| :v   | :v   | :v   |
+| :v   | :v   | :vi  |
+| :v   | :v   | :vii |
+| :v   | :vi  | :i   |
+| :v   | :vi  | :ii  |
+| :v   | :vi  | :iii |
+| :v   | :vi  | :iv  |
+| :v   | :vi  | :v   |
+| :v   | :vi  | :vi  |
+| :v   | :vi  | :vii |
+| :v   | :vii | :i   |
+| :v   | :vii | :ii  |
+| :v   | :vii | :iii |
+| :v   | :vii | :iv  |
+| :v   | :vii | :v   |
+| :v   | :vii | :vi  |
+| :v   | :vii | :vii |
+| :vi  | :i   | :i   |
+| :vi  | :i   | :ii  |
+| :vi  | :i   | :iii |
+| :vi  | :i   | :iv  |
+| :vi  | :i   | :v   |
+| :vi  | :i   | :vi  |
+| :vi  | :i   | :vii |
+| :vi  | :ii  | :i   |
+| :vi  | :ii  | :ii  |
+| :vi  | :ii  | :iii |
+| :vi  | :ii  | :iv  |
+| :vi  | :ii  | :v   |
+| :vi  | :ii  | :vi  |
+| :vi  | :ii  | :vii |
+| :vi  | :iii | :i   |
+| :vi  | :iii | :ii  |
+| :vi  | :iii | :iii |
+| :vi  | :iii | :iv  |
+| :vi  | :iii | :v   |
+| :vi  | :iii | :vi  |
+| :vi  | :iii | :vii |
+| :vi  | :iv  | :i   |
+| :vi  | :iv  | :ii  |
+| :vi  | :iv  | :iii |
+| :vi  | :iv  | :iv  |
+| :vi  | :iv  | :v   |
+| :vi  | :iv  | :vi  |
+| :vi  | :iv  | :vii |
+| :vi  | :v   | :i   |
+| :vi  | :v   | :ii  |
+| :vi  | :v   | :iii |
+| :vi  | :v   | :iv  |
+| :vi  | :v   | :v   |
+| :vi  | :v   | :vi  |
+| :vi  | :v   | :vii |
+| :vi  | :vi  | :i   |
+| :vi  | :vi  | :ii  |
+| :vi  | :vi  | :iii |
+| :vi  | :vi  | :iv  |
+| :vi  | :vi  | :v   |
+| :vi  | :vi  | :vi  |
+| :vi  | :vi  | :vii |
+| :vi  | :vii | :i   |
+| :vi  | :vii | :ii  |
+| :vi  | :vii | :iii |
+| :vi  | :vii | :iv  |
+| :vi  | :vii | :v   |
+| :vi  | :vii | :vi  |
+| :vi  | :vii | :vii |
+| :vii | :i   | :i   |
+| :vii | :i   | :ii  |
+| :vii | :i   | :iii |
+| :vii | :i   | :iv  |
+| :vii | :i   | :v   |
+| :vii | :i   | :vi  |
+| :vii | :i   | :vii |
+| :vii | :ii  | :i   |
+| :vii | :ii  | :ii  |
+| :vii | :ii  | :iii |
+| :vii | :ii  | :iv  |
+| :vii | :ii  | :v   |
+| :vii | :ii  | :vi  |
+| :vii | :ii  | :vii |
+| :vii | :iii | :i   |
+| :vii | :iii | :ii  |
+| :vii | :iii | :iii |
+| :vii | :iii | :iv  |
+| :vii | :iii | :v   |
+| :vii | :iii | :vi  |
+| :vii | :iii | :vii |
+| :vii | :iv  | :i   |
+| :vii | :iv  | :ii  |
+| :vii | :iv  | :iii |
+| :vii | :iv  | :iv  |
+| :vii | :iv  | :v   |
+| :vii | :iv  | :vi  |
+| :vii | :iv  | :vii |
+| :vii | :v   | :i   |
+| :vii | :v   | :ii  |
+| :vii | :v   | :iii |
+| :vii | :v   | :iv  |
+| :vii | :v   | :v   |
+| :vii | :v   | :vi  |
+| :vii | :v   | :vii |
+| :vii | :vi  | :i   |
+| :vii | :vi  | :ii  |
+| :vii | :vi  | :iii |
+| :vii | :vi  | :iv  |
+| :vii | :vi  | :v   |
+| :vii | :vi  | :vi  |
+| :vii | :vi  | :vii |
+| :vii | :vii | :i   |
+| :vii | :vii | :ii  |
+| :vii | :vii | :iii |
+| :vii | :vii | :iv  |
+| :vii | :vii | :v   |
+| :vii | :vii | :vi  |
+| :vii | :vii | :vii |
+
+#+BEGIN_SRC clojure
+(def scale-degrees [:i :ii :iii :iv :v :vi :vii])
+#+END_SRC
+
+#+BEGIN_SRC clojure
+(degrees->pitches scale-degrees :dorian :E3)
+#+END_SRC
+#+RESULTS:
+| 52 | 54 | 55 | 57 | 59 | 61 | 62 |
+
+#+BEGIN_SRC clojure
+(def actual-melody [:vi :vii :i+ :_ :vii :_ :i+ :vii :vi :_ :vii :_])
+#+END_SRC
+
+#+RESULTS:
+: #'post_tonal_overtone.core/actual-melody
+#+BEGIN_SRC clojure
+(degrees->pitches actual-melody :dorian :E3)
+#+END_SRC
+
+#+RESULTS:
+| 61 | 62 | 64 | nil | 62 | nil | 64 | 62 | 61 | nil | 62 | nil |
+
+
+#+BEGIN_SRC clojure
+(degrees->pitches [:i :i+ :i- :ii]  :phrygian :C3)
+#+END_SRC
+
+#+RESULTS:
+| 48 | 60 | 36 | 49 |
+
+#+BEGIN_SRC clojure
+(def do-re-mi  [:i :ii :iii])
+(degrees->pitches do-re-mi  :ionian :C3)
+#+END_SRC
+
+#+RESULTS:
+: #'post_tonal_overtone.core/do-re-mi(48 50 52)
+*** set theoretical constructs
+#+BEGIN_SRC clojure
+(rand-nth set-class/tetrachords)
+#+END_SRC
+
+#+RESULTS:
+| 0 | 2 | 4 | 7 |
+
+*** reflecting
+Thinking in terms of giant lists of numbers, however, may not seem
+particularly efficient or natural, depending on how one's musical
+brain was trained. The problem of representation in music is about as
+hard as it gets while still lending itself to lots of possible
+approaches.
+
+Converting back and forth from conventional musical notation to some
+form that is more like the kind of data computer languages are written
+to manipulate can be arduous.
+
+However, being able to turn manipulations of numbers into things we
+can hear is, for this musician, about as fun as math can get. And it's
+easy enough to get caught up in the process, and in doing so,
+indirectly turn it into an exercise in learning data transformation in
+a language like Clojure.
+
+* using probability to control output
+** importing into overtone and clojure from .contrib
+I have included in my project all the code that I took still extant
+from the .contrib library as I could find it and just imported it in
+wholesale as a directory in my src folder.
+
+Thus I am able to do the following (getting pathnames just right is
+not easy).
+
+#+BEGIN_SRC clojure
+(require '[post_tonal_overtone.probability_functions.finite-distributions :as prb])
+#+END_SRC
+
+** in overtone
+There are several namespaced functions in the overtone.algo code that
+are relevant here.
+*** algo.chance
+
+ This declaration is not used here, but could be useful when you want
+ to remember where you are getting your functions from
+ #+BEGIN_SRC clojure
+(require '[overtone.algo.chance :as ochance])
+ #+END_SRC
+
+ #+RESULTS:
+ : nil
+
+ #+BEGIN_SRC clojure
+(dir overtone.algo.chance)
+;; choose
+;; choose-n
+;; chosen-from
+;; only
+;; ranged-rand
+;; weighted-choose
+ #+END_SRC
+
+**** choose
+ #+BEGIN_SRC clojure :results output
+(source choose)
+ #+END_SRC
+
+ #+RESULTS:
+ : (defn choose
+ :   "Choose a random element from col."
+ :   [col]
+ :   (rand-nth col))
+
+ #+BEGIN_SRC clojure
+(choose [[0 1 2] [0 1 3] [0 1 4]])
+ #+END_SRC
+
+ #+RESULTS:
+ | 0 | 1 | 3 |
+
+**** choose-n
+ #+BEGIN_SRC clojure :results output
+(source choose-n)
+ #+END_SRC
+
+ #+RESULTS:
+ : (defn choose-n
+ :   "Choose n random elements from col."
+ :   [n col]
+ :   (take n (shuffle col)))
+
+ #+BEGIN_SRC clojure
+(choose-n 2 [[0 1 2] [0 1 3] [0 1 4] [0 1 5]])
+ #+END_SRC
+
+ #+RESULTS:
+ | 0 | 1 | 4 |
+ | 0 | 1 | 3 |
+
+**** chosen-from (note, infinite lazy-seq!)
+ #+BEGIN_SRC clojure :results output
+(source chosen-from)
+ #+END_SRC
+
+ #+RESULTS:
+ : (defn chosen-from [notes]
+ :   (let [num-notes (count notes)]
+ :     (repeatedly #(get notes (rand-int num-notes)))))
+
+ #+BEGIN_SRC clojure
+(take 10 (chosen-from [0 2 4 5 7 8]))
+ #+END_SRC
+
+ #+RESULTS:
+ | 7 | 5 | 0 | 8 | 5 | 5 | 5 | 5 | 5 | 5 |
+
+**** only
+ #+BEGIN_SRC clojure :results output
+(source only)
+ #+END_SRC
+
+ #+RESULTS:
+ : (defn only
+ :   "Take only the specified notes from the given phrase."
+ :   ([phrase notes] (only phrase notes []))
+ :   ([phrase notes result]
+ :    (if notes
+ :      (recur phrase
+ :             (next notes)
+ :             (conj result (get phrase (first notes))))
+ :      result)))
+
+ uh,
+
+ #+BEGIN_SRC clojure
+(only [0 2 4 5 7 9 11 12 11 9 7 5 4 2 0] [0 4 7])
+ #+END_SRC
+
+ #+RESULTS:
+ | 0 | 7 | 12 |
+
+ I don't know.
+ #+BEGIN_SRC clojure
+(only [0 2 4 5 7 9 11 12 11 9 7 5 4 2 0] [0 7])
+ #+END_SRC
+
+ #+RESULTS:
+ | 0 | 12 |
+
+ AHHHH, uses indices!
+ #+BEGIN_SRC clojure
+(only [0 2 4 5 7 9 11 12 11 9 7 5 4 2 0] [0 1])
+ #+END_SRC
+
+ #+RESULTS:
+ | 0 | 2 |
+
+**** ranged-rand
+ #+BEGIN_SRC clojure :results output
+(source ranged-rand)
+ #+END_SRC
+
+ #+RESULTS:
+ : (defn ranged-rand
+ :   "Returns a random value within the specified range"
+ :   [min max]
+ :   (scale-range (rand) 0 1 min max))
+
+
+ #+BEGIN_SRC clojure
+(ranged-rand 1 5)
+ #+END_SRC
+
+ #+RESULTS:
+ : 3.5377276258001573
+
+**** scale-range
+ #+BEGIN_SRC clojure :results output
+(source scale-range)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+(defn scale-range
+  "Scales a given input value within the specified input range to a
+  corresponding value in the specified output range using the formula:
+
+           (out-max - out-min) (x - in-min)
+   f (x) = --------------------------------  + out-min
+                    in-max - in-min
+
+"
+
+  [x in-min in-max out-min out-max]
+  (+ (/ (* (- out-max out-min) (- x in-min))
+        (- in-max in-min))
+     out-min))
+ #+end_example
+
+ #+BEGIN_SRC clojure
+(overtone.algo.scaling/scale-range 13 1 100 0 1)
+ #+END_SRC
+
+ #+RESULTS:
+ : 4/33
+
+**** weighted-choose
+***** code
+ #+BEGIN_SRC clojure :results output
+(source weighted-choose)
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+(defn weighted-choose
+  "Returns an element from list vals based on the corresponding
+  probabilities list. The length of vals and probabilities should be
+  similar and the sum of all the probabilities should be 1. It is also
+  possible to pass a map of val -> prob pairs as a param.
+
+  The following will return one of the following vals with the
+  corresponding probabilities:
+  1 -> 50%
+  2 -> 30%
+  3 -> 12.5%
+  4 -> 7.5%
+  (weighted-choose [1 2 3 4] [0.5 0.3 0.125 0.075])
+  (weighted-choose {1 0.5, 2 0.3, 3 0.125, 4 0.075})"
+  ([val-prob-map] (weighted-choose (keys val-prob-map) (vals val-prob-map)))
+  ([vals probabilities]
+     (when-not (= (count vals) (count probabilities))
+       (throw (IllegalArgumentException. (str "Size of vals and probabilities don't match. Got "
+                               (count vals)
+                               " and "
+                               (count probabilities)))))
+     (when-not (= (reduce + probabilities) 1.0)
+       (throw (IllegalArgumentException. (str "The sum of your probabilities is not 1.0"))))
+
+     (let [paired (map vector probabilities vals)
+           sorted (sort #(< (first %1) (first %2)) paired)
+           summed (loop [todo sorted
+                         done []
+                         cumulative 0]
+                    (if (empty? todo)
+                      done
+                      (let [f-prob (ffirst todo)
+                            f-val  (second (first todo))
+                            cumulative (+ cumulative f-prob)]
+                        (recur (rest todo)
+                               (conj done [cumulative f-val])
+                               cumulative))))
+           rand-num (rand)]
+       (loop [summed summed]
+         (when (empty? summed)
+           (throw (Exception. (str "Error, Reached end of weighed choice options"))))
+         (if (< rand-num (ffirst summed))
+           (second (first summed))
+           (recur (rest summed)))))))
+ #+end_example
+
+ #+END_SRC
+
+***** examples
+#+BEGIN_SRC clojure
+(weighted-choose [1 2 3 4] [0.5 0.3 0.125 0.075])
+#+END_SRC
+
+#+RESULTS:
+: 2
+#+BEGIN_SRC clojure
+(weighted-choose {1 0.5, 2 0.3, 3 0.125, 4 0.075})
+#+END_SRC
+
+#+RESULTS:
+: 1
+
+#+BEGIN_SRC clojure
+(take 20 (repeatedly #(weighted-choose {1 0.5, 2 0.3, 3 0.125, 4 0.075})))
+#+END_SRC
+
+#+RESULTS:
+| 3 | 3 | 2 | 2 | 2 | 3 | 1 | 1 | 1 | 1 | 1 | 3 | 2 | 1 | 1 | 3 | 4 | 1 | 2 | 1 |
+
+#+BEGIN_SRC clojure
+(repeatedly 10 #(let [e1 (weighted-choose [1 2 3 4] [0.25 0.25 0.25 0.25])]
+  (case e1
+    1 (weighted-choose [1 2 3 4] (rotate 0 [0.8 0.1 0.05 0.05]))
+    2 (weighted-choose [1 2 3 4] (rotate 1 [0.8 0.1 0.05 0.05]))
+    3 (weighted-choose [1 2 3 4] (rotate 2 [0.8 0.1 0.05 0.05]))
+    4 (weighted-choose [1 2 3 4] (rotate 3 [0.8 0.1 0.05 0.05])))))
+#+END_SRC
+
+#+RESULTS:
+| 1 | 4 | 2 | 2 | 3 | 2 | 3 | 4 | 1 | 4 |
+
+*** overtone.algo.fn
+
+#+BEGIN_SRC clojure :results output
+(doc cycle-fn)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/cycle-fn
+([& fns])
+  Returns a fn which will cycle between each of the fns specified. The
+   first time the fn is called, the first fn in fns will be called, the
+   second time, the second fn in fns etc, cycling around indefinitely.
+
+   The args passed into the returned fn will be passed through to the
+   appropriate inner fn. Additionally, the result of the inner fn will
+   be returned as the result of the outer fn.
+
+   Will catch any exceptions generated by the internal fns and print a
+   stacktrace to stdout.
+
+   (def f (cycle-fn (fn [st] (println "hi" st))
+                    (fn [st] (println "yo" st))
+                    (fn [st] (println "ho ho" st))))
+
+   (f "there") ;=> "hi there"
+   (f "bro")   ;=> "yo bro"
+   (f "santa") ;=> "ho ho santa"
+   (f "again") ;=> "hi again"
+#+end_example
+
+** from other clojure libraries
+There was a library in clojure.contrib for working with probability,
+namely the .probabilities.finite-distributions library by Konrad
+Hinsen, which became largely deprecated with the move away from
+.contrib. 
+
+It makes heavy use of monands, and the contrib.monands library, which
+poses some problems of usability for the average user.
+
+#+BEGIN_SRC clojure
+(dir post_tonal_overtone.probability_functions.finite-distributions)
+bernoulli
+binomial
+certainly
+choose
+cond-dist-m
+cond-prob
+dist-m
+join-with
+make-distribution
+normalize
+normalize-cond
+prob
+select
+uniform
+zipf
+nil
+#+END_SRC
+* divisions and subdivisions
+** messing around with numbers
+#+BEGIN_SRC clojure
+(repeat 4 1)
+#+END_SRC
+
+#+RESULTS:
+| 1 | 1 | 1 | 1 |
+
+#+BEGIN_SRC clojure
+(for [n (range 4 -1 -1)]
+  (repeat n n))
+#+END_SRC
+
+#+RESULTS:
+| 4 | 4 | 4 | 4 |
+| 3 | 3 | 3 |   |
+| 2 | 2 |   |   |
+| 1 |   |   |   |
+
+
+| 1 |   4 |
+| 2 |   2 |
+| 3 | 4/3 |
+| 4 |   1 |
+
+(= 4 (* 3 n)
+
+| 1 |   64 |
+| 2 |   32 |
+| 3 | 64/3 |
+| 4 |   16 |
+| 5 |      |
+
