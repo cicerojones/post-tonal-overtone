@@ -1,0 +1,221 @@
+* overtone session
+** 
+#+BEGIN_SRC clojure
+(def junk 1)
+#+END_SRC
+
+#+RESULTS:
+: #'user/junk
+
+#+BEGIN_SRC clojure
+junk
+#+END_SRC
+
+#+RESULTS:
+: 1
+
+#+BEGIN_SRC clojure
+(use 'overtone.live)
+#+END_SRC
+
+#+BEGIN_SRC clojure
+(demo (sin-osc))
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: user/audition-synth 33>
+
+#+BEGIN_SRC clojure
+  (definst sin-test []
+    (sin-osc))
+#+END_SRC
+
+#+RESULTS:
+: #<instrument: sin-test>
+
+#+BEGIN_SRC clojure
+(sin-test)
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: user/sin-test 38>
+
+#+BEGIN_SRC clojure
+  (definst sin-test2 [freq 440 amp 0.3] 
+    (* amp (sin-osc freq)))
+#+END_SRC
+
+#+RESULTS:
+: #<instrument: sin-test2>
+
+#+BEGIN_SRC clojure
+(sin-test2)
+(sin-test2 442)
+
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: user/sin-test2 40>#<synth-node[loading]: user/sin-test2 41>
+
+#+BEGIN_SRC clojure
+(stop)
+#+END_SRC
+
+#+RESULTS:
+: nil
+
+#+BEGIN_SRC clojure
+(def gran-buf (load-sample "/Users/b/Google Drive/Audio_uploads/wav-file-uploads/goldberg-slow-mono.wav"))
+#+END_SRC
+
+#+RESULTS:
+: #'user/gran-buf
+
+#+BEGIN_SRC clojure
+(definst gran [] (play-buf 1 gran-buf))
+#+END_SRC
+
+#+RESULTS:
+: #<instrument: gran>
+
+#+BEGIN_SRC clojure
+(gran)
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: user/gran 47>
+
+#+BEGIN_SRC clojure
+(definst grainy [b 0] (let [
+                         trate (mouse-y:kr 1 30)
+                         dur (/ 2 trate)]
+                        (t-grains:ar 1 (impulse:ar trate) b 1 (mouse-x:kr 0 (buf-dur:kr b)) dur 0 0.8 2)))
+
+#+END_SRC
+
+#+RESULTS:
+: #<instrument: grainy>
+
+#+BEGIN_SRC clojure
+(grainy gran-buf)
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: user/grainy 70>
+
+#+BEGIN_SRC clojure
+(midi-connected-devices)
+#+END_SRC
+
+#+RESULTS:
+: '((:description "Axiom A.I.R. Mini32 MIDI"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "MIDI"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x5e14f7aa "MIDI")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x25c8c9e "com.sun.media.sound.MidiInDevice@25c8c9e")  :version "Unknown version") (:description "Axiom A.I.R. Mini32 HyperControl"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "HyperControl"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "HyperControl" "Axiom A.I.R. Mini32 HyperControl" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x2d8e37a4 "HyperControl")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x6e752bd2 "com.sun.media.sound.MidiInDevice@6e752bd2")  :version "Unknown version"))
+
+#+BEGIN_SRC clojure
+
+(on-event [:midi :note-on] (fn [{note :note velocity :velocity}]
+                             (println "Note: " note ", Velocity: " velocity))
+          ::note-printer)
+
+#+END_SRC
+
+#+RESULTS:
+: :added-async-handler
+
+#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
+(remove-event-handler ::note-printer)
+#+END_SRC
+
+#+RESULTS:
+: :handler-removed
+
+#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
+(on-event [:midi :control-change] (fn [{cc-channel :note velocity :velocity}]
+                             (println "knob: " cc-channel ", Velocity: " velocity))
+          ::cc-printer)
+#+END_SRC
+
+#+RESULTS:
+: :added-async-handler
+
+#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
+(remove-event-handler ::cc-printer)
+#+END_SRC
+
+#+RESULTS:
+: :handler-removed
+
+#+BEGIN_SRC clojure
+  (definst grainy-ctl [b 0 trate 1 amp 0.8]
+    (let [trate trate
+          dur (/ 2 trate)]
+      (t-grains:ar 1 (impulse:ar trate) b 1 (mouse-x:kr 0 (buf-dur:kr b)) dur 0 amp 2)))
+
+#+END_SRC
+
+#+RESULTS:
+: #<instrument: grainy-ctl>
+
+
+
+#+BEGIN_SRC clojure
+(grainy-ctl :trate 2)
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: user/grainy-ctl 74>
+
+
+#+BEGIN_SRC clojure
+(ctl grainy-ctl :trate 0.5)
+#+END_SRC
+
+#+RESULTS:
+: #overtone.studio.inst.Inst{:name "grainy-ctl", :params ({:name "b", :default 0.0, :rate :kr, :value #atom[0.0 0x5287835f]} {:name "trate", :default 1.0, :rate :kr, :value #atom[1.0 0x13f6ae39]}), :args ("b" "trate"), :sdef {:name "user/grainy-ctl", :constants [0.0 2.0 1.0 19.0 0.2 0.8], :params (0.0 1.0), :pnames ({:name "b", :index 0} {:name "trate", :index 1}), :ugens ({:args nil, :special 0, :name "Control", :rate 1, :inputs (), :rate-name :kr, :n-outputs 2, :id 319, :outputs ({:rate 1} {:rate 1}), :n-inputs 0} #<sc-ugen: binary-op-u-gen:kr [1]> #<sc-ugen: buf-dur:kr [1]> #<sc-ugen: mouse-x:kr [2]> #<sc-ugen: impulse:ar [1]> #<sc-ugen: t-grains:ar [8]> #<sc-ugen: out:ar [9]>)}, :group #<synth-group[live]: Inst grainy-ctl Container 52>, :instance-group #<synth-group[live]: Inst grainy-ctl 53>, :fx-group #<synth-group[live]: Inst grainy-ctl FX 54>, :mixer #<synth-node[live]: overtone.stu547/mono-inst-mixer 55>, :bus #<audio-bus: No Name, mono, id 19>, :fx-chain [], :volume #atom[1.0 0x2a958210], :pan #atom[0.0 0x44e66166], :n-chans 1}
+
+Why does the handler function take a "10" as an argument
+#+BEGIN_SRC clojure
+  (on-event [:midi :control-change]
+            (fn [{cc-channel :note velocity :velocity}]
+            (ctl grainy-ctl :trate (scale-range velocity 1 127 0.1 3)) 10)
+              ::cc-grainyctl)
+#+END_SRC
+
+#+RESULTS:
+: :added-async-handler
+
+#+BEGIN_SRC clojure
+(remove-event-handler ::cc-grainyctl)
+#+END_SRC
+
+#+RESULTS:
+: :handler-removed
+
+* supercollider
+#+BEGIN_SRC sclang
+  { SinOsc.ar() }.play
+#+END_SRC
+
+#+BEGIN_SRC sclang
+  { SinOsc.ar([440, 442], 0, 0.4) }.play;
+#+END_SRC
+
+* stop all overtone sound
+:PROPERTIES:
+:ID:       9A833656-B947-48F7-8118-E522F04F2860
+:END:
+
+#+BEGIN_SRC clojure
+(stop)
+#+END_SRC
+
+#+RESULTS:
+: nil
+* elisp kmacros
+#+BEGIN_SRC elisp
+(fset 'overtone-stop-sound
+   [?\C-x ?r ?j ?/ ?\C-c ?\C-v ?\C-n ?\C-c ?\C-c ?\C-u ?\C- ])
+
+(fset 'overtone-org-start-new-block
+   [?\C-c ?\C-n return ?\C-p ?< ?s tab ?\M-/ ?\C-n])
+
+#+END_SRC

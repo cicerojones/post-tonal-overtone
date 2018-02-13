@@ -1,0 +1,114 @@
+* get overtone started while also running Supercollider on the machine
+** boot an internal server or connect to an external one?
+#+BEGIN_SRC clojure
+;; boot internal
+(use 'overtone.live)
+#+END_SRC
+ 
+vs.
+
+#+BEGIN_SRC clojure
+;; don't boot an internal server
+(use 'overtone.core)
+#+END_SRC
+
+#+BEGIN_SRC clojure
+;; connect to an existing one, always on 57110?
+(connect-external-server 57110)
+#+END_SRC
+
+#+RESULTS:
+: :happy-hacking
+
+** start some where--demo a sin-osc
+#+BEGIN_SRC clojure
+(demo (sin-osc))
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: user/audition-synth 33>
+* Customize your editor and environment
+** jump to buffer positions with macros
+how to name blocks in babel?
+[[id:A85521A0-55F0-4618-8E36-6DEC33864F17][{2016-11-01 Tue 22:31} NAME ORG CODE BLOCKS EASILY!!!]]
+C-c C-v g
+** define kmacros
+#+BEGIN_SRC elisp
+(fset 'overtone-kill
+   [?\C-  ?\C-  ?\C-c ?\C-v ?g ?s ?t ?o ?p return ?\C-c ?\C-c ?\C-u ?  ?\s-z ?\C-u ?\C- ])
+
+   (global-set-key [s-f6] 'overtone-kill)
+
+
+#+END_SRC
+
+** kill all synths?
+:PROPERTIES:
+:ID:       7AAA71D9-70C9-43B6-AADF-A88FC8DEAF13
+:END:
+#+NAME: stop
+#+BEGIN_SRC clojure
+(stop)
+#+END_SRC
+
+#+RESULTS: stop
+: nil
+
+* some synths or insts
+** define an inst or define a synth?
+
+#+BEGIN_SRC clojure
+  ;;Overtone version    
+  (defsynth foo
+    (let [src   (* (decay (impulse 0.3) 0.1) (white-noise 0.2))
+          local (+ (local-in 2) [src 0])
+          local (delay-n local 0.2 0.2)
+          _ (local-out (* (reverse local) 0.8))]
+      (out 0 local)))
+#+END_SRC
+
+#+RESULTS:
+
+** Function.play version
+#+BEGIN_SRC sclang
+{
+            var source, local;
+
+            source = Decay.ar(Impulse.ar(0.3), 0.1) * WhiteNoise.ar(0.2);
+
+            local = LocalIn.ar(2) + [source, 0]; // read feedback, add to source
+
+            local = DelayN.ar(local, 0.2, 0.2); // delay sound
+
+            // reverse channels to give ping pong effect, apply decay factor
+            LocalOut.ar(local.reverse * 0.8);
+
+            Out.ar(0, local);
+    }.play;
+#+END_SRC
+
+** instantiate an overtone synth
+#+BEGIN_SRC clojure
+(foo)
+#+END_SRC
+
+#+RESULTS:
+
+* simple overtone definst (simpler than defsynth--no "Out" required)
+#+BEGIN_SRC clojure
+(definst foo [] (saw 220))
+#+END_SRC
+
+#+RESULTS:
+: #<instrument: foo>
+
+#+BEGIN_SRC clojure
+(foo)
+#+END_SRC
+
+#+RESULTS:
+: #<synth-node[loading]: user/foo 39>
+
+* links to essential code blocks
+
+** stop overtone [[id:7AAA71D9-70C9-43B6-AADF-A88FC8DEAF13][kill all synths?]]

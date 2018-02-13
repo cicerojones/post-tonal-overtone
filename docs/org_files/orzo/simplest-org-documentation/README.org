@@ -1,0 +1,50 @@
+* Learn more about Overtone by looking through examples
+[[file:~/Github-repos/overtone-source/src/overtone/examples/][file:~/Github-repos/overtone-source/src/overtone/examples/]]
+
+See large workshop project file
+[[file:~/Github-repos/overtone-source/src/overtone/examples/workshops/resonate2013/][file:~/Github-repos/overtone-source/src/overtone/examples/workshops/resonate2013/]]
+
+Understand busses and groups!
+[[file:~/Github-repos/overtone-source/src/overtone/examples/buses/getonthebus.clj][file:~/Github-repos/overtone-source/src/overtone/examples/buses/getonthebus.clj]]
+* document your documentation work
+** recent documentation
+*** more advanced
+
+12756 Dec 30 09:12 more-advanced-overtone-exploring.org
+*** basic
+22434 Dec 30 09:11 my-basic-overtone-tutorial.org
+*** expanded cheatsheet
+588 Dec 30 08:51 my-documented-overtone-cheatsheet.org
+*** basic cheatsheet
+58798 Dec 30 08:47 overtone-cheatsheet.org
+*** apollo and incarnation work work
+[[file:~/Github-repos/apollo-supercollider/][file:~/Github-repos/apollo-supercollider/]]
+
+apollo-overtone.org:
+[[id:DFFB3F5A-370C-4D2A-BA61-685E4B73CCAC][Apollo-overtone restart essentials]]
+** early documentation (in the containing directory)
+total 1592
+-rw-r--r--  1 b  staff   23563 Feb 15 20:22 #my-basic-overtone-tutorial.org#
+-rw-r--r--  1 b  staff  232935 Feb 15 19:43 #overtone-cheatsheet-in-one-org-subtree.org#
+-rw-r--r--  1 b  staff   17076 Feb 15 20:11 #simple-clojure-notes.org#
+-rw-r--r--  1 b  staff    1293 Dec 30 14:03 README.org
+-rw-r--r--  1 b  staff    1295 Dec 30 09:14 README.org~
+-rw-r--r--  1 b  staff     820 Feb  7 10:39 electronic-music-basics.org
+-rw-r--r--  1 b  staff     821 Feb  7 10:39 electronic-music-basics.org~
+-rw-r--r--  1 b  staff   11014 Feb 15 09:04 granular-synth-focused.org
+-rw-r--r--  1 b  staff    1237 Jan  4 08:38 granular-synth-focused.org~
+-rw-r--r--  1 b  staff   37958 Feb 15 20:13 more-advanced-overtone-exploring.org
+-rw-r--r--  1 b  staff   12648 Dec 28 16:56 more-advanced-overtone-exploring.org~
+-rw-r--r--  1 b  staff   23437 Feb 15 20:21 my-basic-overtone-tutorial.org
+-rw-r--r--  1 b  staff    9727 Dec  3 13:22 my-basic-overtone-tutorial.org~
+-rw-r--r--  1 b  staff   10566 Feb 15 20:19 my-documented-overtone-cheatsheet.org
+-rw-r--r--  1 b  staff     490 Dec 30 08:48 my-documented-overtone-cheatsheet.org~
+-rw-r--r--  1 b  staff  232853 Feb 15 19:40 overtone-cheatsheet-in-one-org-subtree.org
+-rw-r--r--  1 b  staff   15822 Dec 30 21:35 overtone-cheatsheet-in-one-org-subtree.org~
+-rw-r--r--  1 b  staff   28049 Feb  1 20:25 overtone-cheatsheet.org
+-rw-r--r--  1 b  staff   58664 Dec 22 08:17 overtone-cheatsheet.org~
+-rw-r--r--  1 b  staff   35464 Feb 14 14:27 resonate2013-tutorials.org
+-rw-r--r--  1 b  staff       3 Jan  3 08:58 resonate2013-tutorials.org~
+-rw-r--r--  1 b  staff    6046 Feb 14 21:33 simple-clojure-notes.org
+-rw-r--r--  1 b  staff     216 Jan  3 21:32 simple-clojure-notes.org~
+total 72
