@@ -1,3 +1,6 @@
+copied from the overtone repo:
+
+[[file:~/repos/overtone/docs/sc-book/][file:~/repos/overtone/docs/sc-book/]]
 * make sure ob-clojure is on
 #+begin_src clojure :results silent
 (for [n (range 5)] (rand-int 8))
