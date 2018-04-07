@@ -547,6 +547,9 @@ Make sure an-fnoise is playing!
 #+END_SRC
 
 ** with a basic interface in place, let's load soundfiles 
+   :PROPERTIES:
+   :ID:       27F16332-267D-4954-8122-C06D68096767
+   :END:
 *** loading files into buffers
 These can produce "vars" in unexpected or inaccessible namespaces,
 depending on how you started up overtone.
