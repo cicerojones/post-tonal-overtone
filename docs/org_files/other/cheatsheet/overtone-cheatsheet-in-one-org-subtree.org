@@ -3255,6 +3255,9 @@ overtone.live/weighted-choose
 *** Scaling
 **** Range
 ***** scale-range
+      :PROPERTIES:
+      :rating:   1.0
+      :END:
  #+BEGIN_SRC clojure :results output
  (doc scale-range)
  #+END_SRC
@@ -11239,8 +11242,43 @@ overtone.live/dust2
 #+end_example
 
 *** [#B] Pan UGens
-   pan2 lin-pan2 pan4 balance2 rotate2 pan-b pan-b2
-   bi-pan-b2 decode-b2 pan-az x-fade2 lin-x-fade2
+
+#+begin_src clojure :results output
+(odoc pan2)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+-------------------------
+overtone.live/pan2
+([in pos level])
+  
+  [in :none, pos 0.0, level 1.0]
+
+  in    - Input signal 
+  pos   - Pan position, -1 is left, +1 is right 
+  level - A control rate level input 
+
+  Two channel (stereo) equal power panner. 
+
+  Categories: 
+  Rates: [ :ar, :kr ]
+  Default rate: :ar
+
+#+end_example
+
+    pan2 
+    lin-pan2
+    pan4
+    balance2
+    rotate2
+    pan-b
+    pan-b2
+    bi-pan-b2
+    decode-b2
+    pan-az
+    x-fade2
+    lin-x-fade2
 
 *** [#A] Random UGens                                                :random:
 **** rand-seed
