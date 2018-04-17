@@ -90,9 +90,14 @@ Use a repl to call (stop)
 #+END_SRC
 
 #+RESULTS:
-: #<instrument: anoise>#<synth-node[loading]: user/anoise 39>
+: #<instrument: anoise>#<synth-node[loading]: user/anoise 40>
 
 *** find good ways to stop synths individually vs. all synths
+NB. What should you do about babel argument headers? 
+For example, Is the session argument recommended? What about "show-process" argument header?
+What can you assume about "results" header arguments? Is it best to default to "silent?"
+
+
 #+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
 (kill anoise)
 #+END_SRC
