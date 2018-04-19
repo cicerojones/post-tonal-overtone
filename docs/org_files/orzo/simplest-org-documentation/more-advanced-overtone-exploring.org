@@ -324,8 +324,7 @@ Compare with ugens-tour.org in
 
 * systematize use of knob and pad abstractions
 ** explain use of functions passed to ON-EVENT event-handlers
-any key on your MIDI controller has basically two piece of data
-associated with it:
+any key on your MIDI controller has basically two pieces of data associated with it:
 
 - "note" :: a value or name that stays constant
 - "velocity" :: a value that typically changes, but can be more
@@ -334,11 +333,9 @@ associated with it:
 
 A function that responds to a given key has to do a few things.
 
-First of all, it needs to be included as part of an event-handler,
-which is created with "on-event," and will be given a keyword name.
+First of all, it needs to be included as part of an event-handler, which is created with "on-event," and will be given a keyword name.
 
-The function that drives the event-handling can do a variety of
-things, and should in most cases have several parameters.
+The function that drives the event-handling can do a variety of things, and should in most cases have several parameters.
 
 - synth :: we can control any of a variety of synths/instruments
 - synth-param :: we want to specify which parameter to control
@@ -347,59 +344,25 @@ things, and should in most cases have several parameters.
 - channel :: MIDI messages can be sent via different channels
      (typically 0 or 1 will be default)
 
-Now, depending on what kind of behavior we want out of our controller
-button, we will need at least one more parameter.
+Now, depending on what kind of behavior we want out of our controller button, we will need at least one more parameter.
 
-In the case of a knob, which will be turned and will run through a
-continuous stream of numbers, we will seek to continually set the
-"place" which stores the value for that knob. That is, we will
-"reset!" the ref.
+In the case of a knob, which will be turned and will run through a continuous stream of numbers, we will seek to continually set the "place" which stores the value for that knob. That is, we will "reset!" the ref.
 
-In the case of a pad, we might choose to ignore the "velocity" (that
-is, how "hard" we strike the pad, which can be hard to execute
-precisely each time and is thus subject to some randomness) and
-simply use it as "bang." That is, we just tell it to "activate"
-something.
+In the case of a pad, we might choose to ignore the "velocity" (that is, how "hard" we strike the pad, which can be hard to execute precisely each time and is thus subject to some randomness) and simply use it as "bang." That is, we just tell it to "activate" something.
 
-It can "activate" anything you can imagine that will respond to being
-"hit." I've used it to "increment/decrement" some value. While a knob
-ostensibly does the same thing, "banging" a value up or down allows
-for more precise, fine-grain control. Additionally, it is not subject
-to the 0-127 values associated with a knob.
+It can "activate" anything you can imagine that will respond to being "hit." I've used it to "increment/decrement" some value. While a knob ostensibly does the same thing, "banging" a value up or down allows for more precise, fine-grain control. Additionally, it is not subject to the 0-127 values associated with a knob.
 
-So, in the case of using a pad as part of a "counter," we need to pass
-a "swap!" function, that is, a function to use with =swap!= to adjust
-the value associated with the current state of the pad. The simplest
-thing is to just =inc= or =dec= the value. 
+So, in the case of using a pad as part of a "counter," we need to pass a "swap!" function, that is, a function to use with =swap!= to adjust the value associated with the current state of the pad. The simplest thing is to just =inc= or =dec= the value.
 
-Whatever particular operation we use the controller to perform, we
-will always be setting and resetting some value, and it is ideal to be
-able to know what that value is, as we update it. So, we will want to
-print out the value everytime it changes.
+Whatever particular operation we use the controller to perform, we will always be setting and resetting some value, and it is ideal to be able to know what that value is, as we update it. So, we will want to print out the value everytime it changes.
 
-Of course, all this will appear to happen simultaneously, but this
-illusion is actually created by wrapping all of these actions into a
-=do= block, which carries out each action sequentially. Setting the
-value of "a piece of state" has to happen before we can use that
-value, so the "setter" will always precede the =ctl= that actually
-does something with those values. 
+Of course, all this will appear to happen simultaneously, but this illusion is actually created by wrapping all of these actions into a =do= block, which carries out each action sequentially. Setting the value of "a piece of state" has to happen before we can use that value, so the "setter" will always precede the =ctl= that actually does something with those values.
 
-The "getting" of the value (note the "set/get" binary, which is just
-one conceptually straightforward way to break down change within this
-system) happens with =deref= which always returns the current value of
-a "piece of state." This value will be used with some parameter as
-named by a /keyword/ that comes from what keywords were given to
-whichever synth we originally defined.
+The "getting" of the value (note the "set/get" binary, which is just one conceptually straightforward way to break down change within this system) happens with =deref= which always returns the current value of a "piece of state." This value will be used with some parameter as named by a /keyword/ that comes from what keywords were given to whichever synth we originally defined.
 
-One last thing to note with the "knob-resetter" is that it takes an
-optional "scale" argument. This is a bit of a hack that modifies the
-way that the 0-127 values are translated into the synth. Another way
-to do this, that may or may not be better depending, would be to use
-the actual =scale= function that comes with overtone.
+One last thing to note with the "knob-resetter" is that it takes an optional "scale" argument. This is a bit of a hack that modifies the way that the 0-127 values are translated into the synth. Another way to do this, that may or may not be better depending, would be to use the actual =scale= function that comes with overtone.
 
-Now, when it comes refactoring in general, we might want to think
-about what kind of (and how much) work a particular function used by
-the event handler is doing. The following questions might arise:
+Now, when it comes refactoring in general, we might want to think about what kind of (and how much) work a particular function used by the event handler is doing. The following questions might arise:
 
 - Can we print out a more helpful name than the clojure reference?
 - How many event handlers is it reasonable to instantiate? 
@@ -407,7 +370,7 @@ the event handler is doing. The following questions might arise:
 - Are there any drawbacks to performing many actions in a =do= block?
 - How well do we understand concurrency? Should we be using a =dosync=
   block?
-- 
+
 ** steps
 consolidated steps:
 
