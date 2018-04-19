@@ -79,9 +79,12 @@ Use a repl to call (stop)
 #+END_SRC
 
 * overview using overtone concepts and language
+  :PROPERTIES:
+  :ID:       6DD3E107-E56E-4572-AEA3-B5D689819172
+  :END:
 ** use definst
 *** a simple noise with no real parameters
-#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
+#+BEGIN_SRC clojure :results silent
 (definst anoise [vol 0.5]
   (* (pink-noise)
      vol))
@@ -89,25 +92,20 @@ Use a repl to call (stop)
 (anoise)
 #+END_SRC
 
-#+RESULTS:
-: #<instrument: anoise>#<synth-node[loading]: user/anoise 40>
-
 *** find good ways to stop synths individually vs. all synths
 NB. What should you do about babel argument headers? 
 For example, Is the session argument recommended? What about "show-process" argument header?
 What can you assume about "results" header arguments? Is it best to default to "silent?"
 
 
-#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
+#+BEGIN_SRC clojure :results silent
 (kill anoise)
 #+END_SRC
 
-#+RESULTS:
-: nil
 
 ** make a definst with more parameters
 *** use a "env-gen" Ugen (with a lin)
- #+BEGIN_SRC clojure :session getting-started :tangle no
+ #+BEGIN_SRC clojure :results silent
 (definst noisey [attack 1 sustain 1 release 1 vol 0.4 length 3] 
   (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
      (pink-noise) ; also have (white-noise) and others...
@@ -116,8 +114,6 @@ What can you assume about "results" header arguments? Is it best to default to "
 (noisey)
  #+END_SRC
 
- #+RESULTS:
- : #<instrument: noisey>#<synth-node[loading]: user/noisey 54>
 *** What are the arguments to env-gen?
 #+BEGIN_SRC clojure
 overtone.core/env-gen
@@ -364,12 +360,10 @@ links
 :ID:       2A392B91-CD13-41A8-ADA1-00891B6B072F
 :END:
 
-#+BEGIN_SRC clojure
+#+BEGIN_SRC clojure :results silent
 (midi-connected-devices)
 #+END_SRC
 
-#+RESULTS:
-: '((:description "Axiom A.I.R. Mini32 MIDI"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "MIDI"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "MIDI" "Axiom A.I.R. Mini32 MIDI" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0x782d6ab4 "MIDI")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x736dc80c "com.sun.media.sound.MidiInDevice@736dc80c")  :version "Unknown version") (:description "Axiom A.I.R. Mini32 HyperControl"  :vendor "M-Audio"  :sinks 0  :sources 2147483647  :name "HyperControl"  :overtone.studio.midi/full-device-key (:midi-device "M-Audio" "HyperControl" "Axiom A.I.R. Mini32 HyperControl" 0)  :info #object(com.sun.media.sound.MidiInDeviceProvider$MidiInDeviceInfo 0xb86bfdb "HyperControl")  :overtone.studio.midi/dev-num 0  :device #object(com.sun.media.sound.MidiInDevice 0x6a9de3c3 "com.sun.media.sound.MidiInDevice@6a9de3c3")  :version "Unknown version"))
 
 quickly check the output dump: 
 
@@ -379,15 +373,12 @@ quickly check the output dump:
 
 Full-fledged note on/off messages are awful. Turn it off quickly
 
-#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
+#+BEGIN_SRC clojure :results silent
 (event-debug-off)
 #+END_SRC
 
-#+RESULTS:
-: false
-
 *** create a very simple instrument to control
-#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
+#+BEGIN_SRC clojure :results silent
 (definst boop [note 60 amp 0.3]
   (let [freq (midicps note)]
     (* amp (sin-osc freq))))
@@ -405,7 +396,7 @@ Full-fledged note on/off messages are awful. Turn it off quickly
 : #<synth-node[loading]: user/audition-synth 89>
 
 *** you will rely on 'midi-poly-player' to control your instrument
-#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
+#+BEGIN_SRC clojure :results silent
 (def booper (midi-poly-player boop))
 #+END_SRC
 
@@ -419,7 +410,7 @@ Not enough to call =(stop)=, you will want to eliminate this whole
 
 
 Set that shit to nil!
-#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
+#+BEGIN_SRC clojure :results silent
 (def booper (midi-poly-player nil))
 #+END_SRC
 
@@ -427,7 +418,7 @@ Set that shit to nil!
 : #'user/booper
 
 
-#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
+#+BEGIN_SRC clojure :results silent
 (midi-player-stop)
 #+END_SRC
 
@@ -435,9 +426,9 @@ Set that shit to nil!
 : :handler-removed
 
 *** Better to use an "event-handler" with ~on-event~
-Just a one-step process to eliminate the player
+Just a one-step process to eliminate the player:
 
-#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
+#+BEGIN_SRC clojure :results silent
 (on-event [:midi :note-on]
           (fn [e]
             (let [note (:note e)
@@ -446,18 +437,17 @@ Just a one-step process to eliminate the player
           ::boop-handler)
 #+END_SRC
 
-#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
+#+BEGIN_SRC clojure :results silent
 (remove-event-handler ::boop-handler)
 #+END_SRC
 
-#+RESULTS:
-: :handler-removed
+Note, there's a lot more to explore about "event-handling" with ~on-event~
 
 *** natural sounds have an envelope
 but what you really want is a sound that decays!
 And that "frees" the "synth" when done.
 
-#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
+#+BEGIN_SRC clojure :results silent
 (definst steel-drum [note 60 amp 0.8]
   (let [freq (midicps note)]
     (* amp
@@ -469,7 +459,7 @@ And that "frees" the "synth" when done.
 #+RESULTS:
 : #<instrument: steel-drum>
 
-#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
+#+BEGIN_SRC clojure :results silent
 (def player (midi-poly-player steel-drum))
 #+END_SRC
 
@@ -484,7 +474,7 @@ And that "frees" the "synth" when done.
 : #'user/player
 
 
-#+BEGIN_SRC clojure :session *cider-repl post_tonal_overtone*
+#+BEGIN_SRC clojure :results silent
 (midi-player-stop)
 #+END_SRC
 
