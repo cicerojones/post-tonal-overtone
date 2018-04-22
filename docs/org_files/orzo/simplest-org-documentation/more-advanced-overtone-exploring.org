@@ -155,6 +155,9 @@ velocity of the given knob),
 We want to be able to manipulate these on the fly. Let's use another
 button to report back a channel and a "velocity"
 ** reusable atoms of CC values
+   :PROPERTIES:
+   :ID:       7207D525-54CB-4DAC-BED5-62D70AE8C463
+   :END:
 #+BEGIN_SRC clojure :results silent
   (def cc1 (atom 0))
   (def cc2 (atom 0))
@@ -301,19 +304,17 @@ UGens are producing. See polling and running
 #+RESULTS:
 
 ** give oscillator UGens arguments meaningful in Hz (i.e. be aware of 'mul' and 'add')
-#+BEGIN_SRC clojure
+#+BEGIN_SRC clojure :results silent
+;; ouch, watch out!
 (demo 10 (sin-osc (abs  (* 10000 (brown-noise:kr)))))
 #+END_SRC
 
-#+RESULTS:
-: #<synth-node[loading]: user/audition-synth 59>
-
-#+BEGIN_SRC clojure
+#+BEGIN_SRC clojure :results silent
+;; not so intense
 (demo 10 (sin-osc (abs  (+ 300 (* 1000 (pink-noise:kr))))))
 #+END_SRC
 
-#+RESULTS:
-: #<synth-node[loading]: user/audition-synth 60>
+
 ** read existing SC docs and tutorials and consider patterns
 Compare with ugens-tour.org in
 
@@ -432,7 +433,7 @@ add yancey versions on channel 2
   buttons" interface (Up-down left-right bang)
 * understanding the mechanics of busses, synths, panning and groups
 ** mono defsynth out
-#+BEGIN_SRC clojure
+#+BEGIN_SRC clojure 
   (defsynth test [freq 440 amp 0.1]
     (out 0 (* amp (sin-osc freq))))
 
