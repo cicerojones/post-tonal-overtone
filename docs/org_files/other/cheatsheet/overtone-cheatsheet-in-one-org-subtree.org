@@ -4641,8 +4641,28 @@ POWER MAGSUM COMPLEX RCOMPLEX PHASE
 :   Positive infinity - abbreviation for Float/POSITIVE_INFINITY
 
 *** [#A] UGen Envelope Helper Functions
-   env-perc env-triangle env-sine env-lin env-cutoff
-   env-dadsr env-adsr env-asr
+#+begin_src clojure :results output
+(odoc env-perc)
+#+end_src
+
+#+RESULTS:
+: -------------------------
+: overtone.live/env-perc
+: ([attack release level curve])
+:   Keyword arg fn with defaults:
+:   [attack 0.01, release 1, level 1, curve -4]
+: 
+:   Create a percussive envelope description suitable for 
+:   use with the env-gen ugen 
+: 
+
+ env-triangle
+ env-sine
+ env-lin
+ env-cutoff
+ env-dadsr
+ env-adsr
+ env-asr
 
 *** Unary UGens
    neg not-pos? abs ceil floor frac sign squared cubed
