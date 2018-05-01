@@ -5556,6 +5556,7 @@ overtone.live/play-buf
 #+end_example
 
 **** t-grains
+#+name: t-grains
 #+BEGIN_SRC clojure :results output
 (doc t-grains)
 #+END_SRC
@@ -9476,6 +9477,7 @@ overtone.live/freq-shift
 #+end_example
 
 **** [#A] g-verb                                                     :reverb:
+#+name: g-verb
 #+BEGIN_SRC clojure :results output
 (doc g-verb)
 #+END_SRC
@@ -9521,6 +9523,7 @@ overtone.live/g-verb
      :PROPERTIES:
      :ID:       73808CB5-7834-483F-A9C3-44744911F38B
      :END:
+#+name: free-verb
 #+BEGIN_SRC clojure :results output
 (doc free-verb)
 #+END_SRC

@@ -4,6 +4,8 @@
 :ID:       326223F4-AA19-4058-A07C-3E5F5DB9AFF5
 :END:
 
+Is there a problem with this one?
+
 #+BEGIN_SRC clojure :results silent
   (defsynth tgrains-line-synth [buffer 0 trate 1 dur-numerator 8 amp 0.8 centerpos 0 duration-mult 2]
     (out 0 (pan2 
@@ -44,6 +46,9 @@ Plays almost exactly like regular track
 : #<synth-node[live]: user/tgrains-line-synth 685>
 
 * Mastering Granular Synthesis
+  :PROPERTIES:
+  :VISIBILITY: content
+  :END:
 ** t-grains documentation
 #+BEGIN_SRC clojure 
 overtone.core/t-grains
@@ -220,7 +225,7 @@ overtone.core/t-grains
 : #<synth-node[live]: user/general-trand-synth 55>
 
 * granular synth examples in sclang
-** translate examples to overtone
+** examples to be translated to Overtone
 *** supercollider TGrain examples
 #+END_SRC
 
