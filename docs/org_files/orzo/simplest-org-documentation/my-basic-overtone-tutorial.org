@@ -70,7 +70,7 @@ buffer
 (demo 10 (sin-osc))
 #+END_SRC
 
-Use a repl to call (stop)
+Use a repl to call ~stop~ (NB. uses same keybinding as above; thus will overwrite the above macro)
 #+BEGIN_SRC elisp
 (fset 'overtone-call-stop-in-repl
    (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([24 98 99 105 100 101 114 45 114 101 112 108 return 40 115 116 111 112 return 24 98 return] 0 "%d")) arg)))
@@ -170,6 +170,7 @@ overtone.core/env-gen
   Default rate: :kr
 
 #+END_SRC
+
 *** consider the some underappreciated differences about the sounds you will make
 UGen vs. SynthNode!
 #+BEGIN_SRC clojure
@@ -378,6 +379,7 @@ Full-fledged note on/off messages are awful. Turn it off quickly
 #+END_SRC
 
 *** create a very simple instrument to control
+#+NAME: def-boop
 #+BEGIN_SRC clojure :results silent
 (definst boop [note 60 amp 0.3]
   (let [freq (midicps note)]
@@ -393,7 +395,7 @@ Full-fledged note on/off messages are awful. Turn it off quickly
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: user/audition-synth 89>
+: #<synth-node[loading]: user/audition-synth 53>
 
 *** you will rely on 'midi-poly-player' to control your instrument
 #+BEGIN_SRC clojure :results silent
@@ -408,6 +410,9 @@ Full-fledged note on/off messages are awful. Turn it off quickly
 Not enough to call =(stop)=, you will want to eliminate this whole
 "player," though not the /instrument/. This is a two-step process!
 
+NB. This two-step process, however, will still leave a residue of error messages in the REPL.
+
+You really want to avoid this whole thing and prefer the "event-handler" approach below.
 
 Set that shit to nil!
 #+BEGIN_SRC clojure :results silent
@@ -426,7 +431,8 @@ Set that shit to nil!
 : :handler-removed
 
 *** Better to use an "event-handler" with ~on-event~
-Just a one-step process to eliminate the player:
+Just a one-step process to eliminate the player (NB. uses a "synth/inst" that must have been defined earlier)
+
 
 #+BEGIN_SRC clojure :results silent
 (on-event [:midi :note-on]
@@ -444,6 +450,9 @@ Just a one-step process to eliminate the player:
 Note, there's a lot more to explore about "event-handling" with ~on-event~
 
 *** natural sounds have an envelope
+    :PROPERTIES:
+    :ID:       D4B65EA9-5B5B-488A-A58F-38228AD2B65F
+    :END:
 but what you really want is a sound that decays!
 And that "frees" the "synth" when done.
 
@@ -458,6 +467,19 @@ And that "frees" the "synth" when done.
 
 #+RESULTS:
 : #<instrument: steel-drum>
+
+#+BEGIN_SRC clojure :results silent
+(on-event [:midi :note-on]
+          (fn [e]
+            (let [note (:note e)
+                  vel  (:velocity e)]
+              (steel-drum note (* 0.01 vel))))
+          ::steeldrum-handler)
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(remove-event-handler ::steeldrum-handler)
+#+END_SRC
 
 #+BEGIN_SRC clojure :results silent
 (def player (midi-poly-player steel-drum))
@@ -480,13 +502,16 @@ And that "frees" the "synth" when done.
 
 ** now let's use the control change knob for real time interaction
 *** [#B] control volume on the old, simple 'anoise' inst
-Make sure it's working
+We will use the ~ctl~ function with our event-handler in order to send messages to the "already-defined synth," i.e. to the block of code that was evaluated by the server and now constitutes an object that we can communicate with "on the server."
 
+Make sure it's working
 #+BEGIN_SRC clojure :results silent
 (anoise)
 #+END_SRC
 
 Must be playing the anoise!
+
+
 #+BEGIN_SRC clojure :results silent
 (on-event [:midi :control-change] (fn [{cc-channel :note velocity :velocity}]
                                     (ctl anoise :vol (scale-range velocity 1 127 0 1)))
