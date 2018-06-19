@@ -1,0 +1,89 @@
+* Intermediate introduction 
+This is more or less a copy of the original basic tutorial, except with each basic block expanded in some way that makes for more interesting examples but would overwhelm someone starting out.
+
+* Expanded basic code blocks
+The original steel-drum code block:
+[[id:D4B65EA9-5B5B-488A-A58F-38228AD2B65F][natural sounds have an envelope]]
+
+But let's add a new parameter:
+
+#+BEGIN_SRC clojure :results silent
+(definst steel-drum-decay [note 60 amp 0.8 perc-scale 0.8]
+  (let [freq (midicps note)]
+    (* amp
+       (env-gen (perc 0.01 0.2) 1 1 0 perc-scale :action FREE)
+       (+ (sin-osc (/ freq 2))
+          (rlpf (saw freq) (* 1.1 freq) 0.4)))))
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(on-event [:midi :note-on]
+          (fn [e]
+            (let [note (:note e)
+                  vel  (:velocity e)]
+              (steel-drum-decay note (* 0.01 vel 1.5))))
+          ::steeldrumdecay-handler1)
+#+END_SRC
+
+#+BEGIN_SRC clojure :results silent
+(remove-event-handler ::steeldrumdecay-handler1)
+#+END_SRC
+
+
+#+begin_src clojure :results silent :show-process nil
+(defn steel-drum-decayer [note scler] (steel-drum-decay note 0.8 scler))
+#+end_src
+
+
+
+#+begin_src clojure :results silent
+(steel-drum-decayer 60 0.9)
+#+end_src
+
+#+begin_src clojure :results silent
+(steel-drum-decayer  (ranged-rand 60 72) (* 10 (rand 1)))
+#+end_src
+
+#+BEGIN_SRC clojure :results silent
+  (on-event [:midi :control-change]
+	    (fn [{cc-channel :note velocity :velocity}]
+	      (ctl steel-drum-decayer :perc-scale (scale-range velocity 1 127 0 1))
+	      ::steel-drum-cc-decayer)
+#+END_SRC
+
+
+#+BEGIN_SRC clojure :results silent
+(remove-event-handler ::steel-drum-cc-decayer)
+#+END_SRC
+
+
+
+
+
+
+#+begin_src clojure :results silent :show-process nil
+(steel-drum-decay 60 0.8 0.9)
+#+end_src
+
+#+BEGIN_SRC clojure :results silent
+(on-event [:midi :note-on]
+          (fn [e]
+            (let [note (:note e)
+                  vel  (:velocity e)]
+              (steel-drum-decayer note (* 0.01 vel 0.9))))
+          ::steeldrumdecay-handler)
+#+END_SRC
+
+
+
+#+begin_src clojure :results silent :show-process nil
+(ctl steel-drum-decayer :perc-decay 0.4)
+#+end_src
+
+#+BEGIN_SRC clojure :results silent
+(remove-event-handler ::steeldrumdecay-handler)
+#+END_SRC
+
+#+begin_src clojure :results silent :show-process nil
+(def steel-drum-decayer nil)
+#+end_src
