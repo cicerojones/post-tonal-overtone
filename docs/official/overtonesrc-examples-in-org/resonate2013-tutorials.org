@@ -1,0 +1,855 @@
+* resonate 2013 clojure/overtone workshop
+
+
+This namespace contains a collection of examples created for and during the [Clojure](http://clojure.org) &
+[Overtone](https://github.com/overtone/overtone) workshop on 21 March
+2013 in Belgrade as part of [Resonate 2013 festival](http://resonate.io/2013/).
+
+The original repo URL is: http://hg.postspectacular.com/resonate-2013/
+
+All examples are fully documented and meant to be executed
+interactively in the REPL:
+
+- **ex01_phrasestudy**: generating patterns using clojure sequence API
+- **ex02_bday**: defining a scale-free melody and manipulating it
+- **ex03_graph**: using [Incanter](http://incanter.org/) to explain harmonics and their impact
+on waveforms
+- **ex04_midi**: building a simple MIDI controllable drumkit w/ samples
+  from [Freesound.org](http://freesound.org)
+- **ex05_synthesis**: a closer look at Overtone's & [Supercollider's](http://supercollider.sourceforge.net/)
+synthesis building blocks
+- **ex06_quilstep**: using [Quil](https://github.com/quil/quil)
+    (Clojure wrapper for [Processing](http://processing.org)) to create a simple GUI for the dubstep synth from ex05
+
+# Workshop environment (Eclipse)
+
+Clojure can be integrated with may different tools, but if you're
+completely new to Clojure, I recommend using Eclipse with the [Counterclockwise](https://code.google.com/p/counterclockwise/) (CCW) plugin:
+
+## Setup Eclipse + CCW
+
+- [Download Eclipse](http://eclipse.org/downloads/) (e.g. Classic or Eclipse for Java developers)
+- Launch Eclipse
+- Choose/confirm workspace folder (only on 1st start)
+- Choose `Help > Install new software...`
+- In the dialog, press `Add...` to create a new plugin update site and
+use these details:
+    - **Name**: CCW
+    - **URL**: http://ccw.cgrand.net/updatesite/
+- Tick the box for "Clojure Programming", then click `Next` and follow
+  instructions
+- Restart Eclipse
+
+## Import project
+
+- Choose `File > Import... > General > Existing project`
+- Browse to folder where you checked out/downloaded this project
+- Tick box next to "resonate-2013"
+- Click `Finish`
+
+## Launching project REPL
+
+- Open one of the examples in the project's `src` folder
+- Right click in the editor and choose `Clojure > Load File in REPL` or press (Alt+Command+L)
+
+Alternatively...
+
+- Right click on "resonate-2013" project name in Package Explorer
+- Choose `Run As > Clojure Application`
+
+# Using Leiningen
+
+[Leiningen](http://leiningen.org) is the de-facto standard build tool
+for Clojure (It's also included in the Eclipse CCW plugin).
+If you prefer running a REPL directly via the command line, simply:
+
+- Clone or download this repo
+- `cd` into the project directory
+- `lein repl` to start the REPL
+
+## License
+
+Copyright © 2013 Karsten Schmidt
+
+Distributed under the MIT License, same as Overtone.
+* overtone.examples.workshops.resonate2013.ex01_phrasestudy
+#+BEGIN_SRC clojure :results silent
+(ns
+  ^{:doc "Workshop exercises in musical pattern creation with Overtone."
+    :author "Karsten Schmidt"}
+  overtone.examples.workshops.resonate2013.ex01_phrasestudy
+  (:use
+   [overtone.live]
+   [overtone.inst.piano]))
+
+;; All examples are wrapped in (comment) to stop them from
+;; executing all at once when the file is loaded...
+;; To execute an example in the REPL, select a single form,
+;; e.g. "(piano 60)" below and press Command+Enter
+;; Selection of a whole form (in Eclipse) can be done easily by clicking in
+;; front of the opening bracket and then pressing Command+Shift+right...
+(comment
+  (piano 60)
+  (piano (note :c4)) ; 60
+  (piano (note :d4)) ; 62
+  (piano (note :g4)) ; 67
+  (piano (note :c5)) ; 72
+
+  ;; play a note 2 secs in the future
+  ;; the `now` fn returns the current timestamp
+  (at (+ (now) 2000) (piano 72))
+
+  ;; play progression C4 D4 G4 C5
+  ;; notes will be played every 200 milliseconds
+  ;; the fn passed to `map-indexed` takes two arguments: index & note
+  (dorun (map-indexed (fn [i n] (at (+ (now) (* i 200)) (piano n))) [60 62 67 72]))
+  ;; same, but using fn reader macro w/ anonymous arguments (% = 1st argument, %2 = 2nd arg, etc.)
+  (dorun (map-indexed #(at (+ (now) (* % 200)) (piano %2)) [60 62 67 72]))
+  ;; play progression relative to C4 (MIDI note offset = 60)
+  (dorun (map-indexed #(at (+ (now) (* % 200)) (piano (+ 60 %2))) [0 2 7 12 24 19 14 12]))
+  ;; play one octave higher (60 + 12 = 72)
+  (dorun (map-indexed #(at (+ (now) (* % 200)) (piano (+ 72 %2))) [0 2 7 12]))
+  ;; play minor variation (7 -> 6)
+  (dorun (map-indexed #(at (+ (now) (* % 200)) (piano (+ 72 %2))) [0 2 6 12]))
+  )
+
+;; the examples in this namespace are all about thinking of music as sequences
+;; and getting to know essential Clojure functions which allow us to construct
+;; and manipulate sequences efficiently
+
+;; first off, we define some arpeggio patterns used as
+;; basic musical building blocks
+(def a [0 2 7 12]) ; major
+(def b [0 2 6 12]) ; diminished
+(def c [0 2 7 12 24 19 14 12]) ; up & down
+
+(comment
+  ;; play a phrase of concatenated patterns: 2x A, 2x B
+  (dorun (map-indexed #(at (+ (now) (* % 200)) (piano (+ 72 %2))) (concat a a b b)))
+
+  ;; repeat the constructed phrase twice
+  ;; (flatten) removes any nesting from a given sequence
+  (dorun (map-indexed #(at (+ (now) (* % 200)) (piano (+ 72 %2))) (flatten (repeat 2 (concat a a b b)))))
+
+  ;; the `->>` is a so called threading-macro, which weaves the result of each form
+  ;; as last argument into the next form and so allows us to think about the code as
+  ;; a data transformation pipeline (it produces the same effect as the previous example):
+  ;; 1) we use the vector [a a b b]
+  ;;    => [[0 2 7 12] [0 2 7 12] [0 2 6 12] [0 2 6 12]]
+  ;; 2) weave it as last argument into (repeat 2)
+  ;;    => (repeat 2 [[0 2 7 12] [0 2 7 12] [0 2 6 12] [0 2 6 12]]),
+  ;;    which produces this sequence:
+  ;;    ([[0 2 7 12] [0 2 7 12] [0 2 6 12] [0 2 6 12]]
+  ;;     [[0 2 7 12] [0 2 7 12] [0 2 6 12] [0 2 6 12]])
+  ;; 3) take the result of step 2 and weave it as last arg into (flatten)
+  ;;    => (flatten ([[0 2 7 12] [0 2 7 12] [0 2 6 12] [0 2 6 12]]
+  ;;                 [[0 2 7 12] [0 2 7 12] [0 2 6 12] [0 2 6 12]]))
+  ;;    which produces (0 2 7 12 0 2 7 12 0 2 6 12 0 2 6 12
+  ;;                    0 2 7 12 0 2 7 12 0 2 6 12 0 2 6 12) (no more nesting)
+  ;;
+  ;; This final flat collection is then used as input for the `map-indexed` fn for playback
+  (dorun (map-indexed #(at (+ (now) (* % 200)) (piano (+ 72 %2))) (->> [a a b b] (repeat 2) (flatten))))
+  )
+
+;; define counter running at 120 bpm
+;; this counter keeps running automatically in the background
+(def metro (metronome 120))
+
+(comment
+  ;; play phrase using metronome
+  (dorun (map-indexed #(at (metro (+ (metro) (/ % 2))) (piano (+ 72 %2))) (->> [a a b b] (repeat 2) (flatten))))
+  )
+
+;; now let's start separating concerns: note playback vs. phrase playback
+
+(defn play-note-at
+  "Plays note with `inst` at relative beat `index` from `start`,
+  based on tempo of `metronome` and given note `duration`."
+  [metro start index dur inst note]
+  (at (metro (+ start (* 4 index dur))) (inst note)))
+
+;; This next function uses a few new concepts:
+;; 1) It makes use of partial function application to hardcode a number of parameters.
+;;    In this case we use `partial` to produce a version of the play-note-at fn,
+;;    which has the first 2 arguments (the metronome itself and the metronome's current beat count) hardcoded.
+;;    This pre-configured play fn is then used to play the notes
+;; 2) It uses so called let-bindings, local symbol definitions which are only existing within
+;;    the scope of let's body (in this case, the constructed `play` fn)
+;; 3) The play-phrases-1 fn uses variable argument counts, allowing us to specify any number of phrases
+;;    to be played sequentially. This is achieved with the `&` separator in the function's argument list
+;;    The given phrases to be played are all collected into a single sequence automatically
+(defn play-phrases-1
+  "Plays the given phrases `n` times with `inst` and transposed by `offset`.
+  Tempo is based on metronome and given note `duration`."
+  [metro inst dur offset n & phrases]
+  (let [play (partial play-note-at metro (metro))]
+    (->> phrases
+         (repeat n)
+         (flatten)
+         (map-indexed #(play % dur inst (+ (note offset) %2)))
+         (dorun))))
+
+(comment
+  ;; play the same combined pattern as earlier, but also allows us to
+  ;; specify note durations (1/16th), root note (:c4) and number of repetitions (2)
+  (play-phrases-1 metro piano 1/16 :c4 2 a a b b))
+
+;; continue separating concerns: pattern repetition vs. pattern playback...
+
+;; So far, play-phrases still is doing more than one thing and we can
+;; refactor it further by splitting out and increasing the flexibility of
+;; the pattern/phrase generation. More flexibility can be obtained by
+;; allowing us to specify the root note as absolute value, e.g. :c4 or
+;; use a number which is then applied as relative offset to transpose patterns
+;; This is what the `if` does below...
+(defn repeat-phrases
+  "Returns a lazyseq of the given patterns relative to `offset` (a note or int) and repeated `n` times."
+  [n offset & phrases]
+  (->> phrases
+       (repeat n)
+       (flatten)
+       (map (partial + (if (keyword? offset) (note offset) offset)))))
+
+;; To ease the combination of shorter phrases into longer ones,
+;; we could also define a custom data format and use this helper function:
+(defn specs->phrases
+  "Takes a number of specs in the form of `[count root-note phrases]` and calls
+  repeat-phrases on each. Concatenates all into a single flat seq."
+  [& phrases]
+  (mapcat #(apply repeat-phrases %) phrases))
+
+;; This then allows us to constuct a longer pattern like this:
+;; 2x AABB at C4, 1x AABB at G4 and 2x pattern C at D4
+(def pattern
+  "Defines a more complex pattern using different keys
+  and a longer pattern for more variation"
+  (specs->phrases [2 :c4 a a b b] [1 :g4 a a b b] [2 :d4 c]))
+
+(comment
+  ;; Since all our patterns are made of sequences of 4 notes, we can use the
+  ;; (partition) fn to re-create that grouping (e.g. for debug purposes)
+  ;; So the partitioned pattern looks again like that:
+  ;; => ((60 62 67 72) (60 62 67 72) (60 62 66 72) ...)
+  (partition 4 pattern)
+
+  ;; This can be of course applied recursively to create ever more
+  ;; deeply nested sequences
+  (partition 4 (partition 4 pattern))
+  )
+
+;; With these new changes done, we can limit the responsibility of the play-phrases fn
+;; to simply play notes... Here's version 2:
+(defn play-phrases-2
+  [metro inst dur phrases]
+  (let [play (partial play-note-at metro (metro))]
+    (dorun (map-indexed #(play % dur inst %2) phrases))))
+
+(comment
+  (play-phrases-2 metro piano 1/16 pattern)
+  (play-phrases-2 metro piano 1/16 (repeat-phrases 2 0 pattern))
+  (play-phrases-2 metro piano 1/16 (repeat-phrases 2 0 pattern (reverse pattern))))
+
+;; Let's create some more pattern variations
+(def mirror-pattern
+  "The original pattern inverted in time."
+  (reverse pattern))
+
+(def long-pattern
+  "The original pattern followed by mirror-pattern."
+  (concat pattern mirror-pattern))
+
+(comment
+  ;; Here we also make use of the relative transposing feature of `specs->phrases` creating
+  ;; a new long phrase which goes down to G3 (-5) and D3 (-10) towards the end
+  (play-phrases-2 metro piano 1/16 (specs->phrases [1 0 long-pattern] [1 -5 pattern] [1 -10 (reverse pattern)])))
+
+;; And to show even more possibilities, an even longer progression
+;; Here we also use `take` & `drop` to only use parts of existing phrases
+(def progression
+  (->> [[1 0 long-pattern]                         ; c4
+        [1 -5 pattern]                             ; g3
+        [1 -8 (take 32 mirror-pattern)]            ; e3
+        [1 -10 (take 16 mirror-pattern)]           ; d3
+        [1 -5 (take 16 (drop 16 mirror-pattern))]] ; g3
+       (apply specs->phrases)
+       (apply repeat-phrases 2 0)))
+
+(comment
+  (play-phrases-2 metro piano 1/16 progression))
+
+;; Until now all notes have been played with the same duration, but it's now time
+;; to start thinking about imposing a certain rhythm onto our phrase(s)
+
+;; Example rhythm using syncopation to emphasize every 4th note (longer)
+(def rhythm [3/8 5/24 5/24 5/24])
+
+;; The note durations of the rhythm all add up to 1 bar...
+(comment (apply + rhythm)) ; => 1
+
+;; Since our note phrases are just sequences of numbers, we can apply the same
+;; functions we've built on our rhythmic phrases too. Below we construct a more
+;; complex rhythmic pattern (using 0 as an offset to keep the original values)
+;; The generated rhythm is: (3/8 1/8 3/8 1/8 1/8 1/8 1/8 1/8 1/8 1/8 1/8 1/8)
+(def alt-rhythm (specs->phrases [2 0 [3/8 1/8]] [8 0 [1/8]]))
+
+;; The the total duration of this rhythm is 2 bars
+(comment (apply + alt-rhythm)) ; => 2
+
+;; The next function is used to compute start times for all notes in a phrase
+;; based on a given rhythmic pattern...
+;; Notable things:
+;; 1) We use the ->> threading syntax again to describe the transformation of
+;;    how the rhythm is applied to our melody
+;; 2) The (cycle) fn produces an infinite repetition of the given sequence:
+;;    E.g. (cycle [1 2]) => (1 2 1 2 1 2 ...)
+;; 3) Since we are only interested in a finite amount of notes, we use (take)
+;;    to only take the first x items from that infinite sequence (without it
+;;    the machine would freeze :)
+;; 4) We also use (reductions) again to build up a sequence of increasing timestamps.
+;;    The last argument (0) is the time offset for the first note
+;;    This timing sequence is then combined with the notes in the (map) fn
+(defn rhythmic-phrase
+  "Takes a rhythm sequence, a speed factor and phrase, returns a lazyseq
+  of vector pairs [note time] with the time values being the start times of each
+  note in the phrase based on the rhythm. The start times are in bar measures."
+  [rhythm factor phrase]
+  (->> rhythm
+       (cycle)
+       (take (count phrase))
+       (reductions (fn[t d] (+ t (* d factor 4))) 0)
+       (map (fn [n t] [n t]) phrase)))
+
+;; Now that the musical phrases include timing, we also need to
+;; create a new playback fn which uses this timing information...
+(defn play-rhythmic-phrase-1
+  [metro inst rhythm factor phrase]
+  (let [t0 (metro)
+        play (fn [[n t]] (at (metro (+ t0 t)) (inst n)))]
+    (dorun (map play (rhythmic-phrase rhythm factor phrase)))))
+
+(comment
+  ;; Let's testdrive the rhythms...
+  (play-rhythmic-phrase-1 metro piano rhythm 1/2 progression)
+  (play-rhythmic-phrase-1 metro piano alt-rhythm 1 progression)
+  )
+
+;; Maybe it's also a good time to introduce a couple of custom synths
+;; Both instruments below are almost identical and only differ in their
+;; oscillator waveform used...
+
+(definst fatso-saw
+  "Defines a simple synth using a slightly detuned stereo sawtooth oscillator
+  with a percussive envelope. Accepts a MIDI note, duration (in secs) and volume."
+  [note 60 dur 1.0 amp 1.0]
+  (let [freq (midicps note)
+        src (saw [freq (* freq 0.51)])
+        env (env-gen (perc (* 0.1 dur) dur amp) :action FREE)]
+    (* src env)))
+
+(definst fatso-pwm
+  "Defines a simple synth using a slightly detuned stereo squarewave oscillator
+  with a percussive envelope. Accepts a MIDI note, duration (in secs) and volume."
+  [note 60 dur 1.0 amp 1.0]
+  (let [freq (midicps note)
+        src (pulse [freq (* freq 0.51)])
+        env (env-gen (perc (* 0.1 dur) dur amp) :action FREE)]
+    (* src env)))
+
+(comment
+  ;; Testing 1,2,3...
+  (fatso-saw)
+  (fatso-pwm)
+  ;; Testing the synth with different pitches & durations
+  (fatso-saw 60 0.25)
+  (fatso-saw 55 0.5)
+  (fatso-saw 52 1.0)
+  (fatso-saw 50 2.0)
+  (fatso-saw 48 4.0)
+  )
+
+;; Let's build a preset for fatso with a very short duration (0.15 secs)...
+(def knightrider #(fatso-saw % 0.15))
+
+(comment
+  ;; ...and play the whole thing pitched down by 1 octave (-12 semitones)
+  (play-rhythmic-phrase-1 metro knightrider alt-rhythm 1/2 (map #(- % 12) progression))
+  )
+
+;; Now let's do some more rhythm related refactoring...
+;; We tried to make it easy for ourselves and have play-rhythmic-phrase-1
+;; applying the given rhythm to our melody during playback...
+;;
+;; However, now we'd like to do something more interesting and build a
+;; simple arpeggiator, which plays each note twice (at double speed & different pitches)
+;; and therefore also needs access to our rhythm (and manipulates it).
+(defn arpeggiate
+  "Takes a rhythm pattern and note sequence, applies the rhythm as template,
+  but plays each note twice at double speed (once the original, followed by
+  original one octave higher). Returns lazyseq of vector pairs [note duration]."
+  [rhythm melody]
+  (mapcat
+   (fn [note dur] [[note (/ dur 2)] [(+ note 12) (/ dur 2)]])
+   melody (cycle rhythm)))
+
+;; Now (arpeggiate alt-rhythm pattern) produces this sequence of note/duration pairs:
+;; => ([60 3/16] [72 3/16] [62 1/16] [74 1/16] [67 3/16] [79 3/16] ...)
+;; Our play-rhythmic-phrase-1 function can't handle this data, so we need to rewrite it.
+;; And we should also use this as an opportunity to create another fn with its sole
+;; role of computing timestamps (in bar measure) for each of the notes in such a sequence
+(defn rhythm-timings
+  "Take a sequence of [note duration] pairs and computes timestamp (in bar measure)
+  for each note. Returns another sequence [note time]."
+  [factor phrase]
+  (let [notes (map first phrase)
+        durations (map second phrase)
+        timings (reductions (fn[t d] (+ t (* d factor 4))) 0 durations)]
+    (map (fn [n t] [n t]) notes timings)))
+
+;; Finally, we remove any rhythm application from our playback fn and
+;; have it deal only with scheduling of notes based on the rhythm
+;; already present in the phrase.
+(defn play-rhythmic-phrase-2
+  [metro inst rhythm-phrase]
+  (let [t0 (metro)
+        play (fn [[n t]] (at (metro (+ t0 t)) (inst n)))]
+    (dorun (map play rhythm-phrase))))
+
+;; All together now:
+;; Take the whole long phrase, pitch it -12, then arpeggiate with rhythm at double speed...
+(def rhythmic-progression
+  (->> progression
+    (map #(- % 12))
+    (arpeggiate rhythm)
+    (rhythm-timings 1/2)))
+
+(comment
+  ;; Play it again, Sam (Aaron)! :)
+  (play-rhythmic-phrase-2 metro knightrider rhythmic-progression)
+  )
+
+(defn inc-duration
+  "Note timestamp transformation function to slowly increase note
+  duration the further into the sequence a note is. Enforces min/max
+  durations: 0.15 - 3.5 secs"
+  [t]
+  (min (max (* t 0.01) 0.15) 3.5))
+
+(defn play-rhythmic-phrase-3
+  "Like play-rhythmic-phrase-2 fn, but manipulates note durations by passing their
+  timestamp through given transform fn."
+  [metro inst transform rhythm-phrase]
+  (let [t0 (metro)
+        play (fn [[n t]] (at (metro (+ t0 t)) (inst n (transform t))))]
+    (dorun (map play rhythm-phrase))))
+
+(comment
+  ;; https://soundcloud.com/toxi/res13-seq-2
+  (play-rhythmic-phrase-3 metro fatso-saw inc-duration rhythmic-progression)
+  ;; https://soundcloud.com/toxi/res13-seq1
+  (play-rhythmic-phrase-3 metro fatso-pwm inc-duration rhythmic-progression)
+  )
+
+#+END_SRC
+* overtone.examples.workshops.resonate2013.ex02_bday
+
+#+BEGIN_SRC clojure :results silent
+(ns
+  ^{:doc "Exploration of musical degrees & scales."
+    :author "Karsten Schmidt"}
+  overtone.examples.workshops.resonate2013.ex02_bday
+  (:use
+   [overtone.live]
+   [overtone.inst.piano]))
+
+(defn bpm
+  "Higher order function. Returns another fn to compute the
+  time offset in milliseconds for a beat at given `tempo`."
+  [tempo]
+  (fn [beat] (* (/ beat tempo) 60000)))
+
+;; Next we encode a well know melody in an abstract manner
+;; using musical degrees. Read this if you're unfamiliar with the concept:
+;; http://en.wikipedia.org/wiki/Degree_(music)
+;; Also highly recommended is this book for further contextualization:
+;; http://www.amazon.co.uk/Quadrivium-Number-Geometry-Music-Heaven/dp/190715504X
+
+(def melody
+  "The Happy Birthday melody in scale-less musical degrees.
+  The keyword :_ identifies a pause.
+  Note durations are in bar measure (i.e. 1/4 = quarter note)."
+  [;; Hap    py        birth      day        to        you
+   [:v- 1/8] [:v- 1/8] [:vi- 1/4] [:v- 1/4]  [:i 1/4]  [:vii- 1/2]
+   ;; Hap    py        birth      day        to        you
+   [:v- 1/8] [:v- 1/8] [:vi- 1/4] [:v- 1/4]  [:ii 1/4] [:i 1/2]
+   ;; Hap    py        birth      day        dear      Ri       car         do
+   [:v- 1/8] [:v- 1/8] [:v 1/4]   [:iii 1/4] [:i 1/8]  [:i 1/8] [:vii- 1/4] [:vi- 1/4] [:_ 1/4]
+   ;; Hap    py        birth      day        to        you
+   [:iv 1/8] [:iv 1/8] [:iii 1/4] [:i 1/4]   [:ii 1/4] [:i 1/2]])
+
+(defn play-tune
+  "Takes an instrument, a sequence of notes and tempo (in bpm).
+  Plays notes in separate thread."
+  [inst bpm# root scale melody]
+  (let [tempo (bpm bpm#)
+        timings (reductions (fn[t [_ d]] (+ t (tempo (* d 4)))) (now) melody)
+        root (note root)
+        play-note (fn [timing [degree dur]]
+                    (when-not (= :_ degree)
+                      (at timing (inst (+ root (degree->interval degree scale))))))]
+    (dorun (map play-note timings melody))))
+
+(defn repeat-notes
+  "Takes a melody sequence and repeats each note `n` times,
+  with 1/n of its original duration. Returns new melody sequence."
+  [n melody]
+  (mapcat (fn [[deg dur]] (repeat n [deg (/ dur n)])) melody))
+
+(defn arpeggiate
+  "Similar to arpeggiate fn in the ex01_phrasestudy ns, but working with degrees
+  instead of absolute notes and also supporting pauses. Since degrees are expressed
+  as Roman numeral keywords (and not as number), we append `+` as suffix to indicate
+  a note of the same degree only one octave higher."
+  [n melody]
+  (mapcat
+   (fn [[deg dur]]
+     (if-not (= :_ deg)
+       (take n (cycle [[deg (/ dur n)] [(keyword (str (name deg) "+")) (/ dur n)]]))
+       [[deg dur]]))
+   melody))
+
+(comment
+  ;; Play the original Happy Birthday tune in F4 major
+  (play-tune piano 120 :f4 :major melody)
+  ;; The following experiments go ever further away from the original melody...
+  ;; All this is only achieved through manipulating the original sequence
+  ;; and/or choosing unusual scales. Since we only specified the melody in
+  ;; degrees it will always be "in tune", regardless of scale changes
+  (play-tune piano 120 :f4 :minor melody)
+  (play-tune piano 120 :c4 :major (repeat-notes 2 melody))
+  (play-tune piano 120 :c4 :major (arpeggiate 2 melody))
+  (play-tune piano  60 :c4 :egyptian (arpeggiate 3 melody)) ; my favourite!
+  (play-tune piano  60 :c4 :diminished (arpeggiate 4 (reverse melody)))
+  )
+
+#+END_SRC
+*   overtone.examples.workshops.resonate2013.ex03_graph
+#+BEGIN_SRC clojure :results silent
+(ns
+  ^{:doc "Brief intro to Incanter and concept of overtones/harmonics.
+          Displays some graphs of how harmonics are used to
+          generate different wave forms."
+    :author "Karsten Schmidt"}
+  overtone.examples.workshops.resonate2013.ex03_graph
+  (:use [incanter core charts]))
+
+(defn simple-plot
+  "Creates a graph of `f` in the interval `x1` .. `x2`.
+  Accepts an optional title."
+  ([f x1 x2] (simple-plot f x1 x2 ""))
+  ([f x1 x2 title]
+    (view (function-plot f x1 x2 :title title))))
+
+(defn plot-harmonics
+  "Creates a graph of summing oscillator fn `f` over `n` octaves,
+  in the interval `x1` .. `x2`."
+  ([f n title]
+    (plot-harmonics f n -10 10 title))
+  ([f n x1 x2 title]
+    (simple-plot
+      (fn [x] (apply + (map-indexed f (repeat n x))))
+      x1 x2 title)))
+
+(defn saw-wave
+  "Sawtooth uses overtones in each octave with exponentially
+  decreasing impact."
+  [i x] (let [i (inc i)] (* (Math/sin (* i x)) (/ 1.0 i))))
+
+(defn sq-wave
+  "Sawtooth uses overtones in only every 2nd octave with
+  exponentially decreasing impact."
+  [i x] (let [i (inc (* i 2))] (* (Math/sin (* i x)) (/ 1.0 i))))
+
+(defn comb-wave
+  "Like sq-wave, but flips sign for every 2nd harmonic."
+  [i x]
+  (let [ii (inc (* i 2))]
+    (* (Math/sin (* ii x)) (/ (if (odd? i) 1.0 -1.0) ii))))
+
+;; draw pretty pictures
+(plot-harmonics saw-wave 20 "sawtooth")
+(plot-harmonics sq-wave 20 "square")
+(plot-harmonics comb-wave 20 "comb")
+
+;; this graph shows the amplitude of overtones in each octave
+(simple-plot #(/ 1.0 %) 1 10 "harmonic falloff")
+
+#+END_SRC
+*   overtone.examples.workshops.resonate2013.ex04_midi
+#+BEGIN_SRC clojure :results silent
+(ns
+  ^{:doc "Mini example of using MIDI events to construct
+          a baby drum machine using samples from freesound.org"
+    :author "Karsten Schmidt"}
+  overtone.examples.workshops.resonate2013.ex04_midi
+  (:use [overtone.live]))
+
+;; Here we define a map of MIDI notes to samples
+;; You can use any freesound.org sample you wish, just change
+;; the sample IDs found on the website
+;; Samples will be downloaded automatically and cached in
+;; the .overtone directory in your user/home folder
+(def drum-kit
+  ;; c4 = kick, d4 = snare, d#4 = clap, e4 = closed hh, f4 = open hh, g4 = cowbell
+  (->> {:c4 2086 :d4 26903 :d#4 147597 :e4 802 :f4 26657 :g4 9780}
+       (map (fn [[n sample-id]] [(note n) (freesound sample-id)]))
+    (into {})))
+
+;; First let's see which MIDI devices are connected...
+(midi-connected-devices)
+
+;; MIDI is event based...
+;; For drums we only are interested in :note-on events
+;; emitted when a key on any connected device is pressed
+(on-event
+ [:midi :note-on]
+  ;; look up MIDI note in drumkit and only play if there's sample for it
+  (fn [e] (when-let [drum (drum-kit (:note e))] (drum)))
+  ::drumkit)
+
+;; execute the below to remove the event handler later on...
+(comment
+  (remove-event-handler ::drumkit))
+
+#+END_SRC
+*   overtone.examples.workshops.resonate2013.ex05_synthesis
+:PROPERTIES:
+:ID:       FD0EC8F7-91A9-4F05-A795-B3615BC1D204
+:END:
+#+BEGIN_SRC clojure :results silent
+(ns
+    ^{:doc "A few examples of more complex audio synthesis,
+           ported from SuperCollider to Overtone"}
+  overtone.examples.workshops.resonate2013.ex05_synthesis
+  (:use [overtone.live]))
+
+;; First let's use a tweet by Juan A. Romero
+;; (http://soundcloud.com/rukano)
+;; This code is written in Supercollider's Smalltalk dialect:
+;;
+;; play{d=Duty;f=d.kr(1/[1,2,4],0,Dseq([0,3,7,12,17]+24,inf));GVerb.ar(Blip.ar(f.midicps*[1,4,8],LFNoise1.kr(1/4,3,4)).sum,200,8)}
+
+(comment
+  ;; A port to Overtone is almost equally succinct, but still hard to
+  ;; understand...
+  ;; https://soundcloud.com/toxi/rukanos-space-organ
+  (demo 60 (g-verb (sum (map #(blip (* (midicps (duty:kr % 0 (dseq [24 27 31 36 41] INF))) %2) (mul-add:kr (lf-noise1:kr 1/2) 3 4)) [1 1/2 1/4] [1 4 8])) 200 8))
+
+  ;; A more easy-on-the-eyes version would look like this:
+  (demo 60
+        (let [;; First create 3 frequency generators at different
+              ;; tempos/rates [1 1/2 1/4]
+              ;; Each generator will cycle (at its own pace) through the sequence of
+              ;; notes given to dseq and convert notes into actual frequencies
+              f (map #(midicps (duty:kr % 0 (dseq [24 27 31 36 41] INF))) [1 1/2 1/4])
+              ;; Next we transpose the frequencies over several octaves
+              ;; and create a band limited impulse generator (blip) for
+              ;; each of the freq gens. The blip allows us to configure the number
+              ;; of overtones/harmonics used, which is constantly modulated by a
+              ;; noise generator between 1 and 7 harmonics...
+              tones (map #(blip (* % %2) (mul-add:kr (lf-noise1:kr 1/4) 3 4)) f [1 4 8])]
+          ;; finally, all tones are summed into a single signal
+          ;; and passed through a reverb with a large roomsize and decay time...
+          (g-verb (sum tones) 200 8)))
+  )
+
+;; The following synth is taken from Overtone's bundled examples and
+;; based on a Supercollider script by Dan Stowells (w/ comments added by toxi)
+;; Creates a dubstep synth with random wobble bassline, kick & snare patterns
+(comment
+  (demo 60
+        (let [bpm 160
+              ;; create pool of notes as seed for random base line sequence
+              notes (concat (repeat 8 40) [40 41 28 28 28 27 25 35 78])
+              ;; create an impulse trigger firing once per bar
+              trig (impulse:kr (/ bpm 160))
+              ;; create frequency generator for a randomly picked note
+              freq (midicps (lag (demand trig 0 (dxrand notes INF)) 0.25))
+              ;; switch note durations
+              swr (demand trig 0 (dseq [1 6 6 2 1 2 4 8 3 3] INF))
+              ;; create a sweep curve for filter below
+              sweep (lin-exp (lf-tri swr) -1 1 40 3000)
+              ;; create a slightly detuned stereo sawtooth oscillator
+              wob (apply + (saw (* freq [0.99 1.01])))
+              ;; apply low pass filter using sweep curve to control cutoff freq
+              wob (lpf wob sweep)
+              ;; normalize to 80% volume
+              wob (* 0.8 (normalizer wob))
+              ;; apply band pass filter with resonance at 5kHz
+              wob (+ wob (bpf wob 5000 20))
+              ;; mix in 20% reverb
+              wob (+ wob (* 0.2 (g-verb wob 9 5 0.7)))
+              ;; create impulse generator from given drum pattern
+              kickenv (decay (t2a (demand (impulse:kr (/ bpm 30)) 0
+                                          (dseq [1 0 0 0 0 0 1 0 1 0 0 1 0 0 0 0] INF))) 0.7)
+              ;; use modulated sine wave oscillator
+              kick (* (* kickenv 7) (sin-osc (+ 40 (* kickenv kickenv kickenv 200))))
+              ;; clip at max volume to create distortion
+              kick (clip2 kick 1)
+              ;; snare is just using gated & over-amplified pink noise
+              snare (* 3 (pink-noise) (apply + (* (decay (impulse (/ bpm 240) 0.5) [0.4 2]) [1 0.05])))
+              ;; send through band pass filter with peak @ 1.5kHz
+              snare (+ snare (bpf (* 8 snare) 1500))
+              ;; also clip at max vol to distort
+              snare (clip2 snare 1)]
+          ;; mixdown & clip
+          (clip2 (+ wob kick snare) 1)))
+  )
+
+#+END_SRC
+*   overtone.examples.workshops.resonate2013.ex06_quilstep
+#+BEGIN_SRC clojure :results silent
+(ns
+  ^{:doc "Building a simple Quil/Processing based GUI for controlling
+          a running Overtone synth. The GUI supports buttons and
+          sliders, but can be extended with other control types."
+    :author "Karsten Schmidt"}
+  overtone.examples.workshops.resonate2013.ex06_quilstep
+  (:require [quil.core :as q :refer [defsketch]])
+  (:use [overtone.live]))
+
+;; This atom will hold the ID of the currently playing dubstep synth instance
+(def synth-ref (atom 0))
+
+;; The actual dubstep synth (taken from
+;; overtone.examples.instruments.dubstep namespace)
+;; Also see ex05_synthesis for detailed comments
+(defsynth dubstep [bpm 120 wobble 1 note 50 snare-vol 1 kick-vol 1 v 1]
+ (let [trig (impulse:kr (/ bpm 120))
+       freq (midicps note)
+       swr (demand trig 0 (dseq [wobble] INF))
+       sweep (lin-exp (lf-tri swr) -1 1 40 3000)
+       wob (apply + (saw (* freq [0.99 1.01])))
+       wob (lpf wob sweep)
+       wob (* 0.8 (normalizer wob))
+       wob (+ wob (bpf wob 1500 2))
+       wob (+ wob (* 0.2 (g-verb wob 9 0.7 0.7)))
+       kickenv (decay (t2a (demand (impulse:kr (/ bpm 30)) 0 (dseq [1 0 0 0 0 0 1 0 1 0 0 1 0 0 0 0] INF))) 0.7)
+       kick (* (* kickenv 7) (sin-osc (+ 40 (* kickenv kickenv kickenv 200))))
+       kick (clip2 kick 1)
+       snare (* 3 (pink-noise) (apply + (* (decay (impulse (/ bpm 240) 0.5) [0.4 2]) [1 0.05])))
+       snare (+ snare (bpf (* 4 snare) 2000))
+       snare (clip2 snare 1)]
+   (out 0 (* v (clip2 (+ wob (* kick-vol kick) (* snare-vol snare)) 1)))))
+
+(defn map-interval
+  "Maps `x` from interval `in1`..`in2` into interval `out1`..`out2`."
+  [x in1 in2 out1 out2]
+  (+ out1 (* (/ (- x in1) (- in2 in1)) (- out2 out1))))
+
+(defn in-rect?
+  "Returns true if point [x y] is in rectangle."
+  [x y [rx ry rw rh]]
+  (and (>= x rx) (< x (+ rx rw)) (>= y ry) (< y (+ ry rh))))
+
+(defn make-slider
+  "Returns a map definition of a slider GUI widget.
+  `handler` is a function accepting the new slider value."
+  [handler v minv maxv x y w h label]
+  {:handler handler
+   :val v :min minv :max maxv
+   :bounds [x y w h]
+   :label label})
+
+(defn make-button
+  "Returns a map definition of a button GUI widget.
+  `handler` is a no-arg function called when the button was pressed."
+  [handler x y w h bg label]
+  {:handler handler :bounds [x y w h] :bg bg :label label})
+
+(defn make-key
+  "Take a note id (0..11) and key color (0 = black, 1 = white),
+  calls `make-button` with predefined handler to switch pitch of wobble
+  bass in currently playing syth instance."
+  [[n col]]
+  (let [col (* 255 col)]
+    (make-button #(ctl @synth-ref :note (+ (note :c2) n)) (+ 140 (* n 25))
+                 20 25 50 [col col col] nil)))
+
+(defn button-handler
+  "Helper fn/wrapper for button handlers. Accepts a button and mouse pos
+  calls button's handler fn if mouse was inside button's screen rect."
+  [{:keys [bounds handler]} click-x click-y]
+  (when (in-rect? click-x click-y bounds) (handler)))
+
+;; Clojure compiler only does a single-pass, so we need to forward
+;; declare the presence of the `sliders` symbol defined below
+(declare sliders)
+
+(defn slider-handler
+  "Helper fn/wrapper for slider handlers. Accepts a slifer and mouse pos,
+  updates slider value and calls slider's handler fn if mouse was inside
+  slider's screen rect."
+  [id {:keys [val min max bounds handler]} click-x click-y]
+  (when (in-rect? click-x click-y bounds)
+    (let [[x _ w] bounds
+          new-val (map-interval click-x x (+ x w) min max)]
+      (swap! sliders assoc-in [id :val] new-val)
+      (handler new-val))))
+
+(def buttons
+  "Defines a list of buttons: play & stop and 12 piano keys for changing pitch."
+  (concat
+    [(make-button #(reset! synth-ref (:id (dubstep))) 20 20 50 50 [0 0 0] "play")
+     (make-button stop 80 20 50 50 [0 0 0] "stop")]
+    (map make-key (zipmap (range) [1 0 1 0 1 1 0 1 0 1 0 1]))))
+
+(def sliders
+  "Defines a map of sliders and their handlers to control the synth, all wrapped
+  in an atom to allow for interactive updates of slider values."
+  (atom {:tempo (make-slider (fn [x] (ctl @synth-ref :bpm x)) 120 80 180 20 80 200 20 "tempo")
+         :wobble (make-slider (fn [x] (ctl @synth-ref :wobble (int x))) 1 1 16 20 110 200 20 "wobble")
+         :amp (make-slider (fn [x] (ctl @synth-ref :v x)) 1.0 0.0 1.0 20 140 200 20 "volume")}))
+
+(defn draw-slider
+  "Takes a single slider map and draws it with optional label."
+  [{:keys [val min max label] [x y w h] :bounds}]
+  (let [x2 (+ x w)
+        ymid (+ y (/ h 2))]
+    (q/stroke 0)
+    (q/line x ymid x2 ymid)
+    (q/fill 255 255 0)
+    (q/rect (- (map-interval val min max x x2) 5) y 10 20)
+    (when label
+      (q/fill 0)
+      (q/text label (+ x w 20) (+ ymid 4)))))
+
+(defn draw-button
+  "Takes a single button map and draws it with optional label.
+  (I.e. Piano keys don't have labels."
+  [{label :label [r g b] :bg [x y w h] :bounds}]
+  (q/fill r g b)
+  (q/rect x y w h)
+  (when label
+    (q/fill 255 255 0)
+    (q/text label (+ x 10) (+ y h -10))))
+
+(defn draw []
+  "Main draw function of the Quil sketch."
+  (q/background 192)
+  (doseq [b buttons] (draw-button b))
+  (doseq [s (vals @sliders)] (draw-slider s)))
+
+(defn mouse-pressed []
+  "Mouse event handler. Checks & updates all GUI elements."
+  (let [x (q/mouse-x) y (q/mouse-y)]
+    (doseq [b buttons] (button-handler b x y))
+    (doseq [[id s] @sliders] (slider-handler id s x y))))
+
+;; Define & launch the Quil sketch...
+(defsketch Resonate
+  :size [460 180]
+  :title "Resonate 2013 Quilstep"
+  :draw draw
+  :mouse-pressed mouse-pressed)
+
+#+END_SRC
