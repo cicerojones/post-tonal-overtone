@@ -324,3 +324,14 @@ var
 Volumes
 #+end_example
 
+** understanding functional programming function creation
+#+begin_src clojure :results silent
+  (defn my-fn [] (fn [] 1))
+  ;; #'user/my-fn
+  my-fn
+  ;; #function[user/my-fn]
+  (my-fn)
+  ;; #function[user/my-fn/fn--18000]
+  ((my-fn))
+  ;; 1
+#+end_src
