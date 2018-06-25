@@ -12,13 +12,16 @@ copied from the overtone repo:
 play({SinOsc.ar(LFNoise0.kr(12, mul: 600, add: 1000), 0.3)})
 #+END_SRC
 
+#+RESULTS:
+: play({SinOsc.ar(LFNoise0.kr(12, mul: 600, add: 1000), 0.3)})
+
 
 #+BEGIN_SRC clojure
 (demo 10 (sin-osc (+ 1000 (* 600 (lf-noise0:kr 12))) 0.3))
 #+END_SRC
 
 #+RESULTS:
-: #<synth-node[loading]: quilbabel.core/audition-synth 196>
+: #<synth-node[loading]: user/audition-synth 33>
 
 
 ;;;;;;;;
