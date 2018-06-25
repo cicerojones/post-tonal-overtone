@@ -3678,6 +3678,12 @@ overtone.live/buffer-info
   :id         - unique id for the buffer
 #+end_example
 
+Compare against doing this, though!
+
+#+BEGIN_SRC clojure
+(clojure.pprint/pprint (buffer-info 6))
+#+END_SRC
+
 ***** num-frames
 #+BEGIN_SRC clojure :results output
 (doc num-frames)
