@@ -1,6 +1,7 @@
 (defproject post_tonal_overtone "1.0"
   :url "https://github.com/overtone/overtone/wiki/Installing-overtone"
-  :dependencies [[org.clojure/clojure "1.8.0"]
+  :dependencies [[org.clojure/clojure "1.9.0"] ;; stable as of 07/2018
+                 ;; [org.clojure/clojure "1.8.0"]
                  ;; [org.clojure/clojure "1.9.0-alpha20"]
                  [overtone "0.10.3"]
                  ;; [org.clojure/math.combinatorics "0.1.1"]
