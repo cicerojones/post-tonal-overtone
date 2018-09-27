@@ -185,6 +185,9 @@
 
 #+END_SRC
 * Compositions
+  :PROPERTIES:
+  :HEADER-ARGS: :results silent
+  :END:
 ** (ns overtone.examples.compositions.at-all
 #+BEGIN_SRC clojure
 (ns overtone.examples.compositions.at-all

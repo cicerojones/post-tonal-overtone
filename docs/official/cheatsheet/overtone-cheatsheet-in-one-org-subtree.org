@@ -1908,7 +1908,7 @@ overtone.live/remove-event-handler
   (event :foo :val 200) ; my-foo-handler no longer called
 #+end_example
 
-*** Debug
+*** Debug                                                             :debug:
 
 **** event-debug-on
 #+BEGIN_SRC clojure :results output
@@ -2344,6 +2344,13 @@ overtone.live/group
 :   Returns a data representation of the synth node tree starting at
 :   the root group.
 
+
+also the following does the same as the next function
+#+BEGIN_SRC clojure
+(clojure.pprint/pprint (node-tree))
+#+END_SRC
+
+
 **** [#A] pp-node-tree 
 #+BEGIN_SRC clojure :results output
 (doc pp-node-tree )
@@ -2547,9 +2554,6 @@ overtone.live/foundation-safe-post-default-group
 #+end_example
 
 *** Manipulation Handlers
-
-**** 
-
 **** on-node-destroyed
 #+BEGIN_SRC clojure :results output
 (doc on-node-destroyed)
@@ -3592,30 +3596,15 @@ buffer-stream buffer-stream?
 
 ***** buffer-info?
 #+BEGIN_SRC clojure :results output
-(doc buffer-info)
+(doc buffer-info?)
 #+END_SRC
 
 #+RESULTS:
-#+begin_example
--------------------------
-overtone.live/buffer-info
-([buf-id])
-  Fetch the information for buffer associated with buf-id (either an
-  integer or an associative with an :id key). Synchronous.
-
-  Information returned is as follows:
-
-  :size       - number of frames in the buffer
-  :n-channels - number of audio channels stored in the buffer
-  :rate       - rate of the buffer (typical rate is 44100 samples per
-                second)
-  :n-samples  - total number of samples in the buffer (* size n-channels)
-  :rate-scale - rate to specify in order to play the buffer correctly
-                according
-                to the server's sample rate (/ rate (server-sample-rate))
-  :duration   - duration of the buffer in seconds
-  :id         - unique id for the buffer
-#+end_example
+: -------------------------
+: overtone.live/buffer-info?
+: ([b-info])
+:   Returns true if b-info is buffer information. This includes buffers
+:   themselves in addition to the return value from #'buffer-info
 
 ***** file-buffer? 
 #+BEGIN_SRC clojure :results output
@@ -5506,7 +5495,7 @@ overtone.live/wrap2
 
 *** [#A] Buffer IO UGens                                          :buffer:io:
 
-**** [#A] play-buf
+**** [#A] play-buf                                                  :playbuf:
 #+BEGIN_SRC clojure :results output
 (doc play-buf)
 #+END_SRC
@@ -8978,7 +8967,7 @@ overtone.live/shared-out
   Default rate: :kr
 #+end_example
 
-*** [#B] Line Ugens
+*** [#B] Line Ugens                                                    :line:
 
 **** [#A] line
 #+BEGIN_SRC clojure :results output

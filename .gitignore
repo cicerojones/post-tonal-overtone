@@ -13,3 +13,4 @@ pom.xml.asc
 .#*
 *~
 /src/post_tonal_overtone/org_files/modeling-musical-time.org_archive
+*.log

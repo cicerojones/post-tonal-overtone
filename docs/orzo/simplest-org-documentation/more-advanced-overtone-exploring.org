@@ -3,9 +3,13 @@
 :ID:       62D39834-5A93-49BB-80CD-6475FD7C1D6D
 :END:
 ** stop all sound
+#+name: stop-all
 #+BEGIN_SRC clojure
 (stop)
 #+END_SRC
+
+#+RESULTS: stop-all
+: nilnil
 
 #+RESULTS:
 : nil
@@ -919,7 +923,7 @@ Uses my-ugen-demo as defined above:
 #+END_SRC
 
 #+RESULTS:
-: #<instrument: clang>
+: nil#<instrument: clang>
 
 #+BEGIN_SRC clojure :results silent
 (clang)
@@ -932,7 +936,7 @@ Uses my-ugen-demo as defined above:
 #+END_SRC
 
 #+RESULTS:
-: #<synth: clang1>
+: nil#<synth: clang1>
 
 #+BEGIN_SRC clojure :results silent
 (clang1)
