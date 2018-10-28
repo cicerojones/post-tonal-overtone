@@ -1,0 +1,291 @@
+* test org babel
+
+#+begin_src clojure
+(rand 10)
+#+end_src
+
+#+RESULTS:
+: nil1.2760946712618748
+
+
+#+begin_src clojure
+(rand 10)
+#+end_src
+
+#+RESULTS:
+
+
+#+begin_src clojure
+*ns*
+
+#+end_src
+
+#+RESULTS:
+
+# #+begin_src clojure :session "*cider-repl ob-clojure*" :results output
+
+# #+end_src
+
+# #+begin_src clojure :results silent
+# 2
+# #+end_src
+
+
+#+begin_src clojure :session *cider-repl repos/post-tonal-overtone:localhost:50169(clj)*
+  1                                       ;
+#+end_src
+
+# #+BEGIN_SRC clojure :result output
+# (println "hi")
+# (println (str *ns*))
+# #+END_SRC
+
+#+RESULTS:
+: nilnilnil
+
+# #+begin_src clojure
+# *ns*
+
+# #+end_src
+
+#+RESULTS:
+
+# #+BEGIN_SRC clojure :result output
+# (in-ns 'kk)
+
+# (println (str *ns*))
+# #+END_SRC
+
+#+RESULTS:
+: nil#namespace[kk]class clojure.lang.Compiler$CompilerExceptionclass clojure.lang.Compiler$CompilerExceptionCompilerException java.lang.RuntimeException: Unable to resolve symbol: println in this context, compiling:(*cider-repl repos/post-tonal-overtone:localhost:49580(clj)*:4:1) 
+
+??
+#+begin_src emacs-lisp
+      ;; auto start CIDER REPL session in a complete Leiningen project environment for Org-mode Babel by jack-in.
+      (add-to-list 'org-babel-default-header-args:clojure
+                   '(:session . "*cider-repl ob-clojure*"))
+      (progn
+        (find-file (expand-file-name "~/.emacs.d/Org-mode/ob-clojure/src/ob_clojure/core.clj"))
+        (cider-jack-in))
+
+      (defun ob-clojure-cider-do-not-find-ns ()
+        "Fix the issue that `cider-current-ns' try to invoke `clojure-find-ns' to extract ns from buffer."
+        (setq-local cider-buffer-ns "user"))
+      (add-hook 'org-mode-hook #'ob-clojure-cider-do-not-find-ns)
+      #+end_src
+
+#+begin_src emacs-lisp
+(defun ob-clojure-cider-do-not-find-ns ()
+  "Fix the issue that `cider-current-ns' try to invoke `clojure-find-ns' to extract ns from buffer."
+  (with-current-buffer "*cider-repl ob-clojure*"
+    (defvar ob-clojure-cider-repl-ns cider-buffer-ns)
+    (setq-local cider-buffer-ns ob-clojuure-cider-repl-ns)))
+#+end_src
+
+
+
+#+BEGIN_SRC clojure :results value :ns my-namespace.core
+(def greeting "hi there from my-namespace.core!")
+#+END_SRC
+
+#+RESULTS:
+: nil#'my-namespace.core/greeting
+
+#+BEGIN_SRC clojure :results value :ns post-tonal-overtone.core
+(def greeting "hi there from my-namespace.core!")
+#+END_SRC
+
+#+RESULTS:
+: nil#'post-tonal-overtone.core/greeting
+
+#+BEGIN_SRC emacs-lisp
+(cider-current-connection)
+#+END_SRC
+
+#+RESULTS:
+: #<buffer *cider-repl repos/post-tonal-overtone:localhost:49580(clj)*>
+
+#+BEGIN_SRC emacs-lisp
+(cider-current-ns)
+#+END_SRC
+
+#+RESULTS:
+: kk
+
+
+#+BEGIN_SRC clojure
+(in-ns 'user)
+#+END_SRC
+
+#+RESULTS:
+: nil#namespace[user]
+
+#+BEGIN_SRC emacs-lisp
+(cider-current-ns)
+#+END_SRC
+
+#+RESULTS:
+: user
+
+#+begin_src emacs-lisp
+(add-to-list 'org-babel-default-header-args:clojure
+                   '(:session . "*cider-repl ob-clojure*"))
+#+end_src
+
+
+
+#+RESULTS:
+: 1.3664794171845684
+
+
+
+#+RESULTS:
+: 2.0853149614289688
+* test org babel
+  :PROPERTIES:
+  :ARCHIVE_TIME: 2018-10-15 Mon 21:30
+  :ARCHIVE_FILE: ~/repos/post-tonal-overtone/README.org
+  :ARCHIVE_CATEGORY: README
+  :END:
+
+#+begin_src clojure
+(rand 10)
+#+end_src
+
+#+RESULTS:
+: 1.8979432003863017
+
+
+#+begin_src clojure
+(rand 10)
+#+end_src
+
+#+RESULTS:
+
+
+#+begin_src clojure
+*ns*
+
+#+end_src
+
+#+RESULTS:
+
+# #+begin_src clojure :session "*cider-repl ob-clojure*" :results output
+
+# #+end_src
+
+# #+begin_src clojure :results silent
+# 2
+# #+end_src
+
+
+#+begin_src clojure :session *cider-repl repos/post-tonal-overtone:localhost:50169(clj)*
+  1                                       ;
+#+end_src
+
+# #+BEGIN_SRC clojure :result output
+# (println "hi")
+# (println (str *ns*))
+# #+END_SRC
+
+#+RESULTS:
+: nilnilnil
+
+# #+begin_src clojure
+# *ns*
+
+# #+end_src
+
+#+RESULTS:
+
+# #+BEGIN_SRC clojure :result output
+# (in-ns 'kk)
+
+# (println (str *ns*))
+# #+END_SRC
+
+#+RESULTS:
+: nil#namespace[kk]class clojure.lang.Compiler$CompilerExceptionclass clojure.lang.Compiler$CompilerExceptionCompilerException java.lang.RuntimeException: Unable to resolve symbol: println in this context, compiling:(*cider-repl repos/post-tonal-overtone:localhost:49580(clj)*:4:1) 
+
+??
+#+begin_src emacs-lisp
+      ;; auto start CIDER REPL session in a complete Leiningen project environment for Org-mode Babel by jack-in.
+      (add-to-list 'org-babel-default-header-args:clojure
+                   '(:session . "*cider-repl ob-clojure*"))
+      (progn
+        (find-file (expand-file-name "~/.emacs.d/Org-mode/ob-clojure/src/ob_clojure/core.clj"))
+        (cider-jack-in))
+
+      (defun ob-clojure-cider-do-not-find-ns ()
+        "Fix the issue that `cider-current-ns' try to invoke `clojure-find-ns' to extract ns from buffer."
+        (setq-local cider-buffer-ns "user"))
+      (add-hook 'org-mode-hook #'ob-clojure-cider-do-not-find-ns)
+      #+end_src
+
+#+begin_src emacs-lisp
+(defun ob-clojure-cider-do-not-find-ns ()
+  "Fix the issue that `cider-current-ns' try to invoke `clojure-find-ns' to extract ns from buffer."
+  (with-current-buffer "*cider-repl ob-clojure*"
+    (defvar ob-clojure-cider-repl-ns cider-buffer-ns)
+    (setq-local cider-buffer-ns ob-clojuure-cider-repl-ns)))
+#+end_src
+
+
+
+#+BEGIN_SRC clojure :results value :ns my-namespace.core
+(def greeting "hi there from my-namespace.core!")
+#+END_SRC
+
+#+RESULTS:
+: nil#'my-namespace.core/greeting
+
+#+BEGIN_SRC clojure :results value :ns post-tonal-overtone.core
+(def greeting "hi there from my-namespace.core!")
+#+END_SRC
+
+#+RESULTS:
+: nil#'post-tonal-overtone.core/greeting
+
+#+BEGIN_SRC emacs-lisp
+(cider-current-connection)
+#+END_SRC
+
+#+RESULTS:
+: #<buffer *cider-repl repos/post-tonal-overtone:localhost:49580(clj)*>
+
+#+BEGIN_SRC emacs-lisp
+(cider-current-ns)
+#+END_SRC
+
+#+RESULTS:
+: kk
+
+
+#+BEGIN_SRC clojure
+(in-ns 'user)
+#+END_SRC
+
+#+RESULTS:
+: nil#namespace[user]
+
+#+BEGIN_SRC emacs-lisp
+(cider-current-ns)
+#+END_SRC
+
+#+RESULTS:
+: user
+
+#+begin_src emacs-lisp
+(add-to-list 'org-babel-default-header-args:clojure
+                   '(:session . "*cider-repl ob-clojure*"))
+#+end_src
+
+
+
+#+RESULTS:
+: 1.3664794171845684
+
+
+
+#+RESULTS:
+: 2.0853149614289688
