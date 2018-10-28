@@ -1,0 +1,28 @@
+#+begin_src clojure
+(rand 10)
+#+end_src
+
+#+RESULTS:
+: 1.1861723257981471
+
+#+begin_src clojure
+*ns*
+#+end_src
+
+#+RESULTS:
+: #namespace[user]
+
+#+BEGIN_SRC emacs-lisp
+(cider-current-ns)
+
+#+END_SRC
+
+#+RESULTS:
+: user
+
+#+BEGIN_SRC emacs-lisp
+(cider-current-connection)
+#+END_SRC
+
+#+RESULTS:
+: #<buffer *cider-repl post-tonal-overtone*>
