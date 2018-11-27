@@ -4,6 +4,7 @@
                  ;; [org.clojure/clojure "1.8.0"]
                  ;; [org.clojure/clojure "1.9.0-alpha20"]
                  [overtone "0.10.3"]
+		 [clj-time "0.15.0"] ;; current as of [2018-11-19 Mon]
                  ;; [org.clojure/math.combinatorics "0.1.1"]
                  ;; [org.clojure/math.numeric-tower "0.0.4"]
                  ;; [org.clojure/algo.monads "0.1.5"]
