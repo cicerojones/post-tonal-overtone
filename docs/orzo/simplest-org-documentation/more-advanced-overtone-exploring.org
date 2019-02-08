@@ -1,7 +1,4 @@
 * Building up more sophisticated Controller abstractions
-:PROPERTIES:
-:ID:       62D39834-5A93-49BB-80CD-6475FD7C1D6D
-:END:
 ** stop all sound
 #+name: stop-all
 #+BEGIN_SRC clojure
@@ -159,9 +156,6 @@ velocity of the given knob),
 We want to be able to manipulate these on the fly. Let's use another
 button to report back a channel and a "velocity"
 ** reusable atoms of CC values
-   :PROPERTIES:
-   :ID:       7207D525-54CB-4DAC-BED5-62D70AE8C463
-   :END:
 #+BEGIN_SRC clojure :results silent
   (def cc1 (atom 0))
   (def cc2 (atom 0))
@@ -290,9 +284,7 @@ UGens are producing. See polling and running
 (run 20 (poll:kr (impulse:kr 5) (line:kr 0.0 10.0 20)) "polled-val:"))
 #+END_SRC
 ** [#A] make a polling and running macro to read ugen values
-:PROPERTIES:
-:ID:       FAE2CB90-90F5-4D5E-897F-22419F70FCF0
-:END:
+
 #+BEGIN_SRC clojure
 (defmacro read-ugen [dur ugen]
 `(run ~dur (poll:kr (impulse:kr 2) ~ugen)))
@@ -379,9 +371,7 @@ Now, when it comes refactoring in general, we might want to think about what kin
 ** steps
 consolidated steps:
 
-:PROPERTIES:
-:ID:       FC7DE6AF-7BCA-4E0F-B10C-19C7CD6E1B42
-:END:
+
 Is soundflower running? 
 Is audacity running? 
 How will you be connecting to a sc server--internally or externally? (Do you want to
@@ -726,9 +716,7 @@ However, using a macro...
 #+RESULTS:
 : #<synth-node[loading]: overtone.exam736/audition-synth 212>
 ** pass in ugens to demo
-:PROPERTIES:
-:ID:       EB78186B-636E-40F4-A2B3-E38FC312DD3F
-:END:
+
 
 #+BEGIN_SRC clojure
 (defmacro my-ugen-demo
