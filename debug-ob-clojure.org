@@ -3,7 +3,7 @@
 #+end_src
 
 #+RESULTS:
-: 1.1861723257981471
+: 1.0051992476797111
 
 #+begin_src clojure
 *ns*
