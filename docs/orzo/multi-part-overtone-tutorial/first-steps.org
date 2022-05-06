@@ -2868,7 +2868,8 @@ post_tonal_overtone.data.set_class_data/cmajtriads
  #+END_SRC
 
  #+RESULTS:
- : #<instrument: noisey2>#<synth-node[loading]: user/noisey2 35>
+ | #<instrument: noisey2>                  |
+ | #<synth-node[loading]: user/noisey2 45> |
 
 *** definst can take an envelope for scaling the ugen output--using lin
 use of lin presents several default keyword args. When called as an
@@ -2934,7 +2935,7 @@ turned up) wave just rolled up?
   #+END_SRC
 
   #+RESULTS:
-  : #<synth-node[loading]: user/noisey2 43>
+  : class clojure.lang.Compiler$CompilerException
 
 
 Sounds like percussion now?
