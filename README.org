@@ -1,10 +1,30 @@
+* You Need Steps (within this project or README)
+
+1. install clojure yikes!
+
+   also means you need Java
+   Overtone github readme says
+
+   https://clojure.org/guides/getting_started
+
+   
+* It's a Mess
+This was created as a Leiningen project for Clojure?
+
+I created Staircases to try to wrangle the best out of this.
+
 * test org babel
+
+Much of this comes from:
+https://www.orgmode.org/worg/org-contrib/babel/languages/ob-doc-clojure.html
 
 #+begin_src clojure
 (rand 10)
 #+end_src
 
 #+RESULTS:
+: nil2.209194902544298
+
 : nil1.2760946712618748
 
 
@@ -59,7 +79,7 @@
 #+RESULTS:
 : nil#namespace[kk]class clojure.lang.Compiler$CompilerExceptionclass clojure.lang.Compiler$CompilerExceptionCompilerException java.lang.RuntimeException: Unable to resolve symbol: println in this context, compiling:(*cider-repl repos/post-tonal-overtone:localhost:49580(clj)*:4:1) 
 
-??
+ * Some elisp options for Using ob-clojure
 #+begin_src emacs-lisp
       ;; auto start CIDER REPL session in a complete Leiningen project environment for Org-mode Babel by jack-in.
       (add-to-list 'org-babel-default-header-args:clojure
@@ -103,13 +123,17 @@
 #+END_SRC
 
 #+RESULTS:
+: #<buffer *cider-repl repos/post-tonal-overtone:localhost:50245(clj)*>
+
 : #<buffer *cider-repl repos/post-tonal-overtone:localhost:49580(clj)*>
 
 #+BEGIN_SRC emacs-lisp
-(cider-current-ns)
+  (cider-current-ns)
 #+END_SRC
 
 #+RESULTS:
+: user
+
 : kk
 
 
@@ -141,7 +165,9 @@
 
 #+RESULTS:
 : 2.0853149614289688
-* test org babel
+
+
+* Straight copy of previous node?
   :PROPERTIES:
   :ARCHIVE_TIME: 2018-10-15 Mon 21:30
   :ARCHIVE_FILE: ~/repos/post-tonal-overtone/README.org
@@ -289,3 +315,22 @@
 
 #+RESULTS:
 : 2.0853149614289688
+
+
+* outcch
+#+begin_src clojure :results pp
+(ns kk.test)
+(def he "hi")
+#+end_src
+
+#+RESULTS:
+: #'user/he
+
+
+#+begin_src clojure :results value :ns kk2
+(def he "hi")
+*ns*
+#+end_src
+
+#+RESULTS:
+: nil#'kk2/he#namespace[kk2]
