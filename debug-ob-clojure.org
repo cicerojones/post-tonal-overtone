@@ -1,28 +1,176 @@
+* basic ~rand~ bloack
+
 #+begin_src clojure
 (rand 10)
 #+end_src
 
 #+RESULTS:
-: 1.0051992476797111
+: 0.6596483119854857
 
-#+begin_src clojure
-*ns*
+* use a "session" argument?
+
+
+avoid "*cider-repl .emacs.d/twentysix:localhost:60654(clj)*"
+#+begin_src clojure :session mysession
+(def session-randy (rand 10))
 #+end_src
 
 #+RESULTS:
-: #namespace[user]
+: #'user/session-randy
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC clojure :session mysession
+randy
+
+#+END_SRC
+
+#+RESULTS:
+: 2.266556465207401
+
+#+BEGIN_SRC clojure
+session-randy
+#+END_SRC
+
+#+RESULTS:
+: 6.903699129093686
+
+* cider 
+
+#+BEGIN_SRC emacs-lisp :results silent
 (cider-current-ns)
 
 #+END_SRC
 
-#+RESULTS:
-: user
-
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :results silent
 (cider-current-connection)
 #+END_SRC
 
+
+* clojure block "dir" value for writing
+
+really want to write outside the current repo?
+
+Doesn't seem to work to pass the "dir" value.
+
+
+#+begin_src clojure :results value :var dir="/Users/li/repos/testing-clj/"
+(spit (str dir "test.txt") (rand))
+#+end_src
+
 #+RESULTS:
-: #<buffer *cider-repl post-tonal-overtone*>
+: class java.io.FileNotFoundException
+
+#+begin_src clojure :results value :var dir="/Users/oi/repos/testing-clj/"
+(spit (str dir "test.txt") (rand))
+#+end_src
+
+#+RESULTS:
+: class java.io.FileNotFoundException
+
+#+begin_src clojure
+(spit (str dir "test.txt") (rand))
+#+end_src
+
+#+RESULTS:
+: class clojure.lang.Compiler$CompilerException
+
+* load an overtone dependent block
+
+** first loading overtone via use
+
+How do you load overtone?
+#+RESULTS:
+: #<synth-node[loading]: user/audition-synth 46>
+
+Result depends on how you are connected:
+#+begin_src clojure
+(use 'overtone.live)
+#+end_src
+
+As of [2022-03-20 Sun] you need to have dependencies of one form or another form for lein vs. Clojure-cli
+
+So, consider the format of this file:
+[[file:deps.edn][file:~/repos/post-tonal-overtone/deps.edn]]
+
+The Overtone readme suggests cli to start
+
+
+# Install the clojure-cli tools
+    # https://clojure.org/guides/getting_started
+
+#+begin_src clojure
+{:deps {overtone/overtone {:mvn/version "0.10.6"}}}
+#+end_src
+
+While an approach with lein suggests
+
+add the following dependencies to insane-noises/project.clj
+    # [org.clojure/clojure "1.9.0"]
+    # [overtone "0.10.6"]
+
+    
+#+begin_src clojure
+ (defproject post_tonal_overtone "1.0"
+  ;;  ;; prefer using deps.edn now?
+  ;; how? comment out stuff here is all?
+  
+  ;; :url "https://github.com/overtone/overtone/wiki/Installing-overtone"
+  :dependencies [
+                 [org.clojure/clojure "1.10.1"];; Stable Release: 1.10.1 (June 6, 2019)
+                 [overtone "0.10.6"]  ;; as of 5/2020
+  ;;                ;; [org.clojure/clojure "1.10.0"] ;; stable as of 07/2018
+                 
+  ;;                ;; [org.clojure/clojure "1.9.0"] ;; stable as of 07/2018
+  ;;                ;; [org.clojure/clojure "1.8.0"]
+  ;;                ;; [org.clojure/clojure "1.9.0-alpha20"]
+                 ;;                ;; [overtone "0.10.3"]
+                 ;; fuck you 
+                 ;; [overtone "0.10.6"] ;; 12/2019 version spits our
+                 ;; synth map
+  ;;       	 [clj-time "0.15.0"] ;; current as of [2018-11-19 Mon]
+  ;;                ;; [org.clojure/math.combinatorics "0.1.1"]
+  ;;                ;; [org.clojure/math.numeric-tower "0.0.4"]
+  ;;                ;; [org.clojure/algo.monads "0.1.5"]
+  ;;                ;; [org.clojure/clojure-contrib "1.2.0"]
+  ;;                ;; [org.clojure/java.jdbc "0.5.0"]
+  ;;                ;; [org.postgresql/postgresql "9.4-1201-jdbc41"]
+  ;;                ;; ;; [overtone/osc-clj "0.8.1"]
+  ;;                ;; [yesql  "0.5.2"]
+  ;;                ;; [me.raynes/fs "1.4.6"]
+                 ;;                [quil "2.6.0"]
+                 ]
+                 )
+#+end_src
+
+** an instrument
+#+BEGIN_SRC clojure
+(definst noisey1 [] (sin-osc (* 0.5 (+ (* 900 (lf-brown-noise0:kr 20)) (* (* 100 (lf-brown-noise0:kr 1)) (lf-clip-noise 2))))))
+#+END_SRC
+
+#+RESULTS:
+: class clojure.lang.Compiler$CompilerException
+
+#+begin_src clojure
+(noisey1)
+#+end_src
+
+#+RESULTS:
+: #<synth-node[loading]: user/noisey1 51>
+
+YIKES!
+#+begin_src clojure
+(demo 10 (sin-osc (abs  (* 10000 (brown-noise:kr)))))
+#+end_src
+
+
+* 
+#+BEGIN_SRC clojure
+(definst noisey2 [attack 0.01 sustain 0.4 release 0.1 vol 0.4 length 3] 
+  (* (env-gen (lin attack sustain release) 1 1 0 length FREE)
+     (pink-noise) ; also have (white-noise) and others...
+     vol))
+
+(noisey2)
+#+END_SRC
+
+#+RESULTS:
+: #<instrument: noisey2>#<synth-node[loading]: user/noisey2 43>
