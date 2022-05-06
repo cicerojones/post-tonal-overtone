@@ -8,15 +8,20 @@ Understand busses and groups!
 [[file:~/Github-repos/overtone-source/src/overtone/examples/buses/getonthebus.clj][file:~/Github-repos/overtone-source/src/overtone/examples/buses/getonthebus.clj]]
 * document your documentation work
 ** recent documentation
+
 *** more advanced
 
 12756 Dec 30 09:12 more-advanced-overtone-exploring.org
+
 *** basic
 22434 Dec 30 09:11 my-basic-overtone-tutorial.org
+
 *** expanded cheatsheet
 588 Dec 30 08:51 my-documented-overtone-cheatsheet.org
+
 *** basic cheatsheet
 58798 Dec 30 08:47 overtone-cheatsheet.org
+
 *** apollo and incarnation work work
 [[file:~/Github-repos/apollo-supercollider/][file:~/Github-repos/apollo-supercollider/]]
 
