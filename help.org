@@ -1,0 +1,21 @@
+#+begin_src clojure
+1
+#+end_src
+
+#+RESULTS:
+: 1
+
+#+begin_src clojure
+state
+#+end_src
+
+#+RESULTS:
+: class clojure.lang.Compiler$CompilerExceptionclass clojure.lang.Compiler$CompilerExceptionSyntax error compiling at (post-tonal-overtone:localhost:60511(clj)*:1:7877).
+: Unable to resolve symbol: state in this context
+
+#+begin_src clojure
+state
+#+end_src
+
+#+RESULTS:
+: this-is-state
