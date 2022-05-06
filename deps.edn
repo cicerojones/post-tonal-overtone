@@ -1,0 +1,11 @@
+{:deps {overtone/overtone {:mvn/version "0.10.6"}}}
+
+;; {:deps
+;;  ;; {org.clojure/clojure {:mvn/version "1.10.0"}}
+
+;;  ;; {overtone/overtone {:git/url "https://github.com/overtone/overtone.git"
+;; ;; note this fixed some problem using lein and cider
+;;                      ;; :sha "2005bd7c40b8f348d615e61c0687c79143696a2c"}}
+
+;;                      :sha "6ac57556014875357ef0c3355a11602069420a50"}}
+;;  }
