@@ -775,7 +775,9 @@ Uses my-ugen-demo as defined above:
 #+BEGIN_SRC clojure :results silent
 (my-ugen-demo 0.1 blip)
 #+END_SRC
+
 ** pass interesting frequencies to examples
+
 #+BEGIN_SRC clojure :results silent
 (demo 4 (sin-osc (+ 440 (* (sin-osc:kr 1) 100))))
 #+END_SRC
